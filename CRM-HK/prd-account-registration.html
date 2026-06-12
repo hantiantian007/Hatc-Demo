@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM-HK 开户申请 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #1e3a8a; font-weight: 500; }
+        .step-title { border-left: 4px solid #1e3a8a; padding-left: 12px; margin-top: 24px; margin-bottom: 16px; font-size: 1.125rem; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】CRM-HK 个人开户表格 (多步注册)</h1>
+            <div class="flex gap-4">
+                <a href="account-registration.html" class="px-4 py-2 bg-[#1e3a8a] hover:bg-blue-900 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <div class="step-title">1. 业务说明</div>
+        <div class="mb-6 text-sm text-gray-600 bg-blue-50 p-4 rounded border border-blue-100 leading-relaxed">
+            <p>1. 本页面为 CRM-HK 独立对外的 C 端个人开户申请页面（繁体中文环境），采用多步骤（Wizard）表单引导模式。</p>
+            <p>2. <span class="highlight">核心流程分为 4 步</span>：個人資料 -> 銀行資料 -> 上傳證明文件 -> 投資者問卷。</p>
+            <p>3. 前端实现必填项强校验：只有当前步骤所有带红色星号（*）的必填项校验通过，才允许点击“下一步”。</p>
+        </div>
+
+        <div class="step-title">2. 步骤 1：個人資料 (登錄信息與基本資料)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="10%">是否必填</th>
+                    <th width="20%">字段类型/选项</th>
+                    <th width="55%">交互逻辑与说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>電郵地址</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文本输入 (Email)</td>
+                    <td>系统唯一登录凭证，需校验标准邮箱格式。</td>
+                </tr>
+                <tr>
+                    <td>登錄密碼 / 確認密碼</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>密码输入</td>
+                    <td>需校验两次输入的密码是否完全一致。</td>
+                </tr>
+                <tr>
+                    <td>推薦碼</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文本输入</td>
+                    <td>
+                        必填项，强制绑定上级代理关系。<br>
+                        下方附带提示：<span class="text-gray-500 text-xs">無邀請碼，請點擊此處：<span class="text-[#d4af37] font-bold">申請賬號</span></span><br>
+                        <span class="highlight">点击弹窗交互：</span>点击“申請賬號”弹出【留下資料】留资表单，收集散客姓名、电话等意向。<br>提交后关闭当前弹窗，弹出定制 UI 提示框：“您的資料已提交，請注意郵箱信息”，同步至后台留资列表。
+                    </td>
+                </tr>
+                <tr>
+                    <td>國籍</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>下拉选择</td>
+                    <td>选项包含：中國、中國香港、中國台灣、其他。</td>
+                </tr>
+                <tr>
+                    <td>客戶姓名</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文本输入</td>
+                    <td>真实姓名。此字段值将在步骤2中自动带入“開戶人名稱”中。</td>
+                </tr>
+                <tr>
+                    <td>性別</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>下拉选择</td>
+                    <td>选项包含：-請選擇-、保密、男士、女士。</td>
+                </tr>
+                <tr>
+                    <td>證件號碼 / 確認</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文本输入</td>
+                    <td>需校验两次输入的证件号码是否完全一致。</td>
+                </tr>
+                <tr>
+                    <td>居住地址</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>单选 + 文本域</td>
+                    <td>先选择“居住地址是否與證件上顯示的住址相同？”（是/否）。不论选哪项，都必须在下方多行文本框内填写详细地址。</td>
+                </tr>
+                <tr>
+                    <td>常用電話</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>下拉选择 + 文本输入</td>
+                    <td>前置区号选择（86/852/886），后置电话号码输入（需为数字）。</td>
+                </tr>
+                <tr>
+                    <td>微信 / QQ號碼</td>
+                    <td>否</td>
+                    <td>文本输入</td>
+                    <td>选填的辅助联系方式。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="step-title">3. 步骤 2：銀行資料</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="10%">是否必填</th>
+                    <th width="20%">字段类型/选项</th>
+                    <th width="55%">交互逻辑与说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>開戶人名稱</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文本展示 (Readonly)</td>
+                    <td>不可编辑，灰色背景。系统自动带入步骤 1 中填写的“客戶姓名”。</td>
+                </tr>
+                <tr>
+                    <td>銀行賬號 / 確認</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文本输入</td>
+                    <td>需校验两次输入的银行卡号是否完全一致。下方附带提示：開戶名必須為客戶本人。</td>
+                </tr>
+                <tr>
+                    <td>開戶行名稱</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>下拉选择</td>
+                    <td>仅支持香港地区银行。选项包含：香港上海匯豐銀行 (HSBC)、中國銀行(香港) (BOC HK)、渣打銀行(香港) (Standard Chartered)、恒生銀行 (Hang Seng)、東亞銀行 (Hang Seng)、星展銀行(香港) (DBS HK)、其他香港本地銀行。</td>
+                </tr>
+                <tr>
+                    <td>開戶行地區</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>联动下拉选择</td>
+                    <td>由于仅支持香港地区，左侧固定且置灰不可更改（值为“香港特別行政區”），右侧下拉选择分區（香港島、九龍、新界）。</td>
+                </tr>
+                <tr>
+                    <td>分行與支行</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>多行文本域</td>
+                    <td>要求用户详细填写支行名称以便处理存取款。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="step-title">4. 步骤 3：上傳證明文件</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="10%">是否必填</th>
+                    <th width="20%">字段类型/选项</th>
+                    <th width="55%">交互逻辑与说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>證件正面照片</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文件上传</td>
+                    <td>支持 .jpg/.jpeg/.png/.gif，限制最大 3M。前端需提供点击选择文件的交互区域。</td>
+                </tr>
+                <tr>
+                    <td>證件背面照片</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文件上传</td>
+                    <td>要求同上。与正面照片共同用于核实客户身份。</td>
+                </tr>
+                <tr>
+                    <td>銀行卡正面照片</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>文件上传</td>
+                    <td>要求同上。用于后台审核客户的资金出入合规性。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="step-title">5. 步骤 4：投資者問卷</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="10%">是否必填</th>
+                    <th width="20%">字段类型/选项</th>
+                    <th width="55%">交互逻辑与说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>客戶類別</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>单选框</td>
+                    <td>选项：“一般投資者”（默认）与“專業投資者”。<br>
+                    <span class="highlight">联动逻辑：</span>当选择“專業投資者”时，下方自动展开【請明確投資風險和後果】的 4 项专业资质确认复选框组。选择“一般投資者”时则隐藏。</td>
+                </tr>
+                <tr>
+                    <td>专业资质选项<br>(仅专业投资者)</td>
+                    <td>否</td>
+                    <td>复选框组</td>
+                    <td>
+                        包含 4 大项确认，其中第 1 项下属 3 个子资质复选框（如：金融學士、CFA/CFP、合資格律師）。用户可多选。
+                    </td>
+                </tr>
+                <tr>
+                    <td>提交開戶申請</td>
+                    <td>-</td>
+                    <td>按钮</td>
+                    <td>
+                        到达第 4 步时，“下一步”按钮变为“提交開戶申請”。<br>
+                        点击提交后，弹出全屏的【成功提交彈窗】，提示“您的資料已經提交，請注意郵箱信息”。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="step-title">6. 提交成功后动作</div>
+        <div class="mb-4 text-sm text-gray-600 bg-green-50 p-4 rounded border border-green-100">
+            <p>1. 弹窗内提供两个按钮流向：</p>
+            <p class="ml-4">- <strong>查看審核進度</strong>：跳转至极简的审核进度查询页面（<code>check-status.html</code>）。</p>
+            <p class="ml-4">- <strong>返回首頁</strong>：直接跳转回登录或系统入口首页。</p>
+        </div>
+
+    </div>
+</body>
+</html>

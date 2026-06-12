@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group-Gw 留资入口 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #1E40AF; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】Group-Gw 官网留资入口</h1>
+            <div class="flex gap-4">
+                <a href="index.html" class="px-4 py-2 bg-[#1E40AF] hover:bg-blue-900 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-[#1E40AF] pl-3">1. 业务说明</h2>
+        <div class="mb-6 text-sm text-gray-600 bg-blue-50 p-4 rounded border border-blue-100 leading-relaxed">
+            <p>1. 本功能位于 Group-Gw 官网首页顶部的导航栏，在“最新公告”左侧新增了“联系我们”入口。</p>
+            <p>2. <span class="highlight">官网引流留资逻辑</span>：点击该按钮后会弹出【试用账户申请】表单，用于收集 Group 官网的散客意向资源。</p>
+            <p>3. 收集到的数据将自动进入 Crm-Group 后台的“留资列表”中，供市场人员跟进分配。</p>
+            <p>4. 弹窗样式已针对深色官网背景进行了适配（输入框文字颜色强制为深色以保证可读性）。</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-[#1E40AF] pl-3">2. 【留下资料】留资弹窗交互说明</h2>
+        <div class="mb-4 text-sm text-gray-600">
+            <p>1. 点击顶部红色的“联系我们”按钮触发弹窗。</p>
+            <p>2. 弹窗整体采用上下布局的表单格式（左侧 Label 为浅灰底色，右侧为输入区）。</p>
+            <p>3. 弹窗文案提示：“信息提交后，我们的顾问会在2个工作日内与您联系”。</p>
+            <p>4. 成功提交后关闭当前弹窗，弹出定制 UI 提示框：“您的资料已提交，请注意邮箱信息”。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="15%">是否必填</th>
+                    <th width="20%">限制规则</th>
+                    <th width="50%">逻辑说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>姓名</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>无特殊限制</td>
+                    <td>标准文本输入框。左侧 Label 带红色星号。</td>
+                </tr>
+                <tr>
+                    <td>联系电话</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>仅限数字</td>
+                    <td>标准文本输入框。左侧 Label 带红色星号。</td>
+                </tr>
+                <tr>
+                    <td>电子邮箱</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>标准邮箱格式</td>
+                    <td>失去焦点时校验格式。左侧 Label 带红色星号。</td>
+                </tr>
+                <tr>
+                    <td>咨询内容</td>
+                    <td>否</td>
+                    <td>下拉单选框</td>
+                    <td>选项包含：“请选择”（默认）、“政策了解”、“开户咨询”、“其他”。</td>
+                </tr>
+                <tr>
+                    <td>验证码</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>4位图形验证码</td>
+                    <td>图形验证码放置在输入框右侧内部，点击可刷新。左侧 Label 带红色星号。</td>
+                </tr>
+                <tr>
+                    <td>取消/提交按钮</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>点击【提交】后校验必填项，成功后当前弹窗自动关闭，并弹出 UI 提示：“您的资料已提交，请注意邮箱信息”。数据同步至后台留资池。</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

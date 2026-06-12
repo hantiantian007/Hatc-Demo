@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC - 官方网站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF', /* 新的深蓝色按钮主色 */
+                        primaryHover: '#1E3A8A',
+                        bgDark: '#041655', /* 官网大背景深蓝色 */
+                        cardDark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-section {
+            background: #02091c; /* 非常深的蓝色背景 */
+            position: relative;
+            overflow: hidden;
+        }
+        /* 模拟底部地球的地平线光晕 */
+        .earth-horizon {
+            position: absolute;
+            bottom: -50%;
+            left: -20%;
+            right: -20%;
+            height: 80%;
+            border-radius: 50%;
+            background: radial-gradient(circle at top, rgba(0, 255, 255, 0.4) 0%, rgba(0, 100, 255, 0.8) 20%, transparent 60%);
+            filter: blur(30px);
+            z-index: 1;
+        }
+        .earth-glow {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0, 255, 255, 0.8), transparent);
+            z-index: 1;
+        }
+        /* 星空背景的小点点模拟 */
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        /* 简单动画 */
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-bgDark text-white font-sans antialiased overflow-x-hidden">
+    
+    <!-- 导航栏 -->
+    <header class="absolute top-0 left-0 right-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo & 左侧菜单 -->
+            <div class="flex items-center gap-10">
+                <div class="text-3xl font-black tracking-wider text-white cursor-pointer flex items-center gap-2">
+                    <span class="text-[#00E5FF]"><i class="fa-solid fa-play fa-rotate-270 text-2xl"></i></span> HATC
+                </div>
+                
+                <nav class="hidden lg:flex items-center space-x-8 text-sm font-medium text-white/90">
+                    <a href="#" class="hover:text-white flex items-center gap-1 transition-colors">交易产品 <i class="fa-solid fa-caret-down text-[10px]"></i></a>
+                    <a href="#" class="hover:text-white flex items-center gap-1 transition-colors">开户指引 <i class="fa-solid fa-caret-down text-[10px]"></i></a>
+                    <a href="#" class="hover:text-white flex items-center gap-1 transition-colors">下载专区 <i class="fa-solid fa-caret-down text-[10px]"></i></a>
+                    <a href="#" class="hover:text-white flex items-center gap-1 transition-colors">市场分析 <i class="fa-solid fa-caret-down text-[10px]"></i></a>
+                    <a href="#" class="hover:text-white flex items-center gap-1 transition-colors">合作伙伴 <i class="fa-solid fa-caret-down text-[10px]"></i></a>
+                    <a href="#" class="hover:text-white flex items-center gap-1 transition-colors">关于 HATC <i class="fa-solid fa-caret-down text-[10px]"></i></a>
+                </nav>
+            </div>
+
+            <!-- 右侧按钮组 -->
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="openModal()" class="text-sm font-bold bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white px-6 py-2 rounded-full transition-colors flex items-center gap-2">
+                    联系我们
+                </button>
+                <a href="#" class="text-sm font-medium text-white flex items-center gap-2 hover:text-[#00E5FF] transition-colors mr-2">
+                    <i class="fa-solid fa-bullhorn"></i> 最新公告
+                </a>
+                <a href="../Crm-Group/register.html" class="text-sm font-medium text-blue-900 bg-white px-6 py-2 rounded-full hover:bg-gray-100 transition-colors">登录账户</a>
+                <a href="#" class="text-sm font-medium text-white flex items-center gap-2 hover:text-gray-300 transition-colors ml-2">
+                    <span class="w-4 h-4 rounded-full bg-red-600 border border-white flex items-center justify-center text-[8px]">中</span> 中文简体 <i class="fa-solid fa-caret-down text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 首屏区域 (智能交易系统) -->
+    <main class="hero-section h-[70vh] min-h-[500px] w-full flex flex-col items-center justify-center pt-20 px-4">
+        
+        <!-- 模拟星空背景的小点 -->
+        <div class="star w-1 h-1 top-[20%] left-[20%] opacity-80"></div>
+        <div class="star w-1.5 h-1.5 top-[15%] left-[60%] opacity-60"></div>
+        <div class="star w-2 h-2 top-[40%] left-[80%] opacity-90 shadow-[0_0_8px_white]"></div>
+        <div class="star w-1 h-1 top-[70%] left-[30%] opacity-50"></div>
+        <div class="star w-1 h-1 top-[60%] left-[70%] opacity-40"></div>
+        <div class="star w-2 h-2 top-[30%] left-[10%] opacity-70"></div>
+        
+        <!-- 底部地球光晕特效 -->
+        <div class="earth-horizon"></div>
+        <div class="earth-glow"></div>
+
+        <div class="relative z-10 max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-12 mt-4">
+            <!-- 左侧文字内容 -->
+            <div class="text-left flex-1 pl-4 md:pl-10 fade-in-up pb-4">
+                <h3 class="text-lg md:text-xl text-blue-100/90 mb-3 tracking-wider font-medium">HATC 智能交易系统</h3>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">量身打造 轻松盈利</h2>
+                <p class="text-base md:text-lg text-gray-300 mb-8 tracking-widest font-light">
+                    个性化配置 · 智能信号 · 高胜率交易
+                </p>
+                
+                <div class="relative inline-block mt-2">
+                    <a href="#" class="inline-block bg-gradient-to-r from-[#00b4db] to-[#0083b0] text-white font-bold px-10 py-3 rounded-full text-base transition-transform hover:scale-105 shadow-[0_0_20px_rgba(0,180,219,0.5)]">
+                        立即参与活动
+                    </a>
+                    <!-- 装饰小火箭 -->
+                    <i class="fa-solid fa-rocket absolute -bottom-6 right-2 text-2xl text-blue-300/30 transform rotate-45"></i>
+                </div>
+            </div>
+            
+            <!-- 右侧电脑和软件盒展示 (CSS绘制模拟图) -->
+            <div class="flex-1 flex justify-center items-end relative fade-in-up delay-200 h-[320px] transform scale-90 origin-bottom">
+                
+                <!-- iMac 显示器 -->
+                <div class="relative z-10 flex flex-col items-center transform -translate-x-10">
+                    <!-- 屏幕主体 -->
+                    <div class="w-[420px] h-[280px] bg-black rounded-t-xl rounded-b-sm p-3 pb-0 shadow-2xl relative z-10 border-[3px] border-gray-800">
+                        <div class="w-full h-[230px] bg-white relative overflow-hidden flex flex-col">
+                            <!-- 模拟 K 线图表 -->
+                            <div class="h-6 border-b flex items-center px-2 gap-1 bg-gray-50 shrink-0">
+                                <div class="w-2 h-2 rounded-full bg-red-400"></div>
+                                <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                                <div class="w-2 h-2 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="flex-1 p-2 flex items-end gap-[2px] opacity-80">
+                                <div class="w-2 h-10 bg-red-400"></div>
+                                <div class="w-2 h-16 bg-green-400"></div>
+                                <div class="w-2 h-24 bg-green-400"></div>
+                                <div class="w-2 h-12 bg-red-400"></div>
+                                <div class="w-2 h-8 bg-red-400"></div>
+                                <div class="w-2 h-20 bg-green-400"></div>
+                                <div class="w-2 h-32 bg-green-400"></div>
+                                <div class="w-2 h-28 bg-red-400"></div>
+                                <div class="w-2 h-16 bg-red-400"></div>
+                                <div class="w-2 h-36 bg-green-400"></div>
+                                <div class="w-2 h-40 bg-green-400"></div>
+                                <div class="w-2 h-20 bg-red-400"></div>
+                                <div class="w-2 h-48 bg-green-400"></div>
+                                <div class="w-2 h-30 bg-red-400"></div>
+                                <div class="w-2 h-22 bg-green-400"></div>
+                                <div class="w-2 h-40 bg-green-400"></div>
+                                <div class="w-2 h-20 bg-red-400"></div>
+                                <div class="w-2 h-48 bg-green-400"></div>
+                            </div>
+                        </div>
+                        <!-- 银色下巴 -->
+                        <div class="w-full h-10 bg-gradient-to-b from-[#E2E4E9] to-[#C9CBD0] flex items-center justify-center relative rounded-b-sm">
+                            <i class="fa-brands fa-apple text-gray-500 text-lg"></i>
+                        </div>
+                    </div>
+                    <!-- 支架 -->
+                    <div class="w-24 h-16 bg-gradient-to-b from-[#B8B9BE] to-[#8C8D92] z-0" style="clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); margin-top: -10px;"></div>
+                    <!-- 底座 -->
+                    <div class="w-36 h-2 bg-[#8C8D92] rounded-full mt-[-2px] z-0"></div>
+                </div>
+
+                <!-- 3D 软件包装盒 -->
+                <div class="absolute -right-4 bottom-8 w-[160px] h-[240px] z-30" style="perspective: 1000px;">
+                    <div class="w-full h-full relative" style="transform-style: preserve-3d; transform: rotateY(-20deg);">
+                        <!-- 正面 -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-[#1a1c3b] via-[#2d2252] to-[#4c1d63] shadow-[20px_20px_30px_rgba(0,0,0,0.5)] border border-white/10 p-4 flex flex-col">
+                            <div class="text-white font-bold text-[10px] tracking-wider">HATC</div>
+                            <div class="text-[#4DB8FF] font-bold text-xl leading-tight mt-2 drop-shadow-md">Quantum<br/>Pioneer ONE<br/>System</div>
+                            <!-- 数据流光效背景 -->
+                            <div class="absolute bottom-10 left-0 right-0 h-24 bg-gradient-to-t from-blue-400/40 to-transparent mix-blend-screen"></div>
+                            <!-- 版本标签 -->
+                            <div class="absolute bottom-6 left-0 right-0 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-bold text-center py-1 tracking-widest z-10">V1 EDITION</div>
+                            <div class="absolute bottom-0 left-0 right-0 bg-[#111] text-gray-400 text-[6px] text-center py-2 z-10">PREMIUM SOFTWARE EDITION</div>
+                        </div>
+                        <!-- 左侧面(书脊) -->
+                        <div class="absolute top-0 left-0 w-[40px] h-full bg-gradient-to-b from-[#111228] to-[#2a113a] border-y border-l border-white/10" style="transform-origin: left; transform: rotateY(-90deg);">
+                            <div class="h-full flex items-center justify-center">
+                                <span class="text-white/50 text-[8px] transform -rotate-90 whitespace-nowrap">HATC Quantum Pioneer ONE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 轮播指示器 -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+            <div class="w-2 h-2 rounded-full bg-white cursor-pointer shadow-[0_0_8px_white]"></div>
+            <div class="w-2 h-2 rounded-full border border-white/50 cursor-pointer"></div>
+            <div class="w-2 h-2 rounded-full border border-white/50 cursor-pointer"></div>
+        </div>
+    </main>
+
+    <!-- 底部特色优势数据栏 -->
+    <div class="w-full bg-white relative z-20 flex justify-center py-6 px-4 shadow-[0_-10px_30px_rgba(0,0,0,0.1)]">
+        <div class="max-w-[1200px] w-full flex flex-wrap items-center justify-between md:justify-around gap-y-6">
+            <!-- 数据项 1 -->
+            <div class="flex flex-col items-center text-center px-4 md:border-r border-gray-200">
+                <div class="text-2xl font-bold text-blue-900">0.0</div>
+                <div class="text-xs text-gray-500 mt-1">点差起</div>
+            </div>
+            <!-- 数据项 2 -->
+            <div class="flex flex-col items-center text-center px-4 md:border-r border-gray-200">
+                <div class="text-2xl font-bold text-blue-900">100:1</div>
+                <div class="text-xs text-gray-500 mt-1">杠杆比例高达</div>
+            </div>
+            <!-- 数据项 3 -->
+            <div class="flex flex-col items-center text-center px-4 md:border-r border-gray-200">
+                <div class="text-2xl font-bold text-blue-900">$20</div>
+                <div class="text-xs text-gray-500 mt-1">最低入金</div>
+            </div>
+            <!-- 数据项 4 -->
+            <div class="flex flex-col items-center text-center px-4 md:border-r border-gray-200">
+                <div class="text-2xl font-bold text-blue-900">$0</div>
+                <div class="text-xs text-gray-500 mt-1">入金手续费</div>
+            </div>
+            <!-- 数据项 5 -->
+            <div class="flex flex-col items-center text-center px-4">
+                <div class="text-sm font-bold text-blue-900">账户开设</div>
+                <div class="text-xs text-gray-500 mt-1">快速、简单</div>
+            </div>
+            <!-- 按钮 -->
+            <div class="px-4 w-full md:w-auto flex justify-center">
+                <a href="#" class="bg-[#1a365d] hover:bg-[#1e40af] text-white px-10 py-3 rounded-full text-sm font-medium transition-colors shadow-lg">
+                    开立账户
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右下角悬浮客服图标 -->
+    <div class="fixed right-6 bottom-6 flex flex-col items-center gap-2 z-50">
+        <div class="bg-white rounded-lg shadow-xl p-2 cursor-pointer hover:-translate-y-1 transition-transform border border-gray-100">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=e2e8f0" alt="客服" class="w-12 h-12 rounded bg-gray-100">
+            <div class="text-[10px] text-center text-gray-600 mt-1">网页在线咨询</div>
+            <div class="absolute -top-1 -right-1 w-3 h-3 bg-[#00E5FF] rounded-full border-2 border-white"></div>
+        </div>
+    </div>
+    
+    <!-- 左下角悬浮耳机图标 -->
+    <div class="fixed left-6 bottom-6 z-50">
+        <div class="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center cursor-pointer hover:scale-110 transition-transform border border-gray-100 text-blue-900">
+            <i class="fa-solid fa-headset text-xl"></i>
+        </div>
+    </div>
+
+    <!-- Apply Account Modal (试用账户申请弹窗) -->
+    <div id="applyModal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[500px] bg-white rounded shadow-2xl overflow-hidden flex flex-col text-gray-800">
+            <!-- Header -->
+            <div class="flex justify-between items-center px-5 py-3 bg-[#333333] text-white">
+                <div class="flex-1 text-center pl-6">
+                    <h3 class="text-base font-bold tracking-wider">留下资料</h3>
+                </div>
+                <button onclick="closeModal()" class="text-gray-300 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6">
+                <p class="text-sm text-gray-600 mb-6 text-center">信息提交后，我们的顾问会在2个工作日内与您联系</p>
+                
+                <form class="space-y-4" onsubmit="submitApply(event)">
+                    <!-- 姓名 -->
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
+                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
+                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">姓名</span>
+                        </div>
+                        <input type="text" placeholder="请输入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
+                    </div>
+                    
+                    <!-- 联系电话 -->
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
+                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
+                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">联系电话</span>
+                        </div>
+                        <input type="text" placeholder="请输入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
+                    </div>
+
+                    <!-- 电子邮箱 -->
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
+                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
+                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">电子邮箱</span>
+                        </div>
+                        <input type="email" placeholder="请输入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
+                    </div>
+
+                    <!-- 咨询内容 -->
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
+                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
+                            <span class="text-sm text-gray-700 pl-2">咨询内容</span>
+                        </div>
+                        <select class="flex-1 px-3 text-sm focus:outline-none text-gray-600 bg-white cursor-pointer">
+                            <option value="">请选择</option>
+                            <option value="1">政策了解</option>
+                            <option value="2">开户咨询</option>
+                            <option value="3">其他</option>
+                        </select>
+                    </div>
+
+                    <!-- 验证码 -->
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
+                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
+                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">验证码</span>
+                        </div>
+                        <input type="text" placeholder="请输入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
+                        <div class="w-[100px] border-l border-gray-200 cursor-pointer overflow-hidden relative bg-[#E6E6FA]">
+                            <!-- SVG pattern overlay for captcha look -->
+                            <div class="absolute inset-0 z-0">
+                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="0" x2="100" y2="40" stroke="#fca5a5" stroke-width="1" />
+                                    <line x1="0" y1="40" x2="100" y2="0" stroke="#fca5a5" stroke-width="1" />
+                                    <line x1="0" y1="20" x2="100" y2="20" stroke="#fca5a5" stroke-width="0.5" />
+                                </svg>
+                            </div>
+                            <div class="w-full h-full flex items-center justify-center relative z-10 text-[#1e3a8a] font-bold text-lg tracking-widest font-serif" style="text-shadow: 1px 1px 0px rgba(255,255,255,0.5);">
+                                eXp9
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="pt-6 pb-2 flex justify-center gap-6">
+                        <button type="button" onclick="closeModal()" class="w-28 h-10 text-sm text-[#3b82f6] bg-white border border-[#3b82f6] rounded hover:bg-blue-50 transition-colors">取消</button>
+                        <button type="submit" class="w-28 h-10 text-sm bg-[#3b82f6] hover:bg-blue-600 text-white rounded transition-colors shadow-sm">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义 Alert 弹窗 -->
+    <div id="customAlert" class="fixed inset-0 z-[200] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeCustomAlert()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl p-6 w-[90%] max-w-[320px] text-center">
+            <div class="w-12 h-12 rounded-full bg-green-100 mx-auto flex items-center justify-center mb-4">
+                <i class="fa-solid fa-check text-2xl text-green-500"></i>
+            </div>
+            <p class="text-gray-800 font-medium mb-6">您的资料已提交，请注意邮箱信息</p>
+            <button onclick="closeCustomAlert()" class="w-full py-2.5 bg-[#3b82f6] hover:bg-blue-600 text-white font-bold rounded transition-colors text-sm shadow-sm">
+                确定
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('applyModal');
+        const customAlert = document.getElementById('customAlert');
+        
+        function openModal() {
+            modal.classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        function closeCustomAlert() {
+            customAlert.classList.add('hidden');
+        }
+
+        function submitApply(e) {
+            e.preventDefault();
+            closeModal();
+            customAlert.classList.remove('hidden');
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                if (!customAlert.classList.contains('hidden')) {
+                    closeCustomAlert();
+                } else if (!modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

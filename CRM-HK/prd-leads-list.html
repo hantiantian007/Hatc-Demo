@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #e11d48; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <div class="flex gap-4">
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">1. 数据路由与隔离规则（极其重要）</h2>
+        <div class="mb-6 text-sm text-gray-600 bg-red-50 p-4 rounded border border-red-100 leading-relaxed">
+            <p>1. 本功能承接无邀请码散客在前端官网及登录页填写的联系资料。</p>
+            <p>2. <span class="highlight">底层数据绝对物理隔离</span>：HK 官网及 HK 登录页产生的留资数据，仅允许写入 CRM-HK 数据库；Group 官网及 Group 登录页产生的留资，仅允许写入 Crm-Group 数据库。双端数据严禁交叉污染。</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">2. 列表查询区字段说明</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="15%">组件类型</th>
+                    <th width="20%">枚举值/限制</th>
+                    <th width="50%">逻辑说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>客户名称</td>
+                    <td>文本输入框</td>
+                    <td>无字数限制，支持模糊搜索</td>
+                    <td>根据用户填写的姓名进行匹配。</td>
+                </tr>
+                <tr>
+                    <td>客户邮箱</td>
+                    <td>文本输入框</td>
+                    <td>需符合邮箱基本格式</td>
+                    <td>根据用户填写的邮箱进行精准或模糊匹配。</td>
+                </tr>
+                <tr>
+                    <td>联系方式</td>
+                    <td>文本输入框</td>
+                    <td>仅限数字输入</td>
+                    <td>根据用户填写的手机号进行模糊匹配。</td>
+                </tr>
+                <tr>
+                    <td>咨询内容</td>
+                    <td>下拉单选框</td>
+                    <td>["全部", "政策了解"]</td>
+                    <td>读取留资表单中客户勾选的咨询意向，选择“全部”时不作为过滤条件。</td>
+                </tr>
+                <tr>
+                    <td>跟进日期</td>
+                    <td>双日期选择器</td>
+                    <td>YYYY-MM-DD - YYYY-MM-DD</td>
+                    <td>
+                        1. 筛选逻辑基于【最新跟进时间】。<br>
+                        2. 选择的结束日期需包含当天的 23:59:59。<br>
+                        3. 开始日期不可晚于结束日期。
+                    </td>
+                </tr>
+                <tr>
+                    <td>跟进人</td>
+                    <td>下拉单选框</td>
+                    <td>["全部", "具体员工姓名"]</td>
+                    <td>读取系统内拥有跟进权限的后台人员名单。选择具体人名则查询【最新跟进人】为该员工的数据。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">3. 列表展示区字段与计算逻辑</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="85%">数据来源及逻辑说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>姓名、邮箱、联系方式、咨询内容</td>
+                    <td>直接读取客户在前端表单填写的原始留资数据。</td>
+                </tr>
+                <tr>
+                    <td>申请来源</td>
+                    <td>记录客户提交表单的具体入口，固定显示为：“官网” 或 “登陆页面”。（无需区分HK或Group，底层已物理隔离）</td>
+                </tr>
+                <tr>
+                    <td>申请时间</td>
+                    <td>客户成功提交表单的服务器时间，格式：YYYY-MM-DD HH:mm:ss。默认列表按此时间【倒序】排列。</td>
+                </tr>
+                <tr>
+                    <td>最新跟进内容</td>
+                    <td>读取该留资记录下，时间最近的一条跟进记录的“跟进内容”。若无跟进记录，则为空。</td>
+                </tr>
+                <tr>
+                    <td>最新跟进人</td>
+                    <td>读取该留资记录下，时间最近的一条跟进记录的“跟进人”账号名称。若无，则为空。</td>
+                </tr>
+                <tr>
+                    <td>最新跟进时间</td>
+                    <td>读取该留资记录下，时间最近的一条跟进记录的“跟进时间”。若无，则为空。</td>
+                </tr>
+                <tr>
+                    <td>操作</td>
+                    <td>
+                        1. 详情：点击弹出【客户详情】弹窗。<br>
+                        2. 跟进：点击弹出【客户跟进】表单弹窗。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">4. 客户详情弹窗</h2>
+        <div class="mb-4 text-sm text-gray-600">
+            <p><strong>基础信息：</strong>顶部网格展示客户姓名、联系电话、电子邮箱、咨询内容，均为只读文本。</p>
+            <p><strong>跟进记录表格：</strong></p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="85%">数据来源及逻辑说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>跟进人</td>
+                    <td>提交跟进记录的后台登录账号名称。</td>
+                </tr>
+                <tr>
+                    <td>跟进时间</td>
+                    <td>提交跟进时的系统时间，精确到秒。列表按跟进时间【倒序】排列（最新的在最上面）。</td>
+                </tr>
+                <tr>
+                    <td>跟进状态</td>
+                    <td>提交跟进时选择的状态（如：持续跟进、无效客户、已开通）。</td>
+                </tr>
+                <tr>
+                    <td>跟进内容</td>
+                    <td>提交跟进时输入的文本内容，完全展示，若内容过长支持单元格内换行。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">5. 客户跟进弹窗（表单）</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="15%">组件类型</th>
+                    <th width="20%">枚举值/限制</th>
+                    <th width="50%">逻辑说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="text-red-500">*</span>跟进状态</td>
+                    <td>下拉单选框</td>
+                    <td>["请选择", "持续跟进", "无效客户", "已开通"]</td>
+                    <td>必填项。未选择时点击提交拦截并提示“请选择跟进状态”。</td>
+                </tr>
+                <tr>
+                    <td><span class="text-red-500">*</span>跟进内容</td>
+                    <td>多行文本框</td>
+                    <td>最多输入 500 个字符</td>
+                    <td>必填项。未填写时点击提交拦截并提示“请输入跟进内容”。支持换行输入。</td>
+                </tr>
+                <tr>
+                    <td>底部按钮</td>
+                    <td>按钮组</td>
+                    <td>取消 / 提交</td>
+                    <td>
+                        1. 点击取消：关闭弹窗，不保存数据。<br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

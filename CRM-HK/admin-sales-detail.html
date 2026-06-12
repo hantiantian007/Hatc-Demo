@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增销售 - HATC CRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        mainBg: '#F3F4F6',
+                        primary: '#41B8AF',
+                        primaryHover: '#36A29A',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 500px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+        
+        /* 规范化后台表单样式 (Ant Design / Element UI 风格) */
+        .section-card { margin-bottom: 2rem; background-color: #ffffff; border: 1px solid #d1d5db; border-radius: 0.375rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); overflow: hidden; }
+        .section-header { padding: 1rem 1.5rem; background-color: #f9fafb; border-bottom: 1px solid #d1d5db; font-weight: 700; color: #1f2937; font-size: 1rem; }
+        .section-body { padding: 2rem; }
+        
+        .form-row { display: flex; align-items: center; margin-bottom: 1.5rem; }
+        .form-label { width: 170px; text-align: right; padding-right: 1rem; font-size: 0.875rem; font-weight: 500; color: #374151; flex-shrink: 0; white-space: nowrap; }
+        .form-content { flex: 1; max-width: 800px; }
+        
+        .form-input { width: 400px; border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.5rem 0.75rem; font-size: 0.875rem; outline: none; transition: all 0.2s; background-color: #ffffff; }
+        .form-input:focus { border-color: #41B8AF; box-shadow: 0 0 0 1px rgba(65, 184, 175, 0.2); }
+        .form-select { width: 400px; border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.5rem 0.75rem; font-size: 0.875rem; outline: none; transition: all 0.2s; background-color: #ffffff; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem; }
+        .form-select:focus { border-color: #41B8AF; box-shadow: 0 0 0 1px rgba(65, 184, 175, 0.2); }
+        
+        .required-star { color: #ef4444; font-weight: 700; margin-right: 0.25rem; }
+
+        /* 左侧列表选中项样式 */
+        .sidebar-item-active { background-color: #f3f4f6; border-left: 3px solid #1D64D8; }
+        .sidebar-item-active .text-gray-700 { color: #1D64D8; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+
+    <!-- 左侧导航菜单 -->
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+
+                                        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+            
+            <!-- 出入金 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
+                </div>
+            </div>
+
+            <!-- 佣金管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+
+            <!-- 活动管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">成长计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动审核</a>
+                </div>
+            </div>
+
+            <!-- 动态公告 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-bullhorn w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">动态公告</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">集团动态</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">最新公告</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">推送消息</a>
+                </div>
+            </div>
+
+            <!-- 客户管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
+                    <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
+                </div>
+            </div>
+            
+            <!-- 报表中心 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-relationship-tree.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">关系树统计</a>
+                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓统计</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                </div>
+            </div>
+
+            <!-- 系统管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">系统设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">MT设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">群发管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">消息管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">日志管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">配置参数</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付币种</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
+            </a>
+
+            <!-- 财务管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-wallet w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表明细</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户信息表</a>
+                </div>
+            </div>
+
+            <!-- 风控管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-shield w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">风控管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- 右侧内容区 -->
+    <main class="flex-1 flex flex-col min-w-0">
+        
+        <!-- 顶部 Header -->
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="hover:text-gray-800 cursor-pointer">客户管理</span>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-gray-800 font-medium">新增销售</span>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+                    <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="w-5 h-auto">
+                    <span>简体中文</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+                </div>
+                <div class="flex items-center gap-3 cursor-pointer relative group pb-2">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
+                        <img src="https://ui-avatars.com/api/?name=Smith&background=random" alt="avatar" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-sm font-medium text-gray-700 mt-2">史密斯</span>
+                    
+                    <!-- 下拉菜单 (Hover 显示) -->
+                    <div class="absolute right-0 top-[100%] mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-lg">
+                            <p class="text-sm font-medium text-gray-800">史密斯</p>
+                            <p class="text-xs text-gray-500 mt-0.5 truncate">admin@dev.com</p>
+                        </div>
+                        <div class="py-1">
+                            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#55B9B9] transition-colors">
+                                <i class="fas fa-user-circle w-4 text-center text-gray-400"></i>
+                                <span class="ml-3">个人信息</span>
+                            </a>
+                            <a href="admin-my-bankcard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#55B9B9] transition-colors">
+                            <i class="fas fa-credit-card w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">我的银行卡</span>
+                        </a>
+                        </div>
+                        <div class="py-1 border-t border-gray-100">
+                            <a href="login.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors">
+                                <i class="fas fa-sign-out-alt w-4 text-center text-gray-400"></i>
+                                <span class="ml-3">退出</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 内容渲染区 -->
+        <div class="flex-1 p-6 overflow-y-auto">
+            <div class="bg-white rounded shadow-sm border border-gray-200">
+                <!-- 标题 -->
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h1 class="text-xl font-bold text-gray-800">新增销售</h1>
+                </div>
+
+                <!-- 表单内容 -->
+                <div class="p-6 max-w-6xl">
+                    
+                    <!-- 1. 基础配置 -->
+                    <div class="section-card">
+                        <div class="section-header">基础配置</div>
+                        <div class="section-body">
+                            
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>销售名称：</label>
+                                <div class="form-content relative" id="salesNameContainer">
+                                    <div class="relative w-[400px]">
+                                        <input type="text" id="salesNameInput" class="form-input pr-8 w-full" placeholder="请输入销售名称或邮箱进行检索..." onfocus="showSalesDropdown()" onkeyup="filterSales()" autocomplete="off">
+                                        <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    </div>
+                                    <ul id="salesDropdown" class="absolute z-10 w-[400px] bg-white border border-gray-200 rounded shadow-lg mt-1 hidden max-h-48 overflow-y-auto">
+                                        <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 border-b border-gray-100" onclick="selectSales('刘浩 (liuhao@qq.com)')">刘浩 (liuhao@qq.com)</li>
+                                        <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-700 border-b border-gray-100" onclick="selectSales('张三 (zhangsan@qq.com)')">张三 (zhangsan@qq.com)</li>
+                                        <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-700" onclick="selectSales('李四 (lisi@qq.com)')">李四 (lisi@qq.com)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>是否享受返佣：</label>
+                                <div class="form-content">
+                                    <select class="form-select">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 2. 交易奖励配置 -->
+                    <div class="section-card">
+                        <div class="section-header">交易奖励配置</div>
+                        <div class="section-body">
+                            
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>是否开启交易奖励：</label>
+                                <div class="form-content">
+                                    <select class="form-select" onchange="toggleTradeRewardSection(this)">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="tradeRewardConfigSection">
+                                <div class="form-row items-center">
+                                    <label class="form-label !pt-0"><span class="required-star">*</span>奖励计算方式：</label>
+                                    <div class="form-content flex items-center gap-6">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="reward_type" value="unified" class="w-4 h-4 text-primary focus:ring-primary border-gray-300" checked onchange="toggleTradeReward()">
+                                        <span class="ml-2 text-sm text-gray-700">统一计算</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="reward_type" value="rule" class="w-4 h-4 text-primary focus:ring-primary border-gray-300" onchange="toggleTradeReward()">
+                                        <span class="ml-2 text-sm text-gray-700">规则计算</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <label class="form-label"><span class="required-star">*</span>交易奖励金额：</label>
+                                <div class="form-content">
+                                    
+                                    <!-- 统一计算：使用稳定的 Table 布局 -->
+                                    <div id="tradeRewardTable" class="inline-block">
+                                        <div class="flex justify-end mb-2">
+                                            <button type="button" id="tradeRewardEditBtn" onclick="toggleTradeRewardEdit()" class="text-primary text-sm hover:text-[#36A29A] transition-colors flex items-center border border-primary bg-white px-3 py-1 rounded shadow-sm">
+                                                <i class="fa-solid fa-pen-to-square mr-1"></i> <span>编辑</span>
+                                            </button>
+                                        </div>
+                                        <div class="border border-gray-200 rounded overflow-hidden shadow-sm">
+                                            <table class="w-full text-sm text-center border-collapse bg-white">
+                                            <thead class="bg-[#41B8AF] text-white">
+                                                <tr>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">外汇</th>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">黄金</th>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">白银</th>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">原油</th>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">比特币</th>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">数字货币</th>
+                                                    <th class="py-2.5 px-2 font-medium border-r border-white/20 w-24">股指</th>
+                                                    <th class="py-2.5 px-2 font-medium w-24">公金条</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b border-gray-200">
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2 border-r border-gray-200"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                    <td class="p-2"><select class="w-full text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none"><option>请选择</option><option value="fixed">固定金额</option><option value="pip">点值</option></select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                    <td class="p-2"><input type="text" class="w-full text-xs border border-gray-300 rounded p-1.5 text-center focus:border-primary outline-none" placeholder="请输入"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 规则计算：点击配置按钮 -->
+                                    <div id="tradeRewardBtn" onclick="showTradeRewardModal()" class="hidden w-[400px] border border-primary border-dashed rounded bg-blue-50 items-center justify-center text-sm text-primary cursor-pointer hover:bg-blue-100 h-[100px] transition-colors">
+                                        <i class="fa-solid fa-plus mr-2"></i> 点击配置规则
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>交易持仓间隔：</label>
+                                <div class="form-content">
+                                    <input type="text" class="form-input" placeholder="请输入持仓间隔">
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>交易奖励结算周期：</label>
+                                <div class="form-content">
+                                    <select class="form-select">
+                                        <option value="">请选择</option>
+                                        <option value="realtime">实时</option>
+                                        <option value="daily">每日</option>
+                                        <option value="weekly">每周</option>
+                                        <option value="monthly">每月</option>
+                                        <option value="quarterly">每季度</option>
+                                        <option value="yearly">每年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 3. 净入金奖励配置 -->
+                    <div class="section-card">
+                        <div class="section-header">净入金奖励配置</div>
+                        <div class="section-body">
+                            
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>是否开启净入金奖励：</label>
+                                <div class="form-content">
+                                    <select class="form-select" onchange="toggleNetDepositRewardSection(this)">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="netDepositRewardConfigSection">
+                                <div class="form-row items-center">
+                                    <label class="form-label !pt-0"><span class="required-star">*</span>是否计算历史净入金：</label>
+                                    <div class="form-content">
+                                    <select class="form-select">
+                                        <option value="">请选择</option>
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>计算开始时间：</label>
+                                <div class="form-content flex items-center gap-6">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="start_time" class="w-4 h-4 text-primary focus:ring-primary border-gray-300" checked>
+                                        <span class="ml-2 text-sm text-gray-700">注册时间</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="start_time" class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                        <span class="ml-2 text-sm text-gray-700">规则启动时间</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>交易量规则：</label>
+                                <div class="form-content flex gap-3">
+                                    <select class="form-select !w-[160px]" id="tradeVolumeRuleSelect" onchange="toggleTradeVolumeRule()">
+                                        <option value="">请选择</option>
+                                        <option value="single">单个用户计算</option>
+                                        <option value="all">所有用户合计计算</option>
+                                        <option value="group">分组/代理计算</option>
+                                    </select>
+                                    <input type="text" id="tradeVolumeInput" class="form-input !w-[228px]" placeholder="请输入交易量">
+                                    <!-- 分组/代理计算：点击配置按钮 -->
+                                    <div id="tradeVolumeBtn" onclick="showTradeVolumeModal()" class="hidden w-[228px] border border-primary border-dashed rounded bg-blue-50 items-center justify-center text-sm text-primary cursor-pointer hover:bg-blue-100 h-[38px] transition-colors">
+                                        <i class="fa-solid fa-plus mr-2"></i> 点击配置
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>奖励计算方式：</label>
+                                <div class="form-content flex items-center gap-6">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="net_reward_type" value="unified" class="w-4 h-4 text-primary focus:ring-primary border-gray-300" checked onchange="toggleNetReward()">
+                                        <span class="ml-2 text-sm text-gray-700">统一计算</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="net_reward_type" value="rule" class="w-4 h-4 text-primary focus:ring-primary border-gray-300" onchange="toggleNetReward()">
+                                        <span class="ml-2 text-sm text-gray-700">规则计算</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>净入金奖励条件：</label>
+                                <div class="form-content">
+                                    <!-- 统一计算：输入框 -->
+                                    <div id="netRewardInputs" class="flex gap-3">
+                                        <input type="text" class="form-input !w-[194px]" placeholder="请输入净入金值">
+                                        <input type="text" class="form-input !w-[194px]" placeholder="请输入净入金奖励比例">
+                                    </div>
+                                    <!-- 规则计算：点击配置按钮 -->
+                                    <div id="netRewardBtn" onclick="showNetRewardModal()" class="hidden w-[400px] border border-primary border-dashed rounded bg-blue-50 items-center justify-center text-sm text-primary cursor-pointer hover:bg-blue-100 h-[38px] transition-colors">
+                                        <i class="fa-solid fa-plus mr-2"></i> 点击配置规则
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row items-center">
+                                <label class="form-label !pt-0"><span class="required-star">*</span>净入金奖励周期：</label>
+                                <div class="form-content">
+                                    <select class="form-select">
+                                        <option value="">请选择</option>
+                                        <option value="monthly">每月</option>
+                                        <option value="quarterly">每季度</option>
+                                        <option value="yearly">每年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 底部按钮区 -->
+                    <div class="flex justify-center gap-4 mt-8 pt-6 border-t border-gray-200">
+                        <button type="button" onclick="window.location.href='admin-sales-list.html'" class="px-8 py-2 border border-gray-300 text-gray-700 bg-white rounded hover:bg-gray-50 transition-colors text-sm font-medium">返回</button>
+                        <button type="button" onclick="submitForm()" class="px-8 py-2 bg-[#1D64D8] text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">提交</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 提交成功弹窗 -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-[400px] overflow-hidden transform transition-all">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-check text-3xl text-green-500"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">提交成功</h3>
+                <p class="text-sm text-gray-500 mb-6">已成功提交销售配置</p>
+                <button onclick="window.location.href='admin-sales-list.html'" class="w-full bg-[#1D64D8] text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors">
+                    返回销售列表
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交易规则配置弹窗 -->
+    <div id="tradeVolumeModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-[900px] flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">交易规则配置</h2>
+                <button onclick="hideTradeVolumeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto flex-1">
+                <!-- 基础信息框 -->
+                <div class="border border-gray-200 bg-white px-4 py-3 rounded flex items-center gap-8 text-sm text-gray-700 mb-6 shadow-sm">
+                    <div><span class="font-medium text-gray-900">销售名称：</span>张三</div>
+                    <div><span class="font-medium text-gray-900">销售邮箱：</span>XXXXX@qq.com</div>
+                    <div><span class="font-medium text-gray-900">上级信息：</span>李四/XXXXX@qq.com</div>
+                </div>
+
+                <!-- Tabs & Edit Button -->
+                <div class="flex justify-between items-end border-b border-gray-200 mb-4">
+                    <div class="flex gap-8 px-2">
+                        <div id="tabAgent" onclick="switchTradeVolumeTab('agent')" class="pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer">按代理配置</div>
+                        <div id="tabGroup" onclick="switchTradeVolumeTab('group')" class="pb-2 text-gray-500 hover:text-gray-700 cursor-pointer">按分组配置</div>
+                    </div>
+                    <button id="tradeVolumeModalEditBtn" onclick="toggleTradeVolumeModalEdit()" class="bg-[#1D64D8] text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-blue-700 transition-colors flex items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> <span>编辑</span></button>
+                </div>
+
+                <!-- Content Area -->
+                <div class="flex gap-6 h-[400px]">
+                    
+                    <!-- Left Sidebar (代理列表) -->
+                    <div class="w-[320px] border border-gray-200 rounded overflow-y-auto bg-white flex-shrink-0" id="tradeVolumeSidebarAgent">
+                        <ul class="text-sm">
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer sidebar-item-active transition-colors" onclick="selectSidebarItem(this, 'tradeVolumeTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>145-test-测试小何</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer pl-8 transition-colors" onclick="selectSidebarItem(this, 'tradeVolumeTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>147-test-小测试</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer pl-8 transition-colors" onclick="selectSidebarItem(this, 'tradeVolumeTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>270-test-麦丽慧</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Left Sidebar (分组列表 - 初始隐藏) -->
+                    <div class="w-[320px] border border-gray-200 rounded overflow-y-auto bg-white flex-shrink-0 hidden" id="tradeVolumeSidebarGroup">
+                        <ul class="text-sm">
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'tradeVolumeTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>demo\demo_standard</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'tradeVolumeTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>demo\demo_ecn</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Content (配置表格) -->
+                    <div class="flex-1 border border-gray-200 rounded overflow-hidden" id="tradeVolumeTableContainer">
+                        <table class="w-full text-sm text-center border-collapse bg-white">
+                            <thead class="bg-[#41B8AF] text-white">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium border-r border-white/20 w-1/2">净入金值</th>
+                                    <th class="py-3 px-4 font-medium w-1/2">交易手数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入交易手数"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入交易手数"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入交易手数"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入交易手数"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入交易手数"></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入交易手数"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50 rounded-b-lg">
+                <button onclick="hideTradeVolumeModal()" class="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded hover:bg-gray-50 transition-colors text-sm font-medium">取消</button>
+                <button onclick="hideTradeVolumeModal()" class="px-6 py-2 bg-[#1D64D8] text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 净入金奖励配置弹窗 -->
+    <div id="netRewardModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-[1000px] flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">净入金奖励配置</h2>
+                <button onclick="hideNetRewardModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto flex-1">
+                <!-- 基础信息框 -->
+                <div class="border border-gray-200 bg-white px-4 py-3 rounded flex items-center gap-8 text-sm text-gray-700 mb-6 shadow-sm">
+                    <div><span class="font-medium text-gray-900">销售名称：</span>张三</div>
+                    <div><span class="font-medium text-gray-900">销售邮箱：</span>XXXXX@qq.com</div>
+                    <div><span class="font-medium text-gray-900">上级信息：</span>李四/XXXXX@qq.com</div>
+                </div>
+
+                <!-- Tabs & Edit Button -->
+                <div class="flex justify-between items-end border-b border-gray-200 mb-4">
+                    <div class="flex gap-8 px-2">
+                        <div id="netTabAgent" onclick="switchNetRewardTab('agent')" class="pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer">按代理配置</div>
+                        <div id="netTabGroup" onclick="switchNetRewardTab('group')" class="pb-2 text-gray-500 hover:text-gray-700 cursor-pointer">按分组配置</div>
+                    </div>
+                    <button id="netRewardModalEditBtn" onclick="toggleNetRewardModalEdit()" class="bg-[#1D64D8] text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-blue-700 transition-colors flex items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> <span>编辑</span></button>
+                </div>
+
+                <!-- Content Area -->
+                <div class="flex gap-6 h-[400px]">
+                    
+                    <!-- Left Sidebar (代理列表) -->
+                    <div class="w-[320px] border border-gray-200 rounded overflow-y-auto bg-white flex-shrink-0" id="netSidebarAgent">
+                        <ul class="text-sm">
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer sidebar-item-active transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>145-test-测试小何</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer pl-8 transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>147-test-小测试</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer pl-8 transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>270-test-麦丽慧</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>364-test-杨校民</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>366-</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>386-test-严果莲</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>387-test-陶测阶</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Left Sidebar (分组列表 - 初始隐藏) -->
+                    <div class="w-[320px] border border-gray-200 rounded overflow-y-auto bg-white flex-shrink-0 hidden" id="netSidebarGroup">
+                        <ul class="text-sm">
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>demo\demo_standard</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>demo\demo_ecn</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'netRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>real\real_standard_a</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Content (配置表格) -->
+                    <div class="flex-1 border border-gray-200 rounded overflow-hidden" id="netRewardTableContainer">
+                        <table class="w-full text-sm text-center border-collapse bg-white">
+                            <thead class="bg-[#41B8AF] text-white">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium border-r border-white/20 w-1/2">净入金值</th>
+                                    <th class="py-3 px-4 font-medium w-1/2">净入金奖励比例0.00%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50 rounded-b-lg">
+                <button onclick="hideNetRewardModal()" class="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded hover:bg-gray-50 transition-colors text-sm font-medium">取消</button>
+                <button onclick="hideNetRewardModal()" class="px-6 py-2 bg-[#1D64D8] text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交易奖励配置弹窗 (规则计算) -->
+    <div id="tradeRewardModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-[1000px] flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800">交易奖励配置</h2>
+                <button onclick="hideTradeRewardModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto flex-1">
+                <!-- 基础信息框 -->
+                <div class="border border-gray-200 bg-white px-4 py-3 rounded flex items-center gap-8 text-sm text-gray-700 mb-6 shadow-sm">
+                    <div><span class="font-medium text-gray-900">销售名称：</span>张三</div>
+                    <div><span class="font-medium text-gray-900">销售邮箱：</span>XXXXX@qq.com</div>
+                    <div><span class="font-medium text-gray-900">上级信息：</span>李四/XXXXX@qq.com</div>
+                </div>
+
+                <!-- Tabs & Edit Button -->
+                <div class="flex justify-between items-end border-b border-gray-200 mb-4">
+                    <div class="flex gap-8 px-2">
+                        <div id="ruleTabAgent" onclick="switchRuleRewardTab('agent')" class="pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer">按代理配置</div>
+                        <div id="ruleTabGroup" onclick="switchRuleRewardTab('group')" class="pb-2 text-gray-500 hover:text-gray-700 cursor-pointer">按分组配置</div>
+                    </div>
+                    <button id="ruleRewardModalEditBtn" onclick="toggleRuleRewardModalEdit()" class="bg-[#1D64D8] text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-blue-700 transition-colors flex items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> <span>编辑</span></button>
+                </div>
+
+                <!-- Content Area -->
+                <div class="flex gap-6 h-[400px]">
+                    
+                    <!-- Left Sidebar (代理列表) -->
+                    <div class="w-[320px] border border-gray-200 rounded overflow-y-auto bg-white flex-shrink-0" id="ruleSidebarAgent">
+                        <ul class="text-sm">
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer sidebar-item-active transition-colors" onclick="selectSidebarItem(this, 'ruleRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>145-test-测试小何</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer pl-8 transition-colors" onclick="selectSidebarItem(this, 'ruleRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>147-test-小测试</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer pl-8 transition-colors" onclick="selectSidebarItem(this, 'ruleRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>270-test-麦丽慧</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Left Sidebar (分组列表 - 初始隐藏) -->
+                    <div class="w-[320px] border border-gray-200 rounded overflow-y-auto bg-white flex-shrink-0 hidden" id="ruleSidebarGroup">
+                        <ul class="text-sm">
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'ruleRewardTableContainer', true)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle-check text-green-500 mr-2 status-icon"></i> <span>demo\demo_standard</span>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge">已配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'ruleRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>demo\demo_ecn</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                            <li class="px-4 py-3 border-b border-gray-100 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors" onclick="selectSidebarItem(this, 'ruleRewardTableContainer', false)">
+                                <div class="flex items-center text-gray-700">
+                                    <i class="fa-regular fa-circle text-gray-300 mr-2 status-icon"></i> <span>real\real_standard_a</span>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded status-badge">未配置</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Content (配置表格) -->
+                    <div class="flex-1 border border-gray-200 rounded overflow-hidden" id="ruleRewardTableContainer">
+                        <table class="w-full text-sm text-center border-collapse bg-white">
+                            <thead class="bg-[#41B8AF] text-white">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium border-r border-white/20 w-1/4">产品名称</th>
+                                    <th class="py-3 px-4 font-medium border-r border-white/20 w-1/4">奖励类型</th>
+                                    <th class="py-3 px-4 font-medium border-r border-white/20 w-1/4">奖励金额</th>
+                                    <th class="py-3 px-4 font-medium w-1/4">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">外汇</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">黄金</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">白银</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">原油</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">比特币</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">数字货币</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">股指</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip" selected>点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="p-2 border-r border-gray-200">公金条</td>
+                                    <td class="p-2 border-r border-gray-200">
+                                        <select class="w-[120px] text-xs border border-gray-300 rounded p-1.5 focus:border-primary outline-none mx-auto block">
+                                            <option value="fixed">固定金额</option>
+                                            <option value="pip">点值</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[120px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
+                                    <td class="p-2 text-primary cursor-pointer hover:underline" onclick="showSimulateCalcModal(this)">模拟计算</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 bg-gray-50 rounded-b-lg">
+                <button onclick="hideTradeRewardModal()" class="px-6 py-2 border border-gray-300 text-gray-700 bg-white rounded hover:bg-gray-50 transition-colors text-sm font-medium">取消</button>
+                <button onclick="hideTradeRewardModal()" class="px-6 py-2 bg-[#1D64D8] text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模拟计算弹窗 -->
+    <div id="simulateCalcModal" class="fixed inset-0 bg-black bg-opacity-50 z-[60] hidden flex items-center justify-center">
+        <div class="bg-white rounded shadow-xl w-[600px] flex flex-col">
+            <!-- Header -->
+            <div class="px-4 py-3 bg-[#555555] text-white flex justify-center items-center relative rounded-t">
+                <h2 class="text-sm font-bold tracking-wider">模拟计算</h2>
+                <button onclick="hideSimulateCalcModal()" class="absolute right-4 text-gray-300 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6">
+                <!-- 顶部信息 -->
+                <div class="flex justify-between items-center text-sm text-gray-800 mb-6">
+                    <div>客户名称：张三</div>
+                    <div>产品：<span id="calcProductName">外汇</span></div>
+                    <div>奖励类型：<span id="calcRewardType">固定金额</span></div>
+                    <div>奖励金额：<span id="calcRewardAmount">202.00</span></div>
+                </div>
+
+                <!-- 计算操作区 -->
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="text-sm text-gray-800 whitespace-nowrap">平仓手数：</span>
+                    <input type="text" id="simulateLotsInput" class="border border-gray-300 rounded px-3 py-1.5 text-sm w-[240px] focus:border-primary outline-none" placeholder="请输入平仓手数" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^(\d+\.\d{2}).*/g, '$1');">
+                    <button onclick="calculateSimulation()" class="bg-[#3B82F6] hover:bg-blue-600 text-white px-6 py-1.5 rounded text-sm transition-colors">计算</button>
+                </div>
+
+                <!-- 结果展示 -->
+                <div class="text-lg text-gray-800">
+                    奖励金额： <span id="simulateResultAmount">0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.fa-chevron-right');
+            const isExpanded = submenu.classList.contains('submenu-expanded');
+            
+            if (isExpanded) {
+                submenu.classList.remove('submenu-expanded');
+                arrow.classList.remove('arrow-rotated');
+            } else {
+                submenu.classList.add('submenu-expanded');
+                arrow.classList.add('arrow-rotated');
+            }
+        }
+
+        // 销售名称联想检索交互
+        function showSalesDropdown() {
+            document.getElementById('salesDropdown').classList.remove('hidden');
+        }
+        function hideSalesDropdown() {
+            setTimeout(() => {
+                document.getElementById('salesDropdown').classList.add('hidden');
+            }, 200);
+        }
+        function selectSales(name) {
+            document.getElementById('salesNameInput').value = name;
+            document.getElementById('salesDropdown').classList.add('hidden');
+        }
+        function filterSales() {
+            const input = document.getElementById('salesNameInput').value.toLowerCase();
+            const items = document.querySelectorAll('#salesDropdown li');
+            items.forEach(item => {
+                if (item.innerText.toLowerCase().includes(input)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        document.addEventListener('click', function(event) {
+            const container = document.getElementById('salesNameContainer');
+            if (container && !container.contains(event.target)) {
+                document.getElementById('salesDropdown').classList.add('hidden');
+            }
+        });
+
+        // 奖励计算方式切换交互
+        function toggleTradeReward() {
+            const isUnified = document.querySelector('input[name="reward_type"][value="unified"]').checked;
+            if (isUnified) {
+                document.getElementById('tradeRewardTable').classList.remove('hidden');
+                document.getElementById('tradeRewardTable').classList.add('inline-block');
+                document.getElementById('tradeRewardBtn').classList.add('hidden');
+            } else {
+                document.getElementById('tradeRewardTable').classList.add('hidden');
+                document.getElementById('tradeRewardTable').classList.remove('inline-block');
+                document.getElementById('tradeRewardBtn').classList.remove('hidden');
+                document.getElementById('tradeRewardBtn').classList.add('flex');
+            }
+        }
+
+        function toggleTradeRewardSection(select) {
+            const section = document.getElementById('tradeRewardConfigSection');
+            if (select.value === '0') {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+            }
+        }
+
+        function toggleNetDepositRewardSection(select) {
+            const section = document.getElementById('netDepositRewardConfigSection');
+            if (select.value === '0') {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+            }
+        }
+
+        function toggleNetReward() {
+            const isUnified = document.querySelector('input[name="net_reward_type"][value="unified"]').checked;
+            if (isUnified) {
+                document.getElementById('netRewardInputs').classList.remove('hidden');
+                document.getElementById('netRewardInputs').classList.add('flex');
+                document.getElementById('netRewardBtn').classList.add('hidden');
+            } else {
+                document.getElementById('netRewardInputs').classList.add('hidden');
+                document.getElementById('netRewardInputs').classList.remove('flex');
+                document.getElementById('netRewardBtn').classList.remove('hidden');
+                document.getElementById('netRewardBtn').classList.add('flex');
+            }
+        }
+
+        // 交易奖励表格编辑/保存交互
+        let isTradeRewardEditable = false;
+        function toggleTradeRewardEdit() {
+            isTradeRewardEditable = !isTradeRewardEditable;
+            const btn = document.getElementById('tradeRewardEditBtn');
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+            const inputs = document.querySelectorAll('#tradeRewardTable table input, #tradeRewardTable table select');
+
+            if (isTradeRewardEditable) {
+                // 切换为保存状态
+                icon.className = 'fa-solid fa-check mr-1';
+                text.innerText = '保存';
+                btn.classList.replace('text-primary', 'text-green-600');
+                btn.classList.replace('border-primary', 'border-green-600');
+                btn.classList.replace('hover:text-[#36A29A]', 'hover:text-green-700');
+                inputs.forEach(el => {
+                    el.removeAttribute('disabled');
+                    el.classList.remove('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+            } else {
+                // 切换为编辑状态 (保存成功)
+                icon.className = 'fa-solid fa-pen-to-square mr-1';
+                text.innerText = '编辑';
+                btn.classList.replace('text-green-600', 'text-primary');
+                btn.classList.replace('border-green-600', 'border-primary');
+                btn.classList.replace('hover:text-green-700', 'hover:text-[#36A29A]');
+                inputs.forEach(el => {
+                    el.setAttribute('disabled', 'disabled');
+                    el.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+            }
+        }
+
+        // 交易量规则切换交互
+        function toggleTradeVolumeRule() {
+            const selectValue = document.getElementById('tradeVolumeRuleSelect').value;
+            if (selectValue === 'group') {
+                document.getElementById('tradeVolumeInput').classList.add('hidden');
+                document.getElementById('tradeVolumeBtn').classList.remove('hidden');
+                document.getElementById('tradeVolumeBtn').classList.add('flex');
+            } else {
+                document.getElementById('tradeVolumeInput').classList.remove('hidden');
+                document.getElementById('tradeVolumeBtn').classList.add('hidden');
+                document.getElementById('tradeVolumeBtn').classList.remove('flex');
+            }
+        }
+
+        // 提交表单交互
+        function submitForm() {
+            // 显示成功弹窗
+            document.getElementById('successModal').classList.remove('hidden');
+            // 2秒后自动跳转
+            setTimeout(() => {
+                window.location.href = 'admin-sales-list.html';
+            }, 2000);
+        }
+
+        // 交易规则配置弹窗交互
+        function showTradeVolumeModal() {
+            document.getElementById('tradeVolumeModal').classList.remove('hidden');
+        }
+        function hideTradeVolumeModal() {
+            document.getElementById('tradeVolumeModal').classList.add('hidden');
+            // 重置状态
+            isTradeVolumeModalEditable = false;
+            updateTradeVolumeModalEditState();
+        }
+
+        // 弹窗内部 Tab 切换
+        function switchTradeVolumeTab(tab) {
+            const tabAgent = document.getElementById('tabAgent');
+            const tabGroup = document.getElementById('tabGroup');
+            const sidebarAgent = document.getElementById('tradeVolumeSidebarAgent');
+            const sidebarGroup = document.getElementById('tradeVolumeSidebarGroup');
+
+            if (tab === 'agent') {
+                tabAgent.className = 'pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer';
+                tabGroup.className = 'pb-2 text-gray-500 hover:text-gray-700 cursor-pointer';
+                sidebarAgent.classList.remove('hidden');
+                sidebarGroup.classList.add('hidden');
+            } else {
+                tabAgent.className = 'pb-2 text-gray-500 hover:text-gray-700 cursor-pointer';
+                tabGroup.className = 'pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer';
+                sidebarAgent.classList.add('hidden');
+                sidebarGroup.classList.remove('hidden');
+            }
+        }
+
+        // 弹窗内部 编辑/保存 交互
+        let isTradeVolumeModalEditable = false;
+        function toggleTradeVolumeModalEdit() {
+            isTradeVolumeModalEditable = !isTradeVolumeModalEditable;
+            updateTradeVolumeModalEditState();
+        }
+        
+        function updateTradeVolumeModalEditState() {
+            const btn = document.getElementById('tradeVolumeModalEditBtn');
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+            const inputs = document.querySelectorAll('#tradeVolumeTableContainer table input');
+
+            if (isTradeVolumeModalEditable) {
+                // 切换为保存状态
+                icon.className = 'fa-solid fa-check';
+                text.innerText = '保存';
+                btn.className = 'bg-green-600 text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-green-700 transition-colors flex items-center gap-1';
+                inputs.forEach(el => {
+                    el.removeAttribute('disabled');
+                    el.classList.remove('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+            } else {
+                // 切换为编辑状态
+                icon.className = 'fa-solid fa-pen-to-square';
+                text.innerText = '编辑';
+                btn.className = 'bg-[#1D64D8] text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-blue-700 transition-colors flex items-center gap-1';
+                inputs.forEach(el => {
+                    el.setAttribute('disabled', 'disabled');
+                    el.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+                
+                // 如果当前有选中的侧边栏项，且存在活跃项，则将其状态更新为"已配置"
+                if (currentActiveSidebarItem && currentActiveSidebarItem.closest('#tradeVolumeModal')) {
+                    const iconEl = currentActiveSidebarItem.querySelector('.status-icon');
+                    const badgeEl = currentActiveSidebarItem.querySelector('.status-badge');
+                    
+                    if (iconEl && badgeEl) {
+                        iconEl.className = 'fa-regular fa-circle-check text-green-500 mr-2 status-icon';
+                        badgeEl.className = 'text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge';
+                        badgeEl.innerText = '已配置';
+                        // 更新onclick事件，使其下次点击时被识别为已配置
+                        currentActiveSidebarItem.setAttribute('onclick', `selectSidebarItem(this, 'tradeVolumeTableContainer', true)`);
+                    }
+                }
+            }
+        }
+
+        // 净入金奖励配置弹窗交互
+        function showNetRewardModal() {
+            document.getElementById('netRewardModal').classList.remove('hidden');
+        }
+        function hideNetRewardModal() {
+            document.getElementById('netRewardModal').classList.add('hidden');
+            // 重置状态
+            isNetRewardModalEditable = false;
+            updateNetRewardModalEditState();
+        }
+
+        // 净入金弹窗内部 Tab 切换
+        function switchNetRewardTab(tab) {
+            const tabAgent = document.getElementById('netTabAgent');
+            const tabGroup = document.getElementById('netTabGroup');
+            const sidebarAgent = document.getElementById('netSidebarAgent');
+            const sidebarGroup = document.getElementById('netSidebarGroup');
+
+            if (tab === 'agent') {
+                tabAgent.className = 'pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer';
+                tabGroup.className = 'pb-2 text-gray-500 hover:text-gray-700 cursor-pointer';
+                sidebarAgent.classList.remove('hidden');
+                sidebarGroup.classList.add('hidden');
+            } else {
+                tabAgent.className = 'pb-2 text-gray-500 hover:text-gray-700 cursor-pointer';
+                tabGroup.className = 'pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer';
+                sidebarAgent.classList.add('hidden');
+                sidebarGroup.classList.remove('hidden');
+            }
+        }
+
+        // 净入金弹窗内部 编辑/保存 交互
+        let isNetRewardModalEditable = false;
+        function toggleNetRewardModalEdit() {
+            isNetRewardModalEditable = !isNetRewardModalEditable;
+            updateNetRewardModalEditState();
+        }
+        
+        function updateNetRewardModalEditState() {
+            const btn = document.getElementById('netRewardModalEditBtn');
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+            const inputs = document.querySelectorAll('#netRewardTableContainer table input');
+
+            if (isNetRewardModalEditable) {
+                // 切换为保存状态
+                icon.className = 'fa-solid fa-check';
+                text.innerText = '保存';
+                btn.className = 'bg-green-600 text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-green-700 transition-colors flex items-center gap-1';
+                inputs.forEach(el => {
+                    el.removeAttribute('disabled');
+                    el.classList.remove('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+            } else {
+                // 切换为编辑状态
+                icon.className = 'fa-solid fa-pen-to-square';
+                text.innerText = '编辑';
+                btn.className = 'bg-[#1D64D8] text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-blue-700 transition-colors flex items-center gap-1';
+                inputs.forEach(el => {
+                    el.setAttribute('disabled', 'disabled');
+                    el.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+                
+                // 如果当前有选中的侧边栏项，且存在活跃项，则将其状态更新为"已配置"
+                if (currentActiveSidebarItem && currentActiveSidebarItem.closest('#netRewardModal')) {
+                    const iconEl = currentActiveSidebarItem.querySelector('.status-icon');
+                    const badgeEl = currentActiveSidebarItem.querySelector('.status-badge');
+                    
+                    if (iconEl && badgeEl) {
+                        iconEl.className = 'fa-regular fa-circle-check text-green-500 mr-2 status-icon';
+                        badgeEl.className = 'text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge';
+                        badgeEl.innerText = '已配置';
+                        currentActiveSidebarItem.setAttribute('onclick', `selectSidebarItem(this, 'netRewardTableContainer', true)`);
+                    }
+                }
+            }
+        }
+
+        // 交易奖励(规则计算)弹窗交互
+        function showTradeRewardModal() {
+            document.getElementById('tradeRewardModal').classList.remove('hidden');
+        }
+        function hideTradeRewardModal() {
+            document.getElementById('tradeRewardModal').classList.add('hidden');
+            // 重置状态
+            isRuleRewardModalEditable = false;
+            updateRuleRewardModalEditState();
+        }
+
+        // 模拟计算弹窗交互
+        function showSimulateCalcModal(btn) {
+            // 从当前行获取数据
+            const tr = btn.closest('tr');
+            const productName = tr.querySelector('td:nth-child(1)').innerText.trim();
+            const rewardTypeSelect = tr.querySelector('td:nth-child(2) select');
+            const rewardType = rewardTypeSelect.options[rewardTypeSelect.selectedIndex].text;
+            const rewardAmountInput = tr.querySelector('td:nth-child(3) input');
+            const rewardAmount = rewardAmountInput.value || "0.00";
+            
+            // 更新弹窗内的信息
+            document.getElementById('calcProductName').innerText = productName;
+            document.getElementById('calcRewardType').innerText = rewardType;
+            document.getElementById('calcRewardAmount').innerText = rewardAmount;
+            
+            // 清空输入和结果
+            document.getElementById('simulateLotsInput').value = '';
+            document.getElementById('simulateResultAmount').innerText = '0.00';
+            
+            // 将基础奖励金额存入全局变量供计算使用
+            window.currentCalcBaseAmount = parseFloat(rewardAmount) || 0;
+
+            document.getElementById('simulateCalcModal').classList.remove('hidden');
+        }
+
+        function hideSimulateCalcModal() {
+            document.getElementById('simulateCalcModal').classList.add('hidden');
+        }
+
+        function calculateSimulation() {
+            const lotsInput = document.getElementById('simulateLotsInput').value;
+            const lots = parseFloat(lotsInput);
+            
+            if (isNaN(lots) || lots <= 0) {
+                alert('请输入有效的平仓手数');
+                return;
+            }
+            
+            const baseAmount = window.currentCalcBaseAmount || 0;
+            const result = (lots * baseAmount).toFixed(2);
+            
+            document.getElementById('simulateResultAmount').innerText = result;
+        }
+
+        // 交易奖励(规则计算)弹窗内部 Tab 切换
+        function switchRuleRewardTab(tab) {
+            const tabAgent = document.getElementById('ruleTabAgent');
+            const tabGroup = document.getElementById('ruleTabGroup');
+            const sidebarAgent = document.getElementById('ruleSidebarAgent');
+            const sidebarGroup = document.getElementById('ruleSidebarGroup');
+
+            if (tab === 'agent') {
+                tabAgent.className = 'pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer';
+                tabGroup.className = 'pb-2 text-gray-500 hover:text-gray-700 cursor-pointer';
+                sidebarAgent.classList.remove('hidden');
+                sidebarGroup.classList.add('hidden');
+            } else {
+                tabAgent.className = 'pb-2 text-gray-500 hover:text-gray-700 cursor-pointer';
+                tabGroup.className = 'pb-2 border-b-2 border-[#1D64D8] text-[#1D64D8] font-medium cursor-pointer';
+                sidebarAgent.classList.add('hidden');
+                sidebarGroup.classList.remove('hidden');
+            }
+        }
+
+        // 交易奖励(规则计算)弹窗内部 编辑/保存 交互
+        let isRuleRewardModalEditable = false;
+        function toggleRuleRewardModalEdit() {
+            isRuleRewardModalEditable = !isRuleRewardModalEditable;
+            updateRuleRewardModalEditState();
+        }
+        
+        function updateRuleRewardModalEditState() {
+            const btn = document.getElementById('ruleRewardModalEditBtn');
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+            const inputs = document.querySelectorAll('#ruleRewardTableContainer table input, #ruleRewardTableContainer table select');
+
+            if (isRuleRewardModalEditable) {
+                // 切换为保存状态
+                icon.className = 'fa-solid fa-check';
+                text.innerText = '保存';
+                btn.className = 'bg-green-600 text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-green-700 transition-colors flex items-center gap-1';
+                inputs.forEach(el => {
+                    el.removeAttribute('disabled');
+                    el.classList.remove('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+            } else {
+                // 切换为编辑状态
+                icon.className = 'fa-solid fa-pen-to-square';
+                text.innerText = '编辑';
+                btn.className = 'bg-[#1D64D8] text-white px-6 py-1.5 rounded text-sm mb-2 hover:bg-blue-700 transition-colors flex items-center gap-1';
+                inputs.forEach(el => {
+                    el.setAttribute('disabled', 'disabled');
+                    el.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                });
+                
+                // 如果当前有选中的侧边栏项，且存在活跃项，则将其状态更新为"已配置"
+                if (currentActiveSidebarItem && currentActiveSidebarItem.closest('#tradeRewardModal')) {
+                    const iconEl = currentActiveSidebarItem.querySelector('.status-icon');
+                    const badgeEl = currentActiveSidebarItem.querySelector('.status-badge');
+                    
+                    if (iconEl && badgeEl) {
+                        iconEl.className = 'fa-regular fa-circle-check text-green-500 mr-2 status-icon';
+                        badgeEl.className = 'text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded status-badge';
+                        badgeEl.innerText = '已配置';
+                        currentActiveSidebarItem.setAttribute('onclick', `selectSidebarItem(this, 'ruleRewardTableContainer', true)`);
+                    }
+                }
+            }
+        }
+        
+        // 侧边栏项选中交互与数据模拟联动
+        let currentActiveSidebarItem = null;
+        function selectSidebarItem(element, containerId, isConfigured) {
+            // 1. 移除同一列表中其他项的选中状态
+            const parentList = element.closest('ul');
+            const items = parentList.querySelectorAll('li');
+            items.forEach(item => {
+                item.classList.remove('sidebar-item-active');
+            });
+            
+            // 2. 为当前点击项添加选中状态
+            element.classList.add('sidebar-item-active');
+            currentActiveSidebarItem = element;
+            
+            // 3. 模拟数据加载：如果未配置，清空右侧表单；如果已配置，填入模拟数据
+            const container = document.getElementById(containerId);
+            if (container) {
+                const inputs = container.querySelectorAll('input[type="text"]');
+                const selects = container.querySelectorAll('select');
+                
+                if (isConfigured) {
+                    // 模拟已有配置数据
+                    inputs.forEach(input => {
+                        input.value = Math.floor(Math.random() * 100) + 10;
+                    });
+                    selects.forEach(select => {
+                        if(select.options.length > 1) {
+                           select.selectedIndex = 1; // 选中第一个有效选项
+                        }
+                    });
+                } else {
+                    // 未配置，清空数据
+                    inputs.forEach(input => {
+                        input.value = '';
+                    });
+                    selects.forEach(select => {
+                        select.selectedIndex = 0; // 重置为请选择
+                    });
+                }
+            }
+        }
+
+        // 初始化执行一次，确保默认状态正确
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleTradeReward();
+            toggleNetReward();
+            toggleTradeVolumeRule();
+
+            // 初始化交易奖励表格为不可编辑状态
+            const rewardInputs = document.querySelectorAll('#tradeRewardTable table input, #tradeRewardTable table select');
+            rewardInputs.forEach(el => {
+                el.setAttribute('disabled', 'disabled');
+                el.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+            });
+
+            // 初始化弹窗内的表格为不可编辑状态
+            updateTradeVolumeModalEditState();
+            updateNetRewardModalEditState();
+            updateRuleRewardModalEditState();
+        });
+    </script>
+</body>
+</html>

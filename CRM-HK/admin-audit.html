@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 账户审核详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#242a38',      /* 侧边栏深色背景 */
+                        sidebarHover: '#2d3546',
+                        activeMenu: '#d1a84f',   /* 菜单高亮金色 */
+                        primary: '#1D64D8',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- 左侧菜单栏 -->
+    <aside class="w-64 bg-sidebar text-gray-300 flex flex-col shrink-0 transition-all duration-300">
+        <!-- Logo -->
+        <div class="h-16 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-3xl font-black tracking-widest text-white">HATC</span>
+        </div>
+        
+        <!-- 导航菜单 -->
+        <div class="flex-1 overflow-y-auto py-4 custom-scrollbar">
+            <ul class="space-y-1 px-3 text-[14px]">
+                
+                <li>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors">
+                        <i class="fa-solid fa-house w-5 text-center"></i> 首页
+                </li>
+                
+                <li>
+                    <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-wallet w-5 text-center"></i> 出入金
+                        </div>
+                        <i class="fa-solid fa-angle-right text-[10px]"></i>
+                </li>
+
+                <li>
+                    <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-money-bill-transfer w-5 text-center"></i> 佣金管理
+                        </div>
+                        <i class="fa-solid fa-angle-right text-[10px]"></i>
+                </li>
+
+                <li>
+                    <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-gift w-5 text-center"></i> 活动管理
+                        </div>
+                        <i class="fa-solid fa-angle-right text-[10px]"></i>
+                </li>
+
+                <li>
+                    <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-bullhorn w-5 text-center"></i> 动态公告
+                        </div>
+                        <i class="fa-solid fa-angle-right text-[10px]"></i>
+                </li>
+
+                <!-- 客户管理 (展开状态) -->
+                <li>
+                    <div class="flex items-center justify-between px-3 py-2.5 rounded-lg text-white font-medium cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-users w-5 text-center"></i> 客户管理
+                        </div>
+                        <i class="fa-solid fa-angle-down text-[10px]"></i>
+                    </div>
+                    <ul class="mt-1 space-y-1 pl-10 pr-2">
+                        <!-- 当前高亮菜单 -->
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-chart-pie w-5 text-center"></i> 报表中心
+                        </div>
+                        <i class="fa-solid fa-angle-right text-[10px]"></i>
+                    <ul class="pl-11 pr-3 py-1 space-y-1 hidden">
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:text-white hover:bg-sidebarHover transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-gear w-5 text-center"></i> 系统管理
+                        </div>
+                        <i class="fa-solid fa-angle-right text-[10px]"></i>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- 右侧内容区 -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- 顶部通栏 -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-6 shrink-0 z-10">
+            <!-- 面包屑 -->
+            <div class="text-sm font-medium text-gray-500">
+                客户管理 <span class="mx-2 text-gray-300">/</span> <span class="text-activeMenu">用户审核</span>
+            </div>
+
+            <!-- 右侧控制区 -->
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                    <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="w-5 h-auto">
+                    <span>简体中文</span>
+                    <i class="fa-solid fa-angle-down text-[10px] ml-1"></i>
+                </div>
+                <div class="flex items-center gap-2 cursor-pointer border-l border-gray-200 pl-6">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden border border-gray-300">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin&backgroundColor=f3f4f6" alt="Avatar">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主体滚动区 -->
+        <main class="flex-1 overflow-y-auto p-6">
+            
+            <div class="max-w-7xl mx-auto space-y-6">
+                
+                <!-- 审核详情卡片 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                    
+                    <!-- 基本资料 -->
+                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">基本资料</h4>
+                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">邮箱 (登录账号)</span>
+                            <span class="text-gray-900 font-medium">client@example.com</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">真实姓名</span>
+                            <span class="text-gray-900 font-medium">张三</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">国籍</span>
+                            <span class="text-gray-900 font-medium">中国</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">性别</span>
+                            <span class="text-gray-900 font-medium">男士</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">证件号码</span>
+                            <span class="text-gray-900 font-medium">110105199001011234</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">居住地址</span>
+                            <span class="text-gray-900 font-medium truncate" title="广东省广州市天河区某某街道123号">广东省广州市天河区某某街道123号</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">客户类别</span>
+                            <span class="text-gray-900 font-medium">一般投资者</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">推荐码 (IB)</span>
+                            <span class="text-gray-900 font-medium">REF888999</span>
+                        </div>
+                    </div>
+
+                    <!-- 联系方式 -->
+                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">联系方式</h4>
+                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">手机号码</span>
+                            <span class="text-gray-900 font-medium">+86 13800138000</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">微信 (WeChat)</span>
+                            <span class="text-gray-900 font-medium">wx_zhangsan123</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">QQ号码</span>
+                            <span class="text-gray-900 font-medium">123456789</span>
+                        </div>
+                    </div>
+
+                    <!-- 银行资料 -->
+                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">银行资料</h4>
+                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">开户人名称</span>
+                            <span class="text-gray-900 font-medium">张三</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">银行账号</span>
+                            <span class="text-gray-900 font-medium">6222 0210 0123 4567 890</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">开户行名称</span>
+                            <span class="text-gray-900 font-medium">中国工商银行</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">开户行地区</span>
+                            <span class="text-gray-900 font-medium">广东省 广州市</span>
+                        </div>
+                        <div class="col-span-2 flex">
+                            <span class="w-32 text-gray-500 shrink-0">分行与支行</span>
+                            <span class="text-gray-900 font-medium">广州市天河区珠江新城支行</span>
+                        </div>
+                    </div>
+
+                    <!-- 附件资料审核 -->
+                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">附件资料审核</h4>
+                    <div class="grid grid-cols-3 gap-6 text-sm mb-10">
+                        <!-- 身份证正面 -->
+                        <div class="flex flex-col">
+                            <span class="text-gray-500 mb-3 text-center">身份证正面</span>
+                            <div class="w-full h-40 bg-gray-100 rounded border border-gray-300 overflow-hidden relative group cursor-pointer">
+                                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-image text-3xl"></i>
+                                </div>
+                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-white text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>查看大图</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 身份证反面 (新增) -->
+                        <div class="flex flex-col">
+                            <span class="text-gray-500 mb-3 text-center">身份证反面</span>
+                            <div class="w-full h-40 bg-gray-100 rounded border border-gray-300 overflow-hidden relative group cursor-pointer">
+                                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-image text-3xl"></i>
+                                </div>
+                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-white text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>查看大图</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 银行卡正面 -->
+                        <div class="flex flex-col">
+                            <span class="text-gray-500 mb-3 text-center">银行卡正面</span>
+                            <div class="w-full h-40 bg-gray-100 rounded border border-gray-300 overflow-hidden relative group cursor-pointer">
+                                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-credit-card text-3xl"></i>
+                                </div>
+                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="text-white text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>查看大图</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 审核操作区 -->
+                    <div class="border-t border-gray-100 pt-8 mt-4">
+                        <div class="flex items-start mb-8">
+                            <span class="w-32 text-gray-500 shrink-0 text-sm">审核备注</span>
+                            <div class="flex-1 max-w-2xl flex flex-col gap-3">
+                                <span class="text-gray-900 text-sm">暂无备注</span>
+                                <div>
+                                    <button class="px-4 py-1.5 border border-blue-500 text-blue-500 text-xs rounded hover:bg-blue-50 transition-colors">修改备注</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 操作按钮组 -->
+                        <div class="flex justify-center gap-4">
+                            <button class="px-8 py-2.5 bg-activeMenu hover:bg-yellow-600 text-white font-medium rounded shadow-sm transition-colors text-sm">
+                                审 核
+                            </button>
+                            <button class="px-8 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded shadow-sm transition-colors text-sm">
+                                退 回
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 申请记录卡片 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-base font-bold text-gray-900 mb-4">申请记录</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600 whitespace-nowrap">
+                            <thead class="text-xs text-gray-500 bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="px-4 py-3 font-medium">姓名</th>
+                                    <th class="px-4 py-3 font-medium">邮箱</th>
+                                    <th class="px-4 py-3 font-medium">电话</th>
+                                    <th class="px-4 py-3 font-medium">MT账号</th>
+                                    <th class="px-4 py-3 font-medium">分组</th>
+                                    <th class="px-4 py-3 font-medium">杠杆</th>
+                                    <th class="px-4 py-3 font-medium">审核状态</th>
+                                    <th class="px-4 py-3 font-medium">申请时间</th>
+                                    <th class="px-4 py-3 font-medium">处理时间</th>
+                                    <th class="px-4 py-3 font-medium">拒绝原因</th>
+                                    <th class="px-4 py-3 font-medium">审核人</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50/50">
+                                    <td class="px-4 py-3 text-gray-900">张三</td>
+                                    <td class="px-4 py-3">client@example.com</td>
+                                    <td class="px-4 py-3">13800138000</td>
+                                    <td class="px-4 py-3">8300256</td>
+                                    <td class="px-4 py-3">real\HATC\Test\Agent</td>
+                                    <td class="px-4 py-3">1:100</td>
+                                    <td class="px-4 py-3 text-green-600 font-medium">已通过</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:06</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:07</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50">
+                                    <td class="px-4 py-3 text-gray-900">张三</td>
+                                    <td class="px-4 py-3">client@example.com</td>
+                                    <td class="px-4 py-3">13800138000</td>
+                                    <td class="px-4 py-3">8100459</td>
+                                    <td class="px-4 py-3">real\HATC\Test\Stan</td>
+                                    <td class="px-4 py-3">1:100</td>
+                                    <td class="px-4 py-3 text-yellow-600 font-medium">待审核</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:00</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:02</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-4 flex items-center gap-2">
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50">
+                            <i class="fa-solid fa-angle-left text-xs"></i>
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded bg-blue-500 text-white font-medium text-sm">
+                            1
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50">
+                            <i class="fa-solid fa-angle-right text-xs"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <style>
+        /* 隐藏滚动条但保留滚动功能 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</body>
+</html>
