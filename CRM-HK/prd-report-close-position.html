@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品需求文档 (PRD) - 平仓交易记录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; }
+        h1, h2, h3, h4 { color: #1e293b; }
+        h2 { border-bottom: 2px solid #55B9B9; padding-bottom: 0.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+        h3 { color: #55B9B9; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        h4 { font-weight: bold; margin-top: 1rem; }
+        .highlight { background-color: #f0fdfa; border-left: 4px solid #55B9B9; padding: 1rem; margin: 1rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+        ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.9rem; }
+        th, td { border: 1px solid #e2e8f0; padding: 0.5rem; text-align: left; }
+        th { background-color: #f8fafc; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-5xl mx-auto bg-white p-10 rounded-xl shadow-sm border border-gray-200">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold mb-3">平仓交易记录 需求说明</h1>
+            <p class="text-gray-500 text-sm">文档版本：v1.0 | 状态：规划中</p>
+        </div>
+
+        
+        <!-- 本次迭代调整说明 -->
+        <div class="bg-orange-50 border border-orange-200 rounded-lg p-5 mb-8">
+            <h3 class="text-orange-700 font-bold text-lg mb-3">本次迭代核心调整 (面向产研测)</h3>
+            <ul class="list-decimal list-inside text-gray-700 space-y-2 text-sm">
+                <li><strong>报表更名：</strong>全局原“平仓统计”统一更名为“平仓交易记录”。</li>
+                <li><strong>数据范围限定：</strong>明确仅统计并展示已平仓订单，不再包含未平仓的持仓数据。</li>
+                <li><strong>移除无关字段：</strong>为保持版面简洁，去除了搜索条件及表格中的“客户邮箱”栏位；去除了“交易奖励（佣金）”栏位（佣金数据由单独的佣金报表负责）。</li>
+                <li><strong>字段更名与枚举修改：</strong>表格及汇总中的“利润($)”统一更名为“盈亏($)”；买卖类型枚举值由“卖出交易/买入交易”更正为“卖出/SELL”和“买入/BUY”。</li>
+                <li><strong>新增计算字段：</strong>表格中新增“持仓时间”字段，由开仓至平仓的时间差计算得出，方便客户/代理知悉交易操作时长。</li>
+                <li><strong>字段顺序调整：</strong>表格列顺序调整，交换了盈亏和手续费的位置（当前顺序：持仓时间 -&gt; 手续费($) -&gt; 库存费($) -&gt; 盈亏($)）。</li>
+                <li><strong>UI与交互优化：</strong>表格数据及表头统一设置为水平居中对齐，并增加单元格边框；表格底部补充标准的翻页组件（分页符）。</li>
+            </ul>
+        </div>
+
+        <div class="highlight">
+            <h3 class="!mt-0 !mb-2 text-gray-800">一、需求概述</h3>
+            <p><strong>1.1 业务背景：</strong> 提供所有已平仓订单的明细查询及多维度的汇总统计（盈亏、手续费等），满足业务人员及代理对名下客户或全局客户的平仓数据追溯需求，同时计算开仓至平仓的时间差，方便了解交易操作时长。</p>
+            <p><strong>1.2 核心说明：</strong> 以底层 MT5 为唯一数据源（SSOT）。仅取有关交易账号的平仓交易记录。报表中不包含佣金数据，佣金明细由“佣金报表”负责。</p>
+            <p><strong>1.3 数据过滤约束：</strong> 平仓交易记录表内，<strong>仅统计并展示已平仓订单</strong>，所有尚未平仓的持仓订单不在此报表中展示。</p>
+        </div>
+
+        <h2>二、页面布局与搜索过滤条件</h2>
+        <p>页面顶部为多维度的组合搜索区域，支持以下筛选条件（各条件为并集 <code>AND</code> 关系）：</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">字段名称</th>
+                    <th width="20%">控件类型</th>
+                    <th width="60%">规则描述与说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>MT账号</td><td>文本输入框</td>
+                    <td>精确/模糊匹配（视底层架构而定，建议支持精确查询），限制输入不超过 50 字符。</td>
+                </tr>
+                <tr>
+                    <td>客户姓名</td><td>文本输入框</td>
+                    <td>模糊匹配客户姓名，限制不超过 50 字符。</td>
+                </tr>
+                <tr>
+                    <td>持仓编号</td><td>文本输入框</td>
+                    <td>根据 MT5 底层 Position ID 精确查询。</td>
+                </tr>
+                <tr>
+                    <td>交易品种</td><td>下拉单选</td>
+                    <td>来源于 MT5 配置的所有可用交易品种。默认选中“全部”。</td>
+                </tr>
+                <tr>
+                    <td>买卖类型</td><td>下拉单选</td>
+                    <td>固定选项：全部、买入/BUY、卖出/SELL。默认选中“全部”。</td>
+                </tr>
+                <tr>
+                    <td>订单编号</td><td>文本输入框</td>
+                    <td>根据 MT5 底层 Order ID 精确查询。</td>
+                </tr>
+                <tr>
+                    <td>开仓日期</td><td>双日期选择器</td>
+                    <td>选择开始日期至结束日期，筛选订单的开仓时间（非平仓时间）。</td>
+                </tr>
+                <tr>
+                    <td>关系树查询</td><td>下拉单选/级联选择</td>
+                    <td>用于按代理层级过滤其下级挂载的客户数据，仅展示登录账号有权限查看的节点。</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>注：</strong> 不包含“客户邮箱”的搜索条件。</p>
+        
+        <p class="mt-4"><strong>操作按钮：</strong></p>
+        <ul>
+            <li><strong>搜索：</strong> 点击后根据上述条件请求接口，刷新表格及汇总统计数据。</li>
+            <li><strong>重置：</strong> 清空所有搜索条件至默认状态。</li>
+            <li><strong>报表导出：</strong> 将当前筛选条件下的<strong>所有分页</strong>数据导出为 Excel 或 CSV 格式。</li>
+        </ul>
+
+        <h2>三、汇总统计规则</h2>
+        <p>在数据表格上方展示当前筛选条件下的汇总结果，数据随搜索条件动态更新：</p>
+        <ul>
+            <li><strong>交易手数总计(手)：</strong> 当前列表所有平仓订单的 <code>交易手数</code> 字段总和。</li>
+            <li><strong>盈亏总计($)：</strong> 当前列表所有平仓订单的 <code>盈亏</code> 字段总和（MT5底层平仓利润）。保留两位小数。</li>
+            <li><strong>库存费总计($)：</strong> 当前列表所有平仓订单的 <code>库存费</code> 字段总和（Swap）。保留两位小数。</li>
+            <li><strong>手续费总计($)：</strong> 当前列表所有平仓订单的 <code>手续费</code> 字段总和（Commission）。保留两位小数。</li>
+        </ul>
+
+        <h2>四、数据表格字段说明</h2>
+        <p>表格数据必须与高保真原型 100% 对齐，所有单元格需居中对齐展示。包含底部标准分页组件（默认每页 20 条，可选 10/20/50 条）。</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th width="15%">字段名称</th>
+                    <th width="85%">数据来源及显示规则</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>客户姓名</td><td>注册开户时的全名。</td></tr>
+                <tr><td>MT账号</td><td>客户在 MT5 开通的交易账号。</td></tr>
+                <tr><td>订单编号</td><td>MT5 交易底层返回的 Order ID。</td></tr>
+                <tr><td>持仓编号</td><td>MT5 交易底层返回的 Position ID。</td></tr>
+                <tr><td>开仓时间</td><td>该笔订单的开仓时间，格式：<code>YYYY-MM-DD HH:mm:ss</code>。</td></tr>
+                <tr><td>交易品种</td><td>如 <code>XAUUSD</code> 等。</td></tr>
+                <tr><td>买卖类型</td><td>枚举值：<code>买入/BUY</code> 或 <code>卖出/SELL</code>。</td></tr>
+                <tr><td>交易手数</td><td>订单的交易体量（Lots）。</td></tr>
+                <tr><td>开仓价格</td><td>MT5 底层的建仓价格（Price Open）。</td></tr>
+                <tr><td>平仓时间</td><td>订单的平仓时间，格式：<code>YYYY-MM-DD HH:mm:ss</code>。若为未平仓的异常冗余记录（不应出现在此表，理论上只有已平仓订单）则显示 <code>-</code>。</td></tr>
+                <tr><td>平仓价格</td><td>MT5 底层的平仓价格（Price Close）。</td></tr>
+                <tr><td>持仓时间</td><td>前端或后端计算得出：<code>平仓时间 - 开仓时间</code>。显示格式例如：<code>5小时0分钟59秒</code>、<code>12分钟30秒</code>、<code>45秒</code>。若缺乏时间则显示 <code>-</code>。</td></tr>
+                <tr><td>手续费($)</td><td>MT5 底层返回的订单手续费（Commission）。</td></tr>
+                <tr><td>库存费($)</td><td>MT5 底层返回的隔夜利息/库存费（Swap）。</td></tr>
+                <tr><td>盈亏($)</td><td>MT5 底层返回的平仓利润（Profit）。正数不带加号，负数带减号。</td></tr>
+                <tr><td>注释</td><td>MT5 底层附带的订单 Comment，例如 <code>[tp 4171.85]</code> 等，若无则为空或 <code>-</code>。</td></tr>
+            </tbody>
+        </table>
+
+        <h2>五、业务交互联动与异常说明</h2>
+        <ul>
+            <li><strong>唯一数据源：</strong> 数据必须来源于 MT5 底层的结算平仓记录，系统自身不产生任何基础交易记录。</li>
+            <li><strong>权限隔离：</strong> 根据登录人员的角色（管理员、IB代理、销售），底层接口自动根据通用权限模块进行数据范围过滤。例如 IB 仅能查询到其关系树下级的平仓数据。</li>
+            <li><strong>分页逻辑：</strong> 表格底部分页组件切换条数或点击上下页时，前端向后端请求对应 `page` 和 `size` 的数据进行刷新，同时保留当前的搜索过滤条件。</li>
+        </ul>
+        
+    </div>
+</body>
+</html>

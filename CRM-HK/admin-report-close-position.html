@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HATC CRM - 平仓交易纪录</title>
+    <title>HATC CRM - 平仓交易记录</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -196,10 +196,11 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
                     <a href="admin-report-relationship-tree.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">关系树统计</a>
-                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">平仓交易纪录
+                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">平仓交易记录
                         <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-menuActive rounded-r"></span></a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
                     <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
+                    <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">净值报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
                 </div>
@@ -275,7 +276,7 @@
             <div class="flex items-center text-sm text-gray-500">
                 <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                <span class="text-menuActive font-medium">平仓交易纪录</span>
+                <span class="text-menuActive font-medium">平仓交易记录</span>
                 
                 <div class="ml-6 flex items-center gap-2">
                     <a href="../index.html" class="bg-[#d1a84f] hover:bg-[#b89241] text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
@@ -411,9 +412,9 @@
                                 <th>平仓时间</th>
                                 <th>平仓价格</th>
                                 <th>持仓时间</th>
-                                <th>盈亏($)</th>
-                                <th>库存费($)</th>
                                 <th>手续费($)</th>
+                                <th>库存费($)</th>
+                                <th>盈亏($)</th>
                                 <th>注释</th>
                             </tr>
                         </thead>
@@ -503,9 +504,9 @@
                                 <td>2026-06-12 09:37:17</td>
                                 <td>4,171.84</td>
                                 <td>5小时0分钟59秒</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
                                 <td>3.01</td>
-                                <td>0.00</td>
-                                <td>0.00</td>
                                 <td class="text-gray-400">[tp 4171.85]</td>
                             </tr>
                             <tr>
@@ -539,9 +540,9 @@
                                 <td>2026-06-12 09:36:19</td>
                                 <td>4,175.48</td>
                                 <td>5小时0分钟40秒</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
                                 <td>3.07</td>
-                                <td>0.00</td>
-                                <td>0.00</td>
                                 <td class="text-gray-400">[tp 4175.55]</td>
                             </tr>
                             <tr>
@@ -575,9 +576,9 @@
                                 <td>2026-06-12 09:35:04</td>
                                 <td>4,177.46</td>
                                 <td>5小时1分钟32秒</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
                                 <td>3.10</td>
-                                <td>0.00</td>
-                                <td>0.00</td>
                                 <td class="text-gray-400">[tp 4177.56]</td>
                             </tr>
                             <tr>
@@ -611,9 +612,9 @@
                                 <td>2026-06-12 09:25:36</td>
                                 <td>4,185.48</td>
                                 <td>5小时7分钟1秒</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
                                 <td>36.50</td>
-                                <td>0.00</td>
-                                <td>0.00</td>
                                 <td class="text-gray-400">[tp 4186.13]</td>
                             </tr>
                             <tr>
@@ -654,6 +655,28 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <!-- 分页 -->
+                <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between bg-white mt-auto">
+                    <div class="text-[13px] text-gray-500">
+                        显示第 1 至 13 项结果，共 13 项
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select class="border border-gray-200 rounded px-2 py-1 text-[13px] outline-none focus:border-primaryBtn">
+                            <option>10 条/页</option>
+                            <option selected>20 条/页</option>
+                            <option>50 条/页</option>
+                        </select>
+                        <div class="flex items-center border border-gray-200 rounded overflow-hidden">
+                            <button class="px-3 py-1 bg-gray-50 text-gray-400 cursor-not-allowed border-r border-gray-200 text-[13px]">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="px-3 py-1 bg-primaryBtn text-white font-medium text-[13px]">1</button>
+                            <button class="px-3 py-1 bg-gray-50 text-gray-400 cursor-not-allowed border-l border-gray-200 text-[13px]">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HATC CRM - MT开户待审核</title>
+    <title>HATC CRM - 销售入金奖励统计</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -54,7 +54,8 @@
         }
         .custom-table td:last-child { border-right: none; }
         .custom-table tbody > tr:hover td { background-color: #f9fafb; }
-    </style>
+    
+        </style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
 
@@ -143,18 +144,17 @@
 
             <!-- 客户管理 -->
             <div class="menu-group">
-                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
-                        <i class="fa-solid fa-user-group w-6 text-center text-lg text-menuActive"></i>
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
                         <span class="ml-3 font-medium text-[15px]">客户管理</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
-                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
                     <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
-                    <a href="admin-audit-list.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">账户审核
-                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-menuActive rounded-r"></span></a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
@@ -165,14 +165,14 @@
             
             <!-- 报表中心 -->
             <div class="menu-group">
-                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
-                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg text-menuActive"></i>
                         <span class="ml-3 font-medium text-[15px]">报表中心</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
                 </button>
-                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
                     <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易报表</a>
@@ -184,7 +184,8 @@
                     <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
                     <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
-                    <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">净值报表</a>
+                    <a href="admin-report-equity.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">净值报表
+                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-menuActive rounded-r"></span></a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
                 </div>
@@ -258,9 +259,19 @@
         <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
             <!-- 面包屑导航 -->
             <div class="flex items-center text-sm text-gray-500">
-                <span class="hover:text-gray-800 cursor-pointer">客户管理</span>
+                <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                <span class="text-menuActive font-medium">MT开户待审核</span>
+                <span class="text-menuActive font-medium">销售入金奖励统计</span>
+                
+                <!-- 新增 PRD 按钮 -->
+                <div class="ml-6 flex items-center gap-2">
+                    <button onclick="openPrdModal()" class="bg-[#55B9B9] hover:bg-[#45a0a0] text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
+                        PRD文档
+                    </button>
+                    <a href="../index.html" class="bg-[#55B9B9] hover:bg-[#45a0a0] text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
+                        返回需求看板
+                    </a>
+                </div>
             </div>
                         <!-- 右侧个人中心 -->
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
@@ -297,167 +308,101 @@
         <!-- 主要业务渲染区 -->
         <div class="flex-1 p-6 overflow-y-auto bg-white m-4 rounded-lg shadow-sm border border-gray-100 flex flex-col">
             
-            <!-- 1. 顶部搜索过滤区 -->
-            <div class="bg-white p-6 rounded shadow-sm mb-6 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-base font-bold text-gray-800">搜索</h2>
+            <!-- 1. 顶部操作区 -->
+            <div class="bg-gray-50 p-4 flex items-center justify-between border border-gray-200 rounded mb-4">
+                <div class="flex items-center">
+                    <span class="text-lg font-bold text-gray-800">华安-顶级代理 净值详情</span>
+                    <span class="text-sm text-gray-500 ml-4">统计日期: 2025-01-05</span>
                 </div>
-                
-                <div class="flex flex-wrap items-center gap-6 text-sm">
-                    <!-- 常驻关键搜索项 -->
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[80px] shrink-0">真实姓名：</span>
-                        <input type="text" placeholder="请输入" class="border border-gray-300 rounded px-3 py-1.5 outline-none w-48">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[60px] shrink-0">邮箱：</span>
-                        <input type="text" placeholder="请输入" class="border border-gray-300 rounded px-3 py-1.5 outline-none w-48">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[60px] shrink-0">手机：</span>
-                        <input type="text" placeholder="请输入" class="border border-gray-300 rounded px-3 py-1.5 outline-none w-48">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[80px] shrink-0">审核状态：</span>
-                        <select class="border border-gray-300 rounded px-3 py-1.5 outline-none w-32 text-gray-600">
-                            <option>全部</option>
-                            <option>已开户</option>
-                            <option>未审核</option>
-                        </select>
-                    </div>
-
-                    <!-- 操作按钮组 -->
-                    <div class="flex items-center ml-2">
-                        <button class="bg-[#C4A373] hover:bg-[#b09063] text-white px-8 py-1.5 rounded transition-colors shadow-sm">搜索</button>
-                    </div>
+                <div class="flex gap-2">
+                    <a href="admin-report-equity.html" class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 px-6 py-1.5 rounded text-sm transition-colors shadow-sm">返回</a>
                 </div>
             </div>
 
             <!-- 2. 数据表格区 -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col">
-                <!-- Table -->
-                <div class="overflow-x-auto flex-1 p-4">
-                    <table class="w-full text-sm text-center whitespace-nowrap">
-                        <thead class="text-gray-500 border-b border-gray-100 font-medium">
-                            <tr>
-                                <th class="py-4 px-4 font-medium">真实姓名</th>
-                                <th class="py-4 px-4 font-medium">邮箱</th>
-                                <th class="py-4 px-4 font-medium">手机</th>
-                                <th class="py-4 px-4 font-medium">MT账号</th>
-                                <th class="py-4 px-4 font-medium">组</th>
-                                <th class="py-4 px-4 font-medium">杠杆</th>
-                                <th class="py-4 px-4 font-medium">申请时间</th>
-                                <th class="py-4 px-4 font-medium">处理时间</th>
-                                <th class="py-4 px-4 font-medium">状态</th>
-                                <th class="py-4 px-4 font-medium">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-700">
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">123123</td>
-                                <td class="py-4 px-4">han111@q.com</td>
-                                <td class="py-4 px-4">15213099999</td>
-                                <td class="py-4 px-4">8300256</td>
-                                <td class="py-4 px-4">real\HATC\Test\Agent</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:06</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:07</td>
-                                <td class="py-4 px-4 text-green-500">已开户</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white transition-colors">重发开户信息</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">123123</td>
-                                <td class="py-4 px-4">han111@q.com</td>
-                                <td class="py-4 px-4">15213099999</td>
-                                <td class="py-4 px-4">8100459</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:00</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:02</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</button>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-杨均</td>
-                                <td class="py-4 px-4">b13@qq.com</td>
-                                <td class="py-4 px-4">13670510921</td>
-                                <td class="py-4 px-4">8100458</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:08:40</td>
-                                <td class="py-4 px-4">2026-06-08 15:08:42</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</button>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-褚必</td>
-                                <td class="py-4 px-4">b12@qq.com</td>
-                                <td class="py-4 px-4">13993242210</td>
-                                <td class="py-4 px-4">8300255</td>
-                                <td class="py-4 px-4">real\HATC\Test\Agent</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:28</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:29</td>
-                                <td class="py-4 px-4 text-green-500">已开户</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white transition-colors">重发开户信息</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-褚必</td>
-                                <td class="py-4 px-4">b12@qq.com</td>
-                                <td class="py-4 px-4">13993242210</td>
-                                <td class="py-4 px-4">8100457</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:14</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:15</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</button>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-蒋为</td>
-                                <td class="py-4 px-4">b11@qq.com</td>
-                                <td class="py-4 px-4">13560645079</td>
-                                <td class="py-4 px-4">8300254</td>
-                                <td class="py-4 px-4">real\HATC\Test\Agent</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:15</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:16</td>
-                                <td class="py-4 px-4 text-green-500">已开户</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white transition-colors">重发开户信息</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-蒋为</td>
-                                <td class="py-4 px-4">b11@qq.com</td>
-                                <td class="py-4 px-4">13560645079</td>
-                                <td class="py-4 px-4">8100456</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:11</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:13</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</button>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="flex-1 overflow-auto border border-gray-200 rounded">
+                <table class="w-full custom-table text-sm text-center">
+                    <thead class="bg-[#55B9B9] text-white sticky top-0 z-10">
+                        <tr>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">代理名称</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">净值</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">结余</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">浮动盈亏</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">信用</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">平台佣金</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">返佣</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">过夜利息</th>
+                            <th class="py-3 font-normal border border-[#4ea8a8]">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        <tr>
+                            <td class="border border-gray-200 py-2">一级代理名称</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">-10,909.00</td>
+                            <td class="border border-gray-200 py-2">0.00</td>
+                            <td class="border border-gray-200 py-2">-909.09</td>
+                            <td class="border border-gray-200 py-2">-909.09</td>
+                            <td class="border border-gray-200 py-2">-909.09</td>
+                            <td class="border border-gray-200 py-2"><a href="#" class="text-[#55B9B9] hover:text-[#45a0a0] font-medium">详细</a></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 py-2">一级代理名称</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">0.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2"><a href="#" class="text-[#55B9B9] hover:text-[#45a0a0] font-medium">详细</a></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 py-2">一级代理名称</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">-10,909.00</td>
+                            <td class="border border-gray-200 py-2">0.00</td>
+                            <td class="border border-gray-200 py-2">-1234.00</td>
+                            <td class="border border-gray-200 py-2">-1234.00</td>
+                            <td class="border border-gray-200 py-2">-1234.00</td>
+                            <td class="border border-gray-200 py-2"><a href="#" class="text-[#55B9B9] hover:text-[#45a0a0] font-medium">详细</a></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 py-2">一级代理名称</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">0.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2"><a href="#" class="text-[#55B9B9] hover:text-[#45a0a0] font-medium">详细</a></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 py-2">一级代理名称</td>
+                            <td class="border border-gray-200 py-2">2,980.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2">10,909.00</td>
+                            <td class="border border-gray-200 py-2"><a href="#" class="text-[#55B9B9] hover:text-[#45a0a0] font-medium">详细</a></td>
+                        </tr>
+                        <!-- Empty rows for spacing as in image -->
+                        <tr>
+                            <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- 3. 底部翻页区 -->
@@ -482,7 +427,6 @@
     </main>
 
     <script>
-        // 侧边栏菜单切换
         function toggleSubmenu(button) {
             const submenu = button.nextElementSibling;
             const arrow = button.querySelector('.fa-chevron-right');
@@ -503,48 +447,40 @@
             }
         }
 
-        // 表格行折叠展开逻辑
-        function toggleRow(rowId, iconElement) {
-            const detailRow = document.getElementById(rowId);
-            
-            // 切换隐藏状态
-            if (detailRow.classList.contains('hidden')) {
-                detailRow.classList.remove('hidden');
-                iconElement.classList.add('rotate-90');
-            } else {
-                detailRow.classList.add('hidden');
-                iconElement.classList.remove('rotate-90');
-            }
+        // PRD 弹窗逻辑
+        function openPrdModal() {
+            document.getElementById('prdModal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('prdModalContent').classList.remove('scale-95', 'opacity-0');
+            }, 10);
         }
 
-        // 高级搜索展开/收起逻辑
-        function toggleAdvancedSearch() {
-            const items = document.querySelectorAll('.advanced-search-item');
-            const text = document.getElementById('searchToggleText');
-            const icon = document.getElementById('searchToggleIcon');
-            
-            // 判断当前是否隐藏（取第一个元素的状态）
-            let isHidden = items[0].classList.contains('hidden');
-            
-            items.forEach(item => {
-                if (isHidden) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-            
-            // 切换按钮文字和图标
-            if (isHidden) {
-                text.textContent = '收起';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            } else {
-                text.textContent = '展开';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            }
+        function closePrdModal() {
+            document.getElementById('prdModalContent').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('prdModal').classList.add('hidden');
+            }, 300);
         }
     </script>
+
+    <!-- PRD 弹窗 -->
+    <div id="prdModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closePrdModal()"></div>
+        <div class="absolute inset-4 md:inset-10 z-10 flex items-center justify-center pointer-events-none">
+            <div id="prdModalContent" class="bg-white w-full h-full rounded-xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95 opacity-0 pointer-events-auto relative">
+                <div class="h-12 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-4 shrink-0">
+                    <div class="flex items-center text-gray-500 text-sm font-medium">
+                        <i class="fa-solid fa-file-lines mr-2 text-[#55B9B9]"></i> 产品需求文档 (PRD) - 销售入金奖励统计
+                    </div>
+                    <button onclick="closePrdModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div class="flex-1 w-full bg-gray-100">
+                    <iframe src="prd-report-sales-deposit.html" class="w-full h-full border-0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
