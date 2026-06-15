@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账户审核 (HK) PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #e11d48; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】CRM-HK 账户审核</h1>
+            <div class="flex gap-4">
+                <a href="admin-audit.html" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <!-- 本期需求重点板块 (致产研测) -->
+        <div class="mb-8 border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-blue-50 px-5 py-3 border-b border-blue-100 flex items-center">
+                <i class="fa-solid fa-bullseye text-blue-600 mr-2 text-lg"></i>
+                <h2 class="text-blue-800 font-bold text-base m-0">本期需求重点 (致产研测)</h2>
+            </div>
+            <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed">
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong class="text-gray-900">排版异常修复：</strong> 修复了旧版页面遗留的 HTML 标签未闭合导致的布局错乱，现已全局统一后台最新规范。</li>
+                    <li><strong class="text-gray-900">新增身份证反面：</strong> 附件资料审核区域明确增加“身份证反面”展示块。</li>
+                    <li><strong class="text-gray-900">两端业务区隔：</strong> HK 端因为 KYC 需要，保留完整的“银行资料”和“附件资料审核”；而 Group 端为轻量化注册，仅展示基本资料和联系方式，研发需注意两端字段和展示的差异化。</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">1. 业务说明</h2>
+        <div class="mb-6 text-sm text-gray-600 bg-blue-50 p-4 rounded border border-blue-100 leading-relaxed">
+            <p>1. 本页面为 CRM-HK 后台的客户开户审核详情页。</p>
+            <p>2. 由于 HK 端面向特定地区个体投资者，需严格遵守合规流程，因此管理员需要审核完整的个人资料、银行资料以及相关证件照片附件。</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">2. 字段说明 (HK专属)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="20%">字段</th>
+                    <th width="60%">说明与规则</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="8" class="font-medium text-gray-800">基本资料</td>
+                    <td>邮箱 (登录账号)</td>
+                    <td>系统唯一标识。</td>
+                </tr>
+                <tr>
+                    <td>真实姓名</td>
+                    <td>必须与后续提供的证件及银行卡户名一致。</td>
+                </tr>
+                <tr>
+                    <td>国籍</td>
+                    <td>前端下拉选择的数据回显。</td>
+                </tr>
+                <tr>
+                    <td>性别</td>
+                    <td>男士 / 女士</td>
+                </tr>
+                <tr>
+                    <td>证件号码</td>
+                    <td>身份证或护照号，需注意脱敏或权限查看。</td>
+                </tr>
+                <tr>
+                    <td>居住地址</td>
+                    <td>长文本展示，支持 hover 显示全称（使用 title 属性）。</td>
+                </tr>
+                <tr>
+                    <td>客户类别</td>
+                    <td>例如：一般投资者</td>
+                </tr>
+                <tr>
+                    <td>推荐码 (IB)</td>
+                    <td>若有则显示，对应上级代理关系。</td>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="font-medium text-gray-800">联系方式</td>
+                    <td>手机号码</td>
+                    <td>需带国际区号展示，如 +86。</td>
+                </tr>
+                <tr>
+                    <td>微信 (WeChat)</td>
+                    <td>非必填项，若无则展示“-”或留空。</td>
+                </tr>
+                <tr>
+                    <td>QQ号码</td>
+                    <td>非必填项，若无则展示“-”或留空。</td>
+                </tr>
+                <tr>
+                    <td rowspan="5" class="font-medium text-gray-800">银行资料</td>
+                    <td>开户人名称</td>
+                    <td>必须与基本资料的“真实姓名”比对。</td>
+                </tr>
+                <tr>
+                    <td>银行账号</td>
+                    <td>四位一空格分隔显示，便于人工核对。</td>
+                </tr>
+                <tr>
+                    <td>开户行名称</td>
+                    <td>如：中国工商银行</td>
+                </tr>
+                <tr>
+                    <td>开户行地区</td>
+                    <td>省、市联动选择的数据。</td>
+                </tr>
+                <tr>
+                    <td>分行与支行</td>
+                    <td>手动填写的详细支行信息。</td>
+                </tr>
+                <tr>
+                    <td rowspan="3" class="font-medium text-gray-800">附件资料审核</td>
+                    <td>身份证正面</td>
+                    <td>缩略图展示，Hover 时浮现遮罩及“查看大图”提示，点击放大预览。</td>
+                </tr>
+                <tr>
+                    <td><span class="highlight">身份证反面</span></td>
+                    <td>缩略图展示，同上。</td>
+                </tr>
+                <tr>
+                    <td>银行卡正面</td>
+                    <td>缩略图展示，同上。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">3. 审核操作逻辑</h2>
+        <div class="mb-6 text-sm text-gray-600">
+            <p>1. <strong>审核备注</strong>：点击“修改备注”可弹窗或行内编辑保存对该用户的内部备注意见。</p>
+            <p>2. <strong>审核通过</strong>：点击“审核”，二次确认后，改变用户状态为已开户，并分配 MT 账号（若涉及），同时通过邮件发送开户成功通知。</p>
+            <p>3. <strong>退回申请</strong>：点击“退回”，需强制要求填写退回原因（必填弹窗），填写后改变状态为审核失败/已退回，并通过邮件通知用户补件或修改资料。</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">4. 申请记录表</h2>
+        <div class="mb-4 text-sm text-gray-600">
+            <p>展示该用户所有的历史开户/审核申请流水。</p>
+            <p>包含字段：姓名、邮箱、电话、MT账号、分组、杠杆、审核状态、申请时间、处理时间、拒绝原因、审核人。</p>
+            <p>底部分页组件，每页默认 50 条数据。</p>
+        </div>
+    </div>
+</body>
+</html>

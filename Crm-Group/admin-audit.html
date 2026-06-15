@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HATC CRM - MT开户待审核</title>
+    <title>HATC CRM - 开户审核详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -58,7 +58,7 @@
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
 
-    <!-- 左侧导航菜单 (复用 admin-layout 结构) -->
+    <!-- 左侧菜单栏 -->
     <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
         <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
             <span class="text-4xl font-black tracking-wider text-white">HATC</span>
@@ -254,13 +254,13 @@
     <!-- 右侧内容区 -->
     <main class="flex-1 flex flex-col min-w-0">
         
-        <!-- 顶部 Header -->
+        <!-- 顶部通栏 -->
         <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
             <!-- 面包屑导航 -->
             <div class="flex items-center text-sm text-gray-500">
                 <span class="hover:text-gray-800 cursor-pointer">客户管理</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                <span class="text-menuActive font-medium">MT开户待审核</span>
+                <span class="text-menuActive font-medium">开户审核详情</span>
             </div>
                         <!-- 右侧个人中心 -->
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
@@ -294,194 +294,181 @@
             </div>
         </header>
 
-        <!-- 主要业务渲染区 -->
-        <div class="flex-1 p-6 overflow-y-auto bg-white m-4 rounded-lg shadow-sm border border-gray-100 flex flex-col">
+        <!-- 主体滚动区 -->
+        <main class="flex-1 overflow-y-auto p-6">
             
-            <!-- 1. 顶部搜索过滤区 -->
-            <div class="bg-white p-6 rounded shadow-sm mb-6 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-base font-bold text-gray-800">搜索</h2>
-                </div>
+            <div class="max-w-7xl mx-auto space-y-6">
                 
-                <div class="flex flex-wrap items-center gap-6 text-sm">
-                    <!-- 常驻关键搜索项 -->
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[80px] shrink-0">真实姓名：</span>
-                        <input type="text" placeholder="请输入" class="border border-gray-300 rounded px-3 py-1.5 outline-none w-48">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[60px] shrink-0">邮箱：</span>
-                        <input type="text" placeholder="请输入" class="border border-gray-300 rounded px-3 py-1.5 outline-none w-48">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[60px] shrink-0">手机：</span>
-                        <input type="text" placeholder="请输入" class="border border-gray-300 rounded px-3 py-1.5 outline-none w-48">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 text-right w-[80px] shrink-0">审核状态：</span>
-                        <select class="border border-gray-300 rounded px-3 py-1.5 outline-none w-32 text-gray-600">
-                            <option>全部</option>
-                            <option>已开户</option>
-                            <option>未审核</option>
-                        </select>
+                <!-- 审核详情卡片 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                    
+                    <!-- 基本资料 -->
+                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">基本资料</h4>
+                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">邮箱 (登录账号)</span>
+                            <span class="text-gray-900 font-medium">client@example.com</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">真实姓名</span>
+                            <span class="text-gray-900 font-medium">张三</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">国籍</span>
+                            <span class="text-gray-900 font-medium">中国</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">性别</span>
+                            <span class="text-gray-900 font-medium">男士</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">证件号码</span>
+                            <span class="text-gray-900 font-medium">110105199001011234</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">居住地址</span>
+                            <span class="text-gray-900 font-medium truncate" title="广东省广州市天河区某某街道123号">广东省广州市天河区某某街道123号</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">客户类别</span>
+                            <span class="text-gray-900 font-medium">一般投资者</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">推荐码 (IB)</span>
+                            <span class="text-gray-900 font-medium">REF888999</span>
+                        </div>
                     </div>
 
-                    <!-- 操作按钮组 -->
-                    <div class="flex items-center ml-2">
-                        <button class="bg-[#C4A373] hover:bg-[#b09063] text-white px-8 py-1.5 rounded transition-colors shadow-sm">搜索</button>
+                    <!-- 联系方式 -->
+                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">联系方式</h4>
+                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">手机号码</span>
+                            <span class="text-gray-900 font-medium">+86 13800138000</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">微信 (WeChat)</span>
+                            <span class="text-gray-900 font-medium">wx_zhangsan123</span>
+                        </div>
+                        <div class="flex">
+                            <span class="w-32 text-gray-500 shrink-0">QQ号码</span>
+                            <span class="text-gray-900 font-medium">123456789</span>
+                        </div>
                     </div>
+
+                    <!-- 审核操作区 -->
+                    <div class="border-t border-gray-100 pt-8 mt-4">
+                        <div class="flex items-start mb-8">
+                            <span class="w-32 text-gray-500 shrink-0 text-sm">审核备注</span>
+                            <div class="flex-1 max-w-2xl flex flex-col gap-3">
+                                <span class="text-gray-900 text-sm">暂无备注</span>
+                                <div>
+                                    <button class="px-4 py-1.5 border border-blue-500 text-blue-500 text-xs rounded hover:bg-blue-50 transition-colors">修改备注</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 操作按钮组 -->
+                        <div class="flex justify-center gap-4">
+                            <button class="px-8 py-2.5 bg-activeMenu hover:bg-yellow-600 text-white font-medium rounded shadow-sm transition-colors text-sm">
+                                审 核
+                            </button>
+                            <button class="px-8 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded shadow-sm transition-colors text-sm">
+                                退 回
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
 
-            <!-- 2. 数据表格区 -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col">
-                <!-- Table -->
-                <div class="overflow-x-auto flex-1 p-4">
-                    <table class="w-full text-sm text-center whitespace-nowrap">
-                        <thead class="text-gray-500 border-b border-gray-100 font-medium">
-                            <tr>
-                                <th class="py-4 px-4 font-medium">真实姓名</th>
-                                <th class="py-4 px-4 font-medium">邮箱</th>
-                                <th class="py-4 px-4 font-medium">手机</th>
-                                <th class="py-4 px-4 font-medium">MT账号</th>
-                                <th class="py-4 px-4 font-medium">组</th>
-                                <th class="py-4 px-4 font-medium">杠杆</th>
-                                <th class="py-4 px-4 font-medium">申请时间</th>
-                                <th class="py-4 px-4 font-medium">处理时间</th>
-                                <th class="py-4 px-4 font-medium">状态</th>
-                                <th class="py-4 px-4 font-medium">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-700">
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">123123</td>
-                                <td class="py-4 px-4">han111@q.com</td>
-                                <td class="py-4 px-4">15213099999</td>
-                                <td class="py-4 px-4">8300256</td>
-                                <td class="py-4 px-4">real\HATC\Test\Agent</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:06</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:07</td>
-                                <td class="py-4 px-4 text-green-500">已开户</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white transition-colors">重发开户信息</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">123123</td>
-                                <td class="py-4 px-4">han111@q.com</td>
-                                <td class="py-4 px-4">15213099999</td>
-                                <td class="py-4 px-4">8100459</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:00</td>
-                                <td class="py-4 px-4">2026-06-09 16:45:02</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <a href="admin-audit.html" class="inline-block border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</a>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-杨均</td>
-                                <td class="py-4 px-4">b13@qq.com</td>
-                                <td class="py-4 px-4">13670510921</td>
-                                <td class="py-4 px-4">8100458</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:08:40</td>
-                                <td class="py-4 px-4">2026-06-08 15:08:42</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <a href="admin-audit.html" class="inline-block border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</a>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-褚必</td>
-                                <td class="py-4 px-4">b12@qq.com</td>
-                                <td class="py-4 px-4">13993242210</td>
-                                <td class="py-4 px-4">8300255</td>
-                                <td class="py-4 px-4">real\HATC\Test\Agent</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:28</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:29</td>
-                                <td class="py-4 px-4 text-green-500">已开户</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white transition-colors">重发开户信息</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-褚必</td>
-                                <td class="py-4 px-4">b12@qq.com</td>
-                                <td class="py-4 px-4">13993242210</td>
-                                <td class="py-4 px-4">8100457</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:14</td>
-                                <td class="py-4 px-4">2026-06-08 15:05:15</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <a href="admin-audit.html" class="inline-block border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</a>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-蒋为</td>
-                                <td class="py-4 px-4">b11@qq.com</td>
-                                <td class="py-4 px-4">13560645079</td>
-                                <td class="py-4 px-4">8300254</td>
-                                <td class="py-4 px-4">real\HATC\Test\Agent</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:15</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:16</td>
-                                <td class="py-4 px-4 text-green-500">已开户</td>
-                                <td class="py-4 px-4">
-                                    <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white transition-colors">重发开户信息</button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">test-蒋为</td>
-                                <td class="py-4 px-4">b11@qq.com</td>
-                                <td class="py-4 px-4">13560645079</td>
-                                <td class="py-4 px-4">8100456</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
-                                <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:11</td>
-                                <td class="py-4 px-4">2026-06-08 15:02:13</td>
-                                <td class="py-4 px-4 text-gray-400">未审核</td>
-                                <td class="py-4 px-4">
-                                    <a href="admin-audit.html" class="inline-block border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</a>
-                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- 申请记录卡片 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-base font-bold text-gray-900 mb-4">申请记录</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600 whitespace-nowrap">
+                            <thead class="text-xs text-gray-500 bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="px-4 py-3 font-medium">姓名</th>
+                                    <th class="px-4 py-3 font-medium">邮箱</th>
+                                    <th class="px-4 py-3 font-medium">电话</th>
+                                    <th class="px-4 py-3 font-medium">MT账号</th>
+                                    <th class="px-4 py-3 font-medium">分组</th>
+                                    <th class="px-4 py-3 font-medium">杠杆</th>
+                                    <th class="px-4 py-3 font-medium">审核状态</th>
+                                    <th class="px-4 py-3 font-medium">申请时间</th>
+                                    <th class="px-4 py-3 font-medium">处理时间</th>
+                                    <th class="px-4 py-3 font-medium">拒绝原因</th>
+                                    <th class="px-4 py-3 font-medium">审核人</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50/50">
+                                    <td class="px-4 py-3 text-gray-900">张三</td>
+                                    <td class="px-4 py-3">client@example.com</td>
+                                    <td class="px-4 py-3">13800138000</td>
+                                    <td class="px-4 py-3">8300256</td>
+                                    <td class="px-4 py-3">real\HATC\Test\Agent</td>
+                                    <td class="px-4 py-3">1:100</td>
+                                    <td class="px-4 py-3 text-green-600 font-medium">已通过</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:06</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:07</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50">
+                                    <td class="px-4 py-3 text-gray-900">张三</td>
+                                    <td class="px-4 py-3">client@example.com</td>
+                                    <td class="px-4 py-3">13800138000</td>
+                                    <td class="px-4 py-3">8100459</td>
+                                    <td class="px-4 py-3">real\HATC\Test\Stan</td>
+                                    <td class="px-4 py-3">1:100</td>
+                                    <td class="px-4 py-3 text-yellow-600 font-medium">待审核</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:00</td>
+                                    <td class="px-4 py-3">2026-06-09 16:45:02</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                    <td class="px-4 py-3 text-center">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-4 flex items-center gap-2">
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50">
+                            <i class="fa-solid fa-angle-left text-xs"></i>
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded bg-blue-500 text-white font-medium text-sm">
+                            1
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50">
+                            <i class="fa-solid fa-angle-right text-xs"></i>
+                        </button>
+                    </div>
+
                 </div>
+
             </div>
-
-            <!-- 3. 底部翻页区 -->
-            <div class="flex items-center justify-end mt-4 text-sm text-gray-500">
-                <span class="mr-4">共 658 条</span>
-                <div class="flex items-center gap-1">
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 text-gray-400"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">50</button>
-                    <!-- 当前激活页 -->
-                    <button class="w-8 h-8 flex items-center justify-center rounded bg-red-100 text-red-500 font-medium">51</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">52</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">53</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">54</button>
-                    <span class="px-1">...</span>
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">90</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-                </div>
-            </div>
-
-        </div>
-
+        </main>
     </main>
 
-    <script>
+    <style>
+        /* 隐藏滚动条但保留滚动功能 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+<script>
         // 侧边栏菜单切换
         function toggleSubmenu(button) {
             const submenu = button.nextElementSibling;
