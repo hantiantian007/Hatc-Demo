@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HATC CRM - 销售入金奖励统计</title>
+    <title>HATC CRM - 盈亏报表</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -175,7 +175,7 @@
                 <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
-                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易报表</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
@@ -183,8 +183,8 @@
                     <a href="admin-report-relationship-tree.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">关系树统计</a>
                     <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
-                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
-                    <a href="admin-report-equity.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">净值报表
+                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
+                    <a href="admin-report-equity.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">盈亏报表
                         <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-menuActive rounded-r"></span></a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
@@ -261,7 +261,7 @@
             <div class="flex items-center text-sm text-gray-500">
                 <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                <span class="text-menuActive font-medium">销售入金奖励统计</span>
+                <span class="text-menuActive font-medium">盈亏报表</span>
                 
                 <!-- 新增 PRD 按钮 -->
                 <div class="ml-6 flex items-center gap-2">
@@ -427,6 +427,7 @@
                         <div class="flex"><span class="text-gray-500 w-20 shrink-0">注册时间:</span> <span class="font-medium text-gray-800 truncate">2025-10-01</span></div>
                         <div class="flex"><span class="text-gray-500 w-24 shrink-0">MT账号数量:</span> <span class="font-medium text-gray-800 truncate">3</span></div>
                         
+                        <div class="flex"><span class="text-gray-500 w-20 shrink-0">前期净值:</span> <span class="font-bold text-gray-800 truncate">200.00</span></div>
                         <div class="flex"><span class="text-gray-500 w-16 shrink-0">净值:</span> <span class="font-bold text-gray-800 truncate">232.00</span></div>
                         <div class="flex"><span class="text-gray-500 w-16 shrink-0">结余:</span> <span class="font-bold text-gray-800 truncate">2222.00</span></div>
                         <div class="flex"><span class="text-gray-500 w-20 shrink-0">浮动盈亏:</span> <span class="font-bold text-gray-800 truncate">2222.00</span></div>
@@ -455,6 +456,7 @@
                                 <tr>
                                     <th class="py-3 font-normal border border-[#4ea8a8]">账号/名称</th>
                                     <th class="py-3 font-normal border border-[#4ea8a8]">角色层级</th>
+                                    <th class="py-3 font-normal border border-[#4ea8a8]">前期净值</th>
                                     <th class="py-3 font-normal border border-[#4ea8a8]">净值</th>
                                     <th class="py-3 font-normal border border-[#4ea8a8]">结余</th>
                                     <th class="py-3 font-normal border border-[#4ea8a8]">浮动盈亏</th>
@@ -468,6 +470,7 @@
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="border border-gray-200 py-2.5">张三</td>
                                     <td class="border border-gray-200 py-2.5"><span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded">当前代理</span></td>
+                                    <td class="border border-gray-200 py-2.5">2,000.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
                                     <td class="border border-gray-200 py-2.5">-10,909.00</td>
@@ -479,6 +482,7 @@
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="border border-gray-200 py-2.5">70-张生龙</td>
                                     <td class="border border-gray-200 py-2.5"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">1级代理</span></td>
+                                    <td class="border border-gray-200 py-2.5">2,000.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
                                     <td class="border border-gray-200 py-2.5">10,909.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
@@ -490,6 +494,7 @@
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="border border-gray-200 py-2.5">319-黎富英</td>
                                     <td class="border border-gray-200 py-2.5"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">1级代理</span></td>
+                                    <td class="border border-gray-200 py-2.5">2,000.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
                                     <td class="border border-gray-200 py-2.5">10,909.00</td>
                                     <td class="border border-gray-200 py-2.5">-10,909.00</td>
@@ -501,6 +506,7 @@
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="border border-gray-200 py-2.5">468-孙敏宏</td>
                                     <td class="border border-gray-200 py-2.5"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">2级代理</span></td>
+                                    <td class="border border-gray-200 py-2.5">2,000.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
                                     <td class="border border-gray-200 py-2.5">10,909.00</td>
                                     <td class="border border-gray-200 py-2.5">10,909.00</td>
@@ -512,6 +518,7 @@
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="border border-gray-200 py-2.5">808-测试直客</td>
                                     <td class="border border-gray-200 py-2.5"><span class="text-xs bg-orange-50 text-orange-500 px-2 py-0.5 rounded">1级直客</span></td>
+                                    <td class="border border-gray-200 py-2.5">2,000.00</td>
                                     <td class="border border-gray-200 py-2.5">2,980.00</td>
                                     <td class="border border-gray-200 py-2.5">10,909.00</td>
                                     <td class="border border-gray-200 py-2.5">10,909.00</td>
@@ -522,13 +529,13 @@
                                 </tr>
                                 <!-- Empty rows for spacing as in image -->
                                 <tr>
-                                    <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
+                                    <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
+                                    <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
                                 </tr>
                                 <tr>
-                                    <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
+                                    <td class="border border-gray-200 py-4"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td><td class="border border-gray-200"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -582,7 +589,7 @@
             <div id="prdModalContent" class="bg-white w-full h-full rounded-xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95 opacity-0 pointer-events-auto relative">
                 <div class="h-12 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-4 shrink-0">
                     <div class="flex items-center text-gray-500 text-sm font-medium">
-                        <i class="fa-solid fa-file-lines mr-2 text-[#55B9B9]"></i> 产品需求文档 (PRD) - 销售入金奖励统计
+                        <i class="fa-solid fa-file-lines mr-2 text-[#55B9B9]"></i> 产品需求文档 (PRD) - 盈亏报表
                     </div>
                     <button onclick="closePrdModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
                         <i class="fa-solid fa-xmark text-lg"></i>
