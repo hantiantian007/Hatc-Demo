@@ -298,7 +298,19 @@
         <main class="flex-1 overflow-y-auto p-6">
             
             <div class="max-w-7xl mx-auto space-y-6">
-                
+
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800">开户审核详情</h2>
+                    <div class="flex items-center gap-3">
+                        <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-4 py-2 bg-[#55B9B9]/10 text-[#55B9B9] rounded text-sm font-medium hover:bg-[#55B9B9] hover:text-white transition-colors border border-[#55B9B9]/20">
+                            <i class="fas fa-file-alt mr-1"></i> PRD文档
+                        </button>
+                        <a href="admin-audit-list.html" class="px-4 py-2 text-gray-600 bg-white border border-gray-200 rounded text-sm hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-arrow-left mr-1"></i> 返回列表
+                        </a>
+                    </div>
+                </div>
+
                 <!-- 审核详情卡片 -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
                     
@@ -599,5 +611,37 @@
             }
         }
     </script>
+
+    <!-- PRD 弹窗 -->
+    <div id="prdModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="document.getElementById('prdModal').classList.add('hidden')"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-[800px] bg-gray-50 shadow-2xl transform transition-transform flex flex-col">
+            <!-- 弹窗头部 -->
+            <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
+                        <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
+                    </div>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 账户审核 (HK)</h3>
+                </div>
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- 弹窗内容 (iframe 嵌入刚才生成的 PRD 页面) -->
+            <div class="flex-1 overflow-hidden bg-white">
+                <iframe src="prd-audit.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+            </div>
+            
+            <!-- 弹窗底部 -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">
+                    关闭阅读
+                </button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
