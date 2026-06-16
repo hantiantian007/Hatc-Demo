@@ -165,7 +165,6 @@
                         <select class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
                             <option value="中國">中國</option>
                             <option value="香港">中國香港</option>
-                            <option value="台灣">中國台灣</option>
                             <option value="其他">其他</option>
                         </select>
                     </div>
@@ -693,6 +692,9 @@
                 el.classList.remove('hidden');
             } else {
                 el.classList.add('hidden');
+                // 清空已勾选的选项
+                const checkboxes = el.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
             }
         }
     </script>
