@@ -34,24 +34,16 @@
                 <h2 class="text-red-600 font-bold text-base m-0">本期需求重点 (致产研测)</h2>
             </div>
             <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
-                <p class="text-gray-400 italic">待补充：请等待产品经理描述本期具体的变更与新增点...</p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong class="text-gray-900">报表更名：</strong> 全局原“平仓统计”统一更名为“平仓交易记录”。</li>
+                    <li><strong class="text-gray-900">数据范围限定：</strong> 明确仅统计并展示已平仓订单，不再包含未平仓的持仓数据。</li>
+                    <li><strong class="text-gray-900">移除无关字段：</strong> 为保持版面简洁，去除了搜索条件及表格中的“客户邮箱”栏位；去除了“交易奖励（佣金）”栏位（佣金数据由单独的佣金报表负责）。</li>
+                    <li><strong class="text-gray-900">字段更名与枚举修改：</strong> 表格及汇总中的“利润($)”统一更名为“盈亏($)”；买卖类型枚举值由“卖出交易/买入交易”更正为“卖出/SELL”和“买入/BUY”。</li>
+                    <li><strong class="text-gray-900">新增计算字段：</strong> 表格中新增“持仓时间”字段，由开仓至平仓的时间差计算得出，方便客户/代理知悉交易操作时长。</li>
+                    <li><strong class="text-gray-900">字段顺序调整：</strong> 表格列顺序调整，交换了盈亏和手续费的位置（当前顺序：持仓时间 -> 手续费($) -> 库存费($) -> 盈亏($)）。</li>
+                    <li><strong class="text-gray-900">UI与交互优化：</strong> 表格数据及表头统一设置为水平居中对齐，并增加单元格边框；表格底部补充标准的翻页组件（分页符）。</li>
+                </ul>
             </div>
-        </div>
-
-
-        
-        <!-- 本次迭代调整说明 -->
-        <div class="bg-orange-50 border border-orange-200 rounded-lg p-5 mb-8">
-            <h3 class="text-orange-700 font-bold text-lg mb-3">本次迭代核心调整 (面向产研测)</h3>
-            <ul class="list-decimal list-inside text-gray-700 space-y-2 text-sm">
-                <li><strong>报表更名：</strong>全局原“平仓统计”统一更名为“平仓交易记录”。</li>
-                <li><strong>数据范围限定：</strong>明确仅统计并展示已平仓订单，不再包含未平仓的持仓数据。</li>
-                <li><strong>移除无关字段：</strong>为保持版面简洁，去除了搜索条件及表格中的“客户邮箱”栏位；去除了“交易奖励（佣金）”栏位（佣金数据由单独的佣金报表负责）。</li>
-                <li><strong>字段更名与枚举修改：</strong>表格及汇总中的“利润($)”统一更名为“盈亏($)”；买卖类型枚举值由“卖出交易/买入交易”更正为“卖出/SELL”和“买入/BUY”。</li>
-                <li><strong>新增计算字段：</strong>表格中新增“持仓时间”字段，由开仓至平仓的时间差计算得出，方便客户/代理知悉交易操作时长。</li>
-                <li><strong>字段顺序调整：</strong>表格列顺序调整，交换了盈亏和手续费的位置（当前顺序：持仓时间 -&gt; 手续费($) -&gt; 库存费($) -&gt; 盈亏($)）。</li>
-                <li><strong>UI与交互优化：</strong>表格数据及表头统一设置为水平居中对齐，并增加单元格边框；表格底部补充标准的翻页组件（分页符）。</li>
-            </ul>
         </div>
 
         <div class="highlight">

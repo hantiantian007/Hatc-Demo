@@ -276,13 +276,15 @@
             <div class="flex items-center text-sm text-gray-500">
                 <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                <span class="text-menuActive font-medium">平仓交易记录</span>
+                <span class="text-menuActive font-medium mr-4">平仓交易记录</span>
                 
-                <div class="ml-6 flex items-center gap-2">
-                    <a href="../index.html" class="bg-[#d1a84f] hover:bg-[#b89241] text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
-                        返回需求看板
-                    </a>
-                </div>
+                <!-- 新增：PRD相关按钮 -->
+                <button onclick="openPrdModal()" class="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded transition-colors border border-indigo-200 text-xs font-medium mr-3">
+                    <i class="fas fa-file-alt"></i> PRD文档
+                </button>
+                <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
+                    <i class="fas fa-arrow-left"></i> 返回需求看板
+                </a>
             </div>
                         <!-- 右侧个人中心 -->
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
@@ -704,6 +706,78 @@
                 button.querySelector('i:first-child').classList.add('text-menuActive');
             }
         }
+    </script>
+
+    <!-- PRD 文档预览弹窗 -->
+    <div id="prdModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white w-[90%] h-[90%] rounded-xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="prdModalContent">
+            <!-- 弹窗头部 -->
+            <div class="h-14 bg-gray-900 flex items-center justify-between px-6 shrink-0">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-file-alt text-indigo-400 text-lg"></i>
+                    <h3 class="text-white font-medium text-lg tracking-wide">需求文档 (PRD) - 平仓交易记录</h3>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="prd-report-close-position.html" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-1.5" title="在新标签页中全屏打开">
+                        <i class="fas fa-external-link-alt"></i> 新窗口打开
+                    </a>
+                    <div class="w-px h-4 bg-gray-700"></div>
+                    <button onclick="closePrdModal()" class="text-gray-400 hover:text-white transition-colors p-1" title="关闭 (Esc)">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 弹窗内容区 (iframe 嵌套 PRD 页面) -->
+            <div class="flex-1 w-full bg-gray-50 relative">
+                <!-- 加载 loading 动画 -->
+                <div id="prdLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
+                    <i class="fas fa-circle-notch fa-spin text-indigo-500 text-4xl mb-3"></i>
+                    <span class="text-gray-500 text-sm">文档加载中...</span>
+                </div>
+                <iframe id="prdIframe" src="prd-report-close-position.html" class="w-full h-full border-0 opacity-0 transition-opacity duration-300" onload="document.getElementById('prdLoading').style.display='none'; this.classList.remove('opacity-0');"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PRD 弹窗控制逻辑
+        const prdModal = document.getElementById('prdModal');
+        const prdModalContent = document.getElementById('prdModalContent');
+
+        function openPrdModal() {
+            prdModal.classList.remove('hidden');
+            // 触发重绘以应用过渡动画
+            void prdModal.offsetWidth;
+            prdModal.classList.remove('opacity-0');
+            prdModalContent.classList.remove('scale-95');
+            document.body.style.overflow = 'hidden'; // 防止底部页面滚动
+        }
+
+        function closePrdModal() {
+            prdModal.classList.add('opacity-0');
+            prdModalContent.classList.add('scale-95');
+            
+            // 等待动画结束后隐藏
+            setTimeout(() => {
+                prdModal.classList.add('hidden');
+                document.body.style.overflow = ''; // 恢复滚动
+            }, 300);
+        }
+
+        // 监听 ESC 键关闭弹窗
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && !prdModal.classList.contains('hidden')) {
+                closePrdModal();
+            }
+        });
+        
+        // 点击遮罩层关闭弹窗
+        prdModal.addEventListener('click', function(event) {
+            if (event.target === prdModal) {
+                closePrdModal();
+            }
+        });
     </script>
 </body>
 </html>
