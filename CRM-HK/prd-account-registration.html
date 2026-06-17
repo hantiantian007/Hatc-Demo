@@ -33,7 +33,11 @@
             </div>
             <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
                 <ul class="list-disc pl-5 space-y-2">
-                    <li><strong class="text-gray-900">登录页无调整：</strong> 登录页面保持当前版本不变。仅在点击“去注册”按钮后，跳转至新的开户申请页面（即本页面）并执行新的注册流程。</li>
+                    <li><strong class="text-gray-900">登录页补充查询入口：</strong> 登录页面整体保持不变，但在底部新增了“开户审核进度查询”入口。点击后跳转至进度查询页面，输入邮箱和验证码即可查询开户与审核进度。<br>
+                        <span class="text-gray-500 ml-4 inline-block mt-1">
+                            <i class="fas fa-info-circle text-blue-400 mr-1"></i> <strong>原型体验提示：</strong>在进度查询页，输入包含 <code class="bg-gray-100 px-1 rounded text-red-500">fail</code> 的邮箱（如 fail@test.com）可预览【审核失败】状态（含补充资料重新提交功能）；输入包含 <code class="bg-gray-100 px-1 rounded text-green-600">pass</code> 的邮箱（如 pass@test.com）可预览【审核通过】状态；输入其他邮箱则默认展示【审核中】状态。
+                        </span>
+                    </li>
                     <li><strong class="text-gray-900">新老版本注册流程切换：</strong> <span class="highlight">本次注册流程调整，需要单独在后台系统配置中增加开关，保留原有的注册流程，确保可以随时对新老注册版本进行无缝切换。</span></li>
                     <li><strong class="text-gray-900">原型表单填报：</strong> 注册相关页面的所有信息收集，需严格按照原型内展示的表单进行填写和校验。凡带有红色星号（*）的字段，均为必填项。</li>
                     <li><strong class="text-gray-900">专业投资者选项联动：</strong> 在步骤 4（投资问卷）中，当客户类别选择“專業投資者”后，下方必须展开显示对应的专业资质确认选项。注意：这些展开的选项并非强制必须勾选。</li>

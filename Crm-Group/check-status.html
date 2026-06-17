@@ -11,10 +11,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e3a8a',
-                        secondary: '#64748b',
-                        btnBg: '#F6D365',
-                        btnHover: '#F4C430',
+                        bgDark: '#1E2126',
+                        panelDark: '#2D3036',
+                        brandYellow: '#FCD574',
+                        brandYellowHover: '#E5C065',
                     },
                     backgroundImage: {
                         'login-bg': "url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop')",
@@ -30,31 +30,24 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen relative font-sans antialiased text-gray-800">
+<body class="bg-bgDark min-h-screen relative font-sans antialiased text-white">
 
     <!-- 全屏背景 (带淡化遮罩) -->
-    <div class="fixed inset-0 bg-login-bg bg-cover bg-center"></div>
-    <div class="fixed inset-0 bg-white/70 backdrop-blur-sm"></div>
+    
+    <div class="fixed inset-0 bg-bgDark"></div>
 
     <!-- 顶部 Logo 与 导航 -->
     <header class="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-50 pointer-events-none">
         <!-- Logo -->
         <div class="flex items-center pointer-events-auto">
-            <span class="text-4xl font-black tracking-tighter text-primary">HATC</span>
-            <span class="text-gray-600 font-normal text-sm ml-4 border-l border-gray-400 pl-4 hidden sm:inline-block">進度查詢系統</span>
+            <span class="text-4xl font-black tracking-tighter text-brandYellow">HATC</span>
+            <span class="text-gray-400 font-normal text-sm ml-4 border-l border-gray-400 pl-4 hidden sm:inline-block">進度查詢系統</span>
         </div>
         
         <!-- 右侧辅助导航 -->
         <div class="flex items-center gap-4 pointer-events-auto">
-            <button onclick="openPrdModal()" class="flex items-center gap-1.5 bg-white/80 hover:bg-white text-indigo-600 px-4 py-2 rounded-lg transition-colors border border-indigo-200 text-sm font-medium shadow-sm backdrop-blur">
-                <i class="fas fa-file-alt"></i> PRD文档
-            </button>
-            <a href="../index.html" class="flex items-center gap-1.5 bg-white/80 hover:bg-white text-gray-600 px-4 py-2 rounded-lg transition-colors border border-gray-200 text-sm font-medium shadow-sm backdrop-blur">
-                <i class="fas fa-list"></i> 返回看板
-            </a>
-            <div class="h-5 w-px bg-gray-400 mx-1"></div>
-            <a href="login.html" class="text-sm font-medium text-gray-700 hover:text-primary transition-colors flex items-center gap-1 border-r border-gray-400 pr-4 ml-2">客戶登錄</a>
-            <a href="index.html" class="text-sm text-gray-500 hover:text-primary transition-colors"><i class="fa-solid fa-house mr-1"></i> 返回官網</a>
+            <a href="login.html" class="text-sm font-medium text-gray-300 hover:text-brandYellow transition-colors flex items-center gap-1 border-r border-gray-400 pr-4">客戶登錄</a>
+            <a href="index.html" class="text-sm text-gray-500 hover:text-brandYellow transition-colors ml-2"><i class="fa-solid fa-house mr-1"></i> 返回官網</a>
         </div>
     </header>
 
@@ -64,7 +57,7 @@
         <div class="glass-effect w-full max-w-xl rounded-2xl shadow-2xl p-8 sm:p-12 border border-white">
             
             <div class="mb-8 text-center">
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">查詢開戶審核進度</h1>
+                <h1 class="text-2xl font-bold text-white mb-2">查詢開戶審核進度</h1>
                 <p class="text-gray-500 text-sm">請輸入您在開戶時填寫的電子郵箱，以查看最新的審核狀態。</p>
             </div>
 
@@ -74,9 +67,9 @@
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fa-regular fa-envelope text-gray-400"></i>
                     </div>
-                    <input type="email" id="emailInput" class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded focus:outline-none focus:border-gray-400 focus:ring-0 transition-shadow text-sm bg-white" placeholder="請輸入註冊郵箱 (例如: client@example.com)" required>
+                    <input type="email" id="emailInput" class="w-full pl-12 pr-4 py-3.5 border border-gray-600 rounded focus:outline-none focus:border-gray-400 focus:ring-0 transition-shadow text-sm bg-white" placeholder="請輸入註冊郵箱 (例如: client@example.com)" required>
                 </div>
-                <button type="submit" class="w-full py-3.5 bg-btnBg hover:bg-btnHover text-gray-900 rounded font-bold shadow-sm transition-colors flex items-center justify-center gap-2">
+                <button type="submit" class="w-full py-3.5 bg-brandYellow hover:bg-brandYellowHover text-white rounded font-bold shadow-sm transition-colors flex items-center justify-center gap-2">
                     <i class="fa-solid fa-magnifying-glass"></i> 查詢進度
                 </button>
             </form>
@@ -99,24 +92,24 @@
                     <div id="statusIcon" class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-yellow-100 mb-4 shadow-sm border border-yellow-200">
                         <i class="fa-solid fa-hourglass-half text-4xl text-yellow-500"></i>
                     </div>
-                    <h3 id="statusTitle" class="text-2xl font-bold text-gray-900 mb-2">審核中</h3>
+                    <h3 id="statusTitle" class="text-2xl font-bold text-white mb-2">審核中</h3>
                     <p id="statusDesc" class="text-gray-500 text-sm mb-6 max-w-sm mx-auto leading-relaxed">您的開戶申請已提交，合規部門正在為您審核，預計需要 1-2 個工作日，請耐心等待。</p>
                     
                     <!-- 申請信息摘要 -->
-                    <div class="bg-gray-50/80 rounded border border-gray-200 p-4 inline-block text-sm text-gray-600 text-left w-full max-w-sm shadow-sm">
+                    <div class="bg-[#3B3E45]/80 rounded border border-gray-200 p-4 inline-block text-sm text-gray-400 text-left w-full max-w-sm shadow-sm">
                         <div class="flex justify-between mb-2 border-b border-gray-200 pb-2">
                             <span class="text-gray-500">申請郵箱</span>
-                            <span id="displayEmail" class="font-medium text-gray-900 truncate max-w-[180px]"></span>
+                            <span id="displayEmail" class="font-medium text-white truncate max-w-[180px]"></span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-500">更新時間</span>
-                            <span id="displayTime" class="font-medium text-gray-900"></span>
+                            <span id="displayTime" class="font-medium text-white"></span>
                         </div>
                     </div>
                     
                     <!-- 底部操作 -->
-                    <div id="actionContainer" class="mt-8 flex justify-center gap-4">
-                        <a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>
+                    <div class="mt-8 flex justify-center">
+                        <a href="account-registration.html" class="text-brandYellow hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>
                     </div>
                 </div>
 
@@ -179,25 +172,25 @@
                     iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-50 mb-4 shadow-sm border border-green-200';
                     iconEl.innerHTML = '<i class="fa-solid fa-envelope-open-text text-4xl text-green-500"></i>';
                     titleEl.innerText = '審核通知';
-                    titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
+                    titleEl.className = 'text-2xl font-bold text-white mb-2';
                     descEl.innerText = '您的開戶申請已處理完畢！審核通知及賬號詳情已發送至您的郵箱，請注意查收。';
-                    actionContainer.innerHTML = `<a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
+                    actionContainer.innerHTML = `<a href="register.html" class="text-gray-400 hover:text-white font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
                 } else if (email.toLowerCase().includes('fail') || email.toLowerCase().includes('error')) {
                     // 狀態 3: 失敗
                     iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-50 mb-4 shadow-sm border border-red-200';
                     iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-4xl text-red-500"></i>';
                     titleEl.innerText = '審核失敗';
-                    titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
+                    titleEl.className = 'text-2xl font-bold text-white mb-2';
                     descEl.innerText = '很抱歉，您的開戶申請未能通過審核。可能原因為證件模糊或資料不符，請重新提交開戶申請。';
-                    actionContainer.innerHTML = `<a href="account-registration.html" class="bg-btnBg hover:bg-btnHover text-gray-900 px-6 py-2.5 rounded shadow-sm font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-file-pen"></i> 補充資料重新提交</a> <a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1 px-4"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
+                    actionContainer.innerHTML = `<a href="register.html" class="text-gray-400 hover:text-white font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
                 } else {
                     // 狀態 1: 審核中 (默認)
                     iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-yellow-50 mb-4 shadow-sm border border-yellow-200';
                     iconEl.innerHTML = '<i class="fa-solid fa-hourglass-half text-4xl text-yellow-500"></i>';
                     titleEl.innerText = '審核中';
-                    titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
+                    titleEl.className = 'text-2xl font-bold text-white mb-2';
                     descEl.innerText = '您的開戶申請已提交，合規部門正在為您審核，預計需要 1-2 個工作日，請耐心等待。';
-                    actionContainer.innerHTML = `<a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
+                    actionContainer.innerHTML = `<a href="register.html" class="text-gray-400 hover:text-white font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
                 }
             }, 800);
         });
@@ -210,10 +203,10 @@
             <div class="h-14 bg-gray-900 flex items-center justify-between px-6 shrink-0">
                 <div class="flex items-center gap-3">
                     <i class="fas fa-file-alt text-indigo-400 text-lg"></i>
-                    <h3 class="text-white font-medium text-lg tracking-wide">需求文档 (PRD) - 个人开户表格 (HK)</h3>
+                    <h3 class="text-white font-medium text-lg tracking-wide">需求文档 (PRD) - 个人注册留资 (Group)</h3>
                 </div>
                 <div class="flex items-center gap-4">
-                    <a href="prd-account-registration.html" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-1.5" title="在新标签页中全屏打开">
+                    <a href="prd-register.html" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-1.5" title="在新标签页中全屏打开">
                         <i class="fas fa-external-link-alt"></i> 新窗口打开
                     </a>
                     <div class="w-px h-4 bg-gray-700"></div>
@@ -229,7 +222,7 @@
                     <i class="fas fa-circle-notch fa-spin text-indigo-500 text-4xl mb-3"></i>
                     <span class="text-gray-500 text-sm">文档加载中...</span>
                 </div>
-                <iframe id="prdIframe" src="prd-account-registration.html" class="w-full h-full border-0 opacity-0 transition-opacity duration-300" onload="document.getElementById('prdLoading').style.display='none'; this.classList.remove('opacity-0');"></iframe>
+                <iframe id="prdIframe" src="prd-register.html" class="w-full h-full border-0 opacity-0 transition-opacity duration-300" onload="document.getElementById('prdLoading').style.display='none'; this.classList.remove('opacity-0');"></iframe>
             </div>
         </div>
     </div>
