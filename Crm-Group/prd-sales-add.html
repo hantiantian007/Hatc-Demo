@@ -34,7 +34,15 @@
                 <h2 class="text-red-600 font-bold text-base m-0">本期需求重点 (致产研测)</h2>
             </div>
             <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
-                <p class="text-gray-400 italic">待补充：请等待产品经理描述本期具体的变更与新增点...</p>
+                                <ul class="list-disc pl-5 space-y-2 mt-2">
+                    <li><strong class="text-gray-900">交易手数累积与清空：</strong> 交易手数需要累积计算；一旦触发奖励发放后，当前累计的交易手数立即清空。</li>
+                    <li><strong class="text-gray-900">统计开始时间：</strong> 业绩计算的开始时间，严格按“销售人员绑定的时间/销售开始时间”进行统计，而非旗下用户的注册时间。</li>
+                    <li><strong class="text-gray-900">跨周期交易手数计算：</strong> 系统在当前周期进行结算时，需要连带计算并统计上一个统计周期的交易手数。</li>
+                    <li><strong class="text-gray-900">未达标历史数据结转逻辑：</strong> 如果上一个周期入金奖励未达标，下个周期需要继承并计算上个周期的条件。<br>
+                        <span class="text-gray-500 block mt-1"><i class="fas fa-info-circle"></i> 举例：若上个周期未达标，则历史净入金无论为正数还是负数，都需要与本期相加。交易手数同理，均需结转累加。此结转逻辑必须在相关报表（如销售入金/交易奖励报表）中清晰体现。</span>
+                    </li>
+                    <li><strong class="text-gray-900">净入金奖励周期扩充：</strong> 在现有的净入金奖励结算周期选项中，新增一个“按天计算”的选项。</li>
+                </ul>
             </div>
         </div>
 
