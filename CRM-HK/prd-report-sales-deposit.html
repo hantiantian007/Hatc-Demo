@@ -34,7 +34,11 @@
                 <h2 class="text-red-600 font-bold text-base m-0">本期需求重点 (致产研测)</h2>
             </div>
             <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
-                <p class="text-gray-400 italic">待补充：请等待产品经理描述本期具体的变更与新增点...</p>
+                                <ul class="list-decimal pl-5 space-y-2">
+                    <li><strong class="text-gray-900">文案调整：</strong> 客户本月净入金，变更为客户本期净入金；本月净入金奖励计算，变更为本期净入金奖励计算。</li>
+                    <li><strong class="text-gray-900">新增字段：</strong> 列表内，增加字段“上个周期交易量”，内容为小数。</li>
+                    <li><strong class="text-gray-900">新增字段：</strong> 列表内，增加字段“上个周期奖励状态”，包含：已奖励、未奖励。</li>
+                </ul>
             </div>
         </div>
 
@@ -107,7 +111,15 @@
                     展示上一个结算周期的历史净入金余额。若之前为负数，则会结转到本期；若之前为正数且已发放奖励，则本字段可能显示为“0”或清空。
                 </td>
             </tr>
-            <tr><td>客户本月(期)净入金</td><td>当前结算周期内产生的真实净入金总额（<code>总入金 - 总出金</code>）。</td></tr>
+            <tr>
+                <td>上个周期交易量</td>
+                <td>展示客户在上一个结算周期内累计的交易手数（小数）。</td>
+            </tr>
+            <tr>
+                <td>上个周期奖励状态</td>
+                <td>枚举值：<code>已奖励</code>、<code>未奖励</code>。用于标识上一周期的结算与发放情况。</td>
+            </tr>
+            <tr><td>客户本期净入金</td><td>当前结算周期内产生的真实净入金总额（<code>总入金 - 总出金</code>）。</td></tr>
             <tr>
                 <td>本期净入金奖励计算</td>
                 <td>
