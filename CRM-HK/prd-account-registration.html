@@ -35,7 +35,7 @@
                 <ul class="list-disc pl-5 space-y-2">
                     <li><strong class="text-gray-900">登录页补充查询入口：</strong> 登录页面整体保持不变，但在底部新增了“开户审核进度查询”入口。点击后跳转至进度查询页面，输入邮箱和验证码即可查询开户与审核进度。<br>
                         <span class="text-gray-500 ml-4 inline-block mt-1">
-                            <i class="fas fa-info-circle text-blue-400 mr-1"></i> <strong>原型体验提示：</strong>在进度查询页，输入包含 <code class="bg-gray-100 px-1 rounded text-red-500">fail</code> 的邮箱（如 fail@test.com）可预览【审核失败】状态（含补充资料重新提交功能）；输入包含 <code class="bg-gray-100 px-1 rounded text-green-600">pass</code> 的邮箱（如 pass@test.com）可预览【审核通过】状态；输入其他邮箱则默认展示【审核中】状态。
+                            <i class="fas fa-info-circle text-blue-400 mr-1"></i> <strong>原型体验提示：</strong>在进度查询页，输入包含 <code class="bg-gray-100 px-1 rounded text-blue-500">active</code> 的邮箱（如 active@test.com）可预览【待激活】状态；输入包含 <code class="bg-gray-100 px-1 rounded text-red-500">fail</code> 的邮箱（如 fail@test.com）可预览【审核失败】状态（含补充资料重新提交功能）；输入包含 <code class="bg-gray-100 px-1 rounded text-green-600">pass</code> 的邮箱（如 pass@test.com）可预览【已通过】状态（含登录 CRM 按钮）；输入其他邮箱则默认展示【审核中】状态。
                         </span>
                     </li>
                     <li><strong class="text-gray-900">新老版本注册流程切换：</strong> <span class="highlight">本次注册流程调整，需要单独在后台系统配置中增加开关，保留原有的注册流程，确保可以随时对新老注册版本进行无缝切换。</span></li>
@@ -321,6 +321,17 @@
             <p>1. 弹窗内提供两个按钮流向：</p>
             <p class="ml-4">- <strong>查看審核進度</strong>：跳转至极简的审核进度查询页面（<code>check-status.html</code>）。</p>
             <p class="ml-4">- <strong>返回首頁</strong>：直接跳转回登录或系统入口首页。</p>
+        </div>
+
+        <div class="step-title">7. 開戶審核進度查詢</div>
+        <div class="mb-4 text-sm text-gray-600">
+            <p>进度查询页面（<code>check-status.html</code>）通过邮箱进行查询，根据后台状态分为 4 种展示情况：</p>
+            <ul class="list-disc pl-5 mt-2 space-y-2">
+                <li><strong>待激活：</strong> 提示用户已发送激活邮件，需先点击激活链接，合规部门才会开始审核。</li>
+                <li><strong>審核中：</strong> 默认状态，提示合规部门正在审核，预计 1-2 个工作日。</li>
+                <li><strong>已通過：</strong> 提示开户申请已处理完毕，账号详情已发送至邮箱，并提供“登錄 CRM”快捷入口。</li>
+                <li><strong>審核失敗：</strong> 提示未能通过审核，可能原因如证件模糊，提供“補充資料重新提交”快捷入口。</li>
+            </ul>
         </div>
 
     </div>

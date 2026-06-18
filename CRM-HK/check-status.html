@@ -116,7 +116,7 @@
                     
                     <!-- 底部操作 -->
                     <div id="actionContainer" class="mt-8 flex justify-center gap-4">
-                        <a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>
+                        <a href="login.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回</a>
                     </div>
                 </div>
 
@@ -174,14 +174,22 @@
                 const descEl = document.getElementById('statusDesc');
                 const actionContainer = document.getElementById('actionContainer');
 
-                if (email.toLowerCase().includes('pass') || email.toLowerCase().includes('success')) {
+                if (email.toLowerCase().includes('active') || email.toLowerCase().includes('wait')) {
+                    // 狀態 4: 待激活
+                    iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-blue-50 mb-4 shadow-sm border border-blue-200';
+                    iconEl.innerHTML = '<i class="fa-solid fa-envelope-circle-check text-4xl text-blue-500"></i>';
+                    titleEl.innerText = '待激活';
+                    titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
+                    descEl.innerText = '您的註冊申請已提交。為確保您的賬號安全，我們已向您的郵箱發送了一封激活郵件。請登錄您的註冊郵箱並點擊激活鏈接，激活成功後合規部門將開始審核您的申請。';
+                    actionContainer.innerHTML = `<a href="login.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回</a>`;
+                } else if (email.toLowerCase().includes('pass') || email.toLowerCase().includes('success')) {
                     // 狀態 2: 審核通知 (通過)
                     iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-50 mb-4 shadow-sm border border-green-200';
                     iconEl.innerHTML = '<i class="fa-solid fa-envelope-open-text text-4xl text-green-500"></i>';
-                    titleEl.innerText = '審核通知';
+                    titleEl.innerText = '已通過';
                     titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
                     descEl.innerText = '您的開戶申請已處理完畢！審核通知及賬號詳情已發送至您的郵箱，請注意查收。';
-                    actionContainer.innerHTML = `<a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
+                    actionContainer.innerHTML = `<a href="login.html" class="bg-btnBg hover:bg-btnHover text-gray-900 px-6 py-2.5 rounded shadow-sm font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-right-to-bracket"></i> 登錄 CRM</a> <a href="login.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1 px-4"><i class="fa-solid fa-arrow-left"></i> 返回</a>`;
                 } else if (email.toLowerCase().includes('fail') || email.toLowerCase().includes('error')) {
                     // 狀態 3: 失敗
                     iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-50 mb-4 shadow-sm border border-red-200';
@@ -189,7 +197,7 @@
                     titleEl.innerText = '審核失敗';
                     titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
                     descEl.innerText = '很抱歉，您的開戶申請未能通過審核。可能原因為證件模糊或資料不符，請重新提交開戶申請。';
-                    actionContainer.innerHTML = `<a href="account-registration.html" class="bg-btnBg hover:bg-btnHover text-gray-900 px-6 py-2.5 rounded shadow-sm font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-file-pen"></i> 補充資料重新提交</a> <a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1 px-4"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
+                    actionContainer.innerHTML = `<a href="account-registration.html" class="bg-btnBg hover:bg-btnHover text-gray-900 px-6 py-2.5 rounded shadow-sm font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-file-pen"></i> 補充資料重新提交</a> <a href="login.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1 px-4"><i class="fa-solid fa-arrow-left"></i> 返回</a>`;
                 } else {
                     // 狀態 1: 審核中 (默認)
                     iconEl.className = 'mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-yellow-50 mb-4 shadow-sm border border-yellow-200';
@@ -197,7 +205,7 @@
                     titleEl.innerText = '審核中';
                     titleEl.className = 'text-2xl font-bold text-gray-900 mb-2';
                     descEl.innerText = '您的開戶申請已提交，合規部門正在為您審核，預計需要 1-2 個工作日，請耐心等待。';
-                    actionContainer.innerHTML = `<a href="account-registration.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回開戶</a>`;
+                    actionContainer.innerHTML = `<a href="login.html" class="text-primary hover:text-blue-800 font-medium text-sm transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-arrow-left"></i> 返回</a>`;
                 }
             }, 800);
         });
