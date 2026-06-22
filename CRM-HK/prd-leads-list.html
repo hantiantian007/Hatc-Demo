@@ -71,6 +71,7 @@
                             <h4 class="font-bold text-gray-800 mb-1">列表字段与筛选项扩充</h4>
                             <ul class="list-disc list-inside mt-1 text-gray-600 space-y-1">
                                 <li><span class="font-semibold text-gray-800">咨询内容选项</span>：扩充为包含「成为代理」、「政策了解」、「个人交易」、「其他」。</li>
+                                <li><span class="font-semibold text-gray-800">信息来源选项</span>：扩充为包含「媒体」、「线下」。</li>
                                 <li><span class="font-semibold text-gray-800">联系方式拆分</span>：列表与详情展示需将原“联系方式”扩充，明确展示「微信」、「WhatsApp」、「其他联系方式」，以适应多渠道沟通场景。</li>
                             </ul>
                         </div>
@@ -117,8 +118,14 @@
                 <tr>
                     <td>咨询内容</td>
                     <td>下拉单选框</td>
-                    <td>["全部", "政策了解"]</td>
+                    <td>["全部", "政策了解", "成为代理", "个人交易", "其他"]</td>
                     <td>读取留资表单中客户勾选的咨询意向，选择“全部”时不作为过滤条件。</td>
+                </tr>
+                <tr>
+                    <td>信息来源</td>
+                    <td>下拉单选框</td>
+                    <td>["全部", "媒体", "线下"]</td>
+                    <td>读取留资表单中客户勾选的信息来源，选择“全部”时不作为过滤条件。</td>
                 </tr>
                 <tr>
                     <td>跟进日期</td>
@@ -149,11 +156,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>姓名、邮箱、联系方式、咨询内容</td>
+                    <td>姓名、邮箱、联系方式、咨询内容、信息来源</td>
                     <td>直接读取客户在前端表单填写的原始留资数据。</td>
                 </tr>
                 <tr>
-                    <td>申请来源</td>
+                    <td>来源网页</td>
                     <td>记录客户提交表单的具体入口，固定显示为：“官网” 或 “登陆页面”。（无需区分HK或Group，底层已物理隔离）</td>
                 </tr>
                 <tr>

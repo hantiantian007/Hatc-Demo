@@ -32,12 +32,8 @@
             </div>
             <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
                 <ul class="list-disc pl-5 space-y-2">
-                    <li><strong class="text-gray-900">登录页补充查询入口：</strong> 在登录页底部新增了“开户审核进度查询”入口。点击后跳转至进度查询页面，输入邮箱和验证码即可查询开户与审核进度。<br>
-                        <span class="text-gray-500 ml-4 inline-block mt-1">
-                            <i class="fas fa-info-circle text-blue-400 mr-1"></i> <strong>原型体验提示：</strong>在进度查询页，输入包含 <code class="bg-gray-100 px-1 rounded text-red-500">fail</code> 的邮箱（如 fail@test.com）可预览【审核失败】状态（不支持重新提交资料）；输入包含 <code class="bg-gray-100 px-1 rounded text-green-600">pass</code> 的邮箱（如 pass@test.com）可预览【已通过】状态（含登录 CRM 按钮）；输入其他邮箱则默认展示【审核中】状态。
-                        </span>
-                    </li>
                     <li><strong class="text-gray-900">增加客户留资入口：</strong> 本次版本主要在原有注册流程基础上，仅新增了针对无推荐码客户的“留资入口”（即点击申请账号弹出的收集表单），其他注册逻辑保持不变。</li>
+                    <li><strong class="text-gray-900">留资表单新增字段：</strong> 在留资申请表单中，新增必填字段“信息来源”，选项包含：“媒体”、“线下”。该字段位置位于电子邮箱正下方。</li>
                 </ul>
             </div>
         </div>
@@ -134,6 +130,12 @@
                     <td><span class="text-red-500 font-bold">是</span></td>
                     <td>标准邮箱格式</td>
                     <td>失去焦点时校验邮箱格式。</td>
+                </tr>
+                <tr>
+                    <td>信息来源</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>["请选择", "媒体", "线下"]</td>
+                    <td>下拉单选框，提交时若未选择则提示必填。</td>
                 </tr>
                 <tr>
                     <td>咨询内容</td>

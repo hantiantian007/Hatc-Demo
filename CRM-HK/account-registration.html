@@ -508,8 +508,20 @@
                         <input type="email" placeholder="請輸入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
                     </div>
 
+                    <!-- 信息来源 -->
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4">
+                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
+                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">信息來源</span>
+                        </div>
+                        <select required class="flex-1 px-3 text-sm focus:outline-none text-gray-600 bg-white cursor-pointer">
+                            <option value="">請選擇</option>
+                            <option value="media">媒體</option>
+                            <option value="offline">線下</option>
+                        </select>
+                    </div>
+
                     <!-- 咨询内容 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
+                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4">
                         <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
                             <span class="text-sm text-gray-700 pl-2">咨詢內容</span>
                         </div>

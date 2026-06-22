@@ -40,6 +40,7 @@
                     </li>
                     <li><strong class="text-gray-900">新老版本注册流程切换：</strong> <span class="highlight">本次注册流程调整，需要单独在后台系统配置中增加开关，保留原有的注册流程，确保可以随时对新老注册版本进行无缝切换。</span></li>
                     <li><strong class="text-gray-900">原型表单填报：</strong> 注册相关页面的所有信息收集，需严格按照原型内展示的表单进行填写和校验。凡带有红色星号（*）的字段，均为必填项。</li>
+                    <li><strong class="text-gray-900">留资表单新增字段：</strong> 在无邀请码的留资申请表单中，新增必填字段“信息来源”，选项包含：“媒体”、“线下”。该字段位置位于电子邮箱正下方。</li>
                     <li><strong class="text-gray-900">专业投资者选项联动：</strong> 在步骤 4（投资问卷）中，当客户类别选择“專業投資者”后，下方必须展开显示对应的专业资质确认选项。注意：这些展开的选项并非强制必须勾选。</li>
                 </ul>
             </div>
@@ -162,6 +163,12 @@
                     <td><span class="text-red-500 font-bold">是</span></td>
                     <td>标准邮箱格式</td>
                     <td>失去焦点时校验邮箱格式。</td>
+                </tr>
+                <tr>
+                    <td>信息来源</td>
+                    <td><span class="text-red-500 font-bold">是</span></td>
+                    <td>下拉单选框</td>
+                    <td>选项包含：“请选择”（默认）、“媒体”、“线下”。提交时若未选择则提示必填。</td>
                 </tr>
                 <tr>
                     <td>咨询内容</td>

@@ -331,6 +331,15 @@
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <span class="text-gray-700 text-sm font-medium">信息来源:</span>
+                    <select class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-28 bg-white cursor-pointer text-gray-500">
+                        <option value="">全部</option>
+                        <option value="media">媒体</option>
+                        <option value="offline">线下</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
                     <span class="text-gray-700 text-sm font-medium">跟进日期:</span>
                     <div class="flex items-center border border-gray-200 rounded bg-white overflow-hidden focus-within:border-[#41B8AF] transition-colors">
                         <input type="date" class="px-2 py-1.5 text-sm outline-none text-gray-600 bg-transparent w-[115px] cursor-pointer">
@@ -366,7 +375,8 @@
                             <th class="w-32">WhatsApp</th>
                             <th class="w-32">其他联系方式</th>
                             <th class="w-32">咨询内容</th>
-                            <th class="w-24">申请来源</th>
+                            <th class="w-24">信息来源</th>
+                            <th class="w-24">来源网页</th>
                             <th class="w-40">申请时间</th>
                             <th class="w-48">最新跟进内容</th>
                             <th class="w-24">最新跟进人</th>
@@ -384,6 +394,7 @@
                             <td>+852 12345678</td>
                             <td>-</td>
                             <td>政策了解</td>
+                            <td>媒体</td>
                             <td>官网</td>
                             <td>2025-01-01 21:22:22</td>
                             <td>这是客服自己填写</td>
@@ -399,10 +410,11 @@
                             <td>张三</td>
                             <td>XXXXX@qq.com</td>
                             <td>15213099999</td>
-                            <td>wx_zhangsan</td>
-                            <td>+852 12345678</td>
                             <td>-</td>
-                            <td>政策了解</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>成为代理</td>
+                            <td>线下</td>
                             <td>登陆页面</td>
                             <td>2025-01-01 21:22:22</td>
                             <td>这是客服自己填写</td>
@@ -487,6 +499,10 @@
                     <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
                         <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">咨询内容</div>
                         <div class="flex-1 flex items-center justify-center text-sm text-gray-800">政策了解</div>
+                    </div>
+                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
+                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">信息来源</div>
+                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">媒体</div>
                     </div>
                 </div>
                 
