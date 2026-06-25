@@ -236,10 +236,13 @@
         
         <!-- 顶部 Header -->
         <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
-            <!-- 面包屑导航 -->
-            <div class="flex items-center text-sm text-gray-500">
-                <span class="hover:text-gray-800 cursor-pointer">首页</span>
-                
+            <!-- 面包屑导航及快捷操作 -->
+            <div class="flex items-center text-sm text-gray-500 gap-4">
+                <div><span class="hover:text-gray-800 cursor-pointer">首页</span></div>
+                <div class="flex items-center gap-2 border-l pl-4 border-gray-200">
+                    <a href="../index.html" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-arrow-left mr-1.5"></i> 返回需求看板</a>
+                    <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-3 py-1.5 bg-teal-50 text-primary border border-teal-100 hover:bg-teal-100 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-project-diagram mr-1.5"></i> 查看 PRD</button>
+                </div>
             </div>
                         <!-- 右侧个人中心 -->
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
@@ -513,3 +516,34 @@
     </script>
 </body>
 </html>
+
+    <!-- PRD 弹窗 -->
+    <div id="prdModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="document.getElementById('prdModal').classList.add('hidden')"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-[800px] bg-gray-50 shadow-2xl transform transition-transform flex flex-col">
+            <!-- 弹窗头部 -->
+            <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
+                        <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
+                    </div>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 首页统计数据逻辑修复</h3>
+                </div>
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- 弹窗内容 (iframe 嵌入生成的 PRD 页面) -->
+            <div class="flex-1 overflow-hidden bg-white">
+                <iframe src="prd-home.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+            </div>
+            
+            <!-- 弹窗底部 -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">
+                    关闭阅读
+                </button>
+            </div>
+        </div>
+    </div>

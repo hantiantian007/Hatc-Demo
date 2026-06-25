@@ -66,6 +66,41 @@
 </thead>
 <tbody class="text-gray-700 divide-y divide-gray-100">
 
+<!-- 需求 5: 首页移到 Backlog -->
+<tr class="table-row-hover bg-white border-l-4 border-orange-400">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">首页模块</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">首页</td>
+<td class="px-5 py-4 text-gray-500">登录后的默认首页，本次新增需求：所有核心数据概览（出入金、返佣、盈亏胜率图表等）的统计方式变更为：包含自己及伞下所有层级客户数据汇总。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="首页">2026-06-25</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('首页')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-首页">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="首页" type="text" value="2026-06-25"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('首页')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('首页')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a href="Crm-Group/prd-home.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
+    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+</a>
+<a href="Crm-Group/admin-home.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
+    <i class="fas fa-desktop"></i> 原型
+</a>
+</div>
+</div>
+</td>
+</tr>
+
 <!-- 需求: CRM-HK 账户审核 -->
 <tr class="table-row-hover bg-white border-l-4 border-[#3B82F6]">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
@@ -220,10 +255,7 @@
                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                 </a>
                 <a href="Crm-Group/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
-                    <i class="fas fa-desktop"></i> Group原型
-                </a>
-                <a href="CRM-HK/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
-                    <i class="fas fa-desktop"></i> HK原型
+                    <i class="fas fa-desktop"></i> 原型
                 </a>
             </div>
         </div>
@@ -344,37 +376,6 @@
 </td>
 </tr>
 <!-- 需求 5: 首页移到 Backlog -->
-<tr class="table-row-hover bg-white">
-<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">首页模块</td>
-<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">首页</td>
-<td class="px-5 py-4 text-gray-500">登录后的默认首页，展示核心数据概览（出入金、返佣、盈亏胜率图表）及快速推广链接。</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-1">
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-</div>
-</td>
-<td class="px-5 py-4 text-center font-medium text-gray-500 relative group whitespace-nowrap">
-<div class="view-mode flex items-center justify-center gap-2">
-<span class="date-text" data-task="首页">待定</span>
-<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('首页')" title="修改时间"><i class="fas fa-edit"></i></button>
-</div>
-<div class="edit-mode hidden items-center justify-center gap-1" id="edit-首页">
-<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="首页" type="text" value="待定"/>
-<button class="text-green-500 hover:text-green-700" onclick="saveDate('首页')" title="保存"><i class="fas fa-check"></i></button>
-<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('首页')" title="取消"><i class="fas fa-times"></i></button>
-</div>
-</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-2">
-<div class="flex flex-wrap gap-2 items-center">
-<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors border theme-border" href="Crm-Group/admin-home.html" target="_blank">
-<i class="fas fa-laptop-code"></i> 原型
-                                        </a>
-</div>
-</div>
-</td>
-</tr>
-<!-- 历史需求 v1.0.0 移动至 Backlog -->
 <tr class="table-row-hover bg-white opacity-80">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户模块</td>
 <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">客户列表</td>
