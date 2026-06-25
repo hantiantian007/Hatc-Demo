@@ -65,99 +65,48 @@
 </tr>
 </thead>
 <tbody class="text-gray-700 divide-y divide-gray-100">
-                                                    <tr class="table-row-hover bg-blue-50/30">
-                                    <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
-                                    <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">销售入金奖励报表二期</td>
-                                    <td class="px-5 py-4 text-gray-500">基于最新业务规则更新入金奖励计算逻辑等（延用一期PRD及原型）。</td>
-                                    <td class="px-5 py-4">
-                                        <div class="flex flex-col gap-1">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-                                        <div class="view-mode flex items-center justify-center gap-2">
-                                            <span class="date-text" data-task="销售入金奖励报表二期">2026-06-18</span>
-                                            <button onclick="toggleEdit('销售入金奖励报表二期')" class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" title="修改时间"><i class="fas fa-edit"></i></button>
-                                        </div>
-                                        <div id="edit-销售入金奖励报表二期" class="edit-mode hidden items-center justify-center gap-1">
-                                            <input type="text" value="2026-06-18" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="销售入金奖励报表二期">
-                                            <button onclick="saveDate('销售入金奖励报表二期')" class="text-green-500 hover:text-green-700" title="保存"><i class="fas fa-check"></i></button>
-                                            <button onclick="cancelEdit('销售入金奖励报表二期')" class="text-gray-400 hover:text-gray-600" title="取消"><i class="fas fa-times"></i></button>
-                                        </div>
-                                    </td>
-                                    <td class="px-5 py-4">
-                                        <div class="flex flex-col gap-2">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a href="Crm-Group/prd-report-sales-deposit.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a href="Crm-Group/admin-report-sales-deposit.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-brandGreen bg-green-50 hover:bg-green-100 rounded transition-colors flex items-center gap-1 border border-green-200">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-<!-- 新增：新增销售 (二期) -->
-                    <tr class="table-row-hover bg-white border-l-4 border-orange-500">
-                        <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">销售模块</td>
-                        <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">新增销售 (二期)</td>
-                        <td class="px-5 py-4 text-gray-500">优化销售奖励规则：处理交易手数清空逻辑、历史数据结转期限、跨周期统计防刷单漏洞及按天计算时区界定等边界问题。</td>
-                        <td class="px-5 py-4">
-                            <div class="flex flex-col gap-1">
-                                <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                            </div>
-                        </td>
-                        <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-                            <div class="view-mode flex items-center justify-center gap-2">
-                                <span class="date-text" data-task="新增销售(二期)">待定</span>
-                                <button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('新增销售(二期)')" title="修改时间"><i class="fas fa-edit"></i></button>
-                            </div>
-                            <div class="edit-mode hidden items-center justify-center gap-1" id="edit-新增销售(二期)">
-                                <input type="text" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="新增销售(二期)" value="待定">
-                                <button class="text-green-500 hover:text-green-700" onclick="saveDate('新增销售(二期)')" title="保存"><i class="fas fa-check"></i></button>
-                                <button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('新增销售(二期)')" title="取消"><i class="fas fa-times"></i></button>
-                            </div>
-                        </td>
-                        <td class="px-5 py-4">
-                            
-                            <div class="flex items-center gap-2">
-                                <a href="Crm-Group/prd-sales-add.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
-                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                </a>
-                                <a href="Crm-Group/admin-sales-add.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-brandGreen bg-green-50 hover:bg-green-100 rounded transition-colors flex items-center gap-1 border border-green-200">
-                                    <i class="fas fa-desktop"></i> 原型
-                                </a>
-                            </div>
 
-                        </td>
-                    </tr>
+<!-- 需求: 我的账户列表 (混合隔离) -->
+<tr class="table-row-hover bg-white border-l-4 border-purple-500">
+    <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">账户管理</td>
+    <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">我的账户 (混合隔离规则)</td>
+    <td class="px-5 py-4 text-gray-500">客户端账户列表。展示基于 MT5 分组 (Group) 的隔离逻辑：标准账户正常显示，托管账户强执行极度盲托（隐藏余额/净值/流水，替换出金按钮）。</td>
+    <td class="px-5 py-4">
+        <div class="flex flex-col gap-1">
+            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+        </div>
+    </td>
+    <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+        <div class="view-mode flex items-center justify-center gap-2">
+            <span class="date-text" data-task="我的账户(混合隔离)">2026-06-25</span>
+            <button onclick="toggleEdit('我的账户(混合隔离)')" class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" title="修改时间"><i class="fas fa-edit"></i></button>
+        </div>
+        <div id="edit-我的账户(混合隔离)" class="edit-mode hidden items-center justify-center gap-1">
+            <input type="text" value="2026-06-25" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="我的账户(混合隔离)">
+            <button onclick="saveDate('我的账户(混合隔离)')" class="text-green-500 hover:text-green-700" title="保存"><i class="fas fa-check"></i></button>
+            <button onclick="cancelEdit('我的账户(混合隔离)')" class="text-gray-400 hover:text-gray-600" title="取消"><i class="fas fa-times"></i></button>
+        </div>
+    </td>
+    <td class="px-5 py-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-wrap gap-2 items-center">
+                <a href="Crm-Group/prd-client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
+                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                </a>
+                <a href="Crm-Group/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
+                    <i class="fas fa-desktop"></i> Group原型
+                </a>
+                <a href="CRM-HK/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
+                    <i class="fas fa-desktop"></i> HK原型
+                </a>
+            </div>
+        </div>
+    </td>
+</tr>
 
-                    <!-- 新增：logo跳转 -->
-                    <tr class="table-row-hover bg-white border-l-4 border-l-transparent">
-                        <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">全局优化</td>
-                        <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">logo跳转</td>
-                        <td class="px-5 py-4 text-gray-500">登陆、注册、忘记密码等页面，点击logo后打开官网</td>
-                        <td class="px-5 py-4">
-                            <div class="flex flex-col gap-1">
-                                <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                            </div>
-                        </td>
-                        <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-                            <div class="view-mode flex items-center justify-center gap-2">
-                                <span class="date-text" data-task="logo跳转">2026-06-17</span>
-                                <button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('logo跳转')" title="修改时间"><i class="fas fa-edit"></i></button>
-                            </div>
-                            <div class="edit-mode hidden items-center justify-center gap-1" id="edit-logo跳转">
-                                <input type="text" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="logo跳转" value="2026-06-17">
-                                <button class="text-green-500 hover:text-green-700" onclick="saveDate('logo跳转')" title="保存"><i class="fas fa-check"></i></button>
-                                <button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('logo跳转')" title="取消"><i class="fas fa-times"></i></button>
-                            </div>
-                        </td>
-                        <td class="px-5 py-4">
-                            <span class="text-gray-400 text-xs italic"><i class="fas fa-info-circle mr-1"></i>无相关原型或PRD文档</span>
-                        </td>
-                    </tr>
+
+
+
 <!-- 需求: CRM-HK 账户审核 -->
 <tr class="table-row-hover bg-white border-l-4 border-[#3B82F6]">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
@@ -192,40 +141,7 @@
 </div>
 </td>
 </tr>
-<!-- 需求 1: Crm-Group 注册页 -->
-<tr class="table-row-hover bg-white">
-<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">登录模块</td>
-<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">注册页 (Group)</td>
-<td class="px-5 py-4 text-gray-500">提供新用户的注册入口，包含邮箱、密码、推荐码、图形验证码及注册条款确认。无邀请码增加弹窗留资入口。</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-1">
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
-</div>
-</td>
-<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-<div class="view-mode flex items-center justify-center gap-2">
-<span class="date-text" data-task="注册页 (Group)">2026-6-24</span>
-<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('注册页 (Group)')" title="修改时间"><i class="fas fa-edit"></i></button>
-</div>
-<div class="edit-mode hidden items-center justify-center gap-1" id="edit-注册页 (Group)">
-<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="注册页 (Group)" type="text" value="待定"/>
-<button class="text-green-500 hover:text-green-700" onclick="saveDate('注册页 (Group)')" title="保存"><i class="fas fa-check"></i></button>
-<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('注册页 (Group)')" title="取消"><i class="fas fa-times"></i></button>
-</div>
-</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-2">
-<div class="flex flex-wrap gap-2 items-center">
-<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-register.html" target="_blank">
-<i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                        </a>
-<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/register.html" target="_blank">
-<i class="fas fa-laptop-code"></i> Crm-Group原型
-                                        </a>
-</div>
-</div>
-</td>
-</tr>
+
 <!-- 需求 1-2: CRM-HK 开户申请 -->
 <tr class="table-row-hover bg-white">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">登录模块</td>
@@ -260,109 +176,9 @@
 </div>
 </td>
 </tr>
-<!-- 需求 2-1: Hk-Gw 留资入口 -->
-<tr class="table-row-hover bg-white">
-<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">引流模块</td>
-<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">官网留资入口 (HK)</td>
-<td class="px-5 py-4 text-gray-500">官网顶部增加“联系我们”入口，点击弹出“试用账户申请”表单，收集散客意向。</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-1">
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-gw w-max">Hk-Gw</span>
-</div>
-</td>
-<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-<div class="view-mode flex items-center justify-center gap-2">
-<span class="date-text" data-task="官网留资入口 (HK)">2026-6-24</span>
-<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('官网留资入口 (HK)')" title="修改时间"><i class="fas fa-edit"></i></button>
-</div>
-<div class="edit-mode hidden items-center justify-center gap-1" id="edit-官网留资入口 (HK)">
-<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="官网留资入口 (HK)" type="text" value="待定"/>
-<button class="text-green-500 hover:text-green-700" onclick="saveDate('官网留资入口 (HK)')" title="保存"><i class="fas fa-check"></i></button>
-<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('官网留资入口 (HK)')" title="取消"><i class="fas fa-times"></i></button>
-</div>
-</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-2">
-<div class="flex flex-wrap gap-2 items-center">
-<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Hk-Gw/prd-contact.html" target="_blank">
-<i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                        </a>
-<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Hk-Gw/index.html" target="_blank">
-<i class="fas fa-laptop-code"></i> Hk-Gw原型
-                                        </a>
-</div>
-</div>
-</td>
-</tr>
-<!-- 需求 2-2: Group-Gw 留资入口 -->
-<tr class="table-row-hover bg-white">
-<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">引流模块</td>
-<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">官网留资入口 (Group)</td>
-<td class="px-5 py-4 text-gray-500">官网顶部增加“联系我们”入口，点击弹出“试用账户申请”表单，收集散客意向。</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-1">
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-gw w-max">Group-Gw</span>
-</div>
-</td>
-<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-<div class="view-mode flex items-center justify-center gap-2">
-<span class="date-text" data-task="官网留资入口 (Group)">2026-6-24</span>
-<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('官网留资入口 (Group)')" title="修改时间"><i class="fas fa-edit"></i></button>
-</div>
-<div class="edit-mode hidden items-center justify-center gap-1" id="edit-官网留资入口 (Group)">
-<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="官网留资入口 (Group)" type="text" value="待定"/>
-<button class="text-green-500 hover:text-green-700" onclick="saveDate('官网留资入口 (Group)')" title="保存"><i class="fas fa-check"></i></button>
-<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('官网留资入口 (Group)')" title="取消"><i class="fas fa-times"></i></button>
-</div>
-</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-2">
-<div class="flex flex-wrap gap-2 items-center">
-<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Group-Gw/prd-contact.html" target="_blank">
-<i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                        </a>
-<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Group-Gw/index.html" target="_blank">
-<i class="fas fa-laptop-code"></i> Group-Gw原型
-                                        </a>
-</div>
-</div>
-</td>
-</tr>
-<!-- 需求 3 -->
-<tr class="table-row-hover bg-white">
-<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
-<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">留资列表</td>
-<td class="px-5 py-4 text-gray-500">承接官网/登陆页面无邀请码散客留下的联系资料，供市场人员查看和跟进。</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-1">
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-gw w-max">官网(HK/Group)</span>
-</div>
-</td>
-<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-<div class="view-mode flex items-center justify-center gap-2">
-<span class="date-text" data-task="留资列表">2026-6-24</span>
-<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('留资列表')" title="修改时间"><i class="fas fa-edit"></i></button>
-</div>
-<div class="edit-mode hidden items-center justify-center gap-1" id="edit-留资列表">
-<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="留资列表" type="text" value="待定"/>
-<button class="text-green-500 hover:text-green-700" onclick="saveDate('留资列表')" title="保存"><i class="fas fa-check"></i></button>
-<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('留资列表')" title="取消"><i class="fas fa-times"></i></button>
-</div>
-</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-2">
-<div class="flex flex-wrap gap-2 items-center">
-<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-list.html" target="_blank">
-<i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                        </a>
-<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
-<i class="fas fa-laptop-code"></i> 原型
-                                        </a>
-</div>
-</div>
-</td>
-</tr>
+
+
+
 <!-- 新增需求: 官网公益页面 -->
 <tr class="table-row-hover bg-white">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">官网模块</td>
@@ -390,40 +206,7 @@
                                 </span>
 </td>
 </tr>
-<!-- 新增移入需求: 平仓交易记录 -->
-<tr class="table-row-hover bg-white">
-<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
-<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">平仓交易记录</td>
-<td class="px-5 py-4 text-gray-500">提供所有已平仓订单的明细查询及多维度的汇总统计（盈亏、手续费等）。</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-1">
-<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-</div>
-</td>
-<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-<div class="view-mode flex items-center justify-center gap-2">
-<span class="date-text" data-task="平仓交易记录">2026-6-22</span>
-<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('平仓交易记录')" title="修改时间"><i class="fas fa-edit"></i></button>
-</div>
-<div class="edit-mode hidden items-center justify-center gap-1" id="edit-平仓交易记录">
-<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="平仓交易记录" type="text" value="待定"/>
-<button class="text-green-500 hover:text-green-700" onclick="saveDate('平仓交易记录')" title="保存"><i class="fas fa-check"></i></button>
-<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('平仓交易记录')" title="取消"><i class="fas fa-times"></i></button>
-</div>
-</td>
-<td class="px-5 py-4">
-<div class="flex flex-col gap-2">
-<div class="flex flex-wrap gap-2 items-center">
-<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-close-position.html" target="_blank">
-<i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                        </a>
-<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors border theme-border" href="Crm-Group/admin-report-close-position.html" target="_blank">
-<i class="fas fa-laptop-code"></i> 原型
-                                        </a>
-</div>
-</div>
-</td>
-</tr>
+
 </tbody>
 </table>
 </div>
@@ -449,7 +232,59 @@
 </tr>
 </thead>
 <tbody class="text-gray-700 divide-y divide-gray-100">
-<!-- 需求 3 -->
+<!-- 需求 1 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">商品展示</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">新增商品详情页 (星启先锋一号)</td>
+<td class="px-5 py-4 text-gray-500">新增独立的商品详情页，包含不同套餐报价及介绍。双端通用且将嵌入官网。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)/官网</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center whitespace-nowrap text-gray-400">-</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1.5">
+<a href="Crm-Group/product-detail.html" class="inline-flex items-center text-primary hover:text-primaryHover font-medium text-[13px] group">
+<i class="fas fa-desktop mr-1.5 opacity-70 group-hover:opacity-100"></i> 原型预览
+</a>
+</div>
+</td>
+</tr>
+
+<!-- 需求: 商品订单管理 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">财务管理</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">商品订单管理</td>
+<td class="px-5 py-4 text-gray-500">增值商品订单的后台管理列表，展示资金归集MT账号逻辑及用户订单状态。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-500 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="商品订单管理">待定</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('商品订单管理')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-商品订单管理">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="商品订单管理" type="text" value="待定"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('商品订单管理')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('商品订单管理')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors border theme-border" href="Crm-Group/admin-product-orders.html" target="_blank">
+<i class="fas fa-laptop-code"></i> 原型预览
+</a>
+</div>
+</div>
+</td>
+</tr>
+
+<!-- 需求 2 -->
 <tr class="table-row-hover bg-white">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
 <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">关系树统计</td>
@@ -593,7 +428,270 @@
 <th class="px-5 py-4 font-medium min-w-[280px]">交付物预览</th>
 </tr>
 </thead>
-<tbody class="text-gray-600 divide-y divide-gray-100">
+<tbody id="completed-tbody" class="text-gray-600 divide-y divide-gray-100">
+<!-- 需求 2-2: Group-Gw 留资入口 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">引流模块</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">官网留资入口 (Group)</td>
+<td class="px-5 py-4 text-gray-500">官网顶部增加“联系我们”入口，点击弹出“试用账户申请”表单，收集散客意向。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-gw w-max">Group-Gw</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="官网留资入口 (Group)">2026-6-24</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('官网留资入口 (Group)')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-官网留资入口 (Group)">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="官网留资入口 (Group)" type="text" value="待定"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('官网留资入口 (Group)')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('官网留资入口 (Group)')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Group-Gw/prd-contact.html" target="_blank">
+<i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Group-Gw/index.html" target="_blank">
+<i class="fas fa-laptop-code"></i> Group-Gw原型
+                                        </a>
+</div>
+</div>
+</td>
+</tr>
+<!-- 需求 3 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">留资列表</td>
+<td class="px-5 py-4 text-gray-500">承接官网/登陆页面无邀请码散客留下的联系资料，供市场人员查看和跟进。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-gw w-max">官网(HK/Group)</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="留资列表">2026-6-24</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('留资列表')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-留资列表">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="留资列表" type="text" value="待定"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('留资列表')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('留资列表')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-list.html" target="_blank">
+<i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
+<i class="fas fa-laptop-code"></i> 原型
+                                        </a>
+</div>
+</div>
+</td>
+</tr>
+<!-- 需求 2-1: Hk-Gw 留资入口 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">引流模块</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">官网留资入口 (HK)</td>
+<td class="px-5 py-4 text-gray-500">官网顶部增加“联系我们”入口，点击弹出“试用账户申请”表单，收集散客意向。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-gw w-max">Hk-Gw</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="官网留资入口 (HK)">2026-6-24</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('官网留资入口 (HK)')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-官网留资入口 (HK)">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="官网留资入口 (HK)" type="text" value="待定"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('官网留资入口 (HK)')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('官网留资入口 (HK)')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Hk-Gw/prd-contact.html" target="_blank">
+<i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Hk-Gw/index.html" target="_blank">
+<i class="fas fa-laptop-code"></i> Hk-Gw原型
+                                        </a>
+</div>
+</div>
+</td>
+</tr>
+<!-- 需求 1: Crm-Group 注册页 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">登录模块</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">注册页 (Group)</td>
+<td class="px-5 py-4 text-gray-500">提供新用户的注册入口，包含邮箱、密码、推荐码、图形验证码及注册条款确认。无邀请码增加弹窗留资入口。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="注册页 (Group)">2026-6-24</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('注册页 (Group)')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-注册页 (Group)">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="注册页 (Group)" type="text" value="待定"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('注册页 (Group)')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('注册页 (Group)')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-register.html" target="_blank">
+<i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/register.html" target="_blank">
+<i class="fas fa-laptop-code"></i> Crm-Group原型
+                                        </a>
+</div>
+</div>
+</td>
+</tr>
+<!-- 新增移入需求: 平仓交易记录 -->
+<tr class="table-row-hover bg-white">
+<td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
+<td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">平仓交易记录</td>
+<td class="px-5 py-4 text-gray-500">提供所有已平仓订单的明细查询及多维度的汇总统计（盈亏、手续费等）。</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+</div>
+</td>
+<td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+<div class="view-mode flex items-center justify-center gap-2">
+<span class="date-text" data-task="平仓交易记录">2026-6-22</span>
+<button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('平仓交易记录')" title="修改时间"><i class="fas fa-edit"></i></button>
+</div>
+<div class="edit-mode hidden items-center justify-center gap-1" id="edit-平仓交易记录">
+<input class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="平仓交易记录" type="text" value="待定"/>
+<button class="text-green-500 hover:text-green-700" onclick="saveDate('平仓交易记录')" title="保存"><i class="fas fa-check"></i></button>
+<button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('平仓交易记录')" title="取消"><i class="fas fa-times"></i></button>
+</div>
+</td>
+<td class="px-5 py-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 items-center">
+<a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-close-position.html" target="_blank">
+<i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+<a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors border theme-border" href="Crm-Group/admin-report-close-position.html" target="_blank">
+<i class="fas fa-laptop-code"></i> 原型
+                                        </a>
+</div>
+</div>
+</td>
+</tr>
+                                                    <tr class="table-row-hover bg-white">
+                                    <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
+                                    <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">销售入金奖励报表二期</td>
+                                    <td class="px-5 py-4 text-gray-500">基于最新业务规则更新入金奖励计算逻辑等（延用一期PRD及原型）。</td>
+                                    <td class="px-5 py-4">
+                                        <div class="flex flex-col gap-1">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+                                        <div class="view-mode flex items-center justify-center gap-2">
+                                            <span class="date-text" data-task="销售入金奖励报表二期">2026-06-18</span>
+                                            <button onclick="toggleEdit('销售入金奖励报表二期')" class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" title="修改时间"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                        <div id="edit-销售入金奖励报表二期" class="edit-mode hidden items-center justify-center gap-1">
+                                            <input type="text" value="2026-06-18" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="销售入金奖励报表二期">
+                                            <button onclick="saveDate('销售入金奖励报表二期')" class="text-green-500 hover:text-green-700" title="保存"><i class="fas fa-check"></i></button>
+                                            <button onclick="cancelEdit('销售入金奖励报表二期')" class="text-gray-400 hover:text-gray-600" title="取消"><i class="fas fa-times"></i></button>
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-4">
+                                        <div class="flex flex-col gap-2">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a href="Crm-Group/prd-report-sales-deposit.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
+                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                </a>
+                                                <a href="Crm-Group/admin-report-sales-deposit.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-brandGreen bg-green-50 hover:bg-green-100 rounded transition-colors flex items-center gap-1 border border-green-200">
+                                                    <i class="fas fa-desktop"></i> 原型
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+<!-- 新增：新增销售 (二期) -->
+                    <tr class="table-row-hover bg-white ">
+                        <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">销售模块</td>
+                        <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">新增销售 (二期)</td>
+                        <td class="px-5 py-4 text-gray-500">优化销售奖励规则：处理交易手数清空逻辑、历史数据结转期限、跨周期统计防刷单漏洞及按天计算时区界定等边界问题。</td>
+                        <td class="px-5 py-4">
+                            <div class="flex flex-col gap-1">
+                                <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                            </div>
+                        </td>
+                        <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+                            <div class="view-mode flex items-center justify-center gap-2">
+                                <span class="date-text" data-task="新增销售(二期)">待定</span>
+                                <button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('新增销售(二期)')" title="修改时间"><i class="fas fa-edit"></i></button>
+                            </div>
+                            <div class="edit-mode hidden items-center justify-center gap-1" id="edit-新增销售(二期)">
+                                <input type="text" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="新增销售(二期)" value="待定">
+                                <button class="text-green-500 hover:text-green-700" onclick="saveDate('新增销售(二期)')" title="保存"><i class="fas fa-check"></i></button>
+                                <button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('新增销售(二期)')" title="取消"><i class="fas fa-times"></i></button>
+                            </div>
+                        </td>
+                        <td class="px-5 py-4">
+                            
+                            <div class="flex items-center gap-2">
+                                <a href="Crm-Group/prd-sales-add.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
+                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                </a>
+                                <a href="Crm-Group/admin-sales-add.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-brandGreen bg-green-50 hover:bg-green-100 rounded transition-colors flex items-center gap-1 border border-green-200">
+                                    <i class="fas fa-desktop"></i> 原型
+                                </a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <!-- 新增：logo跳转 -->
+                    <tr class="table-row-hover bg-white ">
+                        <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">全局优化</td>
+                        <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">logo跳转</td>
+                        <td class="px-5 py-4 text-gray-500">登陆、注册、忘记密码等页面，点击logo后打开官网</td>
+                        <td class="px-5 py-4">
+                            <div class="flex flex-col gap-1">
+                                <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                            </div>
+                        </td>
+                        <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+                            <div class="view-mode flex items-center justify-center gap-2">
+                                <span class="date-text" data-task="logo跳转">2026-06-17</span>
+                                <button class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" onclick="toggleEdit('logo跳转')" title="修改时间"><i class="fas fa-edit"></i></button>
+                            </div>
+                            <div class="edit-mode hidden items-center justify-center gap-1" id="edit-logo跳转">
+                                <input type="text" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="logo跳转" value="2026-06-17">
+                                <button class="text-green-500 hover:text-green-700" onclick="saveDate('logo跳转')" title="保存"><i class="fas fa-check"></i></button>
+                                <button class="text-gray-400 hover:text-gray-600" onclick="cancelEdit('logo跳转')" title="取消"><i class="fas fa-times"></i></button>
+                            </div>
+                        </td>
+                        <td class="px-5 py-4">
+                            <span class="text-gray-400 text-xs italic"><i class="fas fa-info-circle mr-1"></i>无相关原型或PRD文档</span>
+                        </td>
+                    </tr>
 
 <!-- 历史合入 1.1.0: 新增银行卡 -->
 <tr class="table-row-hover bg-white">
@@ -770,24 +868,17 @@
 </div>
 
 <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50 rounded-b-xl">
-    <div class="text-sm text-gray-500">
-        显示第 1 至 10 项结果，共 18 项
+    <div class="text-sm text-gray-500" id="pagination-info">
+        显示第 1 至 10 项结果，共 0 项
     </div>
     <div class="flex items-center gap-2">
-        <select class="border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-teal-500 bg-white">
-            <option>10 条/页</option>
-            <option selected>20 条/页</option>
-            <option>50 条/页</option>
+        <select id="items-per-page" class="border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-teal-500 bg-white">
+            <option value="10" selected>10 条/页</option>
+            <option value="20">20 条/页</option>
+            <option value="50">50 条/页</option>
         </select>
-        <div class="flex items-center border border-gray-300 rounded overflow-hidden">
-            <button class="px-3 py-1 bg-white text-gray-400 cursor-not-allowed border-r border-gray-300 text-sm hover:bg-gray-50">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="px-3 py-1 bg-teal-600 text-white font-medium text-sm border-r border-teal-600">1</button>
-            <button class="px-3 py-1 bg-white text-gray-600 border-r border-gray-300 text-sm hover:bg-gray-50">2</button>
-            <button class="px-3 py-1 bg-white text-gray-600 text-sm hover:bg-gray-50">
-                <i class="fas fa-chevron-right"></i>
-            </button>
+        <div class="flex items-center border border-gray-300 rounded overflow-hidden" id="pagination-controls">
+            <!-- Buttons will be injected by JS -->
         </div>
     </div>
 </div>
@@ -842,5 +933,91 @@
             });
         }
     </script>
+
+    <!-- 分页逻辑脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.getElementById('completed-tbody');
+            if (!tbody) return;
+            
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const totalItems = rows.length;
+            
+            const selectPerPage = document.getElementById('items-per-page');
+            const paginationInfo = document.getElementById('pagination-info');
+            const paginationControls = document.getElementById('pagination-controls');
+            
+            let currentPage = 1;
+            let itemsPerPage = parseInt(selectPerPage.value);
+            
+            function renderTable() {
+                const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+                if (currentPage > totalPages) currentPage = totalPages;
+                
+                const startIdx = (currentPage - 1) * itemsPerPage;
+                const endIdx = Math.min(startIdx + itemsPerPage, totalItems);
+                
+                // Show/hide rows
+                rows.forEach((row, index) => {
+                    if (index >= startIdx && index < endIdx) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                // Update info text
+                if (totalItems === 0) {
+                    paginationInfo.textContent = '暂无已完成需求';
+                } else {
+                    paginationInfo.textContent = `显示第 ${startIdx + 1} 至 ${endIdx} 项结果，共 ${totalItems} 项`;
+                }
+                
+                // Render controls
+                let controlsHtml = '';
+                
+                // Prev button
+                if (currentPage === 1) {
+                    controlsHtml += `<button class="px-3 py-1 bg-white text-gray-400 cursor-not-allowed border-r border-gray-300 text-sm disabled" disabled><i class="fas fa-chevron-left"></i></button>`;
+                } else {
+                    controlsHtml += `<button class="px-3 py-1 bg-white text-gray-600 hover:bg-gray-50 border-r border-gray-300 text-sm" onclick="changePage(${currentPage - 1})"><i class="fas fa-chevron-left"></i></button>`;
+                }
+                
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === currentPage) {
+                        controlsHtml += `<button class="px-3 py-1 bg-teal-600 text-white font-medium text-sm border-r border-teal-600">${i}</button>`;
+                    } else {
+                        controlsHtml += `<button class="px-3 py-1 bg-white text-gray-600 border-r border-gray-300 text-sm hover:bg-gray-50" onclick="changePage(${i})">${i}</button>`;
+                    }
+                }
+                
+                // Next button
+                if (currentPage === totalPages) {
+                    controlsHtml += `<button class="px-3 py-1 bg-white text-gray-400 cursor-not-allowed text-sm disabled" disabled><i class="fas fa-chevron-right"></i></button>`;
+                } else {
+                    controlsHtml += `<button class="px-3 py-1 bg-white text-gray-600 hover:bg-gray-50 text-sm" onclick="changePage(${currentPage + 1})"><i class="fas fa-chevron-right"></i></button>`;
+                }
+                
+                paginationControls.innerHTML = controlsHtml;
+            }
+            
+            // Expose globally for inline handlers
+            window.changePage = function(page) {
+                currentPage = page;
+                renderTable();
+            };
+            
+            selectPerPage.addEventListener('change', function(e) {
+                itemsPerPage = parseInt(e.target.value);
+                currentPage = 1; // Reset to page 1
+                renderTable();
+            });
+            
+            // Initial render
+            renderTable();
+        });
+    </script>
 </body>
+
 </html>

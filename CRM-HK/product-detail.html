@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品詳情 - 星啟先鋒一號智能交易系統</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#41B8AF', /* CRM 品牌绿 */
+                        primaryHover: '#359f97',
+                        brandYellow: '#FCD574', /* CRM 品牌黄 */
+                        brandYellowHover: '#fbc94e',
+                        dark: '#1E2126',
+                        darkCard: '#2D3036',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom radio button styles for packages */
+        .package-radio:checked + div {
+            border-color: #FCD574;
+            background-color: #fffdf5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen">
+
+    <!-- 顶部导航栏 (独立页面可简化) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors" onclick="history.back()">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="font-medium">返回</span>
+            </div>
+            <div class="text-lg font-bold">商品詳情</div>
+            <div class="w-10"></div> <!-- Placeholder for balance -->
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 商品主体信息区 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 md:p-8 flex flex-col md:flex-row gap-10">
+            
+                        <!-- 左侧：商品图片展示 -->
+            <div class="w-full md:w-1/2 lg:w-[480px] flex-shrink-0">
+                <div class="relative border border-gray-200 rounded-lg bg-white h-full min-h-[400px] overflow-hidden group">
+                    <!-- Carousel Track -->
+                    <div id="image-track" class="flex transition-transform duration-300 ease-in-out h-full w-[300%]">
+                        <!-- Slide 1: Original Mockup -->
+                        <div class="w-1/3 flex-shrink-0 flex items-center justify-center p-8 relative">
+                            <div class="relative w-full h-full flex flex-col items-center justify-center">
+                                <div class="w-[300px] h-[350px] bg-gradient-to-br from-indigo-900 to-purple-800 rounded-md shadow-2xl relative flex flex-col items-center p-6 text-white overflow-hidden">
+                                     <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-xl transform translate-x-1/2 -translate-y-1/2"></div>
+                                     <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/20 rounded-full blur-xl transform -translate-x-1/2 translate-y-1/2"></div>
+                                     
+                                     <div class="text-xs tracking-widest opacity-80 mt-4 mb-2">STAR ACTIVATION</div>
+                                     <h2 class="text-3xl font-black text-center leading-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-100 to-white">先鋒一號<br>智能交易<br>系統</h2>
+                                     <div class="mt-auto w-full text-center py-2 bg-indigo-950/50 backdrop-blur-sm border-t border-white/10 text-xs font-bold tracking-widest">
+                                         PREMIUM SOLUTIONS
+                                     </div>
+                                </div>
+                                
+                                <div class="absolute top-4 right-4 bg-white rounded-xl shadow-lg p-2 flex flex-col items-center justify-center border border-gray-100 w-20 h-20 z-10">
+                                    <div class="w-10 h-10 bg-gradient-to-b from-brandYellow to-orange-400 rounded-full mb-1 flex items-center justify-center text-white text-xs">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-800">星啟APP</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2: Trading Chart Demo -->
+                        <div class="w-1/3 flex-shrink-0 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Trading Dashboard Demo 1">
+                        </div>
+                        
+                        <!-- Slide 3: Mobile Trading Demo -->
+                        <div class="w-1/3 flex-shrink-0 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Trading Dashboard Demo 2">
+                        </div>
+                    </div>
+                    
+                    <!-- Controls -->
+                    <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-md flex items-center justify-center text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-md flex items-center justify-center text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    
+                    <!-- Indicators -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20" id="carousel-dots">
+                        <button onclick="goToSlide(0)" class="w-2 h-2 rounded-full bg-brandYellow transition-colors"></button>
+                        <button onclick="goToSlide(1)" class="w-2 h-2 rounded-full bg-gray-300 transition-colors"></button>
+                        <button onclick="goToSlide(2)" class="w-2 h-2 rounded-full bg-gray-300 transition-colors"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：商品购买信息 -->
+            <div class="w-full md:w-1/2 flex flex-col">
+                <!-- 标题与类型 -->
+                <div class="mb-6">
+                    <h1 class="text-lg md:text-xl font-bold text-gray-900 mb-2 truncate" title="【APP 版本】星啟先鋒一號智能交易系統">【APP 版本】星啟先鋒一號智能交易系統</h1>
+                    <p class="text-gray-500 text-sm">付費套餐</p>
+                </div>
+
+                <!-- 套餐选择区 -->
+                <div class="space-y-3 mb-8 flex-1">
+                    <!-- 套餐 1 -->
+                    <label class="block relative cursor-pointer">
+                        <input type="radio" name="package" value="1" class="peer sr-only package-radio" checked>
+                        <div class="border border-gray-200 rounded-lg p-4 flex justify-between items-center transition-all hover:border-gray-300">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-xl font-bold text-gray-900">$300.00</span>
+                            </div>
+                            <div class="text-sm text-gray-700 font-medium">1個月</div>
+                            
+                            <!-- 限购标签 -->
+                            <div class="absolute -top-2.5 -right-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">
+                                限購1份
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- 套餐 2 -->
+                    <label class="block relative cursor-pointer">
+                        <input type="radio" name="package" value="3" class="peer sr-only package-radio">
+                        <div class="border border-gray-200 rounded-lg p-4 flex justify-between items-center transition-all hover:border-gray-300">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-xl font-bold text-gray-900">$900.00</span>
+                            </div>
+                            <div class="text-sm text-gray-700 font-medium">3個月</div>
+                            
+                            <!-- 限购标签 -->
+                            <div class="absolute -top-2.5 -right-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">
+                                限購1份
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- 套餐 3 -->
+                    <label class="block relative cursor-pointer">
+                        <input type="radio" name="package" value="12" class="peer sr-only package-radio">
+                        <div class="border border-gray-200 rounded-lg p-4 flex justify-between items-center transition-all hover:border-gray-300">
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-xl font-bold text-gray-900">$3,500.00</span>
+                            </div>
+                            <div class="text-sm text-gray-700 font-medium">1年</div>
+                        </div>
+                    </label>
+                </div>
+
+                                <!-- 结算与操作区 -->
+                <div class="mt-auto pt-6 border-t border-gray-100">
+                    <div class="bg-gray-50 rounded-lg p-5 mb-5 flex justify-between items-center">
+                        <div class="flex flex-col gap-1.5">
+                            <div class="text-sm text-gray-500">當前賬戶餘額匯總</div>
+                            <div class="font-medium text-gray-800">10,120.00 USD</div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-right">
+                            <div class="text-sm text-gray-500">應付總額</div>
+                            <div class="text-2xl font-bold text-red-500" id="priceUsd">$300.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="openModal()" class="flex-1 py-3 bg-brandYellow hover:bg-brandYellowHover text-gray-900 rounded-lg text-base font-bold shadow-sm transition-colors flex items-center justify-center gap-2">
+                            立即購買
+                        </button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部商品介紹区 -->
+        <div class="mt-8 bg-white rounded-lg shadow-sm p-6 md:p-8">
+            <h3 class="text-lg font-bold text-gray-900 mb-6 pb-2 border-b border-gray-100 inline-block">商品介紹</h3>
+            
+            <div class="text-center mb-10 mt-4">
+                <h2 class="text-2xl font-bold text-gray-800">產品特色與功能</h2>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 items-center mb-16">
+                <!-- Left: Features List -->
+                <div class="w-full lg:w-1/2 space-y-6">
+                    <div class="border-b border-gray-100 pb-4">
+                        <h4 class="text-base font-bold text-gray-800 mb-2">進階趨勢分析，智能強大</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">搭载升级版趋势分析系統，智能捕捉市场动态，精准识别趋势行情，让您始终领先一步。</p>
+                    </div>
+                    
+                    <div class="border-b border-gray-100 pb-4">
+                        <h4 class="text-base font-bold text-gray-800 mb-2">操作簡單，一鍵智能交易</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">無需複雜操作，只需簡單設置即可開始交易，人人都能輕鬆掌握，快速成為專業交易員。</p>
+                    </div>
+                    
+                    <div class="border-b border-gray-100 pb-4">
+                        <h4 class="text-base font-bold text-gray-800 mb-2">智能交易助手，清晰提示進出場</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">進階版交易助手為您提供及時糾錯策略，交易決策從此變得簡單明了。</p>
+                    </div>
+                    
+                    <div class="border-b border-gray-100 pb-4">
+                        <h4 class="text-base font-bold text-gray-800 mb-2">自動開倉平倉，全程智能管控</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">系統根据市场实时情况自动开仓，您的手动订单系統也可自动接管，确保每笔交易精准到位。</p>
+                    </div>
+                    
+                    <div class="border-b border-gray-100 pb-4">
+                        <h4 class="text-base font-bold text-gray-800 mb-2">自動風控止損，策略補倉盈利</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">系統智能识别亏损订单，自动触发止损或策略性补仓，持续优化交易直至盈利，实现资产稳定增值。</p>
+                    </div>
+                    
+                    <div class="border-b border-gray-100 pb-4">
+                        <h4 class="text-base font-bold text-gray-800 mb-2">嚴格趨勢交易，避免逆勢風險</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">系統严控风险，若交易单不符合三色线趋势信号，系統将自动为您平仓，确保每一笔交易都顺势而为，避免风险。</p>
+                    </div>
+                </div>
+                
+                <!-- Right: Image -->
+                <div class="w-full lg:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070&auto=format&fit=crop" alt="Trading Dashboard" class="rounded-xl shadow-lg w-full object-cover">
+                </div>
+            </div>
+
+            <div class="text-center bg-gray-50 rounded-xl p-8 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">为什么选择先鋒一號智能交易系統？</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    先鋒一號不仅仅是一套交易软件，更是您进阶财富之路的专属智能交易伙伴。简单易用、精准高效，让交易不再复杂，让盈利更加稳定！
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple interactivity for updating price based on selection
+        const packages = {
+            '1': { usd: '$300.00'},
+            '3': { usd: '$900.00'},
+            '12': { usd: '$3,500.00'}
+        };
+
+        const radios = document.querySelectorAll('.package-radio');
+        const priceUsd = document.getElementById('priceUsd');
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = e.target.value;
+                if(packages[val]) {
+                    priceUsd.textContent = packages[val].usd;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Image Carousel Logic
+        let currentSlide = 0;
+        const totalSlides = 3;
+        const track = document.getElementById('image-track');
+        const dots = document.getElementById('carousel-dots').children;
+
+        function updateSlider() {
+            track.style.transform = `translateX(-${(currentSlide * 100) / totalSlides}%)`;
+            for(let i = 0; i < dots.length; i++) {
+                dots[i].className = i === currentSlide 
+                    ? 'w-2 h-2 rounded-full bg-brandYellow transition-colors' 
+                    : 'w-2 h-2 rounded-full bg-gray-300 transition-colors';
+            }
+        }
+
+        window.prevSlide = function() {
+            currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
+            updateSlider();
+        }
+
+        window.nextSlide = function() {
+            currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+            updateSlider();
+        }
+
+        window.goToSlide = function(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+    </script>
+
+    <!-- 支付確認彈窗 (默認隱藏) -->
+    <div id="payment-modal" class="fixed inset-0 z-[100] hidden">
+        <!-- 遮罩層 -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <!-- 彈窗主體 -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- 頭部 -->
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-900">確認支付</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- 內容區 -->
+            <div class="p-6 flex flex-col gap-5">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                    <span class="text-gray-500">購買商品</span>
+                    <span class="font-medium text-gray-900 text-right w-2/3 truncate" title="【APP 版本】星啟先鋒一號智能交易系統">【APP 版本】星啟先鋒一號智能交易系統</span>
+                </div>
+                <div class="flex justify-between items-center pb-4 border-b border-gray-100 mt-4">
+                    <span class="text-gray-500">應付金額</span>
+                    <span class="text-xl font-bold text-red-500" id="modal-pay-amount">$0.00</span>
+                </div>
+                
+                <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                    <span class="text-gray-500" id="modal-package-name">套餐：1個月</span>
+                    <span class="font-bold text-red-500 text-xl" id="modal-price">$300.00</span>
+                </div>
+
+                <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-blue-900">主錢包餘額扣款</span>
+                        <span class="text-sm font-bold text-blue-700">10,120.00 USD</span>
+                    </div>
+                    <p class="text-xs text-blue-600/80 mt-1"><i class="fa-solid fa-circle-info mr-1"></i>購買成功後，對應金額將直接從您的CRM主錢包中扣除。</p>
+                </div>
+            </div>
+            
+            <!-- 底部操作區 -->
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-5 py-2.5 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">
+                    取消
+                </button>
+                <button onclick="confirmPayment()" class="px-8 py-2.5 bg-brandYellow hover:bg-brandYellowHover text-gray-900 rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2" id="btn-confirm">
+                    確認扣款
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('payment-modal');
+        const modalPackageName = document.getElementById('modal-package-name');
+        const modalPrice = document.getElementById('modal-price');
+        const btnConfirm = document.getElementById('btn-confirm');
+
+        function openModal() {
+            const selectedRadio = document.querySelector('.package-radio:checked');
+            const val = selectedRadio.value;
+            const packageNames = { '1': '套餐：1个月', '3': '套餐：3个月', '12': '套餐：1年' };
+            const packageNamesTC = { '1': '套餐：1個月', '3': '套餐：3個月', '12': '套餐：1年' };
+            
+            const isTC = document.body.innerHTML.includes('商品介紹');
+            
+            if (modalPackageName) {
+                modalPackageName.textContent = isTC ? packageNamesTC[val] : packageNames[val];
+            }
+            
+            const currentPriceStr = packages[val].usd;
+            const modalPayAmount = document.getElementById('modal-pay-amount');
+            if (modalPayAmount) {
+                modalPayAmount.textContent = currentPriceStr;
+            }
+            const currentPrice = parseFloat(currentPriceStr.replace(/[$,]/g, ''));
+            
+            // 下拉框余额校验逻辑
+            const selectElement = document.getElementById('mt-account-select');
+            if (selectElement) {
+                const options = selectElement.options;
+                let hasSelectable = false;
+                
+                // 重置选择
+                selectElement.selectedIndex = 0;
+                
+                for (let i = 1; i < options.length; i++) {
+                    const opt = options[i];
+                    const balance = parseFloat(opt.getAttribute('data-balance'));
+                    
+                    // 恢复原始文本（去除可能存在的余额不足提示）
+                    const originalText = opt.text.replace(/ - 余额不足| - 餘額不足/g, '');
+                    
+                    if (balance < currentPrice) {
+                        opt.disabled = true;
+                        opt.text = originalText + (isTC ? ' - 餘額不足' : ' - 余额不足');
+                    } else {
+                        opt.disabled = false;
+                        opt.text = originalText;
+                        if (!hasSelectable) {
+                            // 默认选中第一个余额充足的账号
+                            selectElement.selectedIndex = i;
+                            hasSelectable = true;
+                        }
+                    }
+                }
+                
+                // 监听下拉框变化，确保按钮状态同步
+                selectElement.addEventListener('change', function() {
+                    if (btnConfirm) {
+                        btnConfirm.disabled = !this.value;
+                        if(btnConfirm.disabled) {
+                            btnConfirm.classList.add('opacity-50', 'cursor-not-allowed');
+                        } else {
+                            btnConfirm.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    }
+                });
+                
+                // 初始化按钮状态
+                if (btnConfirm) {
+                    btnConfirm.disabled = !hasSelectable;
+                    if(!hasSelectable) {
+                         btnConfirm.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                         btnConfirm.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                }
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            btnConfirm.innerHTML = document.body.innerHTML.includes('商品介紹') ? '確認扣款' : '確認扣款';
+            btnConfirm.disabled = false;
+            btnConfirm.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+
+        function confirmPayment() {
+            btnConfirm.disabled = true;
+            btnConfirm.classList.add('opacity-70', 'cursor-not-allowed');
+            const isTC = document.body.innerHTML.includes('商品介紹');
+            btnConfirm.innerHTML = isTC ? '<i class="fa-solid fa-circle-notch fa-spin"></i> 處理中...' : '<i class="fa-solid fa-circle-notch fa-spin"></i> 处理中...';
+            
+            setTimeout(() => {
+                alert(isTC ? '支付成功！即將跳轉到我的訂單頁面。' : '支付成功！即将跳转到我的订单页面。');
+                closeModal();
+                // 实际业务中这里会执行 window.location.href = 'client-orders.html';
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>
