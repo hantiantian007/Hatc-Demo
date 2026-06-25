@@ -66,47 +66,6 @@
 </thead>
 <tbody class="text-gray-700 divide-y divide-gray-100">
 
-<!-- 需求: 我的账户列表 (混合隔离) -->
-<tr class="table-row-hover bg-white border-l-4 border-purple-500">
-    <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">账户管理</td>
-    <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">我的账户 (混合隔离规则)</td>
-    <td class="px-5 py-4 text-gray-500">客户端账户列表。展示基于 MT5 分组 (Group) 的隔离逻辑：标准账户正常显示，托管账户强执行极度盲托（隐藏余额/净值/流水，替换出金按钮）。</td>
-    <td class="px-5 py-4">
-        <div class="flex flex-col gap-1">
-            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-        </div>
-    </td>
-    <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
-        <div class="view-mode flex items-center justify-center gap-2">
-            <span class="date-text" data-task="我的账户(混合隔离)">2026-06-25</span>
-            <button onclick="toggleEdit('我的账户(混合隔离)')" class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" title="修改时间"><i class="fas fa-edit"></i></button>
-        </div>
-        <div id="edit-我的账户(混合隔离)" class="edit-mode hidden items-center justify-center gap-1">
-            <input type="text" value="2026-06-25" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="我的账户(混合隔离)">
-            <button onclick="saveDate('我的账户(混合隔离)')" class="text-green-500 hover:text-green-700" title="保存"><i class="fas fa-check"></i></button>
-            <button onclick="cancelEdit('我的账户(混合隔离)')" class="text-gray-400 hover:text-gray-600" title="取消"><i class="fas fa-times"></i></button>
-        </div>
-    </td>
-    <td class="px-5 py-4">
-        <div class="flex flex-col gap-2">
-            <div class="flex flex-wrap gap-2 items-center">
-                <a href="Crm-Group/prd-client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
-                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                </a>
-                <a href="Crm-Group/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
-                    <i class="fas fa-desktop"></i> Group原型
-                </a>
-                <a href="CRM-HK/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
-                    <i class="fas fa-desktop"></i> HK原型
-                </a>
-            </div>
-        </div>
-    </td>
-</tr>
-
-
-
-
 <!-- 需求: CRM-HK 账户审核 -->
 <tr class="table-row-hover bg-white border-l-4 border-[#3B82F6]">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
@@ -232,6 +191,44 @@
 </tr>
 </thead>
 <tbody class="text-gray-700 divide-y divide-gray-100">
+
+<!-- 需求: 我的账户列表 (混合隔离) -->
+<tr class="table-row-hover bg-white border-l-4 border-purple-500">
+    <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">账户管理</td>
+    <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">我的账户 (混合隔离规则)</td>
+    <td class="px-5 py-4 text-gray-500">客户端账户列表。展示基于 MT5 分组 (Group) 的隔离逻辑：标准账户正常显示，托管账户强执行极度盲托（隐藏余额/净值/流水，替换出金按钮）。</td>
+    <td class="px-5 py-4">
+        <div class="flex flex-col gap-1">
+            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+        </div>
+    </td>
+    <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">
+        <div class="view-mode flex items-center justify-center gap-2">
+            <span class="date-text" data-task="我的账户(混合隔离)">待定</span>
+            <button onclick="toggleEdit('我的账户(混合隔离)')" class="text-blue-500 hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity" title="修改时间"><i class="fas fa-edit"></i></button>
+        </div>
+        <div id="edit-我的账户(混合隔离)" class="edit-mode hidden items-center justify-center gap-1">
+            <input type="text" value="待定" class="border border-gray-300 rounded px-2 py-1 w-24 text-sm date-input text-center font-normal" data-task="我的账户(混合隔离)">
+            <button onclick="saveDate('我的账户(混合隔离)')" class="text-green-500 hover:text-green-700" title="保存"><i class="fas fa-check"></i></button>
+            <button onclick="cancelEdit('我的账户(混合隔离)')" class="text-gray-400 hover:text-gray-600" title="取消"><i class="fas fa-times"></i></button>
+        </div>
+    </td>
+    <td class="px-5 py-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-wrap gap-2 items-center">
+                <a href="Crm-Group/prd-client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200">
+                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                </a>
+                <a href="Crm-Group/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
+                    <i class="fas fa-desktop"></i> Group原型
+                </a>
+                <a href="CRM-HK/client-accounts.html" target="_blank" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200">
+                    <i class="fas fa-desktop"></i> HK原型
+                </a>
+            </div>
+        </div>
+    </td>
+</tr>
 <!-- 需求 1 -->
 <tr class="table-row-hover bg-white">
 <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">商品展示</td>
