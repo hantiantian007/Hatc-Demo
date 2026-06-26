@@ -211,6 +211,7 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
                 </div>
             </div>
 
@@ -261,6 +262,13 @@
                 <span class="hover:text-gray-800 cursor-pointer">客户管理</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
                 <span class="text-menuActive font-medium mr-6">留资列表</span>
+                
+                <!-- 视角切换 -->
+                <div class="flex items-center bg-gray-100 p-1 rounded-md mr-6">
+                    <button class="px-3 py-1 text-xs font-medium rounded bg-white shadow-sm text-gray-800" onclick="switchRole('manager', this)">市场主管视角</button>
+                    <button class="px-3 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-700" onclick="switchRole('sales', this)">销售人员视角</button>
+                </div>
+                
                 <!-- 新增：PRD相关按钮 -->
                 <button onclick="openPrdModal()" class="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded transition-colors border border-indigo-200 text-xs font-medium mr-3">
                     <i class="fas fa-file-alt"></i> PRD文档
@@ -304,6 +312,16 @@
         <!-- 主要业务渲染区 -->
         <div class="flex-1 p-4 overflow-y-auto bg-white flex flex-col">
             
+            <!-- 分配状态 Tabs -->
+            <div class="flex border-b border-gray-200 mb-4 px-2 overflow-x-auto whitespace-nowrap no-scrollbar">
+                <button class="pb-2.5 px-4 text-sm font-medium text-primary border-b-2 border-primary">跟进中</button>
+                <button class="pb-2.5 px-4 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent transition-colors relative role-manager-only">待分配 <span class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">1</span></button>
+                <button class="pb-2.5 px-4 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent transition-colors role-manager-only">已分配</button>
+                <button class="pb-2.5 px-4 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent transition-colors role-manager-only">退回公海</button>
+                <button class="pb-2.5 px-4 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent transition-colors">无效线索</button>
+                <button class="pb-2.5 px-4 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent transition-colors">已转化</button>
+            </div>
+
             <!-- 1. 顶部搜索过滤区 (匹配截图样式) -->
             <div class="flex flex-wrap items-center gap-4 mb-4 bg-gray-100/70 p-3 rounded">
                 
@@ -348,6 +366,26 @@
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <span class="text-gray-700 text-sm font-medium">线索热度:</span>
+                    <select class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-24 bg-white cursor-pointer text-gray-500">
+                        <option value="">全部</option>
+                        <option value="hot">🔥 高意向</option>
+                        <option value="warm">🌟 中意向</option>
+                        <option value="cold">❄️ 低意向</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2 role-manager-only">
+                    <span class="text-gray-700 text-sm font-medium">归属销售:</span>
+                    <select class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-28 bg-white cursor-pointer text-gray-500">
+                        <option value="">全部</option>
+                        <option value="unassigned">未分配</option>
+                        <option value="s1">张三</option>
+                        <option value="s2">李四</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
                     <span class="text-gray-700 text-sm font-medium">跟进日期:</span>
                     <div class="flex items-center border border-gray-200 rounded bg-white overflow-hidden focus-within:border-[#41B8AF] transition-colors">
                         <input type="date" class="px-2 py-1.5 text-sm outline-none text-gray-600 bg-transparent w-[115px] cursor-pointer">
@@ -357,11 +395,15 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <span class="text-gray-700 text-sm font-medium">跟进人:</span>
-                    <select class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-24 bg-white cursor-pointer text-gray-500">
-                        <option value="">全部</option>
-                    </select>
+                    <span class="text-gray-700 text-sm font-medium">下次跟进:</span>
+                    <div class="flex items-center border border-gray-200 rounded bg-white overflow-hidden focus-within:border-[#41B8AF] transition-colors">
+                        <input type="date" class="px-2 py-1.5 text-sm outline-none text-gray-600 bg-transparent w-[115px] cursor-pointer">
+                        <span class="text-gray-400 px-1">-</span>
+                        <input type="date" class="px-2 py-1.5 text-sm outline-none text-gray-600 bg-transparent w-[115px] cursor-pointer">
+                    </div>
                 </div>
+
+
 
                 <!-- 查询按钮 -->
                 <div class="ml-auto">
@@ -372,10 +414,31 @@
             </div>
 
             <!-- 2. 数据表格区 -->
+            <!-- 批量操作条 -->
+            <div class="mb-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button onclick="openCreateLeadModal()" class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-4 py-1.5 rounded text-sm transition-colors shadow-sm font-medium flex items-center gap-1.5 role-manager-only">
+                        <i class="fas fa-plus"></i> 新增线下线索
+                    </button>
+                    <button onclick="openAssignModal(true)" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-1.5 rounded text-sm transition-colors shadow-sm font-medium flex items-center gap-1.5 role-manager-only">
+                        <i class="fas fa-users-cog"></i> 批量分配
+                    </button>
+                    <button onclick="openDashboardModal()" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-1.5 rounded text-sm transition-colors shadow-sm font-medium flex items-center gap-1.5 role-manager-only">
+                        <i class="fas fa-chart-pie"></i> 效能看板
+                    </button>
+                </div>
+                <div>
+                    <button class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-1.5 rounded text-sm transition-colors shadow-sm font-medium flex items-center gap-1.5">
+                        <i class="fas fa-download"></i> 导出报表
+                    </button>
+                </div>
+            </div>
             <div class="flex-1 overflow-auto border border-gray-200">
-                <table class="w-full custom-table text-sm">
+                <div class="min-w-max">
+                <table class="w-full custom-table text-sm whitespace-nowrap">
                     <thead class="bg-tableHeader sticky top-0 z-10">
                         <tr>
+                            <th class="w-12 text-center"><input type="checkbox" id="selectAll" class="w-4 h-4 rounded border-gray-300 focus:ring-indigo-500 text-indigo-600 cursor-pointer" onclick="toggleAll(this)"></th>
                             <th class="w-24">姓名</th>
                             <th class="w-48">邮箱</th>
                             <th class="w-32">联系电话</th>
@@ -385,16 +448,20 @@
                             <th class="w-32">咨询内容</th>
                             <th class="w-24">信息来源</th>
                             <th class="w-24">来源网页</th>
+                            <th class="w-24">线索热度</th>
+                            <th class="w-24">线索状态</th>
+                            <th class="w-24">归属销售</th>
                             <th class="w-40">申请时间</th>
                             <th class="w-48">最新跟进内容</th>
-                            <th class="w-24">最新跟进人</th>
-                            <th class="w-40">最新跟进时间</th>
-                            <th class="w-24">操作</th>
+                                                        <th class="w-40">最新跟进时间</th>
+                            <th class="w-40">下次跟进时间</th>
+                            <th class="w-56">操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- 数据行 1 -->
-                        <tr>
+                        <!-- 数据行 1 (跟进中) -->
+                        <tr class="data-row-assigned">
+                            <td class="text-center"><input type="checkbox" class="w-4 h-4 rounded border-gray-300 focus:ring-indigo-500 text-indigo-600 cursor-pointer row-checkbox" disabled title="已分配状态无法批量选择"></td>
                             <td>张三</td>
                             <td>XXXXX@qq.com</td>
                             <td>15213099999</td>
@@ -404,44 +471,105 @@
                             <td>政策了解</td>
                             <td>官网访问</td>
                             <td>官网</td>
+                            <td><span class="text-red-500 font-bold" title="高意向"><i class="fas fa-fire"></i> 高</span></td>
+                            <td><span class="px-2 py-1 bg-blue-50 text-blue-600 rounded text-xs font-medium border border-blue-100">跟进中</span></td>
+                            <td class="font-medium text-gray-800">李四</td>
                             <td>2025-01-01 21:22:22</td>
                             <td>这是客服自己填写</td>
-                            <td>账号名称</td>
                             <td>2025-01-01 21:22:22</td>
-                            <td class="text-sm">
-                                <button onclick="openDetailModal()" class="text-[#41B8AF] hover:text-[#359f97] mx-1">详情</button>
-                                <button onclick="openFollowupModal()" class="text-[#41B8AF] hover:text-[#359f97] mx-1">跟进</button>
+                            <td class="text-red-500 font-medium whitespace-nowrap"><i class="fas fa-bell mr-1 animate-pulse"></i>明天 10:00</td>
+                            <td class="text-sm whitespace-nowrap">
+                                <button onclick="openAssignModal()" class="text-indigo-500 hover:text-indigo-700 mx-1 role-manager-only font-medium"><i class="fas fa-user-plus mr-1"></i>重新分配</button>
+                                <button onclick="window.location.href='admin-leads-detail.html'" class="text-gray-600 hover:text-gray-800 mx-1 font-medium"><i class="fas fa-file-alt mr-1"></i>详情</button>
+                                <button onclick="openFollowupModal()" class="text-green-600 hover:text-green-800 mx-1 font-medium"><i class="fas fa-edit mr-1"></i>跟进</button>
+                                <button onclick="alert('确认将该线索退回公海？放弃后您将无法再跟进该客户。')" class="text-orange-500 hover:text-orange-700 mx-1 font-medium"><i class="fas fa-recycle mr-1"></i>退回公海</button>
                             </td>
                         </tr>
-                        <!-- 数据行 2 -->
-                        <tr>
-                            <td>张三</td>
-                            <td>XXXXX@qq.com</td>
-                            <td>15213099999</td>
+                        <!-- 数据行 2 (待分配) -->
+                        <tr class="data-row-unassigned">
+                            <td class="text-center"><input type="checkbox" class="w-4 h-4 rounded border-gray-300 focus:ring-indigo-500 text-indigo-600 cursor-pointer row-checkbox"></td>
+                            <td>王五</td>
+                            <td>wangwu@163.com</td>
+                            <td>13800138000</td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
                             <td>成为代理</td>
                             <td>其他渠道</td>
                             <td>登陆页面</td>
+                            <td><span class="text-orange-400 font-bold" title="中意向"><i class="fas fa-star"></i> 中</span></td>
+                            <td><span class="px-2 py-1 bg-orange-50 text-orange-600 rounded text-xs font-medium border border-orange-100">待分配</span></td>
+                            <td class="text-gray-400">-</td>
                             <td>2025-01-01 21:22:22</td>
-                            <td>这是客服自己填写</td>
-                            <td>账号名称</td>
-                            <td>2025-01-01 21:22:22</td>
-                            <td class="text-sm">
-                                <button onclick="openDetailModal()" class="text-[#41B8AF] hover:text-[#359f97] mx-1">详情</button>
-                                <button onclick="openFollowupModal()" class="text-[#41B8AF] hover:text-[#359f97] mx-1">跟进</button>
+                            <td class="text-gray-400">-</td>
+                            <td class="text-gray-400">-</td>
+                            <td class="text-gray-400">-</td>
+                            <td class="text-sm whitespace-nowrap">
+                                <button onclick="openAssignModal()" class="text-indigo-500 hover:text-indigo-700 mx-1 role-manager-only font-medium"><i class="fas fa-user-plus mr-1"></i>分配</button>
+                                <button onclick="window.location.href='admin-leads-detail.html'" class="text-gray-600 hover:text-gray-800 mx-1 font-medium"><i class="fas fa-file-alt mr-1"></i>详情</button>
+                            </td>
+                        </tr>
+                        <!-- 数据行 3 (退回公海) -->
+                        <tr class="data-row-unassigned">
+                            <td class="text-center"><input type="checkbox" class="w-4 h-4 rounded border-gray-300 focus:ring-indigo-500 text-indigo-600 cursor-pointer row-checkbox"></td>
+                            <td>赵六</td>
+                            <td>zhao6@qq.com</td>
+                            <td>13900139000</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>个人交易</td>
+                            <td>线下金融活动</td>
+                            <td>推广页</td>
+                            <td><span class="text-blue-400 font-bold" title="低意向"><i class="fas fa-snowflake"></i> 低</span></td>
+                            <td><span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs font-medium border border-gray-200">退回公海</span></td>
+                            <td class="text-gray-400 line-through">李四</td>
+                            <td>2024-12-10 10:00:00</td>
+                            <td>客户电话一直打不通，空号。</td>
+                            <td>2024-12-15 15:30:00</td>
+                            <td class="text-gray-400">-</td>
+                            <td class="text-sm whitespace-nowrap">
+                                <button onclick="openAssignModal()" class="text-indigo-500 hover:text-indigo-700 mx-1 role-manager-only font-medium"><i class="fas fa-user-plus mr-1"></i>重新分配</button>
+                                <button onclick="window.location.href='admin-leads-detail.html'" class="text-gray-600 hover:text-gray-800 mx-1 font-medium"><i class="fas fa-file-alt mr-1"></i>详情</button>
+                            </td>
+                        </tr>
+                        <!-- 数据行 4 (已转化) -->
+                        <tr class="data-row-assigned">
+                            <td class="text-center"><input type="checkbox" class="w-4 h-4 rounded border-gray-300 focus:ring-indigo-500 text-indigo-600 cursor-pointer row-checkbox" disabled title="已转化状态无法批量选择"></td>
+                            <td>孙七</td>
+                            <td>sunqi@gmail.com</td>
+                            <td>13700137000</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>成为代理</td>
+                            <td>社交平台</td>
+                            <td>Twitter</td>
+                            <td><span class="text-gray-400 font-bold" title="已转化不再评估">-</span></td>
+                            <td>
+                                <div class="flex flex-col gap-1 items-center">
+                                    <span class="px-2 py-1 bg-green-50 text-green-600 rounded text-xs font-medium border border-green-100">已转化</span>
+                                </div>
+                            </td>
+                            <td class="font-medium text-gray-800">张三</td>
+                            <td>2024-11-01 10:00:00</td>
+                            <td>客户已成功开通代理账户并完成首笔入金。</td>
+                            <td>2024-11-05 14:20:00</td>
+                            <td class="text-gray-400">-</td>
+                            <td class="text-sm whitespace-nowrap">
+                                <button onclick="window.location.href='admin-client-detail.html'" class="text-blue-500 hover:text-blue-700 mx-1 font-medium"><i class="fas fa-user-circle mr-1"></i>客户画像</button>
+                                <button onclick="window.location.href='admin-leads-detail.html'" class="text-gray-600 hover:text-gray-800 mx-1 font-medium"><i class="fas fa-file-alt mr-1"></i>详情</button>
                             </td>
                         </tr>
                         <!-- 填充空白行以模拟截图效果 -->
-                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
                 </table>
+                </div>
             </div>
 
             <!-- 3. 底部翻页区 -->
@@ -466,133 +594,135 @@
     </main>
 
     <!-- 详情弹窗 -->
-    <div id="detailModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-white w-[800px] rounded shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="detailModalContent">
-            <!-- Header -->
-            <div class="h-12 bg-[#333333] flex items-center justify-between px-4 shrink-0 relative">
-                <h3 class="text-white font-medium text-center w-full">客户详情</h3>
-                <button onclick="closeDetailModal()" class="text-white hover:text-gray-300 absolute right-4">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
-            </div>
-            <!-- Body -->
-            <div class="p-6 overflow-y-auto max-h-[70vh]">
-                <!-- 基础信息表格形式 -->
-                <div class="grid grid-cols-2 gap-x-6 gap-y-4 mb-8">
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">客户姓名</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">张三</div>
-                    </div>
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">联系电话</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">15213098888</div>
+    <!-- 跟进弹窗 -->
+    <div id="followupModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white w-[800px] rounded shadow-2xl flex overflow-hidden transform scale-95 transition-transform duration-300 h-[500px]" id="followupModalContent">
+            
+            <!-- 左侧：跟进表单区 -->
+            <div class="flex-1 flex flex-col border-r border-gray-200">
+                <!-- Header -->
+                <div class="h-12 bg-[#333333] flex items-center justify-between px-4 shrink-0 relative">
+                    <h3 class="text-white font-medium text-center w-full">客户跟进</h3>
+                </div>
+                <!-- Body -->
+                <div class="p-6 flex-1 overflow-y-auto">
+                    <div class="flex border border-gray-300 rounded-sm mb-4">
+                        <div class="w-28 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm"><span class="text-red-500 mr-1">*</span>跟进状态</div>
+                        <div class="flex-1 p-2">
+                            <select class="w-full border border-gray-300 rounded-sm px-2 py-1.5 text-sm outline-none focus:border-blue-500">
+                                <option value="">请选择</option>
+                                <option value="1">持续跟进</option>
+                                <option value="2">无效线索</option>
+                                <option value="3">已转化</option>
+                            </select>
+                        </div>
                     </div>
                     
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">微信</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">wx_zhangsan</div>
+                    <div class="flex border border-gray-300 rounded-sm mb-4">
+                        <div class="w-28 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm">线索热度评估</div>
+                        <div class="flex-1 p-2 flex gap-4 items-center pl-4">
+                            <label class="flex items-center gap-1 cursor-pointer text-sm text-gray-700"><input type="radio" name="heat" class="text-red-500 focus:ring-red-500 w-4 h-4" checked> <i class="fas fa-fire text-red-500"></i> 高</label>
+                            <label class="flex items-center gap-1 cursor-pointer text-sm text-gray-700"><input type="radio" name="heat" class="text-orange-400 focus:ring-orange-400 w-4 h-4"> <i class="fas fa-star text-orange-400"></i> 中</label>
+                            <label class="flex items-center gap-1 cursor-pointer text-sm text-gray-700"><input type="radio" name="heat" class="text-blue-400 focus:ring-blue-400 w-4 h-4"> <i class="fas fa-snowflake text-blue-400"></i> 低</label>
+                        </div>
                     </div>
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">WhatsApp</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">+852 12345678</div>
+
+                    <div class="flex border border-gray-300 rounded-sm mb-4">
+                        <div class="w-28 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm">下次跟进时间</div>
+                        <div class="flex-1 p-2">
+                            <input type="datetime-local" class="w-full border border-gray-300 rounded-sm px-2 py-1.5 text-sm outline-none focus:border-blue-500 text-gray-600">
+                        </div>
                     </div>
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">其他联系方式</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">-</div>
+
+                    <div class="flex border border-gray-300 rounded-sm h-32 relative">
+                         <div class="w-28 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm"><span class="text-red-500 mr-1">*</span>跟进内容</div>
+                         <div class="flex-1 p-2">
+                             <textarea id="followup-content-input" class="w-full h-full border border-gray-300 rounded-sm px-2 py-1.5 text-sm outline-none focus:border-blue-500 resize-none" placeholder="请记录本次真实的沟通情况..."></textarea>
+                         </div>
+                     </div>
+                </div>
+                <!-- Footer -->
+                <div class="py-4 flex justify-center gap-6 border-t border-gray-100 bg-gray-50">
+                    <button onclick="closeFollowupModal()" class="px-8 py-1.5 border border-gray-300 text-gray-600 rounded hover:bg-white transition-colors text-sm bg-gray-50">取消</button>
+                    <button onclick="closeFollowupModal()" class="px-8 py-1.5 bg-[#3b82f6] text-white rounded hover:bg-blue-600 transition-colors text-sm border border-[#3b82f6]">提交</button>
+                </div>
+            </div>
+
+            <!-- 右侧：SOP 话术库推荐区 -->
+            <div class="w-[300px] bg-gray-50 flex flex-col relative">
+                <button onclick="closeFollowupModal()" class="text-gray-400 hover:text-gray-600 absolute right-4 top-3 z-10">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+                <div class="px-4 py-3 border-b border-gray-200 bg-blue-50/50">
+                    <h4 class="text-blue-700 font-medium text-sm flex items-center gap-2">
+                        <i class="fas fa-lightbulb text-blue-500"></i> SOP 话术推荐
+                    </h4>
+                    <p class="text-xs text-gray-500 mt-1">当前客户意向：<span class="text-blue-600 font-medium">政策了解</span></p>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                    <!-- 话术卡片 1 -->
+                    <div class="bg-white border border-blue-100 rounded shadow-sm p-3 hover:border-blue-300 transition-colors group cursor-pointer" onclick="copySopToClipboard('您好！我是 HATC 的官方顾问。了解到您对我们的代理政策感兴趣，我们目前针对新代理有专项扶持计划，最高返佣可达 80%，同时提供专属 CRM 系统。方便加个微信给您发一份详细资料吗？')">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold text-gray-700">破冰：初次联系与代理政策亮点</span>
+                            <span class="text-blue-500 opacity-0 group-hover:opacity-100 text-xs transition-opacity"><i class="fas fa-copy"></i> 复制</span>
+                        </div>
+                        <p class="text-xs text-gray-500 line-clamp-3">您好！我是 HATC 的官方顾问。了解到您对我们的代理政策感兴趣，我们目前针对新代理有专项扶持计划，最高返佣可达 80%，同时提供专属 CRM 系统。方便加个微信给您发一份详细资料吗？</p>
                     </div>
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">电子邮箱</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">989890@qq.com</div>
+                    <!-- 话术卡片 2 -->
+                    <div class="bg-white border border-gray-200 rounded shadow-sm p-3 hover:border-blue-300 transition-colors group cursor-pointer" onclick="copySopToClipboard('针对您的客户群体，我们可以提供定制化的点差账户和极速出入金通道。另外，本月新开户有入金赠金活动，您可以作为展业的抓手。')">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold text-gray-700">跟进：业务优势与活动促单</span>
+                            <span class="text-blue-500 opacity-0 group-hover:opacity-100 text-xs transition-opacity"><i class="fas fa-copy"></i> 复制</span>
+                        </div>
+                        <p class="text-xs text-gray-500 line-clamp-3">针对您的客户群体，我们可以提供定制化的点差账户和极速出入金通道。另外，本月新开户有入金赠金活动，您可以作为展业的抓手。</p>
                     </div>
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">咨询内容</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">政策了解</div>
-                    </div>
-                    <div class="flex border border-gray-300 rounded-sm overflow-hidden h-10">
-                        <div class="w-32 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-600 text-sm">信息来源</div>
-                        <div class="flex-1 flex items-center justify-center text-sm text-gray-800">官网访问</div>
+                    <!-- 话术卡片 3 -->
+                    <div class="bg-white border border-gray-200 rounded shadow-sm p-3 hover:border-blue-300 transition-colors group cursor-pointer" onclick="copySopToClipboard('这是我们 HATC 的官方宣传画册和合规牌照文件链接：[链接]。您可以先了解一下我们的资质和资金隔离安全保障。')">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold text-gray-700">资料：发送公司介绍与资质</span>
+                            <span class="text-blue-500 opacity-0 group-hover:opacity-100 text-xs transition-opacity"><i class="fas fa-copy"></i> 复制</span>
+                        </div>
+                        <p class="text-xs text-gray-500 line-clamp-3">这是我们 HATC 的官方宣传画册和合规牌照文件链接：[链接]。您可以先了解一下我们的资质和资金隔离安全保障。</p>
                     </div>
                 </div>
-                
-                <!-- 跟进记录表格 -->
-                <table class="w-full text-sm border border-gray-300">
-                    <thead class="bg-gray-50 border-b border-gray-300 text-gray-700">
-                        <tr>
-                            <th class="py-2 px-3 text-left border-r border-gray-300 font-medium">跟进人</th>
-                            <th class="py-2 px-3 text-left border-r border-gray-300 font-medium">跟进时间</th>
-                            <th class="py-2 px-3 text-left border-r border-gray-300 font-medium">跟进状态</th>
-                            <th class="py-2 px-3 text-left font-medium">跟进内容</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-600">
-                        <tr class="border-b border-gray-300">
-                            <td class="py-2 px-3 border-r border-gray-300">XXX</td>
-                            <td class="py-2 px-3 border-r border-gray-300">2025-01-01 21:22:22</td>
-                            <td class="py-2 px-3 border-r border-gray-300">持续跟进</td>
-                            <td class="py-2 px-3">这是手动输入的内容</td>
-                        </tr>
-                        <tr class="border-b border-gray-300">
-                            <td class="py-2 px-3 border-r border-gray-300">XXX</td>
-                            <td class="py-2 px-3 border-r border-gray-300">2025-01-01 21:22:22</td>
-                            <td class="py-2 px-3 border-r border-gray-300">无效客户</td>
-                            <td class="py-2 px-3">这是手动输入的内容</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 px-3 border-r border-gray-300">XXX</td>
-                            <td class="py-2 px-3 border-r border-gray-300">2025-01-01 21:22:22</td>
-                            <td class="py-2 px-3 border-r border-gray-300">已开通</td>
-                            <td class="py-2 px-3">这是手动输入的内容</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!-- Footer -->
-            <div class="py-4 flex justify-center border-t border-gray-100">
-                <button onclick="closeDetailModal()" class="px-8 py-1.5 border border-blue-500 text-blue-500 rounded hover:bg-blue-50 transition-colors text-sm">关闭</button>
             </div>
         </div>
     </div>
 
-    <!-- 跟进弹窗 -->
-    <div id="followupModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-white w-[500px] rounded shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="followupModalContent">
+    
+    <!-- 分配销售弹窗 -->
+    <div id="assignModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white w-[400px] rounded shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="assignModalContent">
             <!-- Header -->
-            <div class="h-12 bg-[#333333] flex items-center justify-between px-4 shrink-0 relative">
-                <h3 class="text-white font-medium text-center w-full">客户跟进</h3>
-                <button onclick="closeFollowupModal()" class="text-white hover:text-gray-300 absolute right-4">
+            <div class="h-12 bg-indigo-600 flex items-center justify-between px-4 shrink-0 relative">
+                <h3 class="text-white font-medium text-center w-full">分配线索归属</h3>
+                <button onclick="closeAssignModal()" class="text-white hover:text-indigo-200 absolute right-4">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
             <!-- Body -->
             <div class="p-8">
+                <p class="text-sm text-gray-500 mb-4">请为当前线索指定一位跟进销售。分配后，线索状态将自动变更为“跟进中”。</p>
                 <div class="flex border border-gray-300 rounded-sm mb-4">
-                    <div class="w-28 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm"><span class="text-red-500 mr-1">*</span>跟进状态</div>
+                    <div class="w-24 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm"><span class="text-red-500 mr-1">*</span>选择销售</div>
                     <div class="flex-1 p-2">
-                        <select class="w-full border border-gray-300 rounded-sm px-2 py-1.5 text-sm outline-none focus:border-blue-500">
-                            <option value="">请选择</option>
-                            <option value="1">持续跟进</option>
-                            <option value="2">无效客户</option>
-                            <option value="3">已开通</option>
+                        <select class="w-full border border-gray-300 rounded-sm px-2 py-1.5 text-sm outline-none focus:border-indigo-500">
+                            <option value="">请输入或选择销售人员</option>
+                            <option value="1">李四 (Group一队)</option>
+                            <option value="2">王刚 (Group二队)</option>
+                            <option value="3">赵敏 (HK专线)</option>
                         </select>
-                    </div>
-                </div>
-                
-                <div class="flex border border-gray-300 rounded-sm h-32">
-                    <div class="w-28 bg-gray-50 flex items-center justify-center border-r border-gray-300 text-gray-700 text-sm"><span class="text-red-500 mr-1">*</span>跟进内容</div>
-                    <div class="flex-1 p-2">
-                        <textarea class="w-full h-full border border-gray-300 rounded-sm px-2 py-1.5 text-sm outline-none focus:border-blue-500 resize-none" placeholder="请输入"></textarea>
                     </div>
                 </div>
             </div>
             <!-- Footer -->
-            <div class="py-4 flex justify-center gap-6">
-                <button onclick="closeFollowupModal()" class="px-8 py-1.5 border border-blue-500 text-blue-500 rounded hover:bg-blue-50 transition-colors text-sm bg-white">取消</button>
-                <button onclick="closeFollowupModal()" class="px-8 py-1.5 bg-[#3b82f6] text-white rounded hover:bg-blue-600 transition-colors text-sm border border-[#3b82f6]">提交</button>
+            <div class="py-4 flex justify-center gap-6 border-t border-gray-100 bg-gray-50">
+                <button onclick="closeAssignModal()" class="px-8 py-1.5 border border-gray-300 text-gray-600 rounded hover:bg-white transition-colors text-sm bg-gray-50">取消</button>
+                <button onclick="closeAssignModal()" class="px-8 py-1.5 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors text-sm border border-indigo-600">确认分配</button>
             </div>
         </div>
     </div>
-
-    <!-- PRD 文档预览弹窗 -->
+<!-- PRD 文档预览弹窗 -->
     <div id="prdModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
         <div class="bg-white w-[90%] h-[90vh] rounded-lg shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="prdModalContent">
             <div class="h-12 bg-gray-100 border-b flex items-center justify-between px-6 shrink-0">
@@ -625,30 +755,174 @@
         </div>
     </div>
 
-    <script>
-        // 详情弹窗逻辑
-        const detailModal = document.getElementById('detailModal');
-        const detailModalContent = document.getElementById('detailModalContent');
+    <!-- 新增线下线索弹窗 -->
+    <div id="createLeadModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white w-[600px] rounded shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="createLeadModalContent">
+            <!-- Header -->
+            <div class="h-12 bg-primaryBtn flex items-center justify-between px-4 shrink-0 relative">
+                <h3 class="text-white font-medium text-center w-full">新增线下线索</h3>
+                <button onclick="closeCreateLeadModal()" class="text-white hover:text-gray-200 absolute right-4">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="p-6 max-h-[70vh] overflow-y-auto">
+                <h4 class="text-sm font-bold text-gray-700 border-b border-gray-200 pb-2 mb-4">客户基础信息</h4>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1"><span class="text-red-500 mr-1">*</span>姓名</label>
+                        <input type="text" placeholder="请输入姓名" class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn">
+                    </div>
+                    <div class="relative">
+                        <label class="block text-sm text-gray-600 mb-1"><span class="text-red-500 mr-1">*</span>联系电话</label>
+                        <input type="text" id="new-lead-phone" placeholder="请输入手机号" class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn" oninput="checkDuplicateLead()">
+                        <!-- 防撞单提示 -->
+                        <div id="duplicate-warning" class="hidden absolute top-full left-0 mt-1 w-full bg-red-50 border border-red-200 text-red-600 text-xs p-2 rounded shadow-sm z-10">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> 该手机号已存在！<br>
+                            归属人：<span class="font-bold">王大拿</span> (公海/跟进中)
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">邮箱</label>
+                        <input type="email" placeholder="请输入邮箱" class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">微信/WhatsApp</label>
+                        <input type="text" placeholder="请输入社交账号" class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn">
+                    </div>
+                </div>
 
-        function openDetailModal() {
-            detailModal.classList.remove('hidden');
+                <h4 class="text-sm font-bold text-gray-700 border-b border-gray-200 pb-2 mb-4">业务与分配信息</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">信息来源</label>
+                        <select class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn text-gray-600">
+                            <option value="offline_event" selected>线下金融活动</option>
+                            <option value="referral">客户推荐</option>
+                            <option value="other">其他渠道</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">咨询内容</label>
+                        <select class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn text-gray-600">
+                            <option value="1">成为代理</option>
+                            <option value="2">政策了解</option>
+                            <option value="3">个人交易</option>
+                            <option value="4" selected>其他</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm text-gray-600 mb-1">分配归属销售</label>
+                        <select class="w-full border border-gray-300 rounded-sm px-3 py-1.5 text-sm outline-none focus:border-primaryBtn text-gray-600">
+                            <option value="">-- 暂不分配，放入公海 --</option>
+                            <option value="1">李四 (Group一队)</option>
+                            <option value="2">王刚 (Group二队)</option>
+                            <option value="3">赵敏 (HK专线)</option>
+                        </select>
+                        <p class="text-xs text-gray-400 mt-1">如果不选择销售，该线索将进入“待分配”状态</p>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm text-gray-600 mb-1">备注说明</label>
+                        <textarea class="w-full h-20 border border-gray-300 rounded-sm px-3 py-2 text-sm outline-none focus:border-primaryBtn resize-none" placeholder="可输入在线下沟通的初步情况..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="py-4 flex justify-center gap-6 border-t border-gray-100 bg-gray-50">
+                <button onclick="closeCreateLeadModal()" class="px-8 py-1.5 border border-gray-300 text-gray-600 rounded hover:bg-white transition-colors text-sm bg-gray-50">取消</button>
+                <button onclick="closeCreateLeadModal()" class="px-8 py-1.5 bg-primaryBtn text-white rounded hover:bg-primaryBtnHover transition-colors text-sm border border-primaryBtn">确认新增</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 分配弹窗逻辑
+        const assignModal = document.getElementById('assignModal');
+        const assignModalContent = document.getElementById('assignModalContent');
+
+        // 批量选择逻辑
+        function toggleAll(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox:not([disabled])');
+            checkboxes.forEach(cb => {
+                // 仅在元素可见时（例如不是在销售视角被隐藏的行）才选中
+                if(cb.closest('tr').style.display !== 'none') {
+                    cb.checked = source.checked;
+                }
+            });
+        }
+
+        function openAssignModal(isBatch = false) {
+            if (isBatch) {
+                const checked = document.querySelectorAll('.row-checkbox:checked');
+                if (checked.length === 0) {
+                    alert('请先在列表中勾选需要分配的线索！');
+                    return;
+                }
+                document.querySelector('#assignModalContent h3').textContent = `批量分配线索归属 (已选 ${checked.length} 项)`;
+            } else {
+                document.querySelector('#assignModalContent h3').textContent = '分配线索归属';
+            }
+
+            assignModal.classList.remove('hidden');
             setTimeout(() => {
-                detailModal.classList.remove('opacity-0');
-                detailModalContent.classList.remove('scale-95');
-                detailModalContent.classList.add('scale-100');
+                assignModal.classList.remove('opacity-0');
+                assignModalContent.classList.remove('scale-95');
+                assignModalContent.classList.add('scale-100');
             }, 10);
         }
 
-        function closeDetailModal() {
-            detailModal.classList.add('opacity-0');
-            detailModalContent.classList.remove('scale-100');
-            detailModalContent.classList.add('scale-95');
-            setTimeout(() => { detailModal.classList.add('hidden'); }, 300);
+        function closeAssignModal() {
+            assignModal.classList.add('opacity-0');
+            assignModalContent.classList.remove('scale-100');
+            assignModalContent.classList.add('scale-95');
+            setTimeout(() => { assignModal.classList.add('hidden'); }, 300);
         }
 
-        // 跟进弹窗逻辑
-        const followupModal = document.getElementById('followupModal');
-        const followupModalContent = document.getElementById('followupModalContent');
+        // 新增线索弹窗逻辑
+        const createLeadModal = document.getElementById('createLeadModal');
+        const createLeadModalContent = document.getElementById('createLeadModalContent');
+
+        function openCreateLeadModal() {
+            createLeadModal.classList.remove('hidden');
+            setTimeout(() => {
+                createLeadModal.classList.remove('opacity-0');
+                createLeadModalContent.classList.remove('scale-95');
+                createLeadModalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeCreateLeadModal() {
+            createLeadModal.classList.add('opacity-0');
+            createLeadModalContent.classList.remove('scale-100');
+            createLeadModalContent.classList.add('scale-95');
+            setTimeout(() => { createLeadModal.classList.add('hidden'); }, 300);
+        }
+
+        // 视角切换逻辑
+        function switchRole(role, btn) {
+            // Update button styles
+            const btns = btn.parentElement.querySelectorAll('button');
+            btns.forEach(b => {
+                b.className = 'px-3 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-700 transition-colors';
+            });
+            btn.className = 'px-3 py-1 text-xs font-medium rounded bg-white shadow-sm text-gray-800 transition-colors';
+
+            const managerOnlyElements = document.querySelectorAll('.role-manager-only');
+            const unassignedRows = document.querySelectorAll('.data-row-unassigned');
+            
+            if(role === 'manager') {
+                managerOnlyElements.forEach(el => el.style.display = '');
+                unassignedRows.forEach(el => el.style.display = '');
+            } else {
+                managerOnlyElements.forEach(el => el.style.display = 'none');
+                // 销售视角隐藏未分配给自己的线索（模拟数据隔离）
+                unassignedRows.forEach(el => el.style.display = 'none');
+            }
+        }
+        
+        // 详情弹窗逻辑
+        
+        
 
         function openFollowupModal() {
             followupModal.classList.remove('hidden');
@@ -691,6 +965,45 @@
             }, 300);
         }
 
+        function copySopToClipboard(text) {
+            // 使用现代剪贴板 API 复制文本
+            navigator.clipboard.writeText(text).then(() => {
+                // 显示复制成功的提示
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 text-white px-4 py-2 rounded text-sm z-[200] opacity-0 transition-opacity duration-300';
+                toast.innerHTML = '<i class="fas fa-check-circle mr-1 text-green-400"></i> 已复制到剪贴板';
+                document.body.appendChild(toast);
+                requestAnimationFrame(() => toast.classList.remove('opacity-0'));
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                    setTimeout(() => toast.remove(), 300);
+                }, 1500);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制。');
+            });
+        }
+
+        // 新增线下线索防撞单校验逻辑
+        function checkDuplicateLead() {
+            const phoneInput = document.getElementById('new-lead-phone');
+            const warning = document.getElementById('duplicate-warning');
+            
+            if(phoneInput && warning) {
+                const val = phoneInput.value.trim();
+                // 模拟校验逻辑：输入 138 开头的号码触发撞单提示
+                if(val.startsWith('138') && val.length >= 3) {
+                    warning.classList.remove('hidden');
+                    phoneInput.classList.add('border-red-500');
+                    phoneInput.classList.remove('focus:border-primaryBtn');
+                } else {
+                    warning.classList.add('hidden');
+                    phoneInput.classList.remove('border-red-500');
+                    phoneInput.classList.add('focus:border-primaryBtn');
+                }
+            }
+        }
+
         function toggleSubmenu(button) {
             const submenu = button.nextElementSibling;
             const arrow = button.querySelector('.fa-chevron-right');
@@ -710,6 +1023,225 @@
                 button.querySelector('i:first-child').classList.add('text-menuActive');
             }
         }
+    
+        // 看板弹窗逻辑
+        function openDashboardModal() {
+            const dashboardModal = document.getElementById('dashboardModal');
+            const dashboardModalContent = document.getElementById('dashboardModalContent');
+            if(!dashboardModal) return;
+            dashboardModal.classList.remove('hidden');
+            setTimeout(() => {
+                dashboardModal.classList.remove('opacity-0');
+                dashboardModalContent.classList.remove('scale-95');
+                dashboardModalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeDashboardModal() {
+            const dashboardModal = document.getElementById('dashboardModal');
+            const dashboardModalContent = document.getElementById('dashboardModalContent');
+            if(!dashboardModal) return;
+            dashboardModal.classList.add('opacity-0');
+            dashboardModalContent.classList.remove('scale-100');
+            dashboardModalContent.classList.add('scale-95');
+            setTimeout(() => {
+                dashboardModal.classList.add('hidden');
+            }, 300);
+        }
     </script>
+
+    <!-- 效能看板弹窗 -->
+    <div id="dashboardModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white w-[1000px] rounded shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="dashboardModalContent">
+            <!-- Header -->
+            <div class="h-12 bg-[#333333] flex items-center justify-between px-4 shrink-0 relative">
+                <h3 class="text-white font-medium text-center w-full">销售跟进效能看板</h3>
+                <button onclick="closeDashboardModal()" class="text-white hover:text-gray-300 absolute right-4">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto max-h-[80vh] bg-gray-50">
+                <!-- 漏斗与ROI分析 (新增版块) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- 转化漏斗卡片 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <h3 class="text-sm font-bold text-gray-700 mb-4 flex items-center justify-between">
+                            <span>线索转化漏斗</span>
+                            <span class="text-xs text-gray-400 font-normal">基于本月分配数据</span>
+                        </h3>
+                        <div class="flex flex-col items-center w-full max-w-[400px] mx-auto">
+                            <!-- 漏斗层级 1 -->
+                            <div class="w-full flex items-center justify-between group">
+                                <div class="w-[80%] bg-blue-500 h-8 rounded-t-sm flex items-center justify-center text-white text-xs font-bold mx-auto transition-all group-hover:bg-blue-600 cursor-pointer shadow-sm relative">
+                                    <span>总分配线索 <span class="ml-2 bg-blue-600 px-1.5 py-0.5 rounded text-[10px]">1,240</span></span>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-gray-400 my-0.5">转化率: 75.8%</div>
+                            
+                            <!-- 漏斗层级 2 -->
+                            <div class="w-full flex items-center justify-between group">
+                                <div class="w-[70%] bg-blue-400 h-8 flex items-center justify-center text-white text-xs font-bold mx-auto transition-all group-hover:bg-blue-500 cursor-pointer shadow-sm relative">
+                                    <span>有效接通 <span class="ml-2 bg-blue-500 px-1.5 py-0.5 rounded text-[10px]">940</span></span>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-gray-400 my-0.5">转化率: 60.5%</div>
+                            
+                            <!-- 漏斗层级 3 -->
+                            <div class="w-full flex items-center justify-between group">
+                                <div class="w-[55%] bg-indigo-400 h-8 flex items-center justify-center text-white text-xs font-bold mx-auto transition-all group-hover:bg-indigo-500 cursor-pointer shadow-sm relative">
+                                    <span>添加微信/转化 <span class="ml-2 bg-indigo-500 px-1.5 py-0.5 rounded text-[10px]">568</span></span>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-gray-400 my-0.5">转化率: 25.1%</div>
+                            
+                            <!-- 漏斗层级 4 -->
+                            <div class="w-full flex items-center justify-between group">
+                                <div class="w-[40%] bg-indigo-500 h-8 flex items-center justify-center text-white text-xs font-bold mx-auto transition-all group-hover:bg-indigo-600 cursor-pointer shadow-sm relative">
+                                    <span>首次入金 <span class="ml-2 bg-indigo-600 px-1.5 py-0.5 rounded text-[10px]">142</span></span>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-gray-400 my-0.5">转化率: 82.3%</div>
+                            
+                            <!-- 漏斗层级 5 -->
+                            <div class="w-full flex items-center justify-between group">
+                                <div class="w-[30%] bg-purple-500 h-8 rounded-b-sm flex items-center justify-center text-white text-xs font-bold mx-auto transition-all group-hover:bg-purple-600 cursor-pointer shadow-sm relative">
+                                    <span>产生交易 <span class="ml-2 bg-purple-600 px-1.5 py-0.5 rounded text-[10px]">117</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 渠道 ROI 卡片 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <h3 class="text-sm font-bold text-gray-700 mb-4 flex items-center justify-between">
+                            <span>渠道获客 ROI 评估</span>
+                            <a href="#" class="text-xs text-blue-500 hover:underline font-normal">导出完整报告</a>
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead>
+                                    <tr class="text-gray-500 bg-gray-50 border-y border-gray-100">
+                                        <th class="py-2 px-3 font-medium">渠道来源</th>
+                                        <th class="py-2 px-3 font-medium text-right">获客数</th>
+                                        <th class="py-2 px-3 font-medium text-right">首入金率</th>
+                                        <th class="py-2 px-3 font-medium text-right">贡献净入金</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-2 px-3"><span class="flex items-center gap-1.5"><i class="fas fa-globe text-blue-400"></i> 官网留资</span></td>
+                                        <td class="py-2 px-3 text-right">540</td>
+                                        <td class="py-2 px-3 text-right text-gray-600">8.5%</td>
+                                        <td class="py-2 px-3 text-right font-medium text-green-600">$45,200</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-2 px-3"><span class="flex items-center gap-1.5"><i class="fas fa-users text-orange-400"></i> 线下金融展会</span></td>
+                                        <td class="py-2 px-3 text-right">210</td>
+                                        <td class="py-2 px-3 text-right text-gray-600 font-bold text-blue-600">22.4%</td>
+                                        <td class="py-2 px-3 text-right font-medium text-green-600">$128,500</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-2 px-3"><span class="flex items-center gap-1.5"><i class="fab fa-facebook text-indigo-400"></i> 社交媒体广告</span></td>
+                                        <td class="py-2 px-3 text-right">490</td>
+                                        <td class="py-2 px-3 text-right text-red-500">2.1%</td>
+                                        <td class="py-2 px-3 text-right font-medium text-green-600">$12,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 rounded border border-blue-100 text-xs text-blue-800">
+                            <i class="fas fa-info-circle mr-1"></i> 洞察：<span class="font-bold">线下金融展会</span> 虽然线索量较少，但首入金率极高(22.4%)，贡献了本月超过 65% 的净入金，建议下月追加线下渠道预算。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 核心指标卡片 -->
+                <div class="grid grid-cols-5 gap-4 mb-6">
+                    <div class="bg-white p-4 rounded shadow-sm border border-gray-100 border-l-4 border-l-blue-500">
+                        <div class="text-sm text-gray-500 mb-1">分配线索总数</div>
+                        <div class="text-2xl font-bold text-gray-800"><a href="#" class="hover:underline text-blue-600">1,280</a></div>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow-sm border border-gray-100 border-l-4 border-l-orange-400">
+                        <div class="text-sm text-gray-500 mb-1">平均跟进频次</div>
+                        <div class="text-2xl font-bold text-gray-800"><a href="#" class="hover:underline text-blue-600">3.5</a> <span class="text-sm font-normal text-gray-500">次/人</span></div>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow-sm border border-gray-100 border-l-4 border-l-purple-500">
+                        <div class="text-sm text-gray-500 mb-1">无效/退回占比</div>
+                        <div class="text-2xl font-bold text-gray-800"><a href="#" class="hover:underline text-blue-600">15.2%</a></div>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow-sm border border-gray-100 border-l-4 border-l-green-500">
+                        <div class="text-sm text-gray-500 mb-1">首次入金率</div>
+                        <div class="text-2xl font-bold text-gray-800"><a href="#" class="hover:underline text-blue-600">3.2%</a></div>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow-sm border border-gray-100 border-l-4 border-l-red-500">
+                        <div class="text-sm text-gray-500 mb-1">贡献净入金</div>
+                        <div class="text-2xl font-bold text-gray-800"><span class="text-sm text-gray-500">$</span><a href="#" class="hover:underline text-blue-600">125,000</a></div>
+                    </div>
+                </div>
+
+                <!-- 销售效能明细表 -->
+                <div class="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                        <h4 class="font-medium text-gray-700">团队效能明细</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-500">统计周期:</span>
+                            <select class="text-xs border border-gray-200 rounded px-2 py-1 outline-none text-gray-600 bg-white cursor-pointer hover:border-gray-300">
+                                <option value="day">本日</option>
+                                <option value="week">本周</option>
+                                <option value="month" selected>本月</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-600">
+                            <tr>
+                                <th class="py-3 px-4 font-medium">销售人员</th>
+                                <th class="py-3 px-4 font-medium">分配线索数</th>
+                                <th class="py-3 px-4 font-medium">平均跟进频次</th>
+                                <th class="py-3 px-4 font-medium">无效/退回占比</th>
+                                <th class="py-3 px-4 font-medium">转化数</th>
+                                <th class="py-3 px-4 font-medium">首次入金率</th>
+                                <th class="py-3 px-4 font-medium">贡献净入金</th>
+                                <th class="py-3 px-4 font-medium">绩效评级</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium text-gray-800">李四</td>
+                                <td class="py-3 px-4"><a href="#" class="text-blue-600 hover:underline">320</a></td>
+                                <td class="py-3 px-4 text-gray-800">4.2 次</td>
+                                <td class="py-3 px-4 text-green-600">8.5%</td>
+                                <td class="py-3 px-4"><a href="#" class="text-blue-600 hover:underline">48</a></td>
+                                <td class="py-3 px-4 font-medium">4.5%</td>
+                                <td class="py-3 px-4 font-medium text-green-600">$45,000</td>
+                                <td class="py-3 px-4"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">优秀</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium text-gray-800">张三</td>
+                                <td class="py-3 px-4"><a href="#" class="text-blue-600 hover:underline">280</a></td>
+                                <td class="py-3 px-4 text-gray-800">3.1 次</td>
+                                <td class="py-3 px-4 text-orange-500">16.0%</td>
+                                <td class="py-3 px-4"><a href="#" class="text-blue-600 hover:underline">25</a></td>
+                                <td class="py-3 px-4 font-medium">2.1%</td>
+                                <td class="py-3 px-4 font-medium text-gray-800">$12,500</td>
+                                <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">良好</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 font-medium text-gray-800">王五</td>
+                                <td class="py-3 px-4"><a href="#" class="text-blue-600 hover:underline">150</a></td>
+                                <td class="py-3 px-4 text-red-500 font-medium">1.2 次</td>
+                                <td class="py-3 px-4 text-red-500">42.0%</td>
+                                <td class="py-3 px-4"><a href="#" class="text-blue-600 hover:underline">5</a></td>
+                                <td class="py-3 px-4 font-medium text-red-500">0.5%</td>
+                                <td class="py-3 px-4 font-medium text-gray-800">$2,000</td>
+                                <td class="py-3 px-4"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">待提升</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

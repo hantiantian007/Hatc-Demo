@@ -103,7 +103,7 @@
                 </div>
 
                 <!-- 登录按钮 -->
-                <button type="button" class="w-full bg-brandYellow hover:bg-brandYellowHover text-gray-900 font-bold py-3.5 rounded-lg transition-colors mt-2 shadow-lg shadow-yellow-500/20">
+                <button type="button" onclick="handleLogin()" class="w-full bg-brandYellow hover:bg-brandYellowHover text-gray-900 font-bold py-3.5 rounded-lg transition-colors mt-2 shadow-lg shadow-yellow-500/20">
                     登录
                 </button>
 
@@ -123,5 +123,28 @@
         <i class="fas fa-headset text-2xl text-gray-800 group-hover:text-brandYellow transition-colors"></i>
     </button>
 
+    <script>
+        function handleLogin() {
+            // 获取 URL 参数中的 redirect 字段
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect');
+            
+            // 简单的模拟登录动画
+            const btn = document.querySelector('button[onclick="handleLogin()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                // 如果有 redirect 参数，则跳转到指定页面，否则默认跳转到 admin-home.html
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                } else {
+                    window.location.href = 'admin-home.html';
+                }
+            }, 800);
+        }
+    </script>
 </body>
 </html>

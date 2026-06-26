@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品订单 - HATC CRM - 后台管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        primaryHover: '#b08a4d',
+                        sidebar: '#2A2D3A',
+                        mainBg: '#F3F4F6',
+                        darkCard: '#2D3036',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 flex h-screen overflow-hidden">
+
+    <!-- 左侧侧边栏 -->
+                    <aside class="w-[240px] bg-[#282B34] text-gray-300 flex flex-col shrink-0 hidden md:flex font-sans">
+        <div class="h-[72px] flex items-center justify-center">
+            <span class="text-white font-bold text-[28px] tracking-wider">HATC</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-2 px-3 space-y-1 custom-scrollbar">
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-home w-5 text-center text-lg"></i> <span class="text-[15px]">首页</span></div>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-th w-5 text-center text-lg"></i> <span class="text-[15px]">出入金</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-columns w-5 text-center text-lg"></i> <span class="text-[15px]">佣金管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-file-alt w-5 text-center text-lg"></i> <span class="text-[15px]">活动管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-bullhorn w-5 text-center text-lg"></i> <span class="text-[15px]">动态公告</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-user-friends w-5 text-center text-lg"></i> <span class="text-[15px]">客户管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+
+            <!-- 增值业务 (Active Parent) -->
+            <div class="flex flex-col">
+                <a href="#" class="flex items-center justify-between px-3 py-3 text-primary bg-[#363945] rounded-lg transition-colors">
+                    <div class="flex items-center gap-3"><i class="fas fa-store w-5 text-center text-lg"></i> <span class="text-[15px] font-medium">增值业务</span></div>
+                    <i class="fas fa-angle-down text-xs"></i>
+                </a>
+                <div class="flex flex-col mt-1 space-y-1">
+                    <a href="client-product-list.html" class="flex items-center pl-[44px] pr-4 py-2.5 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors relative group">
+                        
+                        <span class="text-[14px]">增值服务</span>
+                    </a>
+                    <a href="admin-product-orders.html" class="flex items-center pl-[44px] pr-4 py-2.5 text-white bg-[#363945] rounded-lg transition-colors relative group">
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-primary rounded-r"></div>
+                        <span class="text-[14px]">订单管理</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors mt-1.5">
+                <div class="flex items-center gap-3"><i class="fas fa-chart-pie w-5 text-center text-lg"></i> <span class="text-[15px]">报表中心</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-cog w-5 text-center text-lg"></i> <span class="text-[15px]">系统管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+        
+                
+        </nav>
+    </aside>
+
+    <!-- 右侧主体内容 -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- 顶部 Header -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <!-- 面包屑导航及快捷操作 -->
+            <div class="flex items-center text-sm text-gray-500 gap-4">
+                                <div class="flex items-center">
+                    <span class="hover:text-gray-800 cursor-pointer">增值业务</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                    <span class="text-primary font-medium">商品管理</span>
+                </div>
+                <div class="flex items-center gap-2 border-l pl-4 border-gray-200">
+                    <a href="../index.html" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-arrow-left mr-1.5"></i> 返回需求看板</a>
+                    <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-3 py-1.5 bg-yellow-50 text-primary border border-yellow-100 hover:bg-yellow-100 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-project-diagram mr-1.5"></i> 查看 PRD</button>
+                </div>
+            </div>
+            
+            <!-- 右侧个人中心 -->
+            <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
+                    <span class="text-sm font-bold text-gray-600">SM</span>
+                </div>
+                
+                <!-- 下拉菜单 (Hover 显示) -->
+                <div class="absolute right-0 top-[100%] mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-lg">
+                        <p class="text-sm font-medium text-gray-800">史密斯</p>
+                        <p class="text-xs text-gray-500 mt-0.5 truncate">admin@dev.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors">
+                            <i class="fas fa-user-circle w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">个人信息</span>
+                        </a>
+                        <a href="admin-my-bankcard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors">
+                            <i class="fas fa-credit-card w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">我的银行卡</span>
+                        </a>
+                    </div>
+                    <div class="py-1 border-t border-gray-100">
+                        <a href="../login.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors">
+                            <i class="fas fa-sign-out-alt w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">退出</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 页面主内容滚动区 -->
+        <main class="flex-1 overflow-y-auto p-6 bg-mainBg">
+            <div class="w-full mx-auto min-h-full flex flex-col">
+            
+            <div class="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col flex-1">
+                <!-- 卡片头部与搜索 -->
+                <div class="px-6 py-5 border-b border-gray-200 bg-white">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800">商品维护管理</h2>
+                            <p class="text-sm text-gray-500 mt-1">维护和管理增值服务商品，支持实体/虚拟类型及多支付方式配置</p>
+                        </div>
+                        <button class="px-4 py-2 bg-primary hover:bg-primaryHover text-white rounded shadow-sm text-sm font-medium transition-colors flex items-center gap-2" onclick="document.getElementById('productDrawer').classList.remove('translate-x-full');">
+                            <i class="fas fa-plus"></i>
+                            新增商品
+                        </button>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 items-end">
+                        <div class="w-64">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">商品名称</label>
+                            <input type="text" class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-shadow" placeholder="输入商品名称">
+                        </div>
+                        <div class="w-48">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">商品类型</label>
+                            <select class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary bg-white">
+                                <option value="">全部类型</option>
+                                <option value="virtual">虚拟商品</option>
+                                
+                            </select>
+                        </div>
+                        <div class="w-48">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">状态</label>
+                            <select class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary bg-white">
+                                <option value="">全部状态</option>
+                                <option value="active">已上架</option>
+                                <option value="inactive">已下架</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm font-medium transition-colors">重置</button>
+                            <button class="px-4 py-2 bg-[#55B9B9] hover:bg-[#45a3a3] text-white rounded text-sm font-medium transition-colors shadow-sm">查询</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表格区域 -->
+                <div class="flex-1 overflow-auto bg-gray-50/30 p-6">
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 text-gray-600 font-medium border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-4">商品信息</th>
+                                    
+                                    <th class="px-6 py-4">支持支付方式</th>
+                                    <th class="px-6 py-4">库存</th>
+                                    <th class="px-6 py-4">基础售价</th>
+                                    <th class="px-6 py-4">状态</th>
+                                    <th class="px-6 py-4">更新时间</th>
+                                    <th class="px-6 py-4 text-right">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded bg-teal-50 flex items-center justify-center text-teal-500 shrink-0">
+                                                <i class="fas fa-code text-lg"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-800">先锋二号</div>
+                                                <div class="text-xs text-gray-500 mt-0.5">ID: PRD-004</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1.5">
+                                            <span class="inline-flex items-center gap-1 text-xs text-gray-600"><i class="fas fa-wallet text-gray-400"></i>余额购买</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-medium text-gray-800">9999</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-800">$800.00 <span class="text-xs text-gray-500 font-normal px-1.5 py-0.5 bg-gray-100 rounded ml-1">一次性买断</span></div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>已上架
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500">2026-06-25 11:30:00</td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-primary hover:text-primaryHover font-medium text-sm transition-colors mr-3" onclick="document.getElementById('productDrawer').classList.remove('translate-x-full');">编辑</button>
+                                        <button class="text-red-500 hover:text-red-700 font-medium text-sm transition-colors" onclick="showConfirmModal('确认要下架该商品吗？下架后客户端将无法购买此商品。')">下架</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded bg-blue-50 flex items-center justify-center text-blue-500 shrink-0">
+                                                <i class="fas fa-robot text-lg"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-800">先锋一号</div>
+                                                <div class="text-xs text-gray-500 mt-0.5">ID: PRD-001</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1.5">
+                                            <span class="inline-flex items-center gap-1 text-xs text-gray-600"><i class="fas fa-wallet text-gray-400"></i>余额购买</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-medium text-gray-800">999</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-800">$5,000.00 <span class="text-xs text-gray-400 font-normal">/月</span></div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>已上架
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500">2026-06-25 10:00:00</td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-primary hover:text-primaryHover font-medium text-sm transition-colors mr-3" onclick="document.getElementById('productDrawer').classList.remove('translate-x-full');">编辑</button>
+                                        <button class="text-red-500 hover:text-red-700 font-medium text-sm transition-colors" onclick="showConfirmModal('确认要下架该商品吗？下架后客户端将无法购买此商品。')">下架</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded bg-orange-50 flex items-center justify-center text-orange-500 shrink-0">
+                                                <i class="fas fa-gift text-lg"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-800">先锋三号</div>
+                                                <div class="text-xs text-gray-500 mt-0.5">ID: PRD-002</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1.5">
+                                            <span class="inline-flex items-center gap-1 text-xs text-gray-600"><i class="fas fa-star text-amber-500"></i>积分购买</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-bold text-red-500">0 (售罄)</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-amber-600">5,000 <span class="text-xs text-gray-500 font-normal px-1.5 py-0.5 bg-gray-100 rounded ml-1">一次性买断</span></div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>已上架
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500">2026-06-20 15:30:12</td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-primary hover:text-primaryHover font-medium text-sm transition-colors mr-3" onclick="document.getElementById('productDrawer').classList.remove('translate-x-full');">编辑</button>
+                                        <button class="text-red-500 hover:text-red-700 font-medium text-sm transition-colors" onclick="showConfirmModal('确认要下架该商品吗？下架后客户端将无法购买此商品。')">下架</button>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded bg-purple-50 flex items-center justify-center text-purple-500 shrink-0">
+                                                <i class="fas fa-book-open text-lg"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-800">先锋四号</div>
+                                                <div class="text-xs text-gray-500 mt-0.5">ID: PRD-003</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1.5">
+                                            <span class="inline-flex items-center gap-1 text-xs text-gray-600"><i class="fas fa-wallet text-gray-400"></i>余额购买</span>
+                                            <span class="inline-flex items-center gap-1 text-xs text-gray-600"><i class="fas fa-star text-amber-500"></i>积分购买</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-medium text-gray-800">50</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1 text-sm font-medium">
+                                            <div class="text-gray-800">$1,200.00 <span class="text-xs text-gray-400 font-normal">/年</span></div>
+                                            <div class="text-amber-600">120,000 <span class="text-xs text-gray-400 font-normal">积分</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>已下架
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500">2026-06-15 09:12:00</td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button class="text-primary hover:text-primaryHover font-medium text-sm transition-colors mr-3" onclick="document.getElementById('productDrawer').classList.remove('translate-x-full');">编辑</button>
+                                        <button class="text-green-600 hover:text-green-800 font-medium text-sm transition-colors" onclick="showConfirmModal('确认要立即上架该商品吗？上架后客户端即可开始购买。')">上架</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+        </main>
+        
+        <!-- 新增/编辑商品抽屉 -->
+        <div id="productDrawer" class="fixed inset-0 z-50 flex justify-end transform translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="absolute inset-0 bg-black bg-opacity-30" onclick="document.getElementById('productDrawer').classList.add('translate-x-full');"></div>
+            <div class="w-[600px] bg-white h-full shadow-2xl relative flex flex-col z-10">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                    <h3 class="text-lg font-bold text-gray-800">商品维护</h3>
+                    <button class="text-gray-400 hover:text-gray-600 transition-colors" onclick="document.getElementById('productDrawer').classList.add('translate-x-full');">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-6">
+                    <form class="space-y-6">
+                        <!-- 基本信息 -->
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">基本信息</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1"><span class="text-red-500 mr-1">*</span>商品名称</label>
+                                    <input type="text" class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="输入商品名称">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">商品图标/封面</label>
+                                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-primary transition-colors cursor-pointer bg-gray-50">
+                                        <div class="space-y-1 text-center">
+                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                                            <div class="flex text-sm text-gray-600 justify-center">
+                                                <span class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primaryHover focus-within:outline-none">
+                                                    <span>上传文件</span>
+                                                </span>
+                                                <p class="pl-1">或拖拽图片至此处</p>
+                                            </div>
+                                            <p class="text-xs text-gray-500">PNG, JPG, GIF 最大 2MB</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">商品描述</label>
+                                    <textarea rows="3" class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="输入商品详情描述..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 业务属性 -->
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-800 mb-4 pb-2 border-b border-gray-100">业务属性</h4>
+                            <div class="space-y-5">
+                                
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2"><span class="text-red-500 mr-1">*</span>库存数量</label>
+                                    <input type="number" min="0" class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" placeholder="请输入具体库存数量" value="999">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2"><span class="text-red-500 mr-1">*</span>支持的购买方式 (多选)</label>
+                                    <div class="space-y-3">
+                                        <!-- 余额购买 -->
+                                        <div class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50 hover:border-primary transition-colors">
+                                            <div class="flex items-center h-5 mt-0.5">
+                                                <input type="checkbox" id="balance_checkbox" class="text-primary focus:ring-primary h-4 w-4 rounded cursor-pointer" checked onchange="document.getElementById('balance_input').disabled = !this.checked; document.getElementById('balance_select').disabled = !this.checked; if(this.checked) { document.getElementById('balance_select').classList.remove('bg-gray-50', 'text-gray-400'); document.getElementById('balance_select').classList.add('bg-white'); } else { document.getElementById('balance_select').classList.add('bg-gray-50', 'text-gray-400'); document.getElementById('balance_select').classList.remove('bg-white'); }">
+                                            </div>
+                                            <div class="flex-1">
+                                                <label for="balance_checkbox" class="text-sm font-medium text-gray-800 flex items-center gap-1.5 cursor-pointer"><i class="fas fa-wallet text-gray-500"></i>余额购买</label>
+                                                <div class="mt-2 flex gap-2 items-center">
+                                                    <div class="relative flex-1">
+                                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                                        </div>
+                                                        <input type="text" id="balance_input" class="w-full text-sm border border-gray-300 rounded pl-7 pr-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary disabled:bg-gray-50 disabled:text-gray-400" placeholder="售价">
+                                                    </div>
+                                                    <select id="balance_select" class="w-32 text-sm border border-gray-300 rounded px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary bg-white transition-colors">
+                                                        <option value="none">一次性买断</option>
+                                                        <option value="day">/ 天 (订阅)</option>
+                                                        <option value="month" selected>/ 月 (订阅)</option>
+                                                        <option value="year">/ 年 (订阅)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 积分购买 -->
+                                        <div class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50 hover:border-primary transition-colors">
+                                            <div class="flex items-center h-5 mt-0.5">
+                                                <input type="checkbox" id="points_checkbox" class="text-primary focus:ring-primary h-4 w-4 rounded cursor-pointer" onchange="document.getElementById('points_input').disabled = !this.checked; document.getElementById('points_select').disabled = !this.checked; if(this.checked) { document.getElementById('points_select').classList.remove('bg-gray-50', 'text-gray-400'); document.getElementById('points_select').classList.add('bg-white'); } else { document.getElementById('points_select').classList.add('bg-gray-50', 'text-gray-400'); document.getElementById('points_select').classList.remove('bg-white'); }">
+                                            </div>
+                                            <div class="flex-1">
+                                                <label for="points_checkbox" class="text-sm font-medium text-gray-800 flex items-center gap-1.5 cursor-pointer"><i class="fas fa-star text-amber-500"></i>积分购买</label>
+                                                <div class="mt-2 flex gap-2 items-center">
+                                                    <div class="relative flex-1">
+                                                        <input type="text" id="points_input" class="w-full text-sm border border-gray-300 rounded px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary disabled:bg-gray-50 disabled:text-gray-400" placeholder="所需积分" disabled>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 mr-1">积分</span>
+                                                    <select id="points_select" class="w-32 text-sm border border-gray-300 rounded px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary bg-gray-50 text-gray-400 transition-colors" disabled>
+                                                        <option value="none" selected>一次性买断</option>
+                                                        <option value="day">/ 天 (订阅)</option>
+                                                        <option value="month">/ 月 (订阅)</option>
+                                                        <option value="year">/ 年 (订阅)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">上架状态</label>
+                                    <div class="flex flex-col gap-3">
+                                        <div class="flex gap-4">
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="status" value="active" class="text-primary focus:ring-primary h-4 w-4" checked onchange="document.getElementById('schedule_time_container').classList.add('hidden');">
+                                                <span class="text-sm text-gray-700">立即上架</span>
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="status" value="inactive" class="text-primary focus:ring-primary h-4 w-4" onchange="document.getElementById('schedule_time_container').classList.add('hidden');">
+                                                <span class="text-sm text-gray-700">暂不上架</span>
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="status" value="scheduled" class="text-primary focus:ring-primary h-4 w-4" onchange="document.getElementById('schedule_time_container').classList.remove('hidden');">
+                                                <span class="text-sm text-gray-700">定时上架</span>
+                                            </label>
+                                        </div>
+                                        
+                                        <!-- 定时上架时间选择器 (默认隐藏) -->
+                                        <div id="schedule_time_container" class="hidden mt-1 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                                            <label class="block text-xs font-medium text-gray-600 mb-1.5"><i class="far fa-clock mr-1"></i>选择计划上架时间</label>
+                                            <input type="datetime-local" class="w-full text-sm border border-gray-300 rounded px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary bg-white text-gray-700" title="请选择年月日时分秒">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                    <button class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded text-sm font-medium transition-colors shadow-sm" onclick="document.getElementById('productDrawer').classList.add('translate-x-full');">取消</button>
+                    <button class="px-4 py-2 bg-primary hover:bg-primaryHover text-white rounded text-sm font-medium transition-colors shadow-sm" onclick="document.getElementById('productDrawer').classList.add('translate-x-full');">保存并发布</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 交互脚本 -->
+    <script>
+        // 菜单手风琴交互逻辑
+        function toggleSubmenu(button) {
+            // 获取当前点击的菜单项的子菜单和箭头
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.fa-chevron-right');
+            
+            // 检查当前是否已经展开
+            const isExpanded = submenu.classList.contains('submenu-expanded');
+            
+            // 排他性设计：先收起其他所有已展开的菜单 (如果需要同时展开多个，注释掉这段即可)
+            /*
+            document.querySelectorAll('.submenu-transition').forEach(el => {
+                if (el !== submenu) {
+                    el.classList.remove('submenu-expanded');
+                    el.previousElementSibling.querySelector('.fa-chevron-right').classList.remove('arrow-rotated');
+                    // 移除其他菜单的激活颜色
+                    el.previousElementSibling.classList.remove('text-menuActive', 'bg-menuHover');
+                    el.previousElementSibling.classList.add('text-menuText');
+                    el.previousElementSibling.querySelector('i').classList.remove('text-menuActive');
+                }
+            });
+            */
+
+            // 切换当前菜单的状态
+            if (isExpanded) {
+                // 收起
+                submenu.classList.remove('submenu-expanded');
+                arrow.classList.remove('arrow-rotated');
+                // 恢复默认颜色
+                button.classList.remove('text-menuActive', 'bg-menuHover');
+                button.classList.add('text-menuText');
+                button.querySelector('i:first-child').classList.remove('text-menuActive');
+            } else {
+                // 展开
+                submenu.classList.add('submenu-expanded');
+                arrow.classList.add('arrow-rotated');
+                // 加上激活颜色
+                button.classList.remove('text-menuText');
+                button.classList.add('text-menuActive', 'bg-menuHover');
+                button.querySelector('i:first-child').classList.add('text-menuActive');
+            }
+        }
+    </script>
+
+    <!-- 交付订单弹窗 (默认隐藏) -->
+    <div id="delivery-modal" class="fixed inset-0 z-[100] hidden">
+        <!-- 遮罩层 -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeDeliveryModal()"></div>
+        
+        <!-- 弹窗主体 -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- 头部 -->
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-900">人工交付业务</h3>
+                <button onclick="closeDeliveryModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- 内容区 -->
+            <div class="p-6 overflow-y-auto max-h-[70vh]">
+                <div class="bg-blue-50 text-blue-700 text-xs px-3 py-2.5 rounded mb-5 flex items-start gap-2 border border-blue-100">
+                    <i class="fa-solid fa-circle-info mt-0.5 text-blue-500"></i>
+                    <span>请在第三方平台（如MT系统）为您客户开通相应权限后，在此录入账号与有效期信息。交付后，客户端将展示这些凭证。</span>
+                </div>
+
+                <!-- 订单基本信息(只读) -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6 text-sm">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="text-gray-500">订单编号：<span class="text-gray-900 font-medium" id="modal-order-id">ORD-***</span></div>
+                        <div class="text-gray-500">客户姓名：<span class="text-gray-900 font-medium" id="modal-client-name">***</span></div>
+                        <div class="text-gray-500 col-span-2">商品名称：<span class="text-gray-900 font-medium" id="modal-product-name">***</span></div>
+                    </div>
+                </div>
+
+                <!-- 交付信息表单 -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">第三方平台账号 (选填)</label>
+                        <input type="text" placeholder="请输入开通的账号，若无则留空" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">生效日期 <span class="text-red-500">*</span></label>
+                            <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">失效日期 <span class="text-red-500">*</span></label>
+                            <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">交付备注 (选填)</label>
+                        <textarea rows="2" placeholder="如需给客户留言或备注特殊情况，请在此填写..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部操作区 -->
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <button onclick="closeDeliveryModal()" class="px-5 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">
+                    取消
+                </button>
+                <button onclick="confirmDelivery(this)" class="px-6 py-2 bg-primary hover:bg-primaryHover text-white rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2">
+                    确认交付
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const deliveryModal = document.getElementById('delivery-modal');
+        const modalOrderId = document.getElementById('modal-order-id');
+        const modalClientName = document.getElementById('modal-client-name');
+        const modalProductName = document.getElementById('modal-product-name');
+
+        function openDeliveryModal(orderId, clientName, productName) {
+            if(modalOrderId) modalOrderId.textContent = orderId;
+            if(modalClientName) modalClientName.textContent = clientName;
+            if(modalProductName) modalProductName.textContent = productName;
+            if(deliveryModal) deliveryModal.classList.remove('hidden');
+        }
+
+        function closeDeliveryModal() {
+            if(deliveryModal) deliveryModal.classList.add('hidden');
+        }
+
+        function confirmDelivery(btn) {
+            const isTC = document.body.innerHTML.includes('商品訂單');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            btn.innerHTML = isTC ? '<i class="fa-solid fa-circle-notch fa-spin"></i> 處理中...' : '<i class="fa-solid fa-circle-notch fa-spin"></i> 处理中...';
+            
+            setTimeout(() => {
+                alert(isTC ? '交付成功！客戶端訂單狀態已更新為“已交付”。' : '交付成功！客户端订单状态已更新为“已交付”。');
+                closeDeliveryModal();
+                location.reload();
+            }, 1000);
+        }
+    </script>
+
+
+    <script>
+        // 左侧菜单手风琴交互逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuParents = document.querySelectorAll('.flex.flex-col > a.flex.items-center.justify-between');
+            menuParents.forEach(parent => {
+                parent.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const submenu = this.nextElementSibling;
+                    const arrow = this.querySelector('.fa-angle-down, .fa-angle-right');
+                    
+                    if (submenu && submenu.classList.contains('flex-col')) {
+                        if (submenu.classList.contains('hidden')) {
+                            submenu.classList.remove('hidden');
+                            submenu.classList.add('flex');
+                            if(arrow) {
+                                arrow.classList.remove('fa-angle-right');
+                                arrow.classList.add('fa-angle-down');
+                            }
+                        } else {
+                            submenu.classList.add('hidden');
+                            submenu.classList.remove('flex');
+                            if(arrow) {
+                                arrow.classList.remove('fa-angle-down');
+                                arrow.classList.add('fa-angle-right');
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+    <!-- PRD 弹窗 -->
+    <div id="prdModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="document.getElementById('prdModal').classList.add('hidden')"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-[800px] bg-gray-50 shadow-2xl transform transition-transform flex flex-col">
+            <!-- 弹窗头部 -->
+            <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
+                        <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
+                    </div>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 商品选购与订单流程</h3>
+                </div>
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- 弹窗内容 (iframe 嵌入生成的 PRD 页面) -->
+            <div class="flex-1 overflow-hidden bg-white">
+                <iframe src="prd-product-orders.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+            </div>
+            
+            <!-- 弹窗底部 -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">
+                    关闭阅读
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局确认弹窗 (二次确认) -->
+    <div id="globalConfirmModal" class="fixed inset-0 z-[100] hidden items-center justify-center">
+        <!-- 遮罩层 -->
+        <div class="absolute inset-0 bg-black bg-opacity-40 transition-opacity" onclick="hideConfirmModal()"></div>
+        <!-- 弹窗内容 -->
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-sm mx-4 transform transition-all overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fas fa-exclamation-circle text-orange-500"></i> 操作确认
+                </h3>
+                <button class="text-gray-400 hover:text-gray-600 transition-colors" onclick="hideConfirmModal()">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <p id="confirmModalMessage" class="text-gray-600 text-sm leading-relaxed">确认执行此操作吗？</p>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <button class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded shadow-sm text-sm font-medium transition-colors" onclick="hideConfirmModal()">取消</button>
+                <button class="px-4 py-2 bg-primary hover:bg-primaryHover text-white rounded shadow-sm text-sm font-medium transition-colors" onclick="executeConfirmAction()">确认执行</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 二次确认弹窗控制逻辑
+        function showConfirmModal(message) {
+            document.getElementById('confirmModalMessage').innerText = message;
+            const modal = document.getElementById('globalConfirmModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideConfirmModal() {
+            const modal = document.getElementById('globalConfirmModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function executeConfirmAction() {
+            // 这里可以对接实际的接口逻辑
+            // 演示交互：隐藏弹窗并可增加 Toast 提示
+            hideConfirmModal();
+            // 这里暂不加复杂的 toast，仅通过控制台或简单的逻辑模拟完成
+            alert('操作已执行成功 (原型演示)');
+        }
+    </script>
+</body>
+</html>

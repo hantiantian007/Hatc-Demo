@@ -211,6 +211,7 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
                 </div>
             </div>
 
@@ -248,6 +249,8 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
             </div>
+        
+                
         </nav>
     </aside>
 
@@ -298,19 +301,7 @@
         <main class="flex-1 overflow-y-auto p-6">
             
             <div class="max-w-7xl mx-auto space-y-6">
-
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-800">开户审核详情</h2>
-                    <div class="flex items-center gap-3">
-                        <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-4 py-2 bg-[#55B9B9]/10 text-[#55B9B9] rounded text-sm font-medium hover:bg-[#55B9B9] hover:text-white transition-colors border border-[#55B9B9]/20">
-                            <i class="fas fa-file-alt mr-1"></i> PRD文档
-                        </button>
-                        <a href="admin-audit-list.html" class="px-4 py-2 text-gray-600 bg-white border border-gray-200 rounded text-sm hover:bg-gray-50 transition-colors">
-                            <i class="fas fa-arrow-left mr-1"></i> 返回列表
-                        </a>
-                    </div>
-                </div>
-
+                
                 <!-- 审核详情卡片 -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
                     
@@ -368,72 +359,6 @@
                         </div>
                     </div>
 
-                    <!-- 银行资料 -->
-                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">银行资料</h4>
-                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">开户人名称</span>
-                            <span class="text-gray-900 font-medium">张三</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">银行账号</span>
-                            <span class="text-gray-900 font-medium">6222 0210 0123 4567 890</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">开户行名称</span>
-                            <span class="text-gray-900 font-medium">中国工商银行</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">开户行地区</span>
-                            <span class="text-gray-900 font-medium">广东省 广州市</span>
-                        </div>
-                        <div class="col-span-2 flex">
-                            <span class="w-32 text-gray-500 shrink-0">分行与支行</span>
-                            <span class="text-gray-900 font-medium">广州市天河区珠江新城支行</span>
-                        </div>
-                    </div>
-
-                    <!-- 附件资料审核 -->
-                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">附件资料审核</h4>
-                    <div class="grid grid-cols-3 gap-6 text-sm mb-10">
-                        <!-- 身份证正面 -->
-                        <div class="flex flex-col">
-                            <span class="text-gray-500 mb-3 text-center">身份证正面</span>
-                            <div class="w-full h-40 bg-gray-100 rounded border border-gray-300 overflow-hidden relative group cursor-pointer">
-                                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <i class="fa-regular fa-image text-3xl"></i>
-                                </div>
-                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span class="text-white text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>查看大图</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 身份证反面 (新增) -->
-                        <div class="flex flex-col">
-                            <span class="text-gray-500 mb-3 text-center">身份证反面</span>
-                            <div class="w-full h-40 bg-gray-100 rounded border border-gray-300 overflow-hidden relative group cursor-pointer">
-                                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <i class="fa-regular fa-image text-3xl"></i>
-                                </div>
-                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span class="text-white text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>查看大图</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 银行卡正面 -->
-                        <div class="flex flex-col">
-                            <span class="text-gray-500 mb-3 text-center">银行卡正面</span>
-                            <div class="w-full h-40 bg-gray-100 rounded border border-gray-300 overflow-hidden relative group cursor-pointer">
-                                <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <i class="fa-regular fa-credit-card text-3xl"></i>
-                                </div>
-                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span class="text-white text-xs"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i>查看大图</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- 审核操作区 -->
                     <div class="border-t border-gray-100 pt-8 mt-4">
                         <div class="flex items-start mb-8">
@@ -448,7 +373,7 @@
 
                         <!-- 操作按钮组 -->
                         <div class="flex justify-center gap-4">
-                            <button class="px-8 py-2.5 bg-primaryBtn hover:bg-primaryBtnHover text-white font-medium rounded shadow-sm transition-colors text-sm">
+                            <button class="px-8 py-2.5 bg-activeMenu hover:bg-yellow-600 text-white font-medium rounded shadow-sm transition-colors text-sm">
                                 审 核
                             </button>
                             <button class="px-8 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded shadow-sm transition-colors text-sm">
@@ -611,37 +536,5 @@
             }
         }
     </script>
-
-    <!-- PRD 弹窗 -->
-    <div id="prdModal" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="document.getElementById('prdModal').classList.add('hidden')"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-[800px] bg-gray-50 shadow-2xl transform transition-transform flex flex-col">
-            <!-- 弹窗头部 -->
-            <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
-                <div class="flex items-center">
-                    <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
-                        <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
-                    </div>
-                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 账户审核 (HK)</h3>
-                </div>
-                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <!-- 弹窗内容 (iframe 嵌入刚才生成的 PRD 页面) -->
-            <div class="flex-1 overflow-hidden bg-white">
-                <iframe src="prd-audit.html" class="w-full h-full border-0" title="PRD Document"></iframe>
-            </div>
-            
-            <!-- 弹窗底部 -->
-            <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
-                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">
-                    关闭阅读
-                </button>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>

@@ -208,6 +208,7 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
                 </div>
             </div>
 
@@ -245,6 +246,8 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
             </div>
+        
+                
         </nav>
     </aside>
 
@@ -256,6 +259,7 @@
             <div class="flex items-center text-sm text-gray-500">
                 <span class="hover:text-gray-800 cursor-pointer">客户管理</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <a href="admin-sales-list.html" class="hover:text-gray-800 cursor-pointer">销售列表</a>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
                 <span class="text-gray-800 font-medium">新增销售</span>
 
@@ -265,6 +269,7 @@
                     </button>
                     <a href="../index.html" class="bg-[#55B9B9] hover:bg-[#45a0a0] text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
                         返回需求列表
+                    </a>
                 </div>
             </div>
             
@@ -353,7 +358,7 @@
                     </div>
 
                     <!-- 2. 交易奖励配置 -->
-                    <div class="section-card rebate-config-section transition-opacity duration-300">
+                    <div class="section-card">
                         <div class="section-header">交易奖励配置</div>
                         <div class="section-body">
                             
@@ -470,7 +475,7 @@
                     </div>
 
                     <!-- 3. 净入金奖励配置 -->
-                    <div class="section-card rebate-config-section transition-opacity duration-300">
+                    <div class="section-card">
                         <div class="section-header">净入金奖励配置</div>
                         <div class="section-body">
                             
@@ -850,36 +855,36 @@
                             </thead>
                             <tbody>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                                 <tr class="hover:bg-gray-50">
-                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值" oninput="formatDecimal(this)"></td>
-                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额" oninput="formatDecimal(this)"></td>
+                                    <td class="p-2 border-r border-gray-200"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入净入金值"></td>
+                                    <td class="p-2"><input type="text" class="w-[180px] border border-gray-300 rounded px-2 py-1.5 text-xs focus:border-primary outline-none text-center mx-auto" placeholder="请输入奖励金额"></td>
                                 </tr>
                             </tbody>
                         </table>
