@@ -6,6 +6,30 @@
     <title>商品订单 - HATC CRM - 后台管理系统</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        primaryHover: '#b08a4d',
+                        sidebar: '#2A2D3A',
+                        mainBg: '#F3F4F6',
+                        darkCard: '#2D3036',
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 flex h-screen overflow-hidden">
     <!-- 拒绝并退款弹窗 (默认隐藏) -->
     <div id="reject-modal" class="fixed inset-0 z-[100] hidden">
         <!-- 遮罩层 -->
@@ -70,83 +94,210 @@
         </div>
     </div>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#C19B5E',
-                        primaryHover: '#b08a4d',
-                        sidebar: '#2A2D3A',
-                        mainBg: '#F3F4F6',
-                        darkCard: '#2D3036',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-mainBg font-sans text-gray-800 flex h-screen overflow-hidden">
-
     <!-- 左侧侧边栏 -->
-                    <aside class="w-[240px] bg-[#282B34] text-gray-300 flex flex-col shrink-0 hidden md:flex font-sans">
-        <div class="h-[72px] flex items-center justify-center">
-            <span class="text-white font-bold text-[28px] tracking-wider">HATC</span>
+                    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        
+        <!-- Logo 区域 -->
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
         </div>
-        <nav class="flex-1 overflow-y-auto py-2 px-3 space-y-1 custom-scrollbar">
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-home w-5 text-center text-lg"></i> <span class="text-[15px]">首页</span></div>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-th w-5 text-center text-lg"></i> <span class="text-[15px]">出入金</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-columns w-5 text-center text-lg"></i> <span class="text-[15px]">佣金管理</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-file-alt w-5 text-center text-lg"></i> <span class="text-[15px]">活动管理</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-bullhorn w-5 text-center text-lg"></i> <span class="text-[15px]">动态公告</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
-            </a>
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-user-friends w-5 text-center text-lg"></i> <span class="text-[15px]">客户管理</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
-            </a>
 
-            <!-- 增值业务 (Active Parent) -->
-            <div class="flex flex-col">
-                <a href="#" class="flex items-center justify-between px-3 py-3 text-primary bg-[#363945] rounded-lg transition-colors">
-                    <div class="flex items-center gap-3"><i class="fas fa-store w-5 text-center text-lg"></i> <span class="text-[15px] font-medium">增值业务</span></div>
-                    <i class="fas fa-angle-down text-xs"></i>
-                </a>
-                <div class="flex flex-col mt-1 space-y-1">
-                    <a href="client-product-list.html" class="flex items-center pl-[44px] pr-4 py-2.5 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors relative group">
-                        
-                        <span class="text-[14px]">增值服务</span>
-                    </a>
-                    <a href="admin-product-orders.html" class="flex items-center pl-[44px] pr-4 py-2.5 text-white bg-[#363945] rounded-lg transition-colors relative group">
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-primary rounded-r"></div>
-                        <span class="text-[14px]">订单管理</span>
-                    </a>
+        <!-- 菜单列表 (可滚动) -->
+                                        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+            
+            <!-- 出入金 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
                 </div>
             </div>
 
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors mt-1.5">
-                <div class="flex items-center gap-3"><i class="fas fa-chart-pie w-5 text-center text-lg"></i> <span class="text-[15px]">报表中心</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
+            <!-- 佣金管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+
+            <!-- 活动管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">成长计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动审核</a>
+                </div>
+            </div>
+
+            <!-- 动态公告 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-bullhorn w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">动态公告</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">集团动态</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">最新公告</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">推送消息</a>
+                </div>
+            </div>
+
+            <!-- 客户管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
+                    <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
+                </div>
+            </div>
+            
+            <!-- 报表中心 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-relationship-tree.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">关系树统计</a>
+                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
+                    <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">盈亏报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                </div>
+            </div>
+
+            <!-- 系统管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">系统设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">MT设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">群发管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">消息管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">日志管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">配置参数</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付币种</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
             </a>
-            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
-                <div class="flex items-center gap-3"><i class="fas fa-cog w-5 text-center text-lg"></i> <span class="text-[15px]">系统管理</span></div>
-                <i class="fas fa-angle-right text-xs"></i>
-            </a>
+
+            <!-- 财务管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-wallet w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表明细</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户信息表</a>
+                </div>
+            </div>
+
+            <!-- 风控管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-shield w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">风控管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
+                </div>
+            </div>
         
                 
         </nav>
+        
+        <!-- 底部收起按钮 (选做) -->
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
     </aside>
 
     <!-- 右侧主体内容 -->
@@ -278,7 +429,10 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260623-8891</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-23<br>14:30:22</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">张三</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-gray-900">张三</div>
+                                <div class="text-xs text-[#C19B5E] mt-1"><i class="fas fa-wallet mr-1"></i>MT5: 8881234 (USD)</div>
+                            </td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500">zhangsan@email.com</td>
                             <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋一号智能交易系统</td>
                             <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-gray-100 rounded text-xs">1个月</span></td>
@@ -303,7 +457,10 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260622-5531</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-22<br>10:11:45</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">赵六</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <div class="text-gray-900">赵六</div>
+                                <div class="text-xs text-[#C19B5E] mt-1"><i class="fas fa-wallet mr-1"></i>MT5: 8885678 (USD)</div>
+                            </td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500">zhaoliu@email.com</td>
                             <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋二号</td>
                             <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-purple-50 text-purple-600 rounded text-xs">一次性买断</span></td>

@@ -57,10 +57,13 @@
 
     <!-- 左侧导航菜单 -->
     <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        
+        <!-- Logo 区域 -->
         <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
             <span class="text-4xl font-black tracking-wider text-white">HATC</span>
         </div>
 
+        <!-- 菜单列表 (可滚动) -->
                                         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
@@ -249,6 +252,13 @@
         
                 
         </nav>
+        
+        <!-- 底部收起按钮 (选做) -->
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
     </aside>
 
     <!-- 右侧内容区 -->

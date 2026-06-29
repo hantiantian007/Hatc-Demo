@@ -60,9 +60,13 @@
 
     <!-- 左侧导航菜单 (复用 admin-layout 结构) -->
     <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        
+        <!-- Logo 区域 -->
         <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
             <span class="text-4xl font-black tracking-wider text-white">HATC</span>
         </div>
+
+        <!-- 菜单列表 (可滚动) -->
                                         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
@@ -143,16 +147,15 @@
 
             <!-- 客户管理 -->
             <div class="menu-group">
-                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
-                        <i class="fa-solid fa-user-group w-6 text-center text-lg text-menuActive"></i>
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
                         <span class="ml-3 font-medium text-[15px]">客户管理</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
-                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
-                    <a href="admin-client-list.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">客户列表
-                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-menuActive rounded-r"></span></a>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
                     <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
@@ -252,6 +255,13 @@
         
                 
         </nav>
+        
+        <!-- 底部收起按钮 (选做) -->
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
     </aside>
 
     <!-- 右侧内容区 -->
@@ -410,6 +420,7 @@
                                 <th class="font-medium py-4 px-4">联系方式</th>
                                 <th class="font-medium py-4 px-4">登录双重验证</th>
                                 <th class="font-medium py-4 px-4">上级信息</th>
+                                <th class="font-medium py-4 px-4">所属代理(IB)</th>
                                 <th class="font-medium py-4 px-4">推荐人</th>
                                 <th class="font-medium py-4 px-4">MT账户数量</th>
                                 <th class="font-medium py-4 px-4">状态</th>
@@ -440,6 +451,10 @@
                                 <td class="py-4 px-4">
                                     <div>test</div>
                                     <div class="text-gray-500 mt-1">935292015@q.com</div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="text-blue-500 hover:underline cursor-pointer">IB-8821 (王代理)</div>
+                                    <div class="text-gray-500 mt-1">wang@ib.com</div>
                                 </td>
                                 <td class="py-4 px-4">
                                     <div>test</div>
@@ -475,6 +490,7 @@
                                             <span class="text-gray-500 w-32">操作</span>
                                             <div class="flex items-center gap-2">
                                                 <a href="admin-client-detail.html" class="bg-[#C4A373] text-white px-4 py-1 rounded text-xs hover:bg-[#b09063] inline-block">查看</a>
+                                                <button onclick="openEditIbModal('123123')" class="text-blue-500 px-4 py-1 rounded text-xs hover:bg-blue-50 border border-blue-200 bg-white">修改代理</button>
                                                 <button class="text-blue-500 px-4 py-1 rounded text-xs hover:bg-blue-50">修改</button>
                                                 <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white flex items-center gap-1">操作 <i class="fa-solid fa-caret-down"></i></button>
                                             </div>
@@ -501,6 +517,7 @@
                                     <div>test-褚必</div>
                                     <div class="text-gray-500 mt-1">b12@qq.com</div>
                                 </td>
+                                <td class="py-4 px-4 text-gray-400">无</td>
                                 <td class="py-4 px-4">
                                     <div>test-褚必</div>
                                     <div class="text-gray-500 mt-1">b12@qq.com</div>
@@ -535,6 +552,7 @@
                                             <span class="text-gray-500 w-32">操作</span>
                                             <div class="flex items-center gap-2">
                                                 <a href="admin-client-detail.html" class="bg-[#C4A373] text-white px-4 py-1 rounded text-xs hover:bg-[#b09063] inline-block">查看</a>
+                                                <button onclick="openEditIbModal('test-杨均')" class="text-blue-500 px-4 py-1 rounded text-xs hover:bg-blue-50 border border-blue-200 bg-white">修改代理</button>
                                                 <button class="text-blue-500 px-4 py-1 rounded text-xs hover:bg-blue-50">修改</button>
                                                 <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white flex items-center gap-1">操作 <i class="fa-solid fa-caret-down"></i></button>
                                             </div>
@@ -561,6 +579,7 @@
                                     <div>test-蒋为</div>
                                     <div class="text-gray-500 mt-1">b11@qq.com</div>
                                 </td>
+                                <td class="py-4 px-4 text-gray-400">无</td>
                                 <td class="py-4 px-4">
                                     <div>test-蒋为</div>
                                     <div class="text-gray-500 mt-1">b11@qq.com</div>
@@ -595,6 +614,7 @@
                                             <span class="text-gray-500 w-32">操作</span>
                                             <div class="flex items-center gap-2">
                                                 <a href="admin-client-detail.html" class="bg-[#C4A373] text-white px-4 py-1 rounded text-xs hover:bg-[#b09063] inline-block">查看</a>
+                                                <button onclick="openEditIbModal('test-褚必')" class="text-blue-500 px-4 py-1 rounded text-xs hover:bg-blue-50 border border-blue-200 bg-white">修改代理</button>
                                                 <button class="text-blue-500 px-4 py-1 rounded text-xs hover:bg-blue-50">修改</button>
                                                 <button class="border border-[#C4A373] text-[#C4A373] px-3 py-1 rounded text-xs hover:bg-[#C4A373] hover:text-white flex items-center gap-1">操作 <i class="fa-solid fa-caret-down"></i></button>
                                             </div>
@@ -627,6 +647,65 @@
         </div>
 
     </main>
+
+    <!-- 修改所属代理弹窗 -->
+    <div id="editIbModal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl w-[500px] overflow-hidden transform transition-all">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-base font-bold text-gray-800">修改所属代理 (IB)</h3>
+                <button onclick="closeEditIbModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">当前客户</label>
+                    <div id="editIbClientName" class="text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded border border-gray-200">123123</div>
+                </div>
+                <div class="mb-6 relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-1"><span class="text-red-500 mr-1">*</span>新的所属代理</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="ibSearchInput" class="w-full border border-gray-300 rounded-md pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-shadow" placeholder="搜索代理名称、邮箱或 IB 编号" onfocus="showIbDropdown()">
+                    </div>
+                    
+                    <!-- 代理搜索下拉框 -->
+                    <div id="ibDropdown" class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10 hidden max-h-48 overflow-y-auto">
+                        <ul class="py-1">
+                            <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex justify-between items-center" onclick="selectIb('IB-8821 (王代理)')">
+                                <div>
+                                    <div class="text-sm text-gray-800 font-medium">王代理</div>
+                                    <div class="text-xs text-gray-500">wang@ib.com</div>
+                                </div>
+                                <span class="text-xs text-blue-500 bg-blue-50 px-2 py-0.5 rounded">IB-8821</span>
+                            </li>
+                            <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex justify-between items-center" onclick="selectIb('IB-9033 (李代理)')">
+                                <div>
+                                    <div class="text-sm text-gray-800 font-medium">李代理</div>
+                                    <div class="text-xs text-gray-500">li@ib.com</div>
+                                </div>
+                                <span class="text-xs text-blue-500 bg-blue-50 px-2 py-0.5 rounded">IB-9033</span>
+                            </li>
+                            <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 italic" onclick="selectIb('无 (解除代理关系)')">
+                                <i class="fa-solid fa-unlink mr-2"></i>解除当前代理关系
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50/50 p-3 rounded border border-blue-100 flex gap-2 text-sm text-gray-600">
+                    <i class="fa-solid fa-circle-info text-blue-500 mt-0.5"></i>
+                    <div>
+                        修改所属代理后，该客户产生的后续交易佣金将结算给新的代理。历史佣金不受影响。
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                <button onclick="closeEditIbModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">取消</button>
+                <button onclick="submitEditIb()" class="px-4 py-2 text-sm font-medium text-white bg-[#C4A373] rounded hover:bg-[#b09063] transition-colors">确认修改</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // 侧边栏菜单切换
@@ -692,6 +771,41 @@
                 icon.classList.add('fa-chevron-down');
             }
         }
+
+        // 修改代理弹窗逻辑
+        function openEditIbModal(clientName) {
+            document.getElementById('editIbClientName').textContent = clientName;
+            document.getElementById('editIbModal').classList.remove('hidden');
+            document.getElementById('ibSearchInput').value = '';
+            document.getElementById('ibDropdown').classList.add('hidden');
+        }
+
+        function closeEditIbModal() {
+            document.getElementById('editIbModal').classList.add('hidden');
+        }
+
+        function showIbDropdown() {
+            document.getElementById('ibDropdown').classList.remove('hidden');
+        }
+
+        function selectIb(ibName) {
+            document.getElementById('ibSearchInput').value = ibName;
+            document.getElementById('ibDropdown').classList.add('hidden');
+        }
+
+        function submitEditIb() {
+            closeEditIbModal();
+            // Optional: show a toast or alert
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('ibDropdown');
+            const input = document.getElementById('ibSearchInput');
+            if (dropdown && input && !input.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>

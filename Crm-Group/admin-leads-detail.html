@@ -60,9 +60,13 @@
 
     <!-- 左侧导航菜单 -->
     <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        
+        <!-- Logo 区域 -->
         <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
             <span class="text-4xl font-black tracking-wider text-white">HATC</span>
         </div>
+
+        <!-- 菜单列表 (可滚动) -->
                                         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
@@ -143,14 +147,14 @@
 
             <!-- 客户管理 -->
             <div class="menu-group">
-                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
-                        <i class="fa-solid fa-user-group w-6 text-center text-lg text-menuActive"></i>
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
                         <span class="ml-3 font-medium text-[15px]">客户管理</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
-                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
                     <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
                     <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
@@ -158,8 +162,7 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
                     <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
-                    <a href="admin-leads-list.html" class="block py-2 text-sm text-white font-medium bg-white/10 px-3 -ml-3 rounded transition-colors relative">留资列表
-                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-menuActive rounded-r"></span></a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
                 </div>
             </div>
             
@@ -252,6 +255,13 @@
         
                 
         </nav>
+        
+        <!-- 底部收起按钮 (选做) -->
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
     </aside>
 
     <!-- 右侧内容区 -->
@@ -387,6 +397,35 @@
                                 <option>中国香港</option>
                                 <option>其他</option>
                             </select>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">所属代理</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                <input type="text" id="leadIbSearchInput" class="w-full border border-gray-300 rounded pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn transition-shadow" placeholder="输入代理名称或邮箱查询..." onfocus="showLeadIbDropdown()">
+                            </div>
+                            <!-- 代理搜索下拉框 -->
+                            <div id="leadIbDropdown" class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 hidden max-h-48 overflow-y-auto">
+                                <ul class="py-1">
+                                    <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex justify-between items-center" onclick="selectLeadIb('IB-8821 (王代理)')">
+                                        <div>
+                                            <div class="text-sm text-gray-800 font-medium">王代理</div>
+                                            <div class="text-xs text-gray-500">wang@ib.com</div>
+                                        </div>
+                                        <span class="text-xs text-blue-500 bg-blue-50 px-2 py-0.5 rounded">IB-8821</span>
+                                    </li>
+                                    <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex justify-between items-center" onclick="selectLeadIb('IB-9033 (李代理)')">
+                                        <div>
+                                            <div class="text-sm text-gray-800 font-medium">李代理</div>
+                                            <div class="text-xs text-gray-500">li@ib.com</div>
+                                        </div>
+                                        <span class="text-xs text-blue-500 bg-blue-50 px-2 py-0.5 rounded">IB-9033</span>
+                                    </li>
+                                    <li class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 italic" onclick="selectLeadIb('')">
+                                        <i class="fa-solid fa-times-circle mr-2"></i>清空代理
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">期望服务</label>
@@ -747,6 +786,25 @@
             arrow.classList.add('arrow-rotated');
         }
     }
+
+    // 所属代理选择逻辑
+    function showLeadIbDropdown() {
+        document.getElementById('leadIbDropdown').classList.remove('hidden');
+    }
+
+    function selectLeadIb(ibName) {
+        document.getElementById('leadIbSearchInput').value = ibName;
+        document.getElementById('leadIbDropdown').classList.add('hidden');
+    }
+
+    // 点击外部关闭下拉框
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('leadIbDropdown');
+        const input = document.getElementById('leadIbSearchInput');
+        if (dropdown && input && !input.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
 </script>
 </body>
 </html>

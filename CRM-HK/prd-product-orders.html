@@ -152,7 +152,43 @@
                         </tbody>
                     </table>
                 </div>
+            
+            <div class="p-8 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">4. 商业化闭环核心逻辑 (新增)</h3>
+                <table class="w-full text-sm text-left border-collapse border border-gray-200">
+                    <thead class="bg-gray-50 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 border border-gray-200 w-1/4">逻辑模块 / 指标</th>
+                            <th class="px-4 py-3 border border-gray-200 w-1/2">计算公式与规则定义</th>
+                            <th class="px-4 py-3 border border-gray-200 w-1/4">数据来源与特殊逻辑</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-gray-600">
+                        <tr>
+                            <td class="px-4 py-3 border border-gray-200 font-medium">MT5 交易账户强绑定</td>
+                            <td class="px-4 py-3 border border-gray-200">客户在下单支付时，必须下拉选择其名下状态正常的 MT5 交易账号。订单生成后，该商品（如 EA 策略）的履约动作仅针对该指定账号生效。</td>
+                            <td class="px-4 py-3 border border-gray-200">获取客户同名下的真实 MT5 账户列表。</td>
+                        </tr>
+
+                        <tr>
+                            <td class="px-4 py-3 border border-gray-200 font-medium">余额不足断点挽回 (引导入金)</td>
+                            <td class="px-4 py-3 border border-gray-200">支付确认弹窗内实时校验钱包余额。当余额 < 商品售价时，原“确认扣款”按钮变更为“余额不足，去入金”并支持跳转。</td>
+                            <td class="px-4 py-3 border border-gray-200">引导跳转入金页时，需在 URL 中携带当前商品 ID（如 ?redirect=product&id=123）以便入金后回跳。</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 border border-gray-200 font-medium">防重复购买与订阅到期</td>
+                            <td class="px-4 py-3 border border-gray-200">
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li><strong>防重复购买</strong>：若商品为“一次性买断”，客户一旦购买成功，商品列表及详情页按钮置灰展示“已拥有”，禁止再次下单。</li>
+                                    <li><strong>订阅到期降级</strong>：订阅制套餐到期前 3 天发送站内信预警；过期后系统自动撤销 MT5 账号的相关权限，订单状态变更为“已失效”。</li>
+                                </ul>
+                            </td>
+                            <td class="px-4 py-3 border border-gray-200">系统定时任务每日凌晨扫描订阅到期时间。</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+</div>
             
         </div>
     </div>
