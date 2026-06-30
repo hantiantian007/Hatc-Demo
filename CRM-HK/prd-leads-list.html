@@ -3,553 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>留资管理二期 PRD</title>
+    <title>留资管理 (二期) PRD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
         th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
-        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; white-space: nowrap; }
         td { color: #4b5563; }
-        .highlight { color: #e11d48; font-weight: 500; }
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin-bottom: 16px; margin-top: 32px; font-size: 18px; font-weight: bold; color: #1f2937; }
     </style>
 </head>
 <body class="bg-gray-50 p-8 font-sans">
     <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
         
         <div class="flex justify-between items-center mb-8 border-b pb-4">
-            <h1 class="text-2xl font-bold text-gray-800">【需求文档】留资管理二期 (精细化运营)</h1>
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】留资管理 (二期)</h1>
             <div class="flex gap-4">
-                <a href="admin-leads-list.html" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
+                <a href="admin-leads-list.html" class="px-4 py-2 bg-[#C19B5E] hover:opacity-90 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
                 <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
             </div>
         </div>
 
-        <!-- 本期需求重点板块 -->
-        <div class="mb-8 border border-blue-200 rounded-lg overflow-hidden shadow-sm prd-focus-block">
-            <div class="bg-blue-50 px-5 py-3 border-b border-blue-100 flex items-center">
-                <i class="fa-solid fa-bullseye text-blue-600 mr-2 text-lg"></i>
-                <h2 class="text-blue-600 font-bold text-base m-0">本期需求重点 (产研测关注)</h2>
-            </div>
-            <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
-                <p class="mb-3 font-medium text-gray-900">本次二期迭代核心为引入完整的“线索生命周期”与“销售精细化运营”体系。请重点关注以下业务与交互逻辑：</p>
-                
-                <div class="space-y-4 mt-4">
-                    <div class="flex items-start">
-                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 font-bold text-xs mr-3 mt-0.5">1</span>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-1">生命周期 TABS 与角色隔离</h4>
-                            <p class="text-gray-600">废弃原有的“线索状态”下拉筛选，改用顶部的直观 TABS 导航。严格实施<span class="font-semibold text-gray-800">角色视图隔离</span>：主管可见全量分配流转状态；销售仅可见“跟进中、无效线索、已转化”。</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 font-bold text-xs mr-3 mt-0.5">2</span>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-1">公海机制与主动退回</h4>
-                            <p class="text-gray-600">引入公海池概念。销售在跟进发现无意向或无法联系时，可点击“退回公海”按钮，将线索剥离自己名下，状态变更为“退回公海”，供主管重新分配。</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 font-bold text-xs mr-3 mt-0.5">3</span>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-1">跟进效率工具 (热度与提醒)</h4>
-                            <p class="text-gray-600">跟进表单及列表新增<span class="font-semibold text-red-500">“线索热度评估 (高/中/低)”</span>和<span class="font-semibold text-orange-500">“下次跟进时间”</span>，辅助销售规划每日工作优先级。</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start mt-4">
-                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 font-bold text-xs mr-3 mt-0.5">4</span>
-                        <div>
-                            <h4 class="font-bold text-gray-800 mb-1">主管效能看板 (大弹窗)</h4>
-                            <p class="text-gray-600">为主管提供团队跟进效能的统计视图，包含：分配总数、平均首响时间、转化率、超时未跟进以及退回公海的比例，支持按“日/周/月”切换周期。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- 研发特别说明 -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-8">
+            <h3 class="text-sm font-bold text-yellow-800 mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i>研发特别说明 (仅供演示)</h3>
+            <p class="text-sm text-yellow-700">原型列表顶部可能存在的「销售主管 / 销售人员」视角切换按钮，<strong>仅用于产品原型交互演示</strong>，以便向业务确认不同角色下的数据可见性和按钮权限隔离。实际生产开发中，<strong>非研发内容，无需开发此切换按钮</strong>。用户权限与数据可见范围请直接通过后端 RBAC 及组织架构树进行系统控制。</p>
         </div>
 
-        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">1. 线索池状态与业务闭环机制</h2>
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
-            <p class="text-sm text-blue-800 font-medium">业务目标：建立从线索入库、分配、跟进到最终转化的标准漏斗，确保线索资源的最大化利用。引入防撞单与掉保机制以优化销售体验。</p>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="20%">机制与阶段 (Tabs)</th>
-                    <th width="40%">计算公式与规则定义</th>
-                    <th width="40%">数据来源与特殊逻辑</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">1. 线索查重与防撞单<br><span class="text-xs text-red-500 font-normal">新增风控</span></td>
-                    <td>
-                        在通过【新增线下线索】录入或接口对接时，系统需实时校验【手机号】或【邮箱】。若在系统内已存在，则拦截录入。
-                    </td>
-                    <td>
-                        前端需在手机号输入框提供失焦校验提示：“该手机号已存在！归属人：XXX”。避免销售撞单引起的纠纷。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">2. 沉睡线索自动回收<br><span class="text-xs text-red-500 font-normal">新增流转规则</span></td>
-                    <td>
-                        处于【跟进中】的线索，若连续 <span class="font-bold">7个自然日</span> 未添加任何新的跟进记录，系统定时任务将其自动变更为【退回公海】状态。
-                    </td>
-                    <td>
-                        释放无效占用的资源（掉保机制），归属销售清空。原销售不可在 30 天内再次申领该线索。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">全部线索</td>
-                    <td>默认页，展示权限范围内的所有线索</td>
-                    <td>主管可见全量；销售可见自己名下的全量</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">待分配</td>
-                    <td>新进入系统的原始公海线索</td>
-                    <td><span class="highlight">仅主管可见。</span>TAB 上需带有红色气泡显示待分配数量。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">已分配 / 跟进中</td>
-                    <td>已分配给销售正在跟进中的线索</td>
-                    <td>主管显示为“已分配”(全量)；销售显示为“跟进中”(仅自己名下)。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">退回公海</td>
-                    <td>曾被分配，但被销售主动退回的线索</td>
-                    <td><span class="highlight">仅主管可见。</span></td>
-                </tr>
-                <tr>
-                    <td class="font-medium">无效线索</td>
-                    <td>销售标记为明确无效（空号/拒接）的线索</td>
-                    <td>双角色可见。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">已转化</td>
-                    <td>成功开通账户的优质线索</td>
-                    <td>双角色可见。</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">2. 列表过滤区更新</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="15%">组件类型</th>
-                    <th width="70%">变更说明</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>下次跟进时间</td>
-                    <td>双日期选择</td>
-                    <td><span class="highlight">【新增】</span>用于销售快速筛选“今天需要回访”的线索列表。</td>
-                </tr>
-                <tr>
-                    <td>线索热度</td>
-                    <td>下拉单选</td>
-                    <td><span class="highlight">【新增】</span>选项：全部、高、中、低。</td>
-                </tr>
-
-            </tbody>
-        </table>
-
-        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">3. 列表操作与公海流转</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th width="20%">操作/功能</th>
-                    <th width="80%">交互与逻辑说明</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">批量分配 (主管)</td>
-                    <td>
-                        1. 列表最左侧新增复选框。<br>
-                        2. 仅“待分配”和“退回公海”状态的线索允许被勾选，其他状态复选框置灰禁用。<br>
-                        3. 勾选后点击顶部“批量分配”，弹窗选择目标销售，确认后批量流转至该销售名下。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">导出报表</td>
-                    <td>
-                        1. 在列表顶部按钮区新增“导出报表”按钮。<br>
-                        2. 点击后根据当前列表的筛选条件，导出包含所有线索核心字段的 Excel 或 CSV 文件。<br>
-                        3. 导出的数据应遵循当前角色的数据权限（主管导出全量，销售导出自己名下）。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">新增线下线索 (主管)</td>
-                    <td>
-                        1. 在列表顶部按钮区新增“新增线下线索”按钮（仅主管视角可见）。<br>
-                        2. 点击弹出表单，支持录入：姓名(必填)、联系电话(必填)、邮箱、微信等。<br>
-                        3. 支持在录入时直接选择“信息来源(默认线下金融活动)”和“分配归属销售”。<br>
-                        4. 若未选择销售，新增后线索状态默认为“待分配”；若选择了销售，则直接进入该销售的“跟进中”列表。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">退回公海 (销售)</td>
-                    <td>
-                        1. 在“跟进中”状态下，操作列新增橙色的<span class="text-orange-500 font-bold">「退回公海」</span>按钮。<br>
-                        2. 点击时弹出二次确认（防止误触）。<br>
-                        3. 确认后，该线索的【归属销售】清空，状态变更为“退回公海”，并从该销售的列表中消失。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">跟进表单扩充</td>
-                    <td>
-                        原【客户跟进】弹窗中，新增两个字段：<br>
-                        1. <span class="highlight">*线索热度评估</span>：单选（高/中/低），用于动态更新客户在列表中的火热程度。<br>
-                        2. <span class="font-semibold">下次跟进时间</span>：原生日期时间选择器，选填。
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-                <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3 mt-8">4. 销售跟进效能看板与漏斗 (仅主管)</h2>
-        <div class="mb-4 text-sm text-gray-600">
-            <p>主管点击列表上方的“效能看板”按钮，弹出 1000px 宽的沉浸式大型模态框。以下为各项数据的<strong>来源、计算公式及业务规则</strong>说明：</p>
-        </div>
-
-        <h3 class="text-md font-bold text-gray-700 mb-3 mt-6"><i class="fas fa-filter text-indigo-500 mr-2"></i>4.1 转化漏斗与渠道 ROI 规则</h3>
-        <div class="overflow-x-auto mb-6">
-            <table class="w-full border-collapse border border-gray-200 text-sm">
+        <!-- 模块一：新增线下线索弹窗 -->
+        <div class="module-title">1. 独立模块：新增线下线索弹窗</div>
+        <p class="text-sm text-gray-500 mb-4">触发方式：点击列表顶部「新增线下线索」按钮，弹出右侧抽屉或居中 Modal 弹窗。</p>
+        <div class="overflow-x-auto">
+            <table>
                 <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border border-gray-200 px-4 py-2 text-left w-1/4">分析维度/指标</th>
-                        <th class="border border-gray-200 px-4 py-2 text-left w-2/4">计算公式与流转规则定义</th>
-                        <th class="border border-gray-200 px-4 py-2 text-left w-1/4">数据来源与特殊逻辑</th>
+                    <tr>
+                        <th width="15%">字段名称</th>
+                        <th width="20%">输入类型与数据来源</th>
+                        <th width="35%">数据枚举值/计算公式</th>
+                        <th width="30%">业务规则与校验说明</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-gray-200 px-4 py-2 font-medium bg-gray-50">线索转化漏斗 (5层)</td>
-                        <td class="border border-gray-200 px-4 py-2">
-                            <ul class="list-disc pl-4 space-y-1">
-                                <li><b>总分配：</b>统计周期内分配给销售的线索总数</li>
-                                <li><b>有效接通：</b>跟进记录中包含“已接通”状态的线索数</li>
-                                <li><b>添加微信/转化：</b>线索状态变为“已转化”的数量</li>
-                                <li><b>首次入金：</b>已转化客户中产生入金动作的数量</li>
-                                <li><b>产生交易：</b>已入金客户中产生首笔真实交易的数量</li>
-                            </ul>
-                        </td>
-                        <td class="border border-gray-200 px-4 py-2 text-gray-600">层层递减计算转化率（如：有效接通数/总分配数）。跨周期转化的数据归属以“分配时间”为准。</td>
+                        <td class="font-medium whitespace-nowrap">客户姓名</td>
+                        <td>文本输入框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
+                        <td>无</td>
+                        <td>必填项，限制最大长度 50 字符。</td>
                     </tr>
                     <tr>
-                        <td class="border border-gray-200 px-4 py-2 font-medium bg-gray-50">渠道 ROI 评估</td>
-                        <td class="border border-gray-200 px-4 py-2">按【信息来源】（如：官网、线下展会、Facebook）进行 Group By 汇总。展示各渠道的获客总数、首入金率、以及贡献的总净入金金额。</td>
-                        <td class="border border-gray-200 px-4 py-2 text-gray-600">用于指导市场部预算投放。财务数据取关联 CRM 客户的真实入金数据。</td>
+                        <td class="font-medium whitespace-nowrap">手机号</td>
+                        <td>文本输入框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
+                        <td>无</td>
+                        <td>必填项（与邮箱二选一）。<br><span class="highlight">系统匹配与账号识别</span>：保存或失焦时，系统自动校验该手机号是否已存在于 CRM 系统。如果命中，必须强制显示该客户当前的「归属销售」以及所属的「代理 (IB)」，进行撞单拦截。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">邮箱</td>
+                        <td>文本输入框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
+                        <td>无</td>
+                        <td>必填项（与手机号二选一）。须符合标准邮箱格式。<br><span class="highlight">系统匹配与账号识别</span>：逻辑同手机号，命中 CRM 库需显示归属销售与代理。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">微信号</td>
+                        <td>文本输入框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
+                        <td>无</td>
+                        <td>选填项，限制最大长度 50 字符。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">线索热度</td>
+                        <td>下拉单选框<br><span class="text-xs text-gray-400">来源：人工选择</span></td>
+                        <td>穷举值：<br>1. 高<br>2. 中<br>3. 低</td>
+                        <td>选填。销售/主管根据初步沟通意向预判。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">咨询内容</td>
+                        <td>下拉单选框<br><span class="text-xs text-gray-400">来源：人工选择</span></td>
+                        <td>穷举值：<br>1. 成为代理<br>2. 活动咨询<br>3. 开户咨询<br>4. 个人交易<br>5. 其他</td>
+                        <td>必填。记录客户的初始核心诉求。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">信息来源</td>
+                        <td>下拉单选框<br><span class="text-xs text-gray-400">来源：人工选择</span></td>
+                        <td>穷举值：<br>1. 官网访问<br>2. 社交平台<br>3. 客户推荐<br>4. 线上活动<br>5. 线下金融活动<br>6. 金融资讯网站<br>7. 其他渠道</td>
+                        <td>必填。用于线索溯源与 ROI 分析。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">归属销售</td>
+                        <td>下拉单选框<br><span class="text-xs text-gray-400">来源：系统读取组织架构</span></td>
+                        <td>枚举值：当前登录主管下辖的所有销售人员列表。</td>
+                        <td>必填。主管录入时可指派给组员；普通销售录入时，该字段锁定为当前销售本人不可改。<br>保存后，线索状态自动变更为“跟进中”。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">备注说明</td>
+                        <td>多行文本框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
+                        <td>无</td>
+                        <td>选填。记录线下初步沟通的背景信息。</td>
                     </tr>
                 </tbody>
             </table>
-                </div>
-            </div>
-
-        <h3 class="text-md font-bold text-gray-700 mb-3"><i class="fas fa-chart-bar text-blue-500 mr-2"></i>4.2 核心效能指标卡片规则</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">指标/维度</th>
-                    <th width="40%">计算公式与规则定义</th>
-                    <th width="45%">数据来源与特殊逻辑</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">统计周期 (基础过滤)</td>
-                    <td>
-                        <strong>本日</strong>：当日 00:00:00 - 23:59:59<br>
-                        <strong>本周</strong>：本周一 00:00:00 - 本周日 23:59:59<br>
-                        <strong>本月</strong>：本月1日 00:00:00 - 月底最后一天 23:59:59
-                    </td>
-                    <td>全局过滤基准字段：<strong>【分配时间】</strong>。<br>即所有指标均基于“在该周期内被分配给销售的线索”进行追踪。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">分配线索总数</td>
-                    <td><span class="highlight">公式：COUNT(分配时间落在周期内的线索)</span></td>
-                    <td>数据池中带有分配时间且落在筛选周期内的总条数。包含后续被退回公海的线索（算作曾分配过）。支持下钻。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">平均跟进频次</td>
-                    <td><span class="highlight">公式：跟进记录总数 ÷ 分配线索总数</span></td>
-                    <td><strong>过程韧性指标</strong>：体现销售对每条线索的平均投入度。支持下钻查看具体跟进明细。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">无效/退回占比</td>
-                    <td><span class="highlight">公式：((退回公海数 + 无效线索数) ÷ 分配线索总数) × 100%</span></td>
-                    <td>反映销售“挑单”情况或引流渠道质量。支持下钻查看无效和退回的具体列表。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">转化数</td>
-                    <td><span class="highlight">公式：COUNT(当前状态为“已转化”的线索)</span></td>
-                    <td>周期内分配的线索中成功开户的数量。支持下钻。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">首次入金率</td>
-                    <td><span class="highlight">公式：(完成首次入金的线索数 ÷ 分配线索总数) × 100%</span></td>
-                    <td><strong>财务结果指标</strong>：衡量线索不仅开户而且实际带来入金的比例。注意：文案中不使用FTD等行业黑话。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">贡献净入金</td>
-                    <td><span class="highlight">公式：SUM(该批线索对应CRM账户的累计入金 - 累计出金)</span></td>
-                    <td><strong>财务结果指标</strong>：周期内分配的所有线索所产生的总净入金，直接反映该批线索的商业价值。支持下钻查看资金明细。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">绩效评级 (系统标签)</td>
-                    <td>
-                        <strong>优秀</strong>：首次入金率 > 5% 且 贡献净入金 > $10,000<br>
-                        <strong>待提升</strong>：平均跟进频次 < 2 或 无效/退回占比 > 30%<br>
-                        <strong>良好</strong>：介于两者之间
-                    </td>
-                    <td>系统基于规则引擎自动为每行销售打上的颜色标签，辅助主管快速识别团队木桶的短板。具体阈值支持后台配置。</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- 版块 5：客户跟进与 SOP 话术库 -->
-        <div class="mb-10">
-            <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">5. 客户跟进弹窗与 SOP 话术库</h2>
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
-                <p class="text-sm text-blue-800 font-medium">业务目标：规范销售跟进动作，同时通过智能话术推荐降低新人上手门槛，提升沟通效率与专业度。</p>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse border border-gray-200 text-sm">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border border-gray-200 px-4 py-2 text-left w-1/4">功能模块</th>
-                            <th class="border border-gray-200 px-4 py-2 text-left w-2/4">计算公式与规则定义</th>
-                            <th class="border border-gray-200 px-4 py-2 text-left w-1/4">数据来源与特殊逻辑</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                                <td class="border border-gray-200 px-4 py-2 font-medium bg-gray-50">SOP 话术库推荐面板</td>
-                                <td class="border border-gray-200 px-4 py-2">在跟进弹窗右侧新增“话术库”区域。根据当前线索的【意向/咨询内容】（如：开户、代理），动态展示对应分类的标准沟通话术。点击话术卡片，将话术直接复制到系统剪贴板。</td>
-                                <td class="border border-gray-200 px-4 py-2 text-gray-600">话术主要用于引导销售沟通，不自动填充到跟进记录输入框内，销售可将其粘贴至第三方聊天软件（如微信/WhatsApp）发给客户。</td>
-                            </tr>
-                        <tr>
-                            <td class="border border-gray-200 px-4 py-2 font-medium bg-gray-50">跟进状态同步</td>
-                            <td class="border border-gray-200 px-4 py-2">跟进状态选项需与顶部生命周期 Tabs 保持一致，包含：持续跟进、无效线索、已转化。</td>
-                            <td class="border border-gray-200 px-4 py-2 text-gray-600">选择“无效”或“已转化”后，当前线索将从“跟进中”列表移出。</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
 
-            <!-- 版块 6：线索列表数据字段定义 -->
-            <div class="mb-10">
-                <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">6. 线索列表数据字段定义</h2>
+        <!-- 模块二：留资看板弹窗 -->
+        <div class="module-title">2. 留资看板弹窗</div>
         <div class="mb-4 text-sm text-gray-600">
-            <p>为确保前后端数据一致性，以下列出线索列表核心数据字段的<strong>来源、计算方式及规则说明</strong>：</p>
+            <span class="font-bold">入口：</span>列表顶部右侧「留资看板」按钮。<br>
+            <span class="font-bold">布局与结构：</span><br>
+            1. <span class="highlight">顶部过滤器</span>：包含“统计周期”下拉框（本周/本月/上月/全部），默认选中“本月”。<br>
+            2. <span class="highlight">转化分析</span>：包含“线索转化漏斗”。<br>
+            3. <span class="highlight">核心转化表现</span>：包含 5 个核心数据卡片。<br>
+            4. <span class="highlight">销售效能明细表</span>：展示团队各销售人员的核心效能指标与绩效评级。
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="40%">计算公式与规则定义</th>
-                    <th width="45%">数据来源与特殊逻辑</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">客户基础信息</td>
-                    <td>直接展示姓名/邮箱/电话/微信等</td>
-                    <td><strong>数据来源</strong>：客户在前端留资表单中填写的基础信息。若为空则显示“-”。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">线索热度</td>
-                    <td>取销售最新一次评估结果</td>
-                    <td><strong>数据来源</strong>：【客户跟进】弹窗中销售提交的评估值。<br>默认高亮显示并带图标（🔥 高、🌟 中、❄️ 低）。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">线索状态</td>
-                    <td>基于生命周期事件触发变更</td>
-                    <td>
-                        <strong>规则</strong>：<br>
-                        1. 初始入库为“待分配”。<br>
-                        2. 主管分配后变更为“已分配/跟进中”。<br>
-                        3. 销售操作可变更为“退回公海”、“无效线索”、“已转化”。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">归属销售</td>
-                    <td>展示当前关联的销售人员姓名</td>
-                    <td><strong>特殊逻辑</strong>：若状态被变为“退回公海”，此字段应显示带有删除线的原销售姓名，或直接清空显示“-”。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">申请时间</td>
-                    <td><span class="highlight">公式：客户提交留资表单的服务器时间</span></td>
-                    <td>精确到秒（YYYY-MM-DD HH:mm:ss）。不可修改。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">最新跟进内容</td>
-                    <td><span class="highlight">公式：关联跟进记录表中最新一条的“跟进内容”</span></td>
-                    <td><strong>数据来源</strong>：销售填写的跟进表单。<br><strong>特殊逻辑</strong>：文字过长可截断并加省略号，支持悬浮查看全量文本。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">最新跟进时间</td>
-                    <td><span class="highlight">公式：MAX(关联的跟进记录创建时间)</span></td>
-                    <td><strong>数据来源</strong>：每次销售成功提交跟进表单时，系统自动记录的时间戳。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">下次跟进时间</td>
-                    <td>展示销售手动设定的计划时间</td>
-                    <td>
-                        <strong>数据来源</strong>：销售在“客户跟进”时选填的时间。<br>
-                        <strong>特殊逻辑</strong>：对于距离当前不足24小时的数据，前端需标红并配合小铃铛图标提醒。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">关联转化机制 (留资↔客户)</td>
-                    <td>通过专属链接或手动绑定</td>
-                    <td>
-                        <strong>解决留资与注册邮箱不一致的核心机制：</strong><br>
-                        1. <strong>自动绑定</strong>：销售在跟进时，可在详情页复制带有当前 Lead ID 参数的“代理邀请链接”或“直客邀请链接”发送给客户。客户通过该链接注册，系统无视填写的邮箱差异，强制将新CRM账户与该留资绑定。<br>
-                        2. <strong>手动绑定</strong>：若客户自行官网注册，销售可在详情页输入客户ID进行手动强关联。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">转化成果指标</td>
-                    <td>详情页转化成果Tab全量展示</td>
-                    <td>
-                        <strong>数据来源：</strong>实时拉取绑定的 CRM 账户数据。<br>
-                        <strong>核心指标：</strong><br>
-                        1. <strong>转化周期</strong>：首笔入金时间 - 线索入库时间。<br>
-                        2. <strong>入金与余额</strong>：首次入金金额、净入金(累计入金-累计出金)、当前账户余额。<br>
-                        3. <strong>交易活跃度</strong>：累计交易手数、累计盈亏。
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-
-        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3 mt-8">6. 线索详情页与变更记录</h2>
-        <div class="mb-4 text-sm text-gray-600">
-            <p>为满足线索精细化管理和数据溯源需求，原详情弹窗升级为独立详情页（<code>admin-leads-detail.html</code>），并支持基础信息的修改及变更记录跟踪。</p>
+        <div class="overflow-x-auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="15%">指标/字段名称</th>
+                        <th width="20%">数据来源</th>
+                        <th width="35%">计算公式与包含的枚举值</th>
+                        <th width="30%">业务价值与说明</th>
+                    </tr>
+                </thead>
+                                <tbody>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">统计周期</td>
+                        <td>下拉单选<br><span class="text-xs text-gray-400">来源：人工选择</span></td>
+                        <td>穷举值：<br>1. 本周<br>2. 本月<br>3. 上月<br>4. 全部</td>
+                        <td>必填。全局控制看板内所有指标的数据查询范围。</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="bg-gray-100 font-bold text-gray-700 py-2">转化漏斗卡片规则</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">线索转化漏斗</td>
+                        <td>多节点统计</td>
+                        <td>
+                            <strong>漏斗层级定义（从上至下）</strong>：<br>
+                            1. <strong>总分配线索</strong>：统计周期内分配的线索总数。<br>
+                            2. <strong>有效接通</strong>：总分配线索中，跟进记录标记为“已接通”的线索数。<br>
+                            3. <strong>添加微信/转化</strong>：跟进记录中标记为已添加微信的线索数。<br>
+                            4. <strong>首次入金</strong>：完成第一笔成功入金的线索数。<br>
+                            5. <strong>产生交易</strong>：完成首次真实交易（非模拟盘）的线索数。<br>
+                            <strong>转化率公式</strong>：当前层级数值 / 上一层级数值 * 100%
+                        </td>
+                        <td>直观反映各转化环节的流失情况，定位业务瓶颈。</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="bg-gray-100 font-bold text-gray-700 py-2">核心数据卡片规则</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">分配线索总数</td>
+                        <td>系统底层日志</td>
+                        <td><strong>计算公式</strong>：<br>统计周期内，系统分配动作（含单条分配、批量分配）且归属人变为当前销售的线索总条数。</td>
+                        <td>反映团队/销售对分配资源的消化压力。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">平均跟进频次</td>
+                        <td>CRM 跟进记录表</td>
+                        <td><strong>计算公式</strong>：<br>总跟进次数 / 触达客户数</td>
+                        <td>衡量销售主动跟进力度。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">无效/退回占比</td>
+                        <td>系统自动计算</td>
+                        <td><strong>计算公式</strong>：<br>(无效线索数 + 退回公海数) / 分配线索总数 * 100%</td>
+                        <td>评估资源消耗的损耗率。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">首次入金率</td>
+                        <td>资金清算系统</td>
+                        <td><strong>计算公式</strong>：<br>(首次入金数 / 分配线索总数) * 100%。保留两位小数。</td>
+                        <td>核心转化结果指标。严禁使用“FTD”等黑话，全量统一为“首次入金”。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">贡献净入金</td>
+                        <td>资金清算系统</td>
+                        <td><strong>计算公式</strong>：<br>总入金 - 总出金（统计周期内该销售名下所有客户）</td>
+                        <td>最核心的业绩贡献指标。</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="bg-gray-100 font-bold text-gray-700 py-2">团队效能明细表规则</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">绩效评级</td>
+                        <td>系统自动评定</td>
+                        <td>
+                            <strong>评级公式与条件（基于统计周期内的表现）</strong>：<br>
+                            - <span class="text-green-600 font-bold">优秀</span>：首次入金率 ≥ 4% 且 贡献净入金 ≥ $40,000<br>
+                            - <span class="text-blue-600 font-bold">良好</span>：首次入金率 ≥ 2% 且 贡献净入金 ≥ $10,000<br>
+                            - <span class="text-red-600 font-bold">待提升</span>：不满足上述条件者<br>
+                            <span class="text-xs text-gray-500">*注：具体阈值参数后续可在后台进行灵活配置，当前按固定公式展示。</span>
+                        </td>
+                        <td>直观展示销售人员的综合业务效能表现，便于主管快速定位问题人员。</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">字段/功能</th>
-                    <th width="40%">计算公式与规则定义</th>
-                    <th width="45%">数据来源与特殊逻辑</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">详情页布局</td>
-                    <td>分为左侧基础信息与右侧Tabs结构</td>
-                    <td><strong>规则</strong>：左侧固定展示客户信息表单，右侧包含“跟进记录”、“变更记录”、“转化成果”三个Tab。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">所属代理 (IB) 维护<br><span class="text-xs text-red-500 font-normal">新增业务字段</span></td>
-                    <td>在左侧基础信息中支持所属代理的搜索与选择</td>
-                    <td>
-                        <strong>数据来源</strong>：代理关系库。<br>
-                        <strong>交互规则</strong>：<br>
-                        1. 支持通过输入代理名称、邮箱或 IB 编号进行模糊搜索；<br>
-                        2. 下拉框支持“清空代理”选项，用于解除绑定；<br>
-                        3. 仅在此处配置或修改线索转化前的代理预期。
-                    </td>
-                </tr>
-                <tr>
-                    <td class="font-medium">头部状态标签</td>
-                    <td>从列表中剥离至详情页顶部</td>
-                    <td><strong>规则</strong>：原列表状态列的“已入金”、“已转化”等深度状态标签统一移至详情页客户姓名旁，保持列表清爽。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">基础信息修改</td>
-                    <td>允许后台人员修正客户自行填写的信息</td>
-                    <td><strong>特殊逻辑</strong>：修改并保存后，必须同步生成一条结构化的变更记录。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">变更记录（Change Log）</td>
-                    <td>记录所有字段的修改历史</td>
-                    <td>
-                        <strong>数据来源</strong>：修改保存事件。<br>
-                        <strong>字段定义</strong>：<br>
-                        1. 变更时间：操作发生服务器时间。<br>
-                        2. 变更字段：如“期望服务”、“备注说明”等。<br>
-                        3. 变更前内容：以灰色带删除线显示（如 <span class="line-through text-gray-400">未知</span>）。<br>
-                        4. 变更后内容：以绿色高亮显示（如 <span class="text-green-600 bg-green-50 px-1 rounded">外汇交易</span>）。<br>
-                        5. 操作人：当前登录的后台账号。
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
-        <!-- 版块 7：客户详情画像关联 -->
-        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3 mt-8">7. 客户画像与双向溯源 (Client Portrait)</h2>
-        <div class="mb-4 text-sm text-gray-600">
-            <p>打通售前（留资）与售后（资产）闭环，在客户列表及详情页（<code>admin-client-detail.html</code>）中新增“留资溯源信息”模块，支持跨业务实体的双向跳转。</p>
+        <!-- 模块三：业务流转与系统通知 -->
+        <div class="module-title">3. 业务流转与系统通知</div>
+        <div class="overflow-x-auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="20%">业务场景</th>
+                        <th width="40%">触发条件</th>
+                        <th width="40%">通知规则与处理机制</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">新用户申请通知</td>
+                        <td>客户通过官网、APP或线下等任何渠道成功提交留资申请。</td>
+                        <td>
+                            <span class="highlight">通知对象</span>：管理层（销售主管/销售总监）。<br>
+                            <span class="highlight">通知方式</span>：站内信/邮件提醒。<br>
+                            <span class="highlight">内容说明</span>：提示有新线索入库，等待分配。
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">指标/维度</th>
-                    <th width="40%">计算公式与规则定义</th>
-                    <th width="45%">数据来源与特殊逻辑</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">留资溯源卡片呈现</td>
-                    <td>12 宫格响应式布局横向展示</td>
-                    <td><strong>特殊逻辑</strong>：全端自适应支持；卡片底色为纯白；去除所有“FTD”等行业黑话，统一使用中文。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">日期格式规范</td>
-                    <td>统一为 <code>YYYY-MM-DD</code></td>
-                    <td><strong>规则</strong>：所有溯源相关的核心节点时间，去除时分秒显示，减少信息干扰。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">归属代理 (IB)</td>
-                    <td>展示当前客户绑定的上线 IB</td>
-                    <td><strong>数据来源</strong>：关联代理关系树。辅助判断留资转化的返佣链路。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">首次交易时间</td>
-                    <td><span class="highlight">公式：MIN(关联交易记录表的建仓时间)</span></td>
-                    <td><strong>数据来源</strong>：动态读取底层 MT5/业务库。替代了无业务意义的“分配方式”字段。</td>
-                </tr>
-            </tbody>
-        </table>
 
-        <!-- 版块 8：全局标签画像系统 -->
-        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3 mt-8">8. 全局标签画像系统 (Tagging System)</h2>
-        <div class="mb-4 text-sm text-gray-600">
-            <p>建立全局标签池，支持销售在留资/客户详情页打标，数据自动沉淀，并通过专门的标签管理页面（<code>admin-tag-management.html</code>）进行统一维护。</p>
+        <!-- 模块四：列表字段与展示规范 -->
+        <div class="module-title">4. 列表字段与展示规范</div>
+        <div class="overflow-x-auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="15%">数据字段</th>
+                        <th width="45%">指标定义与包含的枚举值</th>
+                        <th width="40%">业务规则与说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">列表复选框</td>
+                        <td>列表最左侧增加 Checkbox 复选框。</td>
+                        <td>
+                            用于支撑主管视角的「批量分配」或「批量操作」动作。<br>
+                            <span class="highlight">角色权限限制</span>：仅“销售主管”及以上角色可见复选框，普通销售无此操作权限。<br>
+                            <span class="highlight">防误操作限制</span>：对于状态为“跟进中”或已有明确“归属销售”的线索，复选框必须置灰不可选，这类线索只能通过单条的“重新分配”流程流转，严禁批量分配覆盖。
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">线索热度</td>
+                        <td>销售根据沟通情况给出的意向评级（包含：高、中、低）。</td>
+                        <td>帮助销售识别高优跟进目标。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">有无关联代理</td>
+                        <td>基于客户留资时的手机号/邮箱系统自动判定：<br>1. 若已关联代理，显示格式为“有 (代理名称)”。<br>2. 若无，则显示“无”。</td>
+                        <td>与客户详情页的归属代理逻辑保持一致，帮助销售在列表页直观识别该线索的代理归属情况。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">归属销售</td>
+                        <td>当前负责跟进该线索的销售人员姓名。</td>
+                        <td><strong>核心权限依据</strong>：分配后，<span class="highlight">仅对应的销售人员及其上级主管可见该客户线索</span>，实现数据隔离。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">下次跟进时间</td>
+                        <td>销售在跟进记录中设定的下一次计划回访时间。</td>
+                        <td>用于销售个人的日程管理与待办提醒。</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">指标/维度</th>
-                    <th width="40%">计算公式与规则定义</th>
-                    <th width="45%">数据来源与特殊逻辑</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-medium">自定义打标</td>
-                    <td>支持输入新文本直接创建标签</td>
-                    <td><strong>规则</strong>：若输入标签在全局池不存在，则新建并关联；若存在则直接关联。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">标签排序推荐</td>
-                    <td><span class="highlight">公式：ORDER BY 标签使用次数 DESC</span></td>
-                    <td><strong>数据来源</strong>：全局标签池。<br><strong>特殊逻辑</strong>：在打标弹窗中，按使用频率(COUNT)从高到低排列展示推荐标签，如“高净值客户 98次”。</td>
-                </tr>
-                <tr>
-                    <td class="font-medium">标签管理后台</td>
-                    <td>列表展示、状态启停</td>
-                    <td><strong>规则</strong>：管理员可停用违规或无用标签，停用后销售端不可再选，但历史已打标的数据不受影响。</td>
-                </tr>
-            </tbody>
-        </table>
+
+        <!-- 模块五：列表行级操作与流转机制 -->
+        <div class="module-title">5. 列表行级操作与流转机制</div>
+        <div class="overflow-x-auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="15%">操作按钮</th>
+                        <th width="45%">交互动作与弹窗</th>
+                        <th width="40%">业务流转逻辑</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">分配 (单个/批量)</td>
+                        <td>
+                            点击列表行的「分配」或勾选复选框后点击顶部的「批量分配」，弹出选择销售的弹窗。
+                        </td>
+                        <td>将“待分配”或“退回公海”状态的线索，划拨给指定销售，状态变更为“跟进中”。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">重新分配</td>
+                        <td>点击列表行的「重新分配」，弹出选择新销售的弹窗。</td>
+                        <td>
+                            主管强制将已有归属的线索转移给另一名销售，变更归属权。<br>
+                            <span class="highlight">数据权限</span>：重新分配后，新接手的销售可以查看该线索历史所有的跟进记录，以保证服务连贯性。
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">退回公海与认领</td>
+                        <td>
+                            点击「退回公海」按钮。<br><span class="text-sm text-gray-500">（销售主管和普通销售均可使用该功能）</span><br><br>
+                            <strong>【退回公海弹窗】</strong><br>
+                            点击后唤起独立弹窗，包含：<br>
+                            1. <strong>防刷单警告</strong>：醒目提示“自退回之日起 30 天内，无法再次认领该线索”。<br>
+                            2. <strong>退回原因</strong>：必填多行文本框（至少10个字），要求操作者明确说明退回的客观原因。
+                        </td>
+                        <td>
+                            1. 销售主动放弃跟进，或主管强制打回。退回后该线索脱离个人名下，变为公共资源。<br>
+                            2. <span class="highlight">防刷与防霸单限制</span>：退回公海后，原归属销售在 30 天内不可再次认领该线索。<br>
+                            3. <span class="highlight">数据权限</span>：其他销售认领后，可以查看该线索历史所有的跟进记录。
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">客户画像</td>
+                        <td>点击「客户画像」按钮。</td>
+                        <td>
+                            弹出或跳转至客户画像详情页面，查看该客户的全链路溯源信息、资金与交易情况。
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </body>

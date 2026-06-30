@@ -6,6 +6,79 @@
     <title>HATC CRM - 客户详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PRD 预览弹窗 -->
+    <div id="prdModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 flex flex-col h-[85vh]">
+            <!-- 弹窗头部 -->
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800">需求文档 (PRD) 预览</h3>
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            <!-- 弹窗内容区 (iframe 嵌套) -->
+            <div class="flex-1 p-0 bg-gray-50 overflow-hidden rounded-b-lg">
+                <iframe src="prd-client-detail.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 代理选择弹窗 -->
+    <div id="ibModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 flex flex-col">
+            <!-- 弹窗头部 -->
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800">修改所属代理 (IB)</h3>
+                <button onclick="document.getElementById('ibModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- 弹窗内容区 -->
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">搜索并选择新代理</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="输入代理名称、邮箱或 IB 编号..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-sm transition-colors" onfocus="document.getElementById('ibDropdown').classList.remove('hidden')">
+                        
+                        <!-- 搜索下拉框 -->
+                        <div id="ibDropdown" class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded shadow-lg hidden max-h-48 overflow-y-auto">
+                            <!-- 解除关系选项 -->
+                            <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100 text-gray-500 flex items-center gap-2" onclick="selectIB('无', ''); document.getElementById('ibDropdown').classList.add('hidden')">
+                                <i class="fa-solid fa-ban"></i> 清空代理 / 解除关系
+                            </div>
+                            <!-- 代理列表 -->
+                            <div class="px-4 py-2 hover:bg-blue-50 cursor-pointer flex flex-col" onclick="selectIB('张三 (IB-8801)', 'zhangsan@test.com'); document.getElementById('ibDropdown').classList.add('hidden')">
+                                <span class="text-gray-800 text-sm font-medium">张三 <span class="text-gray-500 font-normal ml-1">IB-8801</span></span>
+                                <span class="text-gray-400 text-xs">zhangsan@test.com</span>
+                            </div>
+                            <div class="px-4 py-2 hover:bg-blue-50 cursor-pointer flex flex-col" onclick="selectIB('李四 (IB-8802)', 'lisi@test.com'); document.getElementById('ibDropdown').classList.add('hidden')">
+                                <span class="text-gray-800 text-sm font-medium">李四 <span class="text-gray-500 font-normal ml-1">IB-8802</span></span>
+                                <span class="text-gray-400 text-xs">lisi@test.com</span>
+                            </div>
+                            <div class="px-4 py-2 hover:bg-blue-50 cursor-pointer flex flex-col" onclick="selectIB('王五 (IB-8803)', 'wangwu@test.com'); document.getElementById('ibDropdown').classList.add('hidden')">
+                                <span class="text-gray-800 text-sm font-medium">王五 <span class="text-gray-500 font-normal ml-1">IB-8803</span></span>
+                                <span class="text-gray-400 text-xs">wangwu@test.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 text-blue-800 p-3 rounded text-xs border border-blue-100 flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info mt-0.5"></i>
+                    <p><strong>业务说明：</strong>此数据仅做记录及展示，返佣请查询实际上下级关系。</p>
+                </div>
+            </div>
+            
+            <!-- 弹窗底部 -->
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-lg flex justify-end gap-3">
+                <button onclick="document.getElementById('ibModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded hover:bg-gray-50 text-sm transition-colors">取消</button>
+                <button onclick="document.getElementById('ibModal').classList.add('hidden')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm transition-colors shadow-sm">确认修改</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         tailwind.config = {
             theme: {
@@ -272,10 +345,20 @@
             <div class="flex items-center text-sm text-gray-500">
                 <a href="admin-client-list.html" class="hover:text-gray-800 cursor-pointer">客户列表</a>
                 <span class="mx-2 text-gray-300">/</span>
-                <span class="text-gray-800 font-medium">详情</span>
+                <span class="text-gray-800 font-medium">客户详情</span>
             </div>
             <!-- 右侧个人中心与操作 -->
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
+                <!-- 返回看板按钮 -->
+                <a href="../index.html" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition-colors mt-2 border border-gray-200">
+                    <i class="fa-solid fa-list"></i> 需求看板
+                </a>
+                
+                <!-- PRD 文档按钮 -->
+                <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition-colors mt-2 border border-gray-200">
+                    <i class="fa-solid fa-project-diagram"></i> PRD 文档
+                </button>
+
                 <!-- 溯源返回留资 -->
                 <a href="admin-leads-detail.html" class="hidden sm:flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-full transition-colors mt-2">
                     <i class="fa-solid fa-arrow-left"></i> 溯源留资轨迹
@@ -427,20 +510,16 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-4 sm:gap-y-6 text-sm">
                             <div>
-                                <div class="text-gray-500 mb-1">客户来源:</div>
-                                <div class="text-gray-800 font-medium">代理专属链接留资</div>
+                                <div class="text-gray-500 mb-1">信息来源:</div>
+                                <div class="text-gray-800">官网访问</div>
                             </div>
                             <div>
-                                <div class="text-gray-500 mb-1">营销渠道 (UTM):</div>
-                                <div class="text-gray-800">Google Ads - 亚洲大区</div>
+                                <div class="text-gray-500 mb-1">咨询内容:</div>
+                                <div class="text-gray-800">个人交易</div>
                             </div>
                             <div>
-                                <div class="text-gray-500 mb-1">初始意向:</div>
-                                <div class="text-gray-800">外汇自主交易</div>
-                            </div>
-                            <div>
-                                <div class="text-gray-500 mb-1">留资热度评级:</div>
-                                <div class="text-red-500 font-medium">A级 (高意向)</div>
+                                <div class="text-gray-500 mb-1">线索热度:</div>
+                                <div class="text-red-500 font-medium">高</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">线索入库时间:</div>
@@ -459,8 +538,11 @@
                                 <div class="text-gray-800 font-medium">李销售</div>
                             </div>
                             <div>
-                                <div class="text-gray-500 mb-1">归属代理 (IB):</div>
-                                <div class="text-blue-600 font-medium">王代理 (IB-8821)</div>
+                                <div class="text-gray-500 mb-1 flex items-center gap-2">
+                                    <button onclick="document.getElementById('ibModal').classList.remove('hidden')" class="text-xs text-blue-500 hover:text-blue-700 hover:underline"><i class="fa-solid fa-edit mr-1"></i>修改</button>
+                                    <span>归属代理 (IB):</span>
+                                </div>
+                                <div class="text-blue-600 font-medium" id="currentIBDisplay">王代理 (wang@ib.com)</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">转化周期:</div>
@@ -636,7 +718,7 @@
                         <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                         <input type="text" placeholder="搜索标签或输入新标签名称..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded outline-none focus:border-blue-500 text-sm">
                     </div>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors whitespace-nowrap">
+                    <button onclick="document.getElementById('createTagModal').classList.remove('hidden')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors whitespace-nowrap">
                         新建标签
                     </button>
                 </div>
@@ -678,7 +760,81 @@
         </div>
     </div>
 
+    <!-- 新建标签弹窗 -->
+    <div id="createTagModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[210] hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm mx-4 flex flex-col">
+            <!-- 弹窗头部 -->
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800">新建标签</h3>
+                <button onclick="document.getElementById('createTagModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- 弹窗内容区 -->
+            <div class="p-6 flex-1">
+                <div class="mb-5">
+                    <label class="block text-sm font-medium text-gray-700 mb-1"><span class="text-red-500 mr-1">*</span>标签名称</label>
+                    <input type="text" placeholder="输入标签名称 (最多10个字符)" class="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:border-blue-500 text-sm" maxlength="10">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">选择标签颜色</label>
+                    <div class="flex gap-4">
+                        <label class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full bg-red-50 border border-red-200 relative hover:border-red-400 transition-colors">
+                            <input type="radio" name="tagColor" class="peer hidden" value="red" checked>
+                            <i class="fa-solid fa-check text-red-500 hidden peer-checked:block text-xs"></i>
+                        </label>
+                        <label class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 border border-blue-200 relative hover:border-blue-400 transition-colors">
+                            <input type="radio" name="tagColor" class="peer hidden" value="blue">
+                            <i class="fa-solid fa-check text-blue-500 hidden peer-checked:block text-xs"></i>
+                        </label>
+                        <label class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full bg-green-50 border border-green-200 relative hover:border-green-400 transition-colors">
+                            <input type="radio" name="tagColor" class="peer hidden" value="green">
+                            <i class="fa-solid fa-check text-green-500 hidden peer-checked:block text-xs"></i>
+                        </label>
+                        <label class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 border border-orange-200 relative hover:border-orange-400 transition-colors">
+                            <input type="radio" name="tagColor" class="peer hidden" value="orange">
+                            <i class="fa-solid fa-check text-orange-500 hidden peer-checked:block text-xs"></i>
+                        </label>
+                        <label class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 relative hover:border-gray-400 transition-colors">
+                            <input type="radio" name="tagColor" class="peer hidden" value="gray">
+                            <i class="fa-solid fa-check text-gray-500 hidden peer-checked:block text-xs"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 弹窗底部 -->
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-lg flex justify-end gap-3">
+                <button onclick="document.getElementById('createTagModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded hover:bg-gray-50 text-sm transition-colors">取消</button>
+                <button onclick="document.getElementById('createTagModal').classList.add('hidden'); alert('标签新建成功！');" class="px-4 py-2 bg-[#C19B5E] text-white rounded hover:bg-[#a88651] text-sm transition-colors">确认新建</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRD 预览弹窗 -->
+    <div id="prdModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 flex flex-col h-[85vh]">
+            <!-- 弹窗头部 -->
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-800">需求文档 (PRD) 预览</h3>
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            <!-- 弹窗内容区 (iframe 嵌套) -->
+            <div class="flex-1 p-0 bg-gray-50 overflow-hidden rounded-b-lg">
+                <iframe src="prd-client-detail.html" class="w-full h-full border-0"></iframe>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // 代理选择逻辑
+        function selectIB(name, email) {
+            document.getElementById('currentIBDisplay').innerText = name;
+        }
+
         function toggleSubmenu(button) {
             const submenu = button.nextElementSibling;
             const arrow = button.querySelector('.fa-chevron-right');

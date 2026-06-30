@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户详情 (客户画像) PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #e11d48; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】客户详情 (客户画像)</h1>
+            <div class="flex gap-4">
+                <a href="admin-client-detail.html" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">1. 客户标签显示及标签弹窗</h2>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+            <p class="text-sm text-blue-800 font-medium">业务目标：通过全局标签库为客户建立精准的业务画像，方便销售和主管快速识别客户特征（如：高净值、偏好品种等）。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">功能模块</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">业务逻辑与数据来源</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">客户标签显示</td>
+                    <td>
+                        1. 在客户详情的“基础信息（头像）”卡片区域展示已绑定的标签；<br>
+                        2. 标签支持不同颜色的视觉区分（如红色代表高价值，蓝色代表交易偏好）；<br>
+                        3. 支持在标签上直接点击 <i class="fa-solid fa-times"></i> 删除当前标签。
+                    </td>
+                    <td>与全局【标签管理】系统打通，显示该客户关联的所有有效标签。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">标签管理弹窗</td>
+                    <td>
+                        1. 点击“+ 添加标签”触发弹窗；<br>
+                        2. 弹窗内支持搜索现有标签或直接输入新建标签；<br>
+                        3. 弹窗内展示“推荐标签”供快速点击选中。
+                    </td>
+                    <td>
+                        <strong>推荐算法</strong>：推荐标签根据全团队（或全系统）的<span class="highlight">使用频次倒序排列</span>，展示最常用的业务标签，减少重复创建。
+                    </td>
+                </tr>
+                <tr>
+                    <td class="font-medium">新建标签弹窗</td>
+                    <td>
+                        1. 在“选择或添加标签”弹窗内点击“新建标签”按钮触发；<br>
+                        2. 包含“标签名称”（必填，限10字内）和“选择标签颜色”两个字段；<br>
+                        3. 预设多种业务颜色供选择（红、蓝、绿、橙、灰）；<br>
+                        4. 点击“确认新建”后，将标签写入全局标签库并可立即被选中。
+                    </td>
+                    <td>
+                        允许业务人员根据新的业务场景动态扩展客户特征维度。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">2. 留资溯源信息内容及字段</h2>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+            <p class="text-sm text-blue-800 font-medium">业务目标：打通“售前线索 (Leads)”与“售后资产 (Client)”的数据壁垒，在一张卡片内展示客户从点击广告到完成首充交易的全生命周期旅程。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">数据模块</th>
+                    <th width="40%">指标定义与字段来源</th>
+                    <th width="40%">业务价值与交互</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">留资基础信息</td>
+                    <td>
+                        <strong>信息来源</strong>：客户留资的渠道来源（包含：官网访问、社交平台、客户推荐、线上活动、线下金融活动、金融资讯网站、其他渠道）。<br>
+                        <strong>咨询内容</strong>：线索创建或客户自行选择的业务意向（包含：成为代理、活动咨询、开户咨询、个人交易、其他）。<br>
+                        <strong>线索热度</strong>：销售根据沟通情况给出的意向评级（包含：高、中、低）。<br>
+                        <strong>线索入库时间</strong>：线索进入系统的初始时间。
+                    </td>
+                    <td>提供客户初始来源和意向背景。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">售前跟进效能指标</td>
+                    <td>
+                        <strong>首响时间</strong>：(第一次添加跟进记录的时间 - 线索入库时间)。<br>
+                        <strong>历史跟进次数</strong>：留资模块中累计的跟进记录条数。<br>
+                        <strong>转化归属销售</strong>：最终促成该线索转化的销售人员。<br>
+                        <strong>归属代理 (IB)</strong>：基于留资手机号/邮箱自动关联已有代理关系，显示格式为“代理名称 (代理邮箱)”，同时支持在此处点击修改（修改逻辑详见下文模块 3）。<br>
+                        <strong>转化周期</strong>：(首次入金时间 - 线索入库时间)。
+                    </td>
+                    <td>衡量销售跟进的勤奋度与转化效率，并明确业务提成归属。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">资产与价值指标</td>
+                    <td>
+                        <strong>首次入金时间</strong>：客户历史第一笔成功充值的完成时间。<br>
+                        <strong>首次入金金额</strong>：客户历史第一笔成功充值的资金金额。<br>
+                        <strong>首次交易时间</strong>：客户历史第一单建仓时间。
+                    </td>
+                    <td>识别客户是否已真正激活，并防范恶意刷量。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">溯源闭环交互</td>
+                    <td>
+                        在卡片右上角及底部提供 <span class="highlight">「查看留资轨迹」</span> 按钮，点击后跳转至该客户对应的 <code>admin-leads-detail.html</code> 页面。
+                    </td>
+                    <td>方便主管或销售随时穿透回溯早期的沟通记录和意向评估。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">3. 归属代理 (IB) 关系维护</h2>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+            <p class="text-sm text-blue-800 font-medium">业务目标：允许管理层或授权人员在客户详情（留资溯源卡片内）动态调整客户的归属代理，以支持业务架构调整和客诉处理。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">业务动作</th>
+                    <th width="40%">交互与风控规则</th>
+                    <th width="40%">财务隔离与数据说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">初始自动关联</td>
+                    <td>
+                        当客户留资时，系统自动校验其提供的手机号或邮箱。<br>
+                        <span class="highlight">【关联规则】</span>若该手机号或邮箱在系统中已关联过代理，则该客户的归属代理自动取该关联代理的信息。
+                    </td>
+                    <td><strong>触发机制</strong>：留资入库/分配时系统自动执行关联。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理搜索与选择</td>
+                    <td>
+                        1. 采用带搜索图标的下拉输入框；<br>
+                        2. 支持通过输入代理名称、邮箱或 IB 编号进行模糊搜索；<br>
+                        3. 选择后回填代理信息。
+                    </td>
+                    <td><strong>数据来源</strong>：关联代理关系树。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">解除代理关系</td>
+                    <td>
+                        下拉列表中提供置灰的“清空代理 / 解除关系”选项，用于将客户转为直客（无代理状态）。
+                    </td>
+                    <td>
+                        解除后，该客户产生的后续交易不再产生返佣。
+                    </td>
+                </tr>
+                <tr>
+                    <td class="font-medium">财务结算风控<br><span class="text-xs text-red-500 font-normal">核心底线</span></td>
+                    <td>
+                        弹窗底部需给出蓝色高亮风控提示，确保操作人员知晓变更后果。
+                    </td>
+                    <td>
+                        <strong>业务说明</strong>：<span class="highlight">此数据仅做记录及展示，返佣请查询实际上下级关系</span>。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
