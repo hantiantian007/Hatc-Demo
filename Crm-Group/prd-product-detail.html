@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - 智能交易系统 (商品详情及购买流程)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#41B8AF',
+                        dark: '#1E2126',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
+            <h2 class="text-xl text-primary font-medium">智能交易系统 - 商品详情及购买流程</h2>
+            <div class="mt-4 flex gap-4 text-sm text-gray-500">
+                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-06-30</span>
+                <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
+                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">V2.1.0</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="p-8 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">1. 页面内容与数据来源</h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                    <li><strong>顶部轮播图</strong>：来源于后台配置的商品详情轮播图（最多 3 张），提供左右滑动与指示器切换功能。</li>
+                    <li><strong>标题与类型</strong>：展示商品全称。在标题下方展示后台配置的商品类型（虚拟商品/实体商品）灰色标签，及固定的“付费套餐”标识。</li>
+                    <li><strong>商品介绍内容</strong>：来源于后台富文本编辑器录入的图文混排代码，直接在页面下方渲染展示。</li>
+                    <li><strong>套餐选择列表区</strong>：根据后台配置的套餐列表动态生成单选卡片。每张卡片需读取并展示以下字段：
+                        <ul class="list-circle pl-6 mt-1 text-gray-500">
+                            <li>套餐名称（如基础版、进阶版）。</li>
+                            <li>价格对比：后台录入的原价（加删除线置灰）与优惠现价（高亮加粗）。</li>
+                            <li>规格后缀（如 /月、/年）。</li>
+                            <li>库存状态：读取单外套餐的独立库存，若为 0 则打上“已售罄”标签。</li>
+                        </ul>
+                    </li>
+                    <li><strong>底部结算区</strong>：
+                        <ul class="list-circle pl-6 mt-1 text-gray-500">
+                            <li>账户余额：实时请求客户在 CRM 系统内的可用钱包余额。</li>
+                            <li>应付总额：跟随用户选中的套餐，实时展示该套餐的现价金额。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 class="text-lg font-bold text-gray-900 mt-8 mb-4 border-l-4 border-primary pl-3">2. 用户购买流程与场景</h3>
+                
+                <h4 class="font-bold text-gray-800 mt-4 mb-2">2.1 套餐选择场景</h4>
+                <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                    <li>用户切换不同套餐时，底部的“应付总额”必须实时联动更新。</li>
+                    <li>若点击了库存为 0 的套餐卡片，需拦截选中状态，或将底部的购买按钮置灰禁用。</li>
+                    <li>点击底部“立即购买”按钮，不会发生页面跳转，而是在当前页面唤起“支付确认弹窗”。</li>
+                </ul>
+
+                <h4 class="font-bold text-gray-800 mt-6 mb-2">2.2 支付确认弹窗场景</h4>
+                <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                    <li><strong>订单初始化</strong>：自动带入用户刚刚选中的“套餐名称”及“应付金额”。</li>
+                    <li><strong>MT5 账户选择</strong>：调用接口拉取当前登录客户名下所有状态正常的 MT5 交易账号以及它们各自的实时可用余额。</li>
+                    <li><strong>余额校验拦截</strong>：
+                        <ul class="list-circle pl-6 mt-1 text-gray-500">
+                            <li>当用户在下拉框选择某个 MT5 账号时，前端需比对该账号可用余额与应付金额。</li>
+                            <li>若余额 &lt; 应付金额：自动将“确认购买”按钮禁用，并展示“余额不足，去入金”的跳转按钮。</li>
+                        </ul>
+                    </li>
+                    <li><strong>入金挽回跳转</strong>：点击“余额不足，去入金”按钮，页面跳转至 CRM 入金页。跳转时需携带回跳参数（如 <code>?redirect=product-detail&id=123</code>），保证用户完成入金后能返回当前详情页继续购买。</li>
+                </ul>
+
+                <h4 class="font-bold text-gray-800 mt-6 mb-2">2.3 提交订单与后续流转</h4>
+                <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                    <li>点击“确认购买”后，按钮变更为 Loading 状态（“处理中...”），锁定防重点击。</li>
+                    <li>调用后端创建订单接口。接口成功响应后，弹出“支付成功！即将跳转到我的订单页面”的提示。</li>
+                    <li>延时 1.5 秒后，页面自动跳转至<strong>我的订单页 (client-my-orders.html)</strong>。该跳转无需携带特殊参数，由订单页默认拉取最新数据即可。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

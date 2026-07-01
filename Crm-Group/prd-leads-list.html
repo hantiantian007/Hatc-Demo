@@ -62,7 +62,7 @@
                         <td class="font-medium whitespace-nowrap">邮箱</td>
                         <td>文本输入框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
                         <td>无</td>
-                        <td>必填项（与手机号二选一）。须符合标准邮箱格式。<br><span class="highlight">系统匹配与账号识别</span>：逻辑同手机号，命中 CRM 库需显示归属销售与代理。</td>
+                        <td>必填项（与手机号二选一）。须符合标准邮箱格式。<br><span class="highlight">唯一标识约束</span>：电子邮箱作为系统内客户的唯一识别标识，在“留资详情”中不支持编辑修改。<br><span class="highlight">系统匹配与账号识别</span>：逻辑同手机号，命中 CRM 库需显示归属销售与代理。</td>
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">微信号</td>
@@ -92,7 +92,7 @@
                         <td class="font-medium whitespace-nowrap">归属销售</td>
                         <td>下拉单选框<br><span class="text-xs text-gray-400">来源：系统读取组织架构</span></td>
                         <td>枚举值：当前登录主管下辖的所有销售人员列表。</td>
-                        <td>必填。主管录入时可指派给组员；普通销售录入时，该字段锁定为当前销售本人不可改。<br>保存后，线索状态自动变更为“跟进中”。</td>
+                        <td>选填。主管录入时可指派给组员，若不选择销售，则该线索进入“待分配”列表；普通销售录入时，该字段锁定为当前销售本人不可改。<br>分配后，线索状态自动变更为“跟进中”，未分配则为“待分配”。</td>
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">备注说明</td>
@@ -140,10 +140,9 @@
                         <td>
                             <strong>漏斗层级定义（从上至下）</strong>：<br>
                             1. <strong>总分配线索</strong>：统计周期内分配的线索总数。<br>
-                            2. <strong>有效接通</strong>：总分配线索中，跟进记录标记为“已接通”的线索数。<br>
-                            3. <strong>添加微信/转化</strong>：跟进记录中标记为已添加微信的线索数。<br>
-                            4. <strong>首次入金</strong>：完成第一笔成功入金的线索数。<br>
-                            5. <strong>产生交易</strong>：完成首次真实交易（非模拟盘）的线索数。<br>
+                            2. <strong>已转化</strong>：成功转化为客户的线索数。<br>
+                            3. <strong>首次入金</strong>：完成第一笔成功入金的线索数。<br>
+                            4. <strong>产生交易</strong>：完成首次真实交易（非模拟盘）的线索数。<br>
                             <strong>转化率公式</strong>：当前层级数值 / 上一层级数值 * 100%
                         </td>
                         <td>直观反映各转化环节的流失情况，定位业务瓶颈。</td>
@@ -238,6 +237,14 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="font-medium whitespace-nowrap">列表视图 Tab</td>
+                        <td>列表顶部状态过滤器（取代原列表中的状态列）。</td>
+                        <td>
+                            包含：全部、跟进中、待分配、退回公海、无效线索、已转化。<br>
+                            <span class="highlight">状态合并说明</span>：原“已分配”状态已与“跟进中”合并。凡是已有销售归属（无论是否开始实质性跟进）的线索，统一归入“跟进中”视图。
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="font-medium whitespace-nowrap">列表复选框</td>
                         <td>列表最左侧增加 Checkbox 复选框。</td>
                         <td>
@@ -254,7 +261,7 @@
                     <tr>
                         <td class="font-medium whitespace-nowrap">有无关联代理</td>
                         <td>基于客户留资时的手机号/邮箱系统自动判定：<br>1. 若已关联代理，显示格式为“有 (代理名称)”。<br>2. 若无，则显示“无”。</td>
-                        <td>与客户详情页的归属代理逻辑保持一致，帮助销售在列表页直观识别该线索的代理归属情况。</td>
+                        <td>帮助销售在列表页直观识别该线索的代理归属情况。</td>
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">归属销售</td>
@@ -317,6 +324,13 @@
                         <td>点击「客户画像」按钮。</td>
                         <td>
                             弹出或跳转至客户画像详情页面，查看该客户的全链路溯源信息、资金与交易情况。
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">详情</td>
+                        <td>点击「详情」按钮或客户姓名。</td>
+                        <td>
+                            跳转至 `admin-leads-detail.html`，查看线索全景信息并进行深度跟进。
                         </td>
                     </tr>
                 </tbody>

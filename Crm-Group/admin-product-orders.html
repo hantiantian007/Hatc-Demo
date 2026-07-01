@@ -30,7 +30,7 @@
     </script>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 flex h-screen overflow-hidden">
-    <!-- 拒绝并退款弹窗 (默认隐藏) -->
+    <!-- 拒绝订单弹窗 (默认隐藏) -->
     <div id="reject-modal" class="fixed inset-0 z-[100] hidden">
         <!-- 遮罩层 -->
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeRejectModal()"></div>
@@ -41,7 +41,7 @@
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                 <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
                     <i class="fa-solid fa-triangle-exclamation text-red-500"></i>
-                    拒绝订单并退款
+                    拒绝/取消订单
                 </h3>
                 <button onclick="closeRejectModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -52,7 +52,7 @@
             <div class="p-6 overflow-y-auto max-h-[70vh]">
                 <div class="bg-red-50 text-red-700 text-xs px-3 py-2.5 rounded mb-5 border border-red-100 flex items-start gap-2">
                     <i class="fa-solid fa-circle-info mt-0.5 text-red-500"></i>
-                    <span><span class="font-bold">重要提示：</span> 拒绝订单后，系统将自动把该笔订单实付金额退回至客户的对应账户中。此操作不可逆。</span>
+                    <span><span class="font-bold">重要提示：</span> 拒绝订单后，该笔订单将被关闭并释放相关额度。因生成订单时未扣除客户余额，故无需进行退款操作。</span>
                 </div>
 
                 <!-- 订单基本信息(只读) -->
@@ -60,8 +60,7 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div class="text-gray-500 col-span-2">订单编号：<span class="text-gray-900 font-medium" id="reject-order-id">ORD-***</span></div>
                         <div class="text-gray-500">客户姓名：<span class="text-gray-900 font-medium" id="reject-client-name">***</span></div>
-                        <div class="text-gray-500">退款金额：<span class="text-red-500 font-bold" id="reject-amount">$***</span></div>
-                        <div class="text-gray-500 col-span-2">退款路径：<span class="text-gray-900 font-medium" id="reject-path">***</span></div>
+                        <div class="text-gray-500">订单金额：<span class="text-red-500 font-bold" id="reject-amount">$***</span></div>
                     </div>
                 </div>
 
@@ -73,7 +72,7 @@
                             <option value="">请选择拒绝原因</option>
                             <option value="1">客户账户状态异常，无法开通权限</option>
                             <option value="2">该商品库存/额度已满，暂停售卖</option>
-                            <option value="3">客户主动要求退款/取消订单</option>
+                            <option value="3">客户主动要求取消订单</option>
                             <option value="4">系统价格配置错误</option>
                             <option value="other">其他原因 (请在下方补充)</option>
                         </select>
@@ -88,7 +87,7 @@
                     暂不处理
                 </button>
                 <button onclick="confirmReject(this)" class="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2">
-                    确认拒绝并退款
+                    确认拒绝
                 </button>
             </div>
         </div>
@@ -400,7 +399,7 @@
             <div class="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-3">
                 <i class="fa-solid fa-circle-info text-blue-500 mt-0.5"></i>
                 <div class="text-sm text-blue-800">
-                    <span class="font-bold">资金与返佣流向说明：</span> 【代购交付模式】客户使用余额购买后，资金将自动转入指定MT账号（如：MT-9999999）归集。扣款成功仅代表代购请求成立，需运营人员线下开通业务后，在此处点击「交付」录入账号/激活信息，订单方可生效。
+                    <span class="font-bold">资金与发货流向说明：</span> 客户提交订单后将暂不扣除其钱包余额，订单状态为“待确认”。需运营人员在此处点击「通过」后，系统才会正式从客户钱包余额中扣除对应款项，订单正式生效。若点击「拒绝」，则直接释放额度，无需退款。
                 </div>
             </div>
 
@@ -449,11 +448,11 @@
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-right">
                                 <button class="px-3 py-1.5 bg-primary hover:bg-primaryHover text-white rounded text-xs font-medium transition-colors mr-2 shadow-sm" title="确认发货/开通" onclick="openDeliveryModal('ORD-20260623-8891', '张三', '先锋一号智能交易系统', false)">通过</button>
-                                <button class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors shadow-sm" title="拒绝并退款" onclick="openRejectModal('ORD-20260623-8891', '张三', '$300.00', '原路退回至客户 MT-9999999')">拒绝</button>
+                                <button class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors shadow-sm" title="拒绝并关闭订单" onclick="openRejectModal('ORD-20260623-8891', '张三', '$300.00', '原路退回至客户 MT-9999999')">拒绝</button>
                             </td>
                         </tr>
                         
-                        <!-- 订单 2: 待交付 (一次性买断) -->
+                        <!-- 订单 2: 待交付 (无时间限制) -->
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260622-5531</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-22<br>10:11:45</td>
@@ -463,7 +462,7 @@
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500">zhaoliu@email.com</td>
                             <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋二号</td>
-                            <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-purple-50 text-purple-600 rounded text-xs">一次性买断</span></td>
+                            <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-purple-50 text-purple-600 rounded text-xs">无时间限制</span></td>
                             <td class="px-4 py-3 whitespace-nowrap font-bold text-red-500">$999.00</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-900">余额支付</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500">MT-9999999</td>
@@ -477,7 +476,7 @@
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-right">
                                 <button class="px-3 py-1.5 bg-primary hover:bg-primaryHover text-white rounded text-xs font-medium transition-colors mr-2 shadow-sm" title="确认发货/开通" onclick="openDeliveryModal('ORD-20260622-5531', '赵六', '先锋二号', true)">通过</button>
-                                <button class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors shadow-sm" title="拒绝并退款" onclick="openRejectModal('ORD-20260622-5531', '赵六', '$999.00', '退回至客户钱包余额')">拒绝</button>
+                                <button class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors shadow-sm" title="拒绝并关闭订单" onclick="openRejectModal('ORD-20260622-5531', '赵六', '$999.00', '退回至客户钱包余额')">拒绝</button>
                             </td>
                         </tr>
                         
@@ -504,7 +503,7 @@
                             </td>
                         </tr>
                         
-                        <!-- 订单 3: 已退款 -->
+                        <!-- 订单 3: 已拒绝/取消 -->
                         <tr class="hover:bg-gray-50 transition-colors bg-gray-50/30 opacity-75">
                             <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260620-0034</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-20<br>10:05:12</td>
@@ -514,13 +513,13 @@
                             <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-gray-100 rounded text-xs">7天</span></td>
                             <td class="px-4 py-3 whitespace-nowrap font-bold text-gray-400 line-through">$5,000.00</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-900">8099124</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500">MT-9999999</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-gray-500">-</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic">-</td>
                             <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic text-xs">-</td>
                             <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
-                                    <span class="w-1.5 h-1.5 bg-gray-500 rounded-full mr-1.5"></span>
-                                    已退款
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-600 border border-red-200">
+                                    <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
+                                    已拒绝/取消
                                 </span>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-right">
@@ -654,7 +653,7 @@
 
                     <!-- 一次性商品提示 -->
                     <div id="one-time-notice" class="hidden bg-gray-50 p-3 rounded-lg border border-gray-200 text-sm text-gray-600">
-                        <i class="fa-solid fa-check-circle text-green-500 mr-1"></i> 此商品为<span class="font-bold text-gray-800">一次性买断</span>，交付后权限将永久生效，无需设置时间周期。
+                        <i class="fa-solid fa-check-circle text-green-500 mr-1"></i> 此商品为<span class="font-bold text-gray-800">无时间限制</span>，交付后权限将永久生效，无需设置时间周期。
                     </div>
 
                     <div>
@@ -755,10 +754,10 @@
             const isTC = document.body.innerHTML.includes('商品訂單');
             btn.disabled = true;
             btn.classList.add('opacity-70', 'cursor-not-allowed');
-            btn.innerHTML = isTC ? '<i class="fa-solid fa-circle-notch fa-spin"></i> 處理中...' : '<i class="fa-solid fa-circle-notch fa-spin"></i> 退款处理中...';
+            btn.innerHTML = isTC ? '<i class="fa-solid fa-circle-notch fa-spin"></i> 處理中...' : '<i class="fa-solid fa-circle-notch fa-spin"></i> 处理中...';
             
             setTimeout(() => {
-                alert(isTC ? '已拒絕並發起退款！' : '已拒绝并发起退款！金额将原路返回。');
+                alert(isTC ? '已拒絕並關閉訂單！' : '已拒绝并关闭订单！');
                 closeRejectModal();
                 location.reload();
             }, 1500);

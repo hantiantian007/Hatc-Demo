@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - 智能交易系统 (商品列表)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#41B8AF',
+                        dark: '#1E2126',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
+            <h2 class="text-xl text-primary font-medium">智能交易系统 - 商品列表页</h2>
+            <div class="mt-4 flex gap-4 text-sm text-gray-500">
+                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-06-30</span>
+                <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
+                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">V2.1.0</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="p-8 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">1. 页面内容与数据来源</h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                    <li><strong>商品封面图</strong>：来源于后台商品管理中配置的“列表展示图”。</li>
+                    <li><strong>商品名称与简介</strong>：来源于后台商品管理配置的商品基础文本信息。</li>
+                    <li><strong>商品类型标签</strong>：商品卡片左上角悬浮展示后台配置的“虚拟商品”或“实体商品”标签。</li>
+                    <li><strong>库存展示</strong>：来源于后台该商品下所有套餐库存的汇总总和。若总库存为 0，页面显示“0 (售罄)”。</li>
+                    <li><strong>金额展示逻辑</strong>：
+                        <ul class="list-circle pl-6 mt-1 text-gray-500">
+                            <li>若商品包含多个套餐：读取所有套餐中的最低价，展示为“$最低价 起”。</li>
+                            <li>若商品为单套餐（含无时间限制套餐）：直接读取并展示现价金额“$金额”。</li>
+                            <li>页面强制隐藏套餐后缀标识，保持极简展示。无商品分类及过滤器功能。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 class="text-lg font-bold text-gray-900 mt-8 mb-4 border-l-4 border-primary pl-3">2. 交互逻辑与跳转参数</h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                    <li><strong>售罄状态控制</strong>：当商品库存为 0 时，底部操作按钮必须置灰禁用，按钮文本变更为“已售罄”，不可点击跳转。</li>
+                    <li><strong>详情跳转</strong>：点击正常的商品卡片区域或“查看详情”按钮，页面跳转至“商品详情页”。</li>
+                    <li><strong>携带参数</strong>：跳转时，必须在 URL 后携带当前商品的唯一 ID（例如：<code>product-detail.html?id=123</code>），以便详情页根据该参数拉取具体数据。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
