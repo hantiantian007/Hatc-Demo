@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRD - 智能交易系统 (商品详情及购买流程)</title>
+    <title>PRD - 客户端商品详情及购买流程</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -11,78 +11,169 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#41B8AF',
+                        primary: '#C19B5E',
                         dark: '#1E2126',
                     }
                 }
             }
         }
     </script>
+    <style>
+        .module-title { font-size: 1.125rem; font-weight: bold; color: #111827; margin-top: 2rem; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 4px solid #C19B5E; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; text-sm; }
+        th, td { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; text-align: left; }
+        th { background-color: #f9fafb; font-weight: 500; color: #4b5563; }
+        td { color: #374151; vertical-align: top; }
+        .highlight { color: #b45309; background-color: #fef3c7; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed">
-    <div class="max-w-5xl mx-auto px-4 py-8">
+<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed pb-20">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
-            <h2 class="text-xl text-primary font-medium">智能交易系统 - 商品详情及购买流程</h2>
+            <h2 class="text-xl text-primary font-medium">C端商品详情页 (product-detail.html)</h2>
             <div class="mt-4 flex gap-4 text-sm text-gray-500">
-                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-06-30</span>
+                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-07-01</span>
                 <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">V2.1.0</span>
+                <span class="px-2 py-0.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded text-xs">V2.2.0</span>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="p-8 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">1. 页面内容与数据来源</h3>
-                <ul class="list-disc pl-6 space-y-2 text-gray-700">
-                    <li><strong>顶部轮播图</strong>：来源于后台配置的商品详情轮播图（最多 3 张），提供左右滑动与指示器切换功能。</li>
-                    <li><strong>标题与类型</strong>：展示商品全称。在标题下方展示后台配置的商品类型（虚拟商品/实体商品）灰色标签，及固定的“付费套餐”标识。</li>
-                    <li><strong>商品介绍内容</strong>：来源于后台富文本编辑器录入的图文混排代码，直接在页面下方渲染展示。</li>
-                    <li><strong>套餐选择列表区</strong>：根据后台配置的套餐列表动态生成单选卡片。每张卡片需读取并展示以下字段：
-                        <ul class="list-circle pl-6 mt-1 text-gray-500">
-                            <li>套餐名称（如基础版、进阶版）。</li>
-                            <li>价格对比：后台录入的原价（加删除线置灰）与优惠现价（高亮加粗）。</li>
-                            <li>规格后缀（如 /月、/年）。</li>
-                            <li>库存状态：读取单外套餐的独立库存，若为 0 则打上“已售罄”标签。</li>
-                        </ul>
-                    </li>
-                    <li><strong>底部结算区</strong>：
-                        <ul class="list-circle pl-6 mt-1 text-gray-500">
-                            <li>账户余额：实时请求客户在 CRM 系统内的可用钱包余额。</li>
-                            <li>应付总额：跟随用户选中的套餐，实时展示该套餐的现价金额。</li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <h3 class="text-lg font-bold text-gray-900 mt-8 mb-4 border-l-4 border-primary pl-3">2. 用户购买流程与场景</h3>
-                
-                <h4 class="font-bold text-gray-800 mt-4 mb-2">2.1 套餐选择场景</h4>
-                <ul class="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>用户切换不同套餐时，底部的“应付总额”必须实时联动更新。</li>
-                    <li>若点击了库存为 0 的套餐卡片，需拦截选中状态，或将底部的购买按钮置灰禁用。</li>
-                    <li>点击底部“立即购买”按钮，不会发生页面跳转，而是在当前页面唤起“支付确认弹窗”。</li>
-                </ul>
-
-                <h4 class="font-bold text-gray-800 mt-6 mb-2">2.2 支付确认弹窗场景</h4>
-                <ul class="list-disc pl-6 space-y-2 text-gray-700">
-                    <li><strong>订单初始化</strong>：自动带入用户刚刚选中的“套餐名称”及“应付金额”。</li>
-                    <li><strong>MT5 账户选择</strong>：调用接口拉取当前登录客户名下所有状态正常的 MT5 交易账号以及它们各自的实时可用余额。</li>
-                    <li><strong>余额校验拦截</strong>：
-                        <ul class="list-circle pl-6 mt-1 text-gray-500">
-                            <li>当用户在下拉框选择某个 MT5 账号时，前端需比对该账号可用余额与应付金额。</li>
-                            <li>若余额 &lt; 应付金额：自动将“确认购买”按钮禁用，并展示“余额不足，去入金”的跳转按钮。</li>
-                        </ul>
-                    </li>
-                    <li><strong>入金挽回跳转</strong>：点击“余额不足，去入金”按钮，页面跳转至 CRM 入金页。跳转时需携带回跳参数（如 <code>?redirect=product-detail&id=123</code>），保证用户完成入金后能返回当前详情页继续购买。</li>
-                </ul>
-
-                <h4 class="font-bold text-gray-800 mt-6 mb-2">2.3 提交订单与后续流转</h4>
-                <ul class="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>点击“确认购买”后，按钮变更为 Loading 状态（“处理中...”），锁定防重点击。</li>
-                    <li>调用后端创建订单接口。接口成功响应后，弹出“支付成功！即将跳转到我的订单页面”的提示。</li>
-                    <li>延时 1.5 秒后，页面自动跳转至<strong>我的订单页 (client-my-orders.html)</strong>。该跳转无需携带特殊参数，由订单页默认拉取最新数据即可。</li>
-                </ul>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            
+            <!-- 模块一：页面内容与数据渲染 -->
+            <div class="module-title">1. 页面内容与数据渲染</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">UI 模块</th>
+                            <th width="25%">数据来源与获取</th>
+                            <th width="60%">展示逻辑与排版要求</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">基础信息区</td>
+                            <td>接口入参：URL 中的 <code>?id=xxx</code>。<br>来源：后台商品基础配置。</td>
+                            <td>
+                                1. <strong>顶部轮播图</strong>：最多支持 3 张，必须提供左右滑动与底部圆点指示器。<br>
+                                2. <strong>标题与标签</strong>：标题下方展示商品类型（如“虚拟商品”）及“付费套餐”固定标识。<br>
+                                3. <strong>商品介绍</strong>：直接渲染后台富文本编辑器录入的 HTML 内容，需确保内部图片的自适应（max-width: 100%）。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">套餐选择卡片</td>
+                            <td>来源：后台配置的该商品下的所有套餐数组。</td>
+                            <td>
+                                卡片元素要求：<br>
+                                1. <strong>套餐名称</strong>：如“基础版”、“进阶版”。<br>
+                                2. <strong>价格展示</strong>：原价加删除线置灰，现价高亮加粗，并附带规格后缀（如 /月、/年）。<br>
+                                3. <strong>库存状态</strong>：若库存充足则隐藏或显示具体数字；若为 0，需强制打上“已售罄”遮罩。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">底部悬浮结算栏</td>
+                            <td>数据随套餐选择实时联动。</td>
+                            <td>
+                                1. 必须吸底悬浮展示 (fixed bottom-0)。<br>
+                                2. 左侧展示“应付总额”（跟随当前选中的套餐价格）。<br>
+                                3. 右侧展示“立即购买”主按钮。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
+            <!-- 模块二：购买流转与资金校验 -->
+            <div class="module-title">2. 购买流转与资金校验 (支付确认弹窗)</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">流程节点</th>
+                            <th width="25%">触发与动作</th>
+                            <th width="60%">逻辑处理与防爆仓校验</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">唤起确认弹窗</td>
+                            <td>点击底部“立即购买”按钮触发。</td>
+                            <td>
+                                当前页面居中弹出 Modal 弹窗，不发生页面跳转。自动带入选中的“套餐名称”和“应付金额”。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">加载 MT5 账号</td>
+                            <td>弹窗初始化时自动拉取。</td>
+                            <td>
+                                下拉框内列出当前用户所有状态正常的 MT5 交易账号，并拼接显示其实时<strong>可用余额 (Free Margin)</strong>，如“MT5 - 667788 (可用余额: $1,500.00)”。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">资金校验</td>
+                            <td>用户切换 MT5 账号时实时触发。</td>
+                            <td>
+                                若 <strong>可用余额 &lt; 应付金额</strong>，则触发拦截：<br>
+                                1. “确认购买”按钮置灰禁用。<br>
+                                2. 按钮文案变更为“余额不足，去入金”。<br>
+                                3. 点击该按钮跳转至入金页，并携带 <code>?redirect=当前详情页URL</code> 以支持回跳。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">提交与后续跳转</td>
+                            <td>点击“确认购买”提交订单。</td>
+                            <td>
+                                1. 按钮立即变为 Loading 状态锁定，防止网络延迟导致重复扣款。<br>
+                                2. 订单创建成功后，提示“支付成功，等待后台审核”。后台审核通过前，<strong>暂不实际扣除余额</strong>。<br>
+                                3. 延时 1.5 秒后，自动跳转至“我的订单页 (client-my-orders.html)”。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块三：逆向与异常流转处理 -->
+            <div class="module-title">3. 逆向与异常流转处理</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">异常场景分类</th>
+                            <th width="25%">触发条件与场景描述</th>
+                            <th width="60%">前端处理方案与交互阻断</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">售罄套餐拦截</td>
+                            <td>用户尝试点击或购买库存为 0 的套餐。</td>
+                            <td>
+                                <strong>强阻断</strong>：<br>
+                                1. 若套餐卡片置灰，无法被设为 Active 选中状态。<br>
+                                2. 若用户默认进页时所有套餐均售罄，底部“立即购买”按钮强制变为“已售罄”并 Disabled。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">参数丢失回退</td>
+                            <td>用户直接通过书签或非法 URL 访问详情页，未携带 <code>?id=xxx</code>。</td>
+                            <td>
+                                <strong>强阻断跳转</strong>：进入页面后若检测到无 ID 参数，或接口返回该 ID 商品不存在/已下架，直接 Toast 提示“商品不存在或已下架”，并延时 1 秒后 <code>history.back()</code> 或跳转回商品列表页。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">未登录拦截</td>
+                            <td>未登录的 C 端散客通过官网导流进入该页面并点击购买。</td>
+                            <td>
+                                <strong>授权拦截</strong>：点击购买时判断 Token，若无登录态，则弹出提示并跳转至 <code>register.html</code> 或 <code>login.html</code>。同时需将当前商品详情 URL 作为 redirect 参数存入，保证登录后原路返回继续购买。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </body>

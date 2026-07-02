@@ -161,14 +161,14 @@
                     </div>
                     <div class="flex-1">
                         <h3 class="text-lg font-bold text-gray-900 mb-1">先锋一号</h3>
-                        <p class="text-sm text-gray-500 mb-3">半年锁定期 | 专属量化对冲策略</p>
+                        <p class="text-sm text-gray-500 mb-3">进阶版</p>
                         <div class="text-sm text-gray-600">
                             支付方式: <span class="font-medium">CRM 钱包余额扣除</span>
                         </div>
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-gray-900 mb-1">$50,000.00</div>
-                        <p class="text-xs text-gray-400">已扣款，等待后台确认</p>
+                        <p class="text-xs text-gray-400">已提交，等待后台确认并扣款</p>
                     </div>
                 </div>
             </div>
@@ -190,10 +190,13 @@
                     </div>
                     <div class="flex-1">
                         <h3 class="text-lg font-bold text-gray-900 mb-1">先锋四号</h3>
-                        <p class="text-sm text-gray-500 mb-3">按月订阅 | 实时异动提醒</p>
-                        <div class="text-sm text-gray-600 flex gap-4">
+                        <p class="text-sm text-gray-500 mb-3">按月订阅</p>
+                        <div class="text-sm text-gray-600 mb-1">
+                            支付方式: <span class="font-medium">CRM 钱包余额扣除</span>
+                        </div>
+                        <div class="text-sm text-gray-600 flex gap-4 mt-2">
                             <span>生效日期: <span class="font-medium">2026-05-10</span></span>
-                            <span>到期日期: <span class="font-medium text-red-500">2026-06-10 (已过期)</span></span> <!-- 为了演示状态，故意写过期，但状态标签为了丰富演示写了生效中，我们改用到期时间为未来 -->
+                            <span>到期日期: <span class="font-medium">2026-06-10</span></span>
                         </div>
                     </div>
                     <div class="text-right">
@@ -220,7 +223,10 @@
                     </div>
                     <div class="flex-1">
                         <h3 class="text-lg font-bold text-gray-500 mb-1">先锋一号</h3>
-                        <p class="text-sm text-gray-400 mb-3">配额不足，后台拒绝并已取消订单</p>
+                        <p class="text-sm text-gray-400 mb-3">进阶版</p>
+                        <div class="text-sm text-gray-400">
+                            支付方式: <span class="font-medium">CRM 钱包余额扣除</span>
+                        </div>
                     </div>
                     <div class="text-right text-gray-400">
                         <div class="text-xl font-bold line-through mb-1">$5,000.00</div>
@@ -240,14 +246,14 @@
                     <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
                         <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
                     </div>
-                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 商品选购与订单流程</h3>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 客户端我的订单</h3>
                 </div>
                 <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="flex-1 overflow-hidden bg-white">
-                <iframe src="prd-product-orders.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+                <iframe src="prd-client-my-orders.html" class="w-full h-full border-0" title="PRD Document"></iframe>
             </div>
             <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
                 <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">

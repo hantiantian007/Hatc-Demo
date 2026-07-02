@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风控与运营报表 PRD - 盈亏、净值、持仓</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#C19B5E', secondary: '#A07D45' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .table-cell-nowrap { white-space: nowrap; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- 头部信息 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-primary">
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">风控与运营报表 PRD (盈亏、净值、持仓)</h1>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div><span class="text-gray-500">业务模式：</span><span class="font-medium">Mode B (直连 MT5)</span></div>
+                <div><span class="text-gray-500">目标用户：</span><span class="font-medium">风控、市场、运营人员</span></div>
+                <div><span class="text-gray-500">更新日期：</span><span class="font-medium">2026-07-02</span></div>
+                <div><span class="text-gray-500">状态：</span><span class="font-medium text-green-600">已评审</span></div>
+            </div>
+            <div class="mt-4 p-4 bg-yellow-50 text-yellow-800 rounded-md text-sm border border-yellow-200">
+                <i class="fas fa-exclamation-triangle mr-2"></i> <strong>设计原则红线：</strong>
+                严格遵循“做减法”原则，取消所有冗余的配置型需求；在同页面内通过视图模式完成数据状态的切换，避免页面跳跃。
+            </div>
+        </div>
+
+        <!-- 全局交互规范 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 border-b pb-3 mb-4"><i class="fas fa-layer-group text-primary mr-2"></i>全局交互与数据规范</h2>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                <li>
+                    <strong>数据模式切换 (Mode Switcher)</strong>：报表统一支持在【实时数据】与【历史快照】间切换。
+                    <ul class="list-circle pl-5 mt-1 space-y-1 text-gray-600">
+                        <li><strong>实时数据模式下</strong>：时间选择器置灰不可用。展示文案变更为 <code>实时统计 (本月1日至当前)</code>。系统强制按本月维度聚合流水数据。</li>
+                        <li><strong>历史快照模式下</strong>：必须选择时间范围（支持到天）。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>左右联动架构 (Tree & Grid)</strong>：放弃传统的复杂下拉表单筛选，采用左右分栏联动设计。
+                    <ul class="list-circle pl-5 mt-1 space-y-1 text-gray-600">
+                        <li><strong>左侧关系树</strong>：展示完整的代理/直客层级架构，支持展开/折叠。</li>
+                        <li><strong>右侧汇总卡片</strong>：点击左侧任意节点后，上方汇总卡片动态变更为“该节点及其所有下级（伞下）”的资金汇总数据。</li>
+                        <li><strong>右侧数据列表</strong>：表格取消嵌套展开，改为扁平化列表。第一行固定展示当前选中节点，下方列表展示该节点的直属下级。</li>
+                    </ul>
+                </li>
+                <li><strong>样式约束</strong>：数据表格的所有内容强制不换行（<code>whitespace-nowrap</code>），保持视觉整齐；货币和数值型数据统一右对齐，保留两位小数。</li>
+            </ul>
+        </div>
+
+        <!-- 1. 盈亏报表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-chart-line text-primary mr-2"></i>1. 盈亏报表 (P/L Report)</h2>
+                <a href="admin-report-pnl.html" target="_blank" class="text-primary hover:text-secondary text-sm font-medium">查看原型 <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+            
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">层级结构</h3>
+            <div class="p-3 bg-gray-50 rounded-md text-sm mb-4 border border-gray-100 font-mono">
+                顶级代理 (IB) <i class="fas fa-angle-right text-gray-400 mx-1"></i> 子代理 (Sub-IB) <i class="fas fa-angle-right text-gray-400 mx-1"></i> 直属客户 (Client)
+            </div>
+
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">核心字段与计算公式</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-gray-200">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="border-b py-2 px-3">字段名称</th>
+                            <th class="border-b py-2 px-3">数据来源与定义</th>
+                            <th class="border-b py-2 px-3">实时获取与快照可行性评估</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 px-3 font-medium">净值</td>
+                            <td class="py-2 px-3">MT5 账户核心指标。账户当前的清算价值（结余+信用+浮动盈亏）。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong>极易。直接通过 MT5 API 读取 Account Summary。<br>
+                                <strong>快照：</strong>极易。系统每日 EOD (End of Day) 定时任务记录快照即可。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">结余</td>
+                            <td class="py-2 px-3">MT5 账户核心指标。客户账户的实际现金余额（不含信用和浮动盈亏）。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong>极易。同上。<br>
+                                <strong>快照：</strong>极易。同上。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">信用</td>
+                            <td class="py-2 px-3">MT5 账户核心指标。账户中的赠金/信用额度。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong>极易。同上。<br>
+                                <strong>快照：</strong>极易。同上。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">浮动盈亏</td>
+                            <td class="py-2 px-3">MT5 实时持仓。该层级所有未平仓订单的实时盈亏总和。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong>需通过 API 遍历该账号下所有 Open Positions 并累加盈亏，数据量大时有一定性能开销。<br>
+                                <strong>快照：</strong>易。按天汇总持仓快照即可。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">平仓盈亏</td>
+                            <td class="py-2 px-3">MT5 历史订单。该层级所有已平仓订单的盈亏总和。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong><span class="text-red-600 font-medium">性能开销大。建议采用 MT5 数据流订阅 + 本地增量聚合（如 Redis 缓存），严禁在查询接口中直接向 MT5 发起大跨度聚合请求。</span><br>
+                                <strong>快照：</strong>易。按天计算增量并落库。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">手续费</td>
+                            <td class="py-2 px-3">MT5 历史订单。交易产生的手续费总和。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong><span class="text-red-600 font-medium">同上，需做增量缓存架构。</span><br>
+                                <strong>快照：</strong>易。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">佣金</td>
+                            <td class="py-2 px-3">MT5 历史订单。交易产生的佣金总和。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong><span class="text-red-600 font-medium">同上，需做增量缓存架构。</span><br>
+                                <strong>快照：</strong>易。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">过夜利息</td>
+                            <td class="py-2 px-3">MT5 订单。隔夜持仓产生的利息（含已平仓和未平仓）。</td>
+                            <td class="py-2 px-3">
+                                <strong>实时：</strong><span class="text-red-600 font-medium">性能开销最大。未平仓部分查实时持仓，已平仓部分查本地增量缓存聚合。</span><br>
+                                <strong>快照：</strong>易。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2. 净值报表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-shield-alt text-primary mr-2"></i>2. 净值报表 (Equity Report)</h2>
+                <a href="admin-report-equity.html" target="_blank" class="text-primary hover:text-secondary text-sm font-medium">查看原型 <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+            
+            <p class="text-sm text-gray-600 mb-4"><strong>业务目标：</strong>核心风控页面，主要用于实时监控客户的账户健康度，及时发现可能引发穿仓风险的账户。</p>
+
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">核心字段与计算公式</h3>
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm text-left border border-gray-200">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="border-b py-2 px-3">字段名称</th>
+                            <th class="border-b py-2 px-3">定义与公式 (严格遵循 MT5 标准)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 px-3 font-medium">余额 (Balance)</td>
+                            <td class="py-2 px-3">客户账户的实际现金余额（不含赠金和未平仓盈亏）。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">净值 (Equity)</td>
+                            <td class="py-2 px-3"><code>余额 + 赠金 + 浮动盈亏</code>。账户当前的清算价值。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">预付款 (Margin)</td>
+                            <td class="py-2 px-3"><code>(交易手数 × 合约规模 × 当前价格) / 杠杆</code>。当前持仓被冻结的保证金。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium text-red-600">预付款比例 (Margin Level)</td>
+                            <td class="py-2 px-3"><code>(净值 / 预付款) × 100%</code>。衡量账户爆仓风险的唯一核心指标。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">预警交互逻辑</h3>
+            <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                <li>当任意直客账户的 <strong>预付款比例 &lt; 150%</strong> 时，该数据行整行采用浅红色背景（<code>bg-red-50</code>）高亮。</li>
+                <li>高风险行内的预付款比例数值需用醒目的红色区块（如红底白字）突出显示。</li>
+                <li>代理节点不计算预付款比例（因代理本身不交易），代理行的预付款比例列显示为 <code>-</code>。</li>
+            </ul>
+        </div>
+
+        <!-- 3. 持仓报表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-cubes text-primary mr-2"></i>3. 持仓报表 (Position Report)</h2>
+                <a href="admin-report-position.html" target="_blank" class="text-primary hover:text-secondary text-sm font-medium">查看原型 <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-4"><strong>业务目标：</strong>监控各交易品种在平台内的整体多空敞口方向，防止某一品种单边敞口过大带来的系统性赔付风险。</p>
+
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">特殊层级结构 (逆向思维)</h3>
+            <div class="p-3 bg-gray-50 rounded-md text-sm mb-4 border border-gray-100 font-mono text-primary">
+                交易品种 (Symbol, 如 XAUUSD) <i class="fas fa-angle-right text-gray-400 mx-1"></i> 代理 (IB) <i class="fas fa-angle-right text-gray-400 mx-1"></i> 直属客户 (Client)
+            </div>
+
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">核心字段与计算公式</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-gray-200">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="border-b py-2 px-3">字段名称</th>
+                            <th class="border-b py-2 px-3">定义与公式</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 px-3 font-medium">多头手数 (Buy Lots)</td>
+                            <td class="py-2 px-3">该节点下所有 Buy 方向未平仓订单的总手数。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">空头手数 (Sell Lots)</td>
+                            <td class="py-2 px-3">该节点下所有 Sell 方向未平仓订单的总手数。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium text-blue-600">净敞口手数 (Net Lots)</td>
+                            <td class="py-2 px-3"><code>多头手数 - 空头手数</code>。正数代表平台整体面临价格下跌的赔付风险，负数代表面临价格上涨的赔付风险。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">净敞口盈亏 (Net P/L)</td>
+                            <td class="py-2 px-3"><code>多头总浮盈 + 空头总浮盈</code>。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
