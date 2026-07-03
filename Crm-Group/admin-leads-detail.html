@@ -462,12 +462,14 @@
                                 <option>其他</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="hidden">
                             <label class="block text-sm font-medium text-gray-700 mb-1">期望服务</label>
                             <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn">
-                                <option>外汇交易</option>
-                                <option>量化理财</option>
-                                <option>API接入</option>
+                                <option>自主外汇交易</option>
+                                <option>代理加盟合作</option>
+                                <option>保本理财产品</option>
+                                <option>机构大宗交易</option>
+                                <option>跟单/资管服务</option>
                             </select>
                         </div>
                         <div>
@@ -602,7 +604,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50 hidden">
                                         <td class="px-4 py-3">2023-10-25 10:15:00</td>
                                         <td class="px-4 py-3">期望服务</td>
                                         <td class="px-4 py-3"><span class="line-through text-gray-400">未知</span></td>
@@ -915,7 +917,7 @@
 
     function openPrdModal() {
         // 每次打开时强制刷新 iframe 避免缓存
-        if (prdIframe) prdIframe.src = 'prd-leads-list.html?t=' + new Date().getTime();
+        if (prdIframe) prdIframe.src = 'prd-leads-detail.html?t=' + new Date().getTime();
         if (prdModal) prdModal.classList.remove('hidden');
         setTimeout(() => {
             if (prdModalContent) {

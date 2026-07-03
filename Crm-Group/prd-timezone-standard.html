@@ -98,15 +98,40 @@
                     <p class="text-sm text-gray-600 mb-2">所有业务系统的底层数据库时间字段，必须统一采用 <strong>UTC 时间戳</strong>进行存储。具体研发执行流程如下：</p>
                     <div class="bg-gray-800 p-4 rounded-md text-sm font-mono text-green-400 mt-2 leading-loose">
                         // Step 1: 前端/用户选择时间区间（例如：2026-11-01 至 2026-11-30）。<br>
-                        // Step 2: 后端接收参数后，将其认定为 <strong>MT5 时区</strong>（例如：MT5 Time 2026-11-01 00:00:00）。<br>
-                        // Step 3: 后端调用标准时区库（如 Moment-timezone, date-fns-tz，配置 MT5 服务器所在时区），将其<strong>转换回绝对的 UTC 时间范围</strong>。<br>
+                        // Step 2: 后端接收参数后，将其认定为 <strong>MT5 时区（如 EET/EEST 或 Europe/Cyprus）</strong>（例如：MT5 Time 2026-11-01 00:00:00）。<br>
+                        // Step 3: 后端调用标准时区库，将其<strong>转换回绝对的 UTC 时间范围</strong>。<br>
                         // Step 4: 使用转换后的 UTC 时间范围（WHERE created_at BETWEEN utc_start AND utc_end），去数据库查询流水和注册记录。
                     </div>
                 </div>
 
-                <!-- 规范4 -->
+                <!-- 新增：研发实操指南与开源借鉴 -->
+                <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                    <h3 class="text-md font-bold text-blue-800 mb-3"><i class="fas fa-tools mr-2"></i>2.4 研发实操指南与开源组件借鉴</h3>
+                    <p class="text-sm text-gray-700 mb-3">为彻底规避时区计算陷阱（尤其是夏令时 DST 的自动切换），<strong>有现成的方法可以借鉴，务必保证计算的绝对准确性</strong>。建议直接引入以下成熟的开源方案：</p>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-white p-3 rounded border border-gray-200">
+                            <span class="font-bold text-gray-800 text-sm">📍 推荐的技术栈库库（按语言）：</span>
+                            <ul class="list-disc pl-5 mt-1 text-sm text-gray-600">
+                                <li><strong>PHP (后端核心):</strong> 必须使用 PHP 原生的 <code>DateTime</code> 和 <code>DateTimeZone</code> 类进行转换。严禁使用 <code>strtotime()</code> 加减固定秒数。示例：<code>$date = new DateTime('now', new DateTimeZone('Europe/Cyprus'));</code>，如果使用 Laravel/ThinkPHP 框架，推荐直接使用 <code>Carbon</code> (Nesbot\Carbon) 库进行优雅的跨时区处理。</li>
+                                <li><strong>Node.js / 前端:</strong> 推荐使用 <code>moment-timezone</code> 或 <code>date-fns-tz</code>。可以直接使用 <code>tz('Europe/Cyprus')</code> 等时区标识进行带夏令时感知的转换。</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded border border-gray-200">
+                            <span class="font-bold text-gray-800 text-sm">📍 数据库层的借鉴方案：</span>
+                            <p class="text-sm text-gray-600 mt-1">如果需要在 SQL 层面直接聚合，请使用数据库内置的时区函数，并确保数据库的 <code>tzdata</code> 字典文件是最新的：</p>
+                            <ul class="list-disc pl-5 mt-1 text-sm text-gray-600">
+                                <li><strong>MySQL:</strong> <code>CONVERT_TZ(created_at, '+00:00', 'Europe/Cyprus')</code></li>
+                                <li><strong>PostgreSQL:</strong> <code>created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Cyprus'</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 规范4 -> 规范5 -->
                 <div>
-                    <h3 class="text-md font-bold text-blue-800 mb-2">2.4 财务兜底：强对账三道防线</h3>
+                    <h3 class="text-md font-bold text-blue-800 mb-2">2.5 财务兜底：强对账三道防线</h3>
                     <p class="text-sm text-gray-600 mb-2">为了防止 MT5 历史改单导致本地库错位，研发必须在系统中植入以下防线：</p>
                     <ul class="list-disc list-inside text-sm text-gray-600 ml-4 space-y-1">
                         <li><strong>绝对值公式校验：</strong> 每晚定时任务校验 <code>(期末结余 - 期初结余) - (净入金) + 信用变动 = 0</code>。如果不为 0，立即触发系统报警。</li>
