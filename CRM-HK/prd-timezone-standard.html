@@ -75,26 +75,58 @@
             </div>
         </div>
 
-        <!-- 2. 研发执行规范（研发如何做） -->
+        <!-- 2. 夏令时（DST）与冬令时业务科普 -->
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-code text-blue-500 mr-2"></i>2. 研发执行规范（研发如何做）</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-globe-europe text-blue-500 mr-2"></i>2. 夏令时（DST）与冬令时业务科普（为什么不能写死时间差）</h2>
+            <div class="space-y-4 text-gray-600 text-sm leading-relaxed">
+                <p>外汇交易服务器（如 MT5）通常位于欧洲（如塞浦路斯）。欧洲实行夏令时（Daylight Saving Time, DST）和冬令时（Standard Time）制度，导致服务器与北京时间（UTC+8）的时差会发生动态变化：</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                    <div class="bg-orange-50 p-4 rounded-md border border-orange-100">
+                        <h3 class="font-bold text-orange-800 mb-2"><i class="fas fa-sun text-orange-500 mr-1"></i> 夏令时（DST）</h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>生效时间：</strong> 每年 3 月最后一个周日 到 10 月最后一个周日。</li>
+                            <li><strong>服务器时区：</strong> 变为 UTC+3（如东欧夏令时 EEST）。</li>
+                            <li><strong>与北京时间差：</strong> <span class="font-bold text-red-600">5 小时</span>（北京比服务器快 5 小时）。</li>
+                            <li><strong>业务影响：</strong> 北京时间凌晨 05:00，是 MT5 的自然日跨天（00:00）。</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-md border border-blue-100">
+                        <h3 class="font-bold text-blue-800 mb-2"><i class="fas fa-snowflake text-blue-400 mr-1"></i> 冬令时（标准时间）</h3>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>生效时间：</strong> 每年 10 月最后一个周日 到 次年 3 月最后一个周日。</li>
+                            <li><strong>服务器时区：</strong> 恢复 UTC+2（如东欧标准时间 EET）。</li>
+                            <li><strong>与北京时间差：</strong> <span class="font-bold text-red-600">6 小时</span>（北京比服务器快 6 小时）。</li>
+                            <li><strong>业务影响：</strong> 北京时间凌晨 06:00，才是 MT5 的自然日跨天（00:00）。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-red-50 p-3 rounded-md border border-red-100 text-red-800 mt-4">
+                    <strong>致命陷阱（为什么研发严禁使用 +6h / +8h）：</strong><br>
+                    如果在代码中硬编码 <code>+6小时</code> 来计算跨天。当进入夏令时，MT5 其实在 05:00 就跨天了，但系统依然等到 06:00 才算第二天。这会导致每天有 <strong>1 个小时的交易流水（05:00-06:00）被错误地划算到前一天</strong>。当按月、按季发提成时，这种边界错位会被成百上千倍放大，造成严重的资金错发！
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 研发执行规范（研发如何做） -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-code text-blue-500 mr-2"></i>3. 研发执行规范（研发如何做）</h2>
             
             <div class="space-y-6">
                 <!-- 规范1 -->
                 <div>
-                    <h3 class="text-md font-bold text-blue-800 mb-2">2.1 统一时间锚点：100% 以 MT5 Server Time 为准</h3>
+                    <h3 class="text-md font-bold text-blue-800 mb-2">3.1 统一时间锚点：100% 以 MT5 Server Time 为准</h3>
                     <p class="text-sm text-gray-600 mb-2">在任何涉及“资金（如净入金、平仓盈亏）”、“交易行为（如交易量、手数）”以及用于圈定特定交易人群的交叉统计（如“本月新注册用户的本月净入金”）中，<strong>所有时间维度的圈定必须强制向 MT5 Server Time 看齐</strong>。</p>
                 </div>
 
                 <!-- 规范2 -->
                 <div>
-                    <h3 class="text-md font-bold text-blue-800 mb-2">2.2 严禁硬编码相对时间（禁止使用 +6h / +8h）</h3>
+                    <h3 class="text-md font-bold text-blue-800 mb-2">3.2 严禁硬编码相对时间（禁止使用 +6h / +8h）</h3>
                     <p class="text-sm text-gray-600 mb-2">严禁在代码中使用简单的加减小时数来处理时区。由于欧美存在夏令时（DST）与冬令时切换，固定偏移量会导致每年出现两次为期数周的“对账灾难”。</p>
                 </div>
 
                 <!-- 规范3 -->
                 <div>
-                    <h3 class="text-md font-bold text-blue-800 mb-2">2.3 底层流转架构：UTC 存储与 Timezone 库解析</h3>
+                    <h3 class="text-md font-bold text-blue-800 mb-2">3.3 底层流转架构：UTC 存储与 Timezone 库解析</h3>
                     <p class="text-sm text-gray-600 mb-2">所有业务系统的底层数据库时间字段，必须统一采用 <strong>UTC 时间戳</strong>进行存储。具体研发执行流程如下：</p>
                     <div class="bg-gray-800 p-4 rounded-md text-sm font-mono text-green-400 mt-2 leading-loose">
                         // Step 1: 前端/用户选择时间区间（例如：2026-11-01 至 2026-11-30）。<br>
@@ -106,7 +138,7 @@
 
                 <!-- 新增：研发实操指南与开源借鉴 -->
                 <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
-                    <h3 class="text-md font-bold text-blue-800 mb-3"><i class="fas fa-tools mr-2"></i>2.4 研发实操指南与开源组件借鉴</h3>
+                    <h3 class="text-md font-bold text-blue-800 mb-3"><i class="fas fa-tools mr-2"></i>3.4 研发实操指南与开源组件借鉴</h3>
                     <p class="text-sm text-gray-700 mb-3">为彻底规避时区计算陷阱（尤其是夏令时 DST 的自动切换），<strong>有现成的方法可以借鉴，务必保证计算的绝对准确性</strong>。建议直接引入以下成熟的开源方案：</p>
                     
                     <div class="space-y-3">
@@ -131,18 +163,29 @@
 
                 <!-- 规范4 -> 规范5 -->
                 <div>
-                    <h3 class="text-md font-bold text-blue-800 mb-2">2.5 财务兜底：强对账三道防线</h3>
+                    <h3 class="text-md font-bold text-blue-800 mb-2">3.5 财务兜底：强对账三道防线</h3>
                     <p class="text-sm text-gray-600 mb-2">为了防止 MT5 历史改单导致本地库错位，研发必须在系统中植入以下防线：</p>
                     <ul class="list-disc list-inside text-sm text-gray-600 ml-4 space-y-1">
                         <li><strong>绝对值公式校验：</strong> 每晚定时任务校验 <code>(期末结余 - 期初结余) - (净入金) + 信用变动 = 0</code>。如果不为 0，立即触发系统报警。</li>
                     </ul>
                 </div>
+
+                <!-- 规范6：金钱表新增 MT5 时间物理字段改造 -->
+                <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4">
+                    <h3 class="text-md font-bold text-yellow-800 mb-2"><i class="fas fa-database mr-2"></i>3.6 存量金钱表双轨时间字段改造（新增物理字段方案）</h3>
+                    <p class="text-sm text-gray-700 mb-3">为兼容现有系统架构并提升大数据量 `GROUP BY` 查询性能，决定在所有底层金钱表（如：平仓表、入金表、出金表、佣金表、内转表等）中物理新增 <code>mt5_time</code> (DATETIME) 字段。执行标准如下：</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong>增量数据双写：</strong> 新单据入库时，PHP 后端必须同时写入系统时间（北京时间）和由时区库（如 Carbon）动态计算得出的 <code>mt5_time</code>。</li>
+                        <li><strong>存量历史清洗（红线！）：</strong> <span class="text-red-600 font-bold">严禁研发直接写 SQL `UPDATE 表 SET mt5_time = DATE_SUB(系统时间, INTERVAL 6 HOUR)` 来刷历史数据！</span>必须编写 PHP 跑批脚本，逐条读取历史北京时间，交由时区库判断该日期当时的夏冬令时状态，精准计算出历史 MT5 时间后更新回数据库。</li>
+                        <li><strong>查询逻辑替换：</strong> 清洗完成后，所有涉及“提成、报表”的日期筛选 SQL 条件，必须从 <code>WHERE 系统时间 BETWEEN</code> 替换为 <code>WHERE mt5_time BETWEEN</code>。</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- 3. 测试执行标准（测试如何测） -->
+        <!-- 4. 测试执行标准（测试如何测） -->
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-vial text-purple-500 mr-2"></i>3. 测试执行标准（测试如何测）</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-vial text-purple-500 mr-2"></i>4. 测试执行标准（测试如何测）</h2>
             <div class="space-y-4 text-sm text-gray-600">
                 <p>测试团队在验证任何涉及“报表、资金统计、提成发放”的功能时，必须严格执行以下断言沙盘推演：</p>
                 
@@ -178,12 +221,32 @@
                         <strong>系统断言：</strong> 当晚触发“绝对值公式校验”任务时，系统必须抛出异常报警。
                     </div>
                 </div>
+
+                <div class="border rounded-md p-4 mt-4">
+                    <h3 class="font-bold text-purple-800 mb-2">用例 4：历史存量数据清洗断言（夏冬令时感知）</h3>
+                    <div class="bg-gray-50 p-3 rounded mb-2">
+                        <strong>测试造数据：</strong> 在平仓表挑选两笔历史记录，笔 A 的北京时间在某年 7 月（夏令时），笔 B 的北京时间在某年 12 月（冬令时）。触发研发的清洗脚本。
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded border border-purple-100 text-purple-800">
+                        <strong>系统断言：</strong> 清洗完成后，检查数据库中的 <code>mt5_time</code> 字段。笔 A 的 mt5_time 必须比北京时间晚 5 小时；笔 B 的 mt5_time 必须比北京时间晚 6 小时。
+                    </div>
+                </div>
+
+                <div class="border rounded-md p-4 mt-4">
+                    <h3 class="font-bold text-purple-800 mb-2">用例 5：增量金钱数据双写断言</h3>
+                    <div class="bg-gray-50 p-3 rounded mb-2">
+                        <strong>测试造数据：</strong> 当前时间，实时在系统内下一笔平仓单或做一笔入金。
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded border border-purple-100 text-purple-800">
+                        <strong>系统断言：</strong> 查询数据库底层表，必须同时存在准确的 <code>系统时间(北京时间)</code> 和 <code>mt5_time</code> 字段数据，且时差严格符合当前的季节令时规律。
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 4. 前端展示的双轨制容忍 -->
+        <!-- 5. 前端展示的双轨制容忍 -->
         <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-desktop text-green-500 mr-2"></i>4. 补充说明：前端展示的双轨制容忍</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-desktop text-green-500 mr-2"></i>5. 补充说明：前端展示的双轨制容忍</h2>
             <div class="text-sm text-gray-600">
                 <p>仅在<strong>不涉及财务汇总对账</strong>的纯业务信息展示场景（如查看单个客户的详细注册资料、登录日志），前端可以将 UTC 时间转换为用户的本地时间（Local Time）进行渲染，以符合用户的阅读直觉。</p>
                 <p class="mt-2 text-red-600 font-bold">但在带有“统计、报表、报酬、对账”字眼的模块中，必须遵循红线规范 2.1，强制展示 MT5 Server Time，并建议在表头上添加显著的 `(MT5 Time)` 标识。</p>
