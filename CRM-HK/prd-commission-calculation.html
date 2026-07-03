@@ -98,21 +98,32 @@
             <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">2. 研发执行标准：内转计算逻辑与出入金公式</h2>
             
             <div class="bg-blue-50 p-4 rounded mb-6 border border-blue-100">
-                <h3 class="font-bold text-blue-800 mb-2"><i class="fas fa-code mr-1"></i> 研发数据过滤与聚合规则（如何防止暴增）</h3>
+                <h3 class="font-bold text-blue-800 mb-2"><i class="fas fa-code mr-1"></i> 研发数据过滤与聚合规则（必须拆分现金与内转）</h3>
                 <p class="text-sm text-blue-700 mb-2">
-                    在计算客户业绩时，<strong>绝对不能以 `MT5 Login`（账号）为维度去盲加</strong>，必须以 `User ID`（CRM 客户标识）为维度，将他名下的所有 MT5 账号看作一个整体的大资金池。
+                    在计算客户业绩时，虽然以 `User ID`（CRM 客户标识）为维度进行大资金池聚合，但<strong>必须在底层严格区分“现金流水”和“内转流水”</strong>。因为内转也是入金的一种形式，需要被记录在报表中，但绝不能用来发提成。
                 </p>
                 <div class="bg-white text-gray-800 p-3 rounded text-sm font-mono border border-blue-200 mt-2">
-                    // 研发必须在底层查询时过滤掉以下流水：<br>
-                    WHERE comment NOT LIKE '%Internal Transfer%' <span class="text-gray-400">// 拦截内部互转，防暴增</span><br>
-                    AND comment NOT LIKE '%Commission%' <span class="text-gray-400">// 拦截平台发钱，防套娃</span><br>
-                    AND comment NOT LIKE '%Bonus%'
+                    // 研发必须在底层查询时对流水进行打标分类：<br>
+                    IF comment LIKE '%Internal Transfer%' THEN <span class="text-green-600">Type = '内转'</span> <span class="text-gray-400">// 计入累计内转，不发钱</span><br>
+                    ELSE IF comment NOT LIKE '%Commission%' AND comment NOT LIKE '%Bonus%' THEN <span class="text-blue-600">Type = '现金'</span> <span class="text-gray-400">// 计入累计现金，用来发钱</span><br>
+                    ELSE <span class="text-red-600">DROP</span> <span class="text-gray-400">// 拦截平台发钱，彻底丢弃，防套娃</span>
                 </div>
             </div>
 
-            <h3 class="font-bold text-gray-800 mb-2">【有效净入金】计算公式：</h3>
-            <div class="code-block mb-4 text-base font-bold text-center text-primary bg-bgLight border-primary">
-                单日有效净入金 = SUM(大钱包所有外部入金) - SUM(大钱包所有外部出金)
+            <h3 class="font-bold text-gray-800 mb-2">【出入金与净入金】计算公式：</h3>
+            <div class="space-y-3 mb-4">
+                <div class="code-block text-base text-gray-700 bg-gray-50 border-gray-200 flex justify-between items-center">
+                    <span><strong>1. 累计现金入金 / 出金：</strong> 只统计真正走支付通道进出的外部资金。</span>
+                    <span class="text-xs bg-gray-200 px-2 py-1 rounded text-gray-600">报表展示 + 提成基数</span>
+                </div>
+                <div class="code-block text-base text-gray-700 bg-gray-50 border-gray-200 flex justify-between items-center">
+                    <span><strong>2. 累计内转入金 / 出金：</strong> 统计佣金账户与交易账户互转的内部资金。</span>
+                    <span class="text-xs bg-gray-200 px-2 py-1 rounded text-gray-600">仅作报表展示</span>
+                </div>
+                <div class="code-block text-lg font-bold text-center text-primary bg-bgLight border-primary shadow-sm">
+                    有效净入金 (发提成唯一指标) = SUM(累计现金入金) - SUM(累计现金出金)
+                </div>
+                <p class="text-xs text-red-600 text-center mt-1">注：累计内转入金和出金，在“大钱包”层面相互抵消，绝对不允许参与“有效净入金”的计算！</p>
             </div>
 
         <!-- 3. 测试用例与对账沙盘 -->
@@ -136,9 +147,10 @@
                         <div class="bg-green-50 p-3 rounded border border-green-100">
                             <p class="font-bold text-green-800 mb-1">系统必须输出（断言）：</p>
                             <ul class="list-disc pl-4 space-y-1 text-green-700">
-                                <li>累计入金必须等于：$1,000（不可是 $2,500）</li>
-                                <li>累计出金必须等于：$0（不可是 $1,500）</li>
-                                 <li class="font-bold border-t border-green-200 mt-2 pt-1">最终有效净入金必须等于：$1,000</li>
+                                <li>累计现金入金：$1,000</li>
+                                <li>累计内转入金：$1,000（不可与现金混淆导致暴增至 $2,000）</li>
+                                <li>累计现金出金：$0</li>
+                                <li class="font-bold border-t border-green-200 mt-2 pt-1">最终有效净入金必须等于：$1,000</li>
                              </ul>
                          </div>
                      </div>
@@ -214,14 +226,48 @@
 
             <!-- 公式 3 -->
             <div class="border-t border-gray-100 pt-6 mt-6">
-                <h3 class="text-md font-bold text-gray-800 mb-2 flex items-center"><span class="bg-primary text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">!</span> 提成派发汇总（伞下穿透与自客同享）</h3>
-                <div class="code-block mb-3">
-                    销售当期总业绩 = SUM(伞下所有直客/下级代理当期业绩) + 销售本人的自客当期业绩
+                <h3 class="text-md font-bold text-gray-800 mb-4 flex items-center"><span class="bg-primary text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">!</span> 提成派发核算模式（三种提成计算场景）</h3>
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-200 mb-3">
+                    <p class="text-sm text-yellow-800 font-bold"><i class="fas fa-info-circle mr-1"></i> 模式互斥声明（单选规则）</p>
+                    <p class="text-xs text-yellow-700 mt-1">系统后台配置奖励规则时，以下三种计算方式为<strong>严格单选互斥（只能选其一）</strong>。同一条奖励规则绝对不能同时应用多种计算模式，以彻底防范“同一笔入金在不同维度被多次结算”的双重计费漏洞。</p>
                 </div>
-                <div class="bg-purple-50 p-4 rounded-lg border border-purple-100 mt-2">
+                <p class="text-sm text-gray-600 mb-3">系统必须支持以下三种不同的提成核算模式，以满足不同代理线和销售团队的考核规则：</p>
+                
+                <div class="space-y-3">
+                    <!-- 模式 1 -->
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-gray-800 text-sm">模式一：按单个用户独立计算（不抵消）</h4>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">场景：高净值单客奖励</span>
+                        </div>
+                        <p class="text-xs text-gray-600"><strong>逻辑：</strong> 独立计算每个直客的净入金。只要客户 A 的净入金达标，就给销售发客户 A 的提成。客户 B 哪怕大额亏损出金，也不影响客户 A 带来的奖励。</p>
+                        <p class="text-xs text-red-600 mt-1"><i class="fas fa-exclamation-triangle"></i> <strong>风控预警：</strong> 极易发生“黑市对敲刷单”（用B出金的钱垫资给A入金套利），建议仅用于严控的大客户渠道。</p>
+                    </div>
+
+                    <!-- 模式 2 -->
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-gray-800 text-sm">模式二：按销售伞下全员汇总（抵消大资金池）</h4>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">场景：标准销售月度考核</span>
+                        </div>
+                        <p class="text-xs text-gray-600"><strong>逻辑：</strong> 销售当期总业绩 = <code>SUM(伞下所有客户当期入金) - SUM(伞下所有客户当期出金)</code>。客户 A 的入金必须填平客户 B 的出金后，如果有正向结余，销售才能拿提成。</p>
+                        <p class="text-xs text-green-700 mt-1"><i class="fas fa-shield-alt"></i> <strong>风控优势：</strong> 彻底杜绝对敲套利，倒逼销售维护全局资金盘。</p>
+                    </div>
+
+                    <!-- 模式 3 -->
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-gray-800 text-sm">模式三：按分组/代理条线汇总</h4>
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">场景：团队/机构代理结算</span>
+                        </div>
+                        <p class="text-xs text-gray-600"><strong>逻辑：</strong> 突破单个销售的界限，以一个“代理组”或整条“代理树”为一个大资金池进行抵消计算。用于计算团队总监管理奖或机构代理的总返佣。</p>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-100 mt-4">
                     <h4 class="font-bold text-purple-800 text-sm mb-2"><i class="fas fa-user-check mr-1"></i> 业务红线：销售自客数据同等享受奖励</h4>
                     <p class="text-sm text-purple-700">
-                        <strong>销售本人的 User ID 必须视为其伞下的第一个有效客户。</strong>销售自己名下交易账户产生的“有效净入金”和“有效交易量”，必须与旗下其他普通用户的数据一并汇总，同等享受业绩提成和奖励计算。
+                        <strong>无论采用上述哪种模式，销售本人的 User ID 必须视为其伞下的第一个有效客户。</strong>销售自己名下交易账户产生的“有效净入金”和“有效交易量”，必须与旗下其他普通用户的数据一并汇总（或单独计算），同等享受业绩提成和奖励。
                     </p>
                 </div>
             </div>
@@ -252,11 +298,6 @@
                     <p class="text-sm text-gray-600">到了月底最后一天 <code>23:59:59</code>（MT5时间），系统<strong>不再去 MT5 查流水</strong>，而是直接在数据库里把本月生成的 28~31 张【单日基础业绩单】进行 <code>SUM</code> 汇总求和，生成月度账单。</p>
                     <div class="mt-2 text-xs bg-purple-50 text-purple-700 p-1.5 rounded border border-purple-100 inline-block">触发动作：这是生产环境 99% 的触发场景，依此汇总单进行月结提成派发。</div>
                 </div>
-            </div>
-            
-            <div class="bg-orange-50 p-4 rounded border border-orange-100">
-                <h4 class="font-bold text-orange-800 text-sm mb-2"><i class="fas fa-tools mr-1"></i> 数据修复兜底（强制重算机制）</h4>
-                <p class="text-sm text-orange-700">如果发现历史数据有误（如 MT5 宕机），运营可在后台指定日期范围点击“强制重算”。系统将删除该范围内的【单日基础业绩单】重新生成，并自动级联刷新依赖于这些日数据的月/季/年账单。</p>
             </div>
         </div>
 

@@ -110,7 +110,6 @@
                     <p class="text-sm text-gray-600 mb-2">为了防止 MT5 历史改单导致本地库错位，研发必须在系统中植入以下防线：</p>
                     <ul class="list-disc list-inside text-sm text-gray-600 ml-4 space-y-1">
                         <li><strong>绝对值公式校验：</strong> 每晚定时任务校验 <code>(期末结余 - 期初结余) - (净入金) + 信用变动 = 0</code>。如果不为 0，立即触发系统报警。</li>
-                        <li><strong>强制重算 API：</strong> 提供一个高权限接口，允许传入指定的日期范围，清空本地对应范围内的日切片，并重新从 MT5 拉取流水进行计算。</li>
                     </ul>
                 </div>
             </div>
@@ -151,7 +150,7 @@
                         <strong>测试造数据：</strong> 在本地数据库直接手动修改某条 MT5 历史入金流水金额（模拟 MT5 坏账改单）。
                     </div>
                     <div class="bg-purple-50 p-3 rounded border border-purple-100 text-purple-800">
-                        <strong>系统断言：</strong> 当晚触发“绝对值公式校验”任务时，系统必须抛出异常报警。随后调用“强制重算”接口，本地流水金额必须恢复正确。
+                        <strong>系统断言：</strong> 当晚触发“绝对值公式校验”任务时，系统必须抛出异常报警。
                     </div>
                 </div>
             </div>
