@@ -157,10 +157,22 @@
                         <td>反映团队/销售对分配资源的消化压力。</td>
                     </tr>
                     <tr>
+                        <td class="font-medium whitespace-nowrap">客户触达数</td>
+                        <td>CRM 跟进记录表</td>
+                        <td>
+                            <strong>计算公式</strong>：<br>统计周期内，销售在系统内添加过至少一次跟进记录的<strong>排重客户数</strong>。<br>
+                            <span class="text-xs text-gray-500">*排重逻辑说明：统计的是“人数”而非“次数”。例如对同一个客户添加了 5 条跟进记录，客户触达数仍计为 1。</span>
+                        </td>
+                        <td>反映销售实际有效触达了多少个分配的线索。用于防范销售“挑客”不跟进的现象。</td>
+                    </tr>
+                    <tr>
                         <td class="font-medium whitespace-nowrap">平均跟进频次</td>
                         <td>CRM 跟进记录表</td>
-                        <td><strong>计算公式</strong>：<br>总跟进次数 / 触达客户数</td>
-                        <td>衡量销售主动跟进力度。</td>
+                        <td><strong>计算公式</strong>：<br>总跟进次数 / 客户触达数</td>
+                        <td>
+                            衡量销售主动跟进的深度。<br>
+                            <span class="text-xs text-gray-500">*业务说明：若该值接近 1，说明销售仅做了浅层的单次触达（如群发消息）；若数值较高，说明对单客进行了深度、多次回访。</span>
+                        </td>
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">无效/退回占比</td>
