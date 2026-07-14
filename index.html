@@ -461,6 +461,73 @@
 
 
                 
+                <!-- 规划需求卡片 3：登录环境异常预警 -->
+                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">风控管理</span>
+                                <h3 class="text-lg font-bold text-gray-800">登录环境异常预警</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">比对客户 CRM 与 MT5 的登录 IP、地区、ASN 与历史画像，识别异常登录环境并提醒风控人工核查，当前阶段仅做预警，不对客户执行自动限制。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个页面</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-gray-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[200px]">页面名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[220px]">页面概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[320px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 font-medium text-gray-800">异常预警列表页</td>
+                                        <td class="py-3 px-4 text-gray-600">展示异常预警概览、筛选区、预警表格与右侧详情 Drawer，支持风控查看 CRM/MT5 登录环境差异及人工备注。</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-risk-login-alert.html" target="_blank">
+                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-risk-login-alert.html" target="_blank">
+                                                    <i class="fas fa-desktop"></i> 原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="py-3 px-4 font-medium text-gray-800">客户详情风险摘要卡</td>
+                                        <td class="py-3 px-4 text-gray-600">在客户详情页常驻显示最近一次登录环境预警结果，便于业务与风控在客户侧快速看到当前状态并跳转到异常明细。</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-client-detail.html" target="_blank">
+                                                    <i class="fas fa-desktop"></i> 客户详情联动
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href=".trae/documents/crm-mt5-login-ip-alert-tech.md" target="_blank">
+                                                    <i class="fas fa-file-lines text-gray-400"></i> 技术方案
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 留作占位，可后续补充更多规划需求 -->
 
             </div>
