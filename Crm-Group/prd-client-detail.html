@@ -25,7 +25,47 @@
             </div>
         </div>
 
-        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">1. 客户标签显示及标签弹窗</h2>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">1. 登录环境风险（本期新增）</h2>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+            <p class="text-sm text-blue-800 font-medium">业务目标：在客户详情页常驻展示该客户最近一次「登录 IP 一致性比对」摘要，降低风控/业务穿透查询成本；本期仅做记录与查看，不做处置。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">功能模块</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">业务口径与数据来源</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">展示位置</td>
+                    <td>客户详情页右侧信息区，放在「注册信息」下方，模块名称为「登录环境风险」。</td>
+                    <td>该模块为摘要卡，用于承载“最近一次登录环境比对结果”的最小信息集。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">摘要字段（本期）</td>
+                    <td>
+                        仅展示：<span class="highlight">最近判定时间</span>、<span class="highlight">CRM 登录 IP</span>、<span class="highlight">MT5 登录 IP</span>、<span class="highlight">查看明细</span>入口。<br>
+                        不展示：命中标签、说明文案、预警等级胶囊、终端类型（如 CRM Web/MT5 Mobile）等。
+                    </td>
+                    <td>
+                        最近判定时间：取该客户最新一条比对结果的判定时间（倒序）。<br>
+                        CRM/MT5 登录 IP：取该条比对结果中的 CRM/MT5 标准化 IP；未匹配到 MT5 登录时 MT5 IP 显示 <span class="highlight">--</span>。
+                    </td>
+                </tr>
+                <tr>
+                    <td class="font-medium">查看明细</td>
+                    <td>
+                        点击「查看明细」跳转到「登录 IP 一致性比对」列表页，并按当前客户进行查看。<br>
+                        无记录时：最近判定时间与 IP 均显示 <span class="highlight">--</span>，且不展示「查看明细」入口。
+                    </td>
+                    <td>入口跳转到 <code>admin-risk-login-alert.html</code>；筛选条件以客户维度（邮箱/姓名/客户ID）预填。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">2. 客户标签显示及标签弹窗</h2>
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
             <p class="text-sm text-blue-800 font-medium">业务目标：通过全局标签库为客户建立精准的业务画像，方便销售和主管快速识别客户特征（如：高净值、偏好品种等）。</p>
         </div>
@@ -73,7 +113,7 @@
             </tbody>
         </table>
 
-        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">2. 留资溯源信息内容及字段</h2>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">3. 留资溯源信息内容及字段</h2>
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
             <p class="text-sm text-blue-800 font-medium">业务目标：打通“售前线索 (Leads)”与“售后资产 (Client)”的数据壁垒，在一张卡片内展示客户从点击广告到完成首充交易的全生命周期旅程。</p>
         </div>
@@ -102,7 +142,7 @@
                         <strong>首响时间</strong>：(第一次添加跟进记录的时间 - 线索入库时间)。<br>
                         <strong>历史跟进次数</strong>：留资模块中累计的跟进记录条数。<br>
                         <strong>转化归属销售</strong>：最终促成该线索转化的销售人员。<br>
-                        <strong>归属代理 (IB)</strong>：基于留资手机号/邮箱自动关联已有代理关系，显示格式为“代理名称 (代理邮箱)”，同时支持在此处点击修改（修改逻辑详见下文模块 3）。<br>
+                        <strong>归属代理 (IB)</strong>：基于留资手机号/邮箱自动关联已有代理关系，显示格式为“代理名称 (代理邮箱)”，同时支持在此处点击修改（修改逻辑详见下文模块 4）。<br>
                         <strong>转化周期</strong>：(首次入金时间 - 线索入库时间)。
                     </td>
                     <td>衡量销售跟进的勤奋度与转化效率，并明确业务提成归属。</td>
@@ -126,7 +166,7 @@
             </tbody>
         </table>
 
-        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">3. 归属代理 (IB) 关系维护</h2>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">4. 归属代理 (IB) 关系维护</h2>
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
             <p class="text-sm text-blue-800 font-medium">业务目标：允许管理层或授权人员在客户详情（留资溯源卡片内）动态调整客户的归属代理，以支持业务架构调整和客诉处理。</p>
         </div>
