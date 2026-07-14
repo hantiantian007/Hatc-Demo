@@ -142,12 +142,19 @@
 
         <div class="flex-1 overflow-y-auto p-6 space-y-6">
             <section class="bg-white rounded-2xl border border-gray-100 shadow-panel p-5">
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
                     <div>
                         <label class="block text-xs text-gray-500 mb-2">客户邮箱 / 姓名</label>
                         <div class="relative">
                             <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                             <input id="searchInput" type="text" placeholder="支持邮箱或姓名模糊搜索" class="w-full h-10 pl-9 pr-3 rounded-lg border border-gray-200 text-sm text-gray-700 bg-gray-50 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-2">登录IP</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input id="ipSearchInput" type="text" placeholder="支持 CRM / MT5 登录IP搜索" class="w-full h-10 pl-9 pr-3 rounded-lg border border-gray-200 text-sm text-gray-700 bg-gray-50 focus:outline-none">
                         </div>
                     </div>
                     <div>
@@ -856,6 +863,7 @@
 
         function resetFilters() {
             document.getElementById('searchInput').value = '';
+            document.getElementById('ipSearchInput').value = '';
             document.getElementById('resultSelect').selectedIndex = 0;
         }
     </script>
