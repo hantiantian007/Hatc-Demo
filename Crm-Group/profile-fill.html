@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC - 资料填写</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGold: '#C19B5E',
+                        brandGoldSoft: '#F7F1E7',
+                        pageBg: '#F4F4F4',
+                        panelBorder: '#E7E4DE',
+                        labelText: '#C19B5E',
+                        fieldBorder: '#E4E0D7',
+                        fieldBg: '#FFFFFF',
+                        textMain: '#4B5563',
+                        dangerBg: '#FFF1F1',
+                        dangerText: '#DC2626',
+                        successBg: '#EEF9F4',
+                        successText: '#15803D',
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        mainBg: '#F3F4F6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 500px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-bullhorn w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">动态公告</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">集团动态</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-white bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg text-white"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
+                </button>
+                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                    <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
+            </a>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-wallet w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表明细</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-shield w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">风控管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0 relative border-b border-blue-200">
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="hover:text-gray-800 cursor-pointer">客户管理</span>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-menuActive font-medium mr-6">资料填写</span>
+
+                <button onclick="openPrdModal()" class="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded transition-colors border border-indigo-200 text-xs font-medium mr-3">
+                    <i class="fas fa-file-alt"></i> PRD文档
+                </button>
+                <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
+                    <i class="fas fa-arrow-left"></i> 返回需求看板
+                </a>
+            </div>
+            <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
+                    <span class="text-sm font-bold text-gray-600">SM</span>
+                </div>
+                <div class="absolute right-0 top-[100%] mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-lg">
+                        <p class="text-sm font-medium text-gray-800">史密斯</p>
+                        <p class="text-xs text-gray-500 mt-0.5 truncate">admin@dev.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-menuActive transition-colors">
+                            <i class="fas fa-user-circle w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">个人信息</span>
+                        </a>
+                    </div>
+                    <div class="py-1 border-t border-gray-100">
+                        <a href="../login.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors">
+                            <i class="fas fa-sign-out-alt w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">退出</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="px-6 py-4 overflow-y-auto">
+                <section class="bg-white rounded-xl border border-panelBorder p-5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden">
+                            <i class="fa-solid fa-user text-3xl text-gray-400"></i>
+                        </div>
+                        <div class="text-[11px] text-gray-500">3680704143@qq.com</div>
+                    </div>
+                </section>
+
+                <section class="bg-white rounded-xl border border-panelBorder mt-3 p-4 sm:p-5 min-h-[600px]">
+                    <div class="border-b border-gray-200 pb-2 flex items-center gap-8 text-[11px]">
+                        <button class="text-gray-800 font-medium relative">
+                            用户资料
+                            <span class="absolute left-0 bottom-[-10px] w-8 h-0.5 bg-brandGold rounded-full"></span>
+                        </button>
+                        <button class="text-gray-400">账号安全</button>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="w-full max-w-[300px]">
+                            <form class="space-y-3" onsubmit="return handleSubmit(event)">
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>地区：</label>
+                            <select class="w-full h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                                <option>请选择</option>
+                                <option>中国香港</option>
+                                <option>新加坡</option>
+                                <option>阿联酋</option>
+                                <option>英国</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>手机号：</label>
+                            <div class="grid grid-cols-[88px_1fr] gap-2">
+                                <select class="h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                                    <option>请选择</option>
+                                    <option>+852</option>
+                                    <option>+65</option>
+                                    <option>+971</option>
+                                    <option>+44</option>
+                                </select>
+                                <input type="text" placeholder="请输入您的手机号" class="h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>真实姓名：</label>
+                            <input type="text" placeholder="请输入您的真实姓名" class="w-full h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>出生日期：</label>
+                            <input type="text" placeholder="请选择您的生日" class="w-full h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>证件类型：</label>
+                            <select id="certType" onchange="updateHkidValidation()" class="w-full h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                                <option value="">请选择</option>
+                                <option value="passport">护照</option>
+                                <option value="id_card">身份证 / ID</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>证件号：</label>
+                            <input id="certNo" type="text" oninput="updateHkidValidation()" placeholder="请输入您的证件号码" class="w-full h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                            <div id="hkidHint" class="mt-1.5 rounded border px-2.5 py-2 text-[10px] leading-4 bg-dangerBg border-[#F5C2C7] text-dangerText">
+                                暂时不支持香港身份证开户注册。
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>证件照片：</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="h-[60px] rounded bg-[#E5E5E5] border border-gray-300 flex flex-col items-center justify-center text-[#8B8B8B] text-[10px]">
+                                    <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center mb-2">
+                                        <i class="fa-solid fa-camera text-red-400"></i>
+                                    </div>
+                                    上传正面
+                                </div>
+                                <div class="h-[60px] rounded bg-[#E5E5E5] border border-gray-300 flex flex-col items-center justify-center text-[#8B8B8B] text-[10px]">
+                                    <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center mb-2">
+                                        <i class="fa-solid fa-camera text-red-400"></i>
+                                    </div>
+                                    上传反面
+                                </div>
+                            </div>
+                            <p class="mt-1.5 text-[9px] leading-4 text-[#C58B2D]">请确保图片信息清晰可见，不得裁剪边角，否则无法通过审核。</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-labelText mb-1.5"><span class="text-brandGold mr-1">*</span>居住地：</label>
+                            <input type="text" placeholder="请输入" class="w-full h-8 rounded border border-fieldBorder bg-fieldBg px-2 text-[11px] text-gray-600 outline-none focus:border-brandGold">
+                        </div>
+
+                        <div class="flex items-center gap-2 pt-1">
+                            <button id="submitBtn" type="submit" class="px-4 h-7 rounded bg-brandGold text-white text-[10px] font-medium hover:opacity-90 transition-opacity">提交</button>
+                            <button type="button" class="px-4 h-7 rounded border border-gray-300 bg-white text-[10px] text-gray-600 hover:border-gray-400 transition-colors">返回</button>
+                        </div>
+                    </form>
+                        </div>
+                    </div>
+                </section>
+        </main>
+    </div>
+
+    <div id="prdModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="closePrdModal()"></div>
+        <div id="prdModalContent" class="absolute right-0 top-0 bottom-0 w-[800px] bg-gray-50 shadow-2xl transform transition-transform duration-300 flex flex-col translate-x-full">
+            <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded bg-[#C19B5E]/20 flex items-center justify-center mr-3 border border-[#C19B5E]/30">
+                        <i class="fa-solid fa-file-lines text-[#C19B5E]"></i>
+                    </div>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 海外版身份校验</h3>
+                </div>
+                <button onclick="closePrdModal()" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-hidden bg-white">
+                <iframe id="prdIframe" src="prd-overseas-id-check.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+            </div>
+
+            <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
+                <button onclick="closePrdModal()" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">
+                    关闭阅读
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="fixed bottom-4 right-4 w-8 h-8 rounded-full bg-white border border-gray-300 shadow flex items-center justify-center text-gray-700">
+        <i class="fa-solid fa-headset text-sm"></i>
+    </button>
+
+    <script>
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.arrow-transition');
+            if (!submenu) return;
+            submenu.classList.toggle('submenu-expanded');
+            if (arrow) arrow.classList.toggle('arrow-rotated');
+        }
+
+        const prdModal = document.getElementById('prdModal');
+        const prdModalContent = document.getElementById('prdModalContent');
+        const prdIframe = document.getElementById('prdIframe');
+
+        function openPrdModal() {
+            if (prdIframe) prdIframe.src = 'prd-overseas-id-check.html?t=' + new Date().getTime();
+            if (prdModal) prdModal.classList.remove('hidden');
+            setTimeout(() => {
+                if (prdModalContent) {
+                    prdModalContent.classList.remove('translate-x-full');
+                    prdModalContent.classList.add('translate-x-0');
+                }
+            }, 10);
+        }
+
+        function closePrdModal() {
+            if (prdModalContent) {
+                prdModalContent.classList.remove('translate-x-0');
+                prdModalContent.classList.add('translate-x-full');
+            }
+            setTimeout(() => {
+                if (prdModal) prdModal.classList.add('hidden');
+            }, 300);
+        }
+
+        function normalizeHkid(value) {
+            return (value || '').toUpperCase().replace(/\s+/g, '').replace(/[()]/g, '');
+        }
+
+        function getCharValue(char) {
+            if (/^\d$/.test(char)) return Number(char);
+            return char.charCodeAt(0) - 55;
+        }
+
+        function isValidHkid(value) {
+            const normalized = normalizeHkid(value);
+            if (!/^[A-Z]{1,2}\d{6}[0-9A]$/.test(normalized)) return false;
+
+            const checkChar = normalized.slice(-1);
+            const prefixAndDigits = normalized.slice(0, -1);
+            const prefix = prefixAndDigits.slice(0, -6);
+            const digits = prefixAndDigits.slice(-6).split('').map(Number);
+
+            let values = [];
+            if (prefix.length === 1) {
+                values.push(36);
+                values.push(getCharValue(prefix[0]));
+            } else {
+                values.push(getCharValue(prefix[0]));
+                values.push(getCharValue(prefix[1]));
+            }
+
+            values = values.concat(digits);
+            const weights = [9, 8, 7, 6, 5, 4, 3, 2];
+            let sum = 0;
+            for (let i = 0; i < weights.length; i += 1) {
+                sum += values[i] * weights[i];
+            }
+
+            const check = (11 - (sum % 11)) % 11;
+            const expected = check === 10 ? 'A' : String(check);
+            return checkChar === expected;
+        }
+
+        function updateHkidValidation() {
+            const certType = document.getElementById('certType').value;
+            const certNo = document.getElementById('certNo').value;
+            const hint = document.getElementById('hkidHint');
+            const submitBtn = document.getElementById('submitBtn');
+            const activeBtnClass = 'px-4 h-7 rounded bg-brandGold text-white text-[10px] font-medium hover:opacity-90 transition-opacity';
+            const defaultHintClass = 'mt-1.5 rounded border px-2.5 py-2 text-[10px] leading-4 bg-dangerBg border-[#F5C2C7] text-dangerText';
+            const defaultHintText = '暂时不支持香港身份证开户注册。';
+
+            if (certType !== 'id_card') {
+                hint.className = defaultHintClass;
+                hint.innerHTML = defaultHintText;
+                submitBtn.disabled = false;
+                submitBtn.className = activeBtnClass;
+                return;
+            }
+
+            if (!certNo.trim()) {
+                hint.className = defaultHintClass;
+                hint.innerHTML = defaultHintText;
+                submitBtn.disabled = false;
+                submitBtn.className = activeBtnClass;
+                return;
+            }
+
+            if (isValidHkid(certNo)) {
+                hint.className = 'mt-1.5 rounded border px-2.5 py-2 text-[10px] leading-4 bg-dangerBg border-[#F5C2C7] text-dangerText';
+                hint.innerHTML = '<div class="font-semibold mb-1">识别结果：香港身份证（HKID）</div>海外版不支持香港身份证开户注册，请使用其他证件或前往港版申请。';
+                submitBtn.disabled = true;
+                submitBtn.className = 'px-4 h-7 rounded bg-gray-300 text-white text-[10px] font-medium cursor-not-allowed';
+                return;
+            }
+
+            hint.className = defaultHintClass;
+            hint.innerHTML = defaultHintText;
+            submitBtn.disabled = false;
+            submitBtn.className = activeBtnClass;
+        }
+
+        function fillHkidDemo() {
+            document.getElementById('certType').value = 'id_card';
+            document.getElementById('certNo').value = 'A123456(3)';
+            updateHkidValidation();
+        }
+
+        function fillPassportDemo() {
+            document.getElementById('certType').value = 'passport';
+            document.getElementById('certNo').value = 'P1234567';
+            updateHkidValidation();
+        }
+
+        function clearFormDemo() {
+            document.getElementById('certType').value = '';
+            document.getElementById('certNo').value = '';
+            updateHkidValidation();
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            updateHkidValidation();
+            if (document.getElementById('submitBtn').disabled) return false;
+            alert('原型演示：资料提交成功');
+            return false;
+        }
+
+        updateHkidValidation();
+    </script>
+</body>
+</html>

@@ -1,787 +1,148 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HATC - 個人開戶表格</title>
+    <title>开户申请 - CRM-HK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1e3a8a',
-                        secondary: '#64748b',
-                        btnBg: '#F6D365',
-                        btnHover: '#F4C430',
-                    },
-                    backgroundImage: {
-                        'login-bg': "url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop')",
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+        body {
+            background: linear-gradient(135deg, #eef2f6 0%, #ffffff 100%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-        
-        /* 隱藏未激活的步驟 */
-        .step-section { display: none; }
-        .step-section.active { display: block; }
-        
-        /* 步驟條樣式 */
-        .step-item.active .step-circle { background-color: #1e3a8a; color: white; border-color: #1e3a8a; }
-        .step-item.active .step-text { color: #1e3a8a; font-weight: 600; }
-        
-        .step-item.completed .step-circle { background-color: #10b981; color: white; border-color: #10b981; }
-        .step-item.completed .step-text { color: #10b981; }
-        
-        /* 指向條箭頭樣式 */
-        .step-arrow { color: #e5e7eb; transition: color 0.3s; }
-        .step-arrow.completed { color: #10b981; }
-        .step-arrow.active { color: #1e3a8a; }
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: perspective(500px) rotateX(60deg) scale(2);
+            transform-origin: center top;
+            z-index: -1;
+        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen relative font-sans antialiased text-gray-800">
+<body class="min-h-screen flex flex-col relative overflow-hidden">
+    <div class="bg-pattern"></div>
 
-    <!-- 全屏背景 (带淡化遮罩) -->
-    <div class="fixed inset-0 bg-login-bg bg-cover bg-center"></div>
-    <div class="fixed inset-0 bg-white/70 backdrop-blur-sm"></div>
-
-    <!-- 顶部 Logo 与 导航 -->
-    <header class="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-50 pointer-events-none">
-        <!-- Logo -->
-        <div class="flex items-center pointer-events-auto">
-            <span class="text-4xl font-black tracking-tighter text-primary">HATC</span>
-            <span class="text-gray-600 font-normal text-sm ml-4 border-l border-gray-400 pl-4 hidden sm:inline-block">開戶系統</span>
-        </div>
-        
-        <!-- 右侧辅助导航 -->
-        <div class="flex items-center gap-4 pointer-events-auto">
-            <button onclick="openPrdModal()" class="flex items-center gap-1.5 bg-white/80 hover:bg-white text-indigo-600 px-4 py-2 rounded-lg transition-colors border border-indigo-200 text-sm font-medium shadow-sm backdrop-blur">
-                <i class="fas fa-file-alt"></i> PRD文档
+    <header class="w-full px-8 py-4 flex justify-between items-center z-10 relative">
+        <a href="login.html" class="flex items-center gap-2">
+            <div class="text-2xl font-black text-[#1e3a8a] tracking-wider">HATC</div>
+        </a>
+        <div class="flex items-center gap-3">
+            <button type="button" class="text-sm text-gray-700 cursor-pointer bg-white px-3 py-1.5 rounded border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors" onclick="openPrd()">
+                <i class="fa-solid fa-file-lines mr-1 text-[#d4af37]"></i> PRD
             </button>
+            <div class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer bg-white px-3 py-1.5 rounded border border-gray-200 shadow-sm">
+                <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="w-5 h-auto rounded-sm">
+                <span>简体中文</span>
+                <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </div>
         </div>
     </header>
 
-    <main class="relative z-20 max-w-4xl mx-auto px-4 pt-28 pb-12">
-        
-        <div class="glass-effect rounded-2xl shadow-2xl p-8 sm:p-10 border border-white">
-            
-            <div class="mb-8 flex items-center gap-2">
-                <div class="w-1 h-6 bg-btnBg rounded"></div>
-                <h1 class="text-2xl font-bold text-gray-900">個人開戶表格</h1>
-            </div>
-
-            <!-- 步驟進度條 -->
-            <div class="flex items-center justify-between mb-12 px-4 sm:px-12">
-                
-                <!-- Step 1 -->
-                <div class="step-item active flex flex-col items-center gap-2 w-24" id="nav-step-1">
-                    <div class="step-circle w-10 h-10 rounded-full border-2 border-gray-300 bg-white text-gray-400 flex items-center justify-center font-bold text-lg transition-colors z-10 relative shadow-sm">1</div>
-                    <span class="step-text text-sm text-gray-500 transition-colors text-center whitespace-nowrap">個人資料</span>
-                </div>
-                
-                <!-- Arrow 1 -> 2 -->
-                <div class="flex-1 flex justify-center -mt-6">
-                    <i class="fa-solid fa-chevron-right text-2xl step-arrow" id="arrow-1"></i>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="step-item flex flex-col items-center gap-2 w-24" id="nav-step-2">
-                    <div class="step-circle w-10 h-10 rounded-full border-2 border-gray-300 bg-white text-gray-400 flex items-center justify-center font-bold text-lg transition-colors z-10 relative shadow-sm">2</div>
-                    <span class="step-text text-sm text-gray-500 transition-colors text-center whitespace-nowrap">銀行資料</span>
-                </div>
-                
-                <!-- Arrow 2 -> 3 -->
-                <div class="flex-1 flex justify-center -mt-6">
-                    <i class="fa-solid fa-chevron-right text-2xl step-arrow" id="arrow-2"></i>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="step-item flex flex-col items-center gap-2 w-24" id="nav-step-3">
-                    <div class="step-circle w-10 h-10 rounded-full border-2 border-gray-300 bg-white text-gray-400 flex items-center justify-center font-bold text-lg transition-colors z-10 relative shadow-sm">3</div>
-                    <span class="step-text text-sm text-gray-500 transition-colors text-center whitespace-nowrap">上傳證明文件</span>
-                </div>
-                
-                <!-- Arrow 3 -> 4 -->
-                <div class="flex-1 flex justify-center -mt-6">
-                    <i class="fa-solid fa-chevron-right text-2xl step-arrow" id="arrow-3"></i>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="step-item flex flex-col items-center gap-2 w-24" id="nav-step-4">
-                    <div class="step-circle w-10 h-10 rounded-full border-2 border-gray-300 bg-white text-gray-400 flex items-center justify-center font-bold text-lg transition-colors z-10 relative shadow-sm">4</div>
-                    <span class="step-text text-sm text-gray-500 transition-colors text-center whitespace-nowrap">投資者問卷</span>
+    <main class="flex-1 flex items-center justify-center w-full max-w-6xl mx-auto px-4 z-10 relative">
+        <div class="w-full flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
+            <div class="hidden md:flex flex-1 justify-center relative">
+                <div class="relative w-full max-w-md h-[400px] flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#1e3a8a]/10 to-transparent rounded-full blur-3xl"></div>
+                    <div class="relative z-10 w-64 h-80 bg-gradient-to-br from-[#d4af37] to-[#fcd574] rounded-lg shadow-2xl transform -rotate-6 flex items-center justify-center border-4 border-white/50">
+                        <div class="w-48 h-64 bg-white/90 backdrop-blur rounded shadow-inner p-4 flex flex-col gap-3 transform rotate-6 translate-x-8 -translate-y-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 mb-2"><i class="fa-solid fa-user text-xl"></i></div>
+                            <div class="h-3 w-full bg-gray-200 rounded"></div>
+                            <div class="h-3 w-3/4 bg-gray-200 rounded"></div>
+                            <div class="h-3 w-5/6 bg-gray-200 rounded"></div>
+                            <div class="mt-auto h-8 w-full bg-[#fcd574]/30 rounded border border-[#fcd574]/50"></div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-10 left-10 w-20 h-20 bg-white rounded-xl shadow-xl flex items-center justify-center z-20">
+                        <i class="fa-solid fa-shield-halved text-3xl text-[#d4af37]"></i>
+                    </div>
                 </div>
             </div>
 
-            <!-- 提示信息卡片 -->
-            <div class="bg-yellow-50 border-l-4 border-btnBg p-4 mb-8 text-sm text-yellow-800 rounded-r shadow-sm">
-                <i class="fa-solid fa-circle-info mr-2"></i> 請依照開戶頁面需求輸入帳戶資料。(<span class="text-red-500">*</span> 為必須提供的資料)
+            <div class="w-full max-w-[460px]">
+                <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 sm:p-10 border border-gray-100">
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">开户申请</h2>
+                        <a href="login.html" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">返回登录</a>
+                    </div>
+
+                    <form class="space-y-5" onsubmit="return false;">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">邮箱</label>
+                            <input type="email" placeholder="请输入邮箱" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">设置密码</label>
+                            <input type="password" placeholder="请输入密码" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">确认密码</label>
+                            <input type="password" placeholder="请再次输入密码" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">邀请码（可选）</label>
+                            <input type="text" placeholder="请输入邀请码" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="button" onclick="handleSubmit()" class="w-full py-3.5 bg-[#fcd574] hover:bg-[#fbc543] text-gray-900 font-bold rounded-lg transition-colors shadow-sm text-sm">
+                                提交申请
+                            </button>
+                        </div>
+                        <div class="text-xs text-gray-500 leading-relaxed">
+                            提交后将进入后台审核，审核通过后方可登录。
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <!-- 表單區域 -->
-            <form id="wizardForm" novalidate>
-                
-                <!-- ================= 步驟 1: 個人資料 ================= -->
-                <div id="step-1" class="step-section active space-y-6">
-                    <h2 class="text-lg font-bold text-primary border-b border-gray-200 pb-2 mb-6">登錄信息設置</h2>
-                    
-                    <div class="bg-blue-50/50 p-4 rounded-md border border-blue-100 mb-6">
-                        <p class="text-sm text-primary mb-4"><i class="fa-solid fa-key mr-2"></i>系統將使用您的<strong>電郵地址</strong>和下方設置的<strong>登錄密碼</strong>作為您未來的賬戶登錄憑證。</p>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-4">
-                                <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 電郵地址:</label>
-                                <input type="email" placeholder="example@domain.com" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            </div>
-                            
-                            <div class="flex items-center gap-4">
-                                <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 登錄密碼:</label>
-                                <input type="password" placeholder="請設置登錄密碼" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            </div>
-                            
-                            <div class="flex items-center gap-4">
-                                <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 確認密碼:</label>
-                                <input type="password" placeholder="請再次輸入登錄密碼" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            </div>
-                            
-                            <div class="flex items-start gap-4">
-                                <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 推薦碼:</label>
-                                <div class="flex-1 max-w-md">
-                                    <input type="text" id="ibCodeInput" placeholder="請輸入推薦碼" class="w-full rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                                    <p class="text-xs text-gray-500 mt-2">無邀請碼，請點擊此處：<button type="button" onclick="openApplyModal()" class="text-[#d4af37] hover:text-[#b8952b] font-bold cursor-pointer focus:outline-none">申請賬號</button></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h2 class="text-lg font-bold text-primary border-b border-gray-200 pb-2 mb-6 mt-8">基本資料</h2>
-                    
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 國籍:</label>
-                        <select class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            <option value="中國">中國</option>
-                            <option value="香港">中國香港</option>
-                            <option value="其他">其他</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 客戶姓名:</label>
-                        <input type="text" placeholder="請輸入真實姓名" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 性別:</label>
-                        <select class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            <option value="">-請選擇-</option>
-                            <option value="secret">保密</option>
-                            <option value="male">男士</option>
-                            <option value="female">女士</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 證件號碼:</label>
-                        <input type="text" placeholder="請輸入數字或英文字母" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 證件號碼確認:</label>
-                        <input type="text" placeholder="請再次輸入證件號碼" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                    </div>
-
-                    <div class="flex items-start gap-4 pt-2">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 居住地址:</label>
-                        <div class="flex-1 max-w-md space-y-3">
-                            <p class="text-sm text-gray-700 mb-2">居住地址是否與證件上顯示的住址相同？</p>
-                            <div class="flex items-center gap-6 mb-2">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <input type="radio" name="same_address" value="yes" class="text-primary focus:ring-primary h-4 w-4" checked>
-                                    <span class="ml-2 text-sm text-gray-700">是</span>
-                                </label>
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <input type="radio" name="same_address" value="no" class="text-primary focus:ring-primary h-4 w-4">
-                                    <span class="ml-2 text-sm text-gray-700">否</span>
-                                </label>
-                            </div>
-                            <textarea rows="2" placeholder="詳細地址 (如不相同請填寫)" class="w-full rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required></textarea>
-                        </div>
-                    </div>
-
-                    <h2 class="text-lg font-bold text-primary border-b border-gray-200 pb-2 mb-6 mt-8">聯繫方式</h2>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 常用電話:</label>
-                        <div class="flex items-center gap-2 flex-1 max-w-md">
-                            <select class="w-1/3 rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                                <option value="86">中國大陸 ( 86 )</option>
-                                <option value="852">香港 ( 852 )</option>
-                                <option value="886">台灣 ( 886 )</option>
-                            </select>
-                            <input type="text" placeholder="電話號碼" class="w-2/3 rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700">微信 (WeChat):</label>
-                        <input type="text" placeholder="請輸入微信號 (選填)" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white">
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700">QQ號碼:</label>
-                        <input type="text" placeholder="請輸入QQ號碼 (選填)" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white">
-                    </div>
-                </div>
-
-                <!-- ================= 步驟 2: 銀行資料 ================= -->
-                <div id="step-2" class="step-section space-y-6">
-                    <h2 class="text-lg font-bold text-primary border-b border-gray-200 pb-2 mb-6">銀行資料</h2>
-                    
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 開戶人名稱:</label>
-                        <input type="text" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-gray-100 text-gray-500 cursor-not-allowed" readonly value="需與個人資料姓名一致" title="系統將自動帶入">
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 銀行賬號:</label>
-                        <input type="text" placeholder="請輸入銀行卡號" class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 銀行賬號確認:</label>
-                        <div class="flex-1 max-w-md">
-                            <input type="text" placeholder="請再次輸入銀行卡號" class="w-full rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            <p class="text-xs text-gray-500 mt-1">該銀行賬號的開戶名必須為客戶本人</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 開戶行名稱:</label>
-                        <select class="flex-1 max-w-md rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                            <option value="">-請選擇香港銀行-</option>
-                            <option value="香港上海匯豐銀行 (HSBC)">香港上海匯豐銀行 (HSBC)</option>
-                            <option value="中國銀行(香港) (BOC HK)">中國銀行(香港) (BOC HK)</option>
-                            <option value="渣打銀行(香港) (Standard Chartered)">渣打銀行(香港) (Standard Chartered)</option>
-                            <option value="恒生銀行 (Hang Seng)">恒生銀行 (Hang Seng)</option>
-                            <option value="東亞銀行 (Hang Seng)">東亞銀行 (Hang Seng)</option>
-                            <option value="星展銀行(香港) (DBS HK)">星展銀行(香港) (DBS HK)</option>
-                            <option value="其他香港本地銀行">其他香港本地銀行</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700"><span class="text-red-500">*</span> 開戶行地區:</label>
-                        <div class="flex items-center gap-2 flex-1 max-w-md">
-                            <select class="w-1/2 rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white bg-gray-100 cursor-not-allowed" disabled required>
-                                <option value="香港特別行政區" selected>香港特別行政區</option>
-                            </select>
-                            <select class="w-1/2 rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required>
-                                <option value="">-選擇分區-</option>
-                                <option value="香港島">香港島</option>
-                                <option value="九龍">九龍</option>
-                                <option value="新界">新界</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4">
-                        <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 分行與支行:</label>
-                        <div class="flex-1 max-w-md">
-                            <textarea rows="2" placeholder="請詳細填寫開戶支行名稱，以便更有效率處理存取款" class="w-full rounded border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white" required></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= 步驟 3: 上傳證明文件 & 代理 ================= -->
-                <div id="step-3" class="step-section space-y-8">
-
-                    <div>
-                        <h2 class="text-lg font-bold text-primary border-b border-gray-200 pb-2 mb-6">上傳證明文件</h2>
-                        
-                        <div class="bg-yellow-50 text-yellow-700 text-xs p-3 mb-6 rounded border border-yellow-200">
-                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> 請上傳 .png/ .jpeg/ .gif/ .jpg 格式檔案，檔案大小不能超過 3M。
-                        </div>
-
-                        <div class="flex items-start gap-4 mb-6">
-                            <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 證件正面照片:</label>
-                            <div class="flex-1 max-w-md">
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer bg-white">
-                                    <i class="fa-regular fa-id-card text-3xl text-gray-400 mb-2"></i>
-                                    <p class="text-sm text-primary font-medium">點擊選擇檔案 (正面)</p>
-                                    <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.gif">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4 mb-6">
-                            <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 證件背面照片:</label>
-                            <div class="flex-1 max-w-md">
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer bg-white">
-                                    <i class="fa-regular fa-id-badge text-3xl text-gray-400 mb-2"></i>
-                                    <p class="text-sm text-primary font-medium">點擊選擇檔案 (背面)</p>
-                                    <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.gif">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <label class="w-32 text-right text-sm font-medium text-gray-700 mt-2"><span class="text-red-500">*</span> 銀行卡正面照片:</label>
-                            <div class="flex-1 max-w-md">
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer bg-white">
-                                    <i class="fa-regular fa-credit-card text-3xl text-gray-400 mb-2"></i>
-                                    <p class="text-sm text-primary font-medium">點擊選擇檔案</p>
-                                    <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.gif">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= 步驟 4: 投資者問卷 ================= -->
-                <div id="step-4" class="step-section space-y-6">
-                    <h2 class="text-lg font-bold text-primary border-b border-gray-200 pb-2 mb-6">投資者問卷及類別</h2>
-                    
-                    <div class="flex items-start gap-4">
-                        <label class="w-32 text-right text-sm font-bold text-gray-800 mt-1">客戶類別</label>
-                        <div class="flex-1 max-w-md space-y-4">
-                            <div class="flex items-center gap-8 bg-white/80 p-3 rounded border border-gray-200 shadow-sm">
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <input type="radio" name="investor_type" value="general" class="text-primary focus:ring-primary h-4 w-4" checked onchange="toggleProOptions(false)">
-                                    <span class="ml-2 text-sm text-gray-700 font-medium">一般投資者</span>
-                                </label>
-                                <label class="inline-flex items-center cursor-pointer">
-                                    <input type="radio" name="investor_type" value="professional" class="text-primary focus:ring-primary h-4 w-4" onchange="toggleProOptions(true)">
-                                    <span class="ml-2 text-sm text-primary font-medium">專業投資者</span>
-                                </label>
-                            </div>
-
-                            <!-- 專業投資者選項 (默認隱藏) -->
-                            <div id="proInvestorOptions" class="hidden bg-white/90 p-5 border border-blue-100 rounded text-sm space-y-5 shadow-sm">
-                                <p class="font-bold text-gray-800 border-b border-gray-200 pb-2">請明確投資風險和後果</p>
-                                
-                                <div class="space-y-3">
-                                    <label class="flex items-start gap-2 cursor-pointer">
-                                        <input type="checkbox" class="mt-1 rounded text-primary focus:ring-primary h-4 w-4">
-                                        <span class="text-gray-800 font-medium">1. 擁有與金融產品及市場相關的學歷或專業資格</span>
-                                    </label>
-                                    <div class="pl-6 space-y-2 bg-gray-50 p-3 rounded border border-gray-200">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4">
-                                            <span class="text-gray-600">金融學 / 會計學 / 經濟學上或法律相關的學士學位</span>
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4">
-                                            <span class="text-gray-600">特許金融分析師(CFA) / 認可財務策劃師(CFP) / 註冊國際投資分析師(CIIA)</span>
-                                        </label>
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" class="rounded text-primary focus:ring-primary h-4 w-4">
-                                            <span class="text-gray-600">合資格律師 / 其他</span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <label class="flex items-start gap-2 cursor-pointer">
-                                    <input type="checkbox" class="mt-1 rounded text-primary focus:ring-primary h-4 w-4">
-                                    <span class="text-gray-800 font-medium">2. 擁有在金融業3年或以上的工作經驗</span>
-                                </label>
-
-                                <label class="flex items-start gap-2 cursor-pointer">
-                                    <input type="checkbox" class="mt-1 rounded text-primary focus:ring-primary h-4 w-4">
-                                    <span class="text-gray-800 font-medium">3. 擁有3年或以上的投資衍生產品或市場買賣的經驗</span>
-                                </label>
-
-                                <label class="flex items-start gap-2 cursor-pointer">
-                                    <input type="checkbox" class="mt-1 rounded text-primary focus:ring-primary h-4 w-4">
-                                    <span class="text-gray-800 font-medium">4. 擁有不少於港幣$8,000,000或等值外幣的投資組合</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= 導航按鈕 ================= -->
-                <div class="mt-10 pt-6 border-t border-gray-200 flex items-center justify-between">
-                    <button type="button" id="prevBtn" class="hidden px-6 py-2.5 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition-colors shadow-sm">
-                        <i class="fa-solid fa-arrow-left mr-1"></i> 上一步
-                    </button>
-                    
-                    <div class="ml-auto">
-                        <!-- 使用主题亮黄色按钮 -->
-                        <button type="button" id="nextBtn" class="px-8 py-2.5 bg-btnBg hover:bg-btnHover text-gray-900 rounded text-sm font-bold focus:outline-none shadow-sm transition-colors">
-                            下一步 <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </button>
-                        
-                        <button type="button" id="submitBtn" class="hidden px-10 py-2.5 bg-btnBg hover:bg-btnHover text-gray-900 rounded text-sm font-bold focus:outline-none shadow-sm transition-colors">
-                            <i class="fa-solid fa-check mr-1"></i> 提交開戶申請
-                        </button>
-                    </div>
-                </div>
-
-            </form>
         </div>
     </main>
 
-    <!-- 成功提交彈窗 (默認隱藏) -->
-    <div id="successModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6 border border-gray-100">
-                <div>
-                    <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100">
-                        <i class="fa-regular fa-face-smile text-5xl text-green-500"></i>
-                    </div>
-                    <div class="mt-5 text-center sm:mt-6">
-                        <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">
-                            您的資料已經提交
-                        </h3>
-                        <div class="mt-3">
-                            <p class="text-sm text-gray-500 leading-relaxed">
-                                請注意郵箱信息
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6 sm:mt-8 flex flex-col gap-3">
-                        查看審核進度
-                    </a>
-                    <button type="button" id="closeModalBtn" class="w-full inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:text-sm transition-colors">
-                        返回首頁
-                    </button>
-                </div>
-            </div>
+    <div class="fixed bottom-8 right-8 z-50">
+        <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-700 cursor-pointer hover:scale-110 transition-transform border border-gray-100">
+            <i class="fa-solid fa-headset text-xl"></i>
         </div>
     </div>
 
-    <!-- Apply Account Modal (試用賬戶申請彈窗) -->
-    <div id="applyModal" class="fixed inset-0 z-[100] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeApplyModal()"></div>
-        
-        <!-- Modal Content -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[500px] bg-white rounded shadow-2xl overflow-hidden flex flex-col text-gray-800">
-            <!-- Header -->
-            <div class="flex justify-between items-center px-5 py-3 bg-[#333333] text-white">
-                <div class="flex-1 text-center pl-6">
-                    <h3 class="text-base font-bold tracking-wider">留下資料</h3>
-                </div>
-                <button onclick="closeApplyModal()" class="text-gray-300 hover:text-white transition-colors">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <!-- Body -->
-            <div class="p-6">
-                <p class="text-sm text-gray-600 mb-6 text-center">信息提交後，我們的顧問會在2個工作日內與您聯繫</p>
-                
-                <form class="space-y-4" onsubmit="submitApply(event)">
-                    <!-- 姓名 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">姓名</span>
-                        </div>
-                        <input type="text" placeholder="請輸入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                    </div>
-                    
-                    <!-- 联系电话 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">聯繫電話</span>
-                        </div>
-                        <input type="text" placeholder="請輸入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                    </div>
-
-                    <!-- 电子邮箱 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">電子郵箱</span>
-                        </div>
-                        <input type="email" placeholder="請輸入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                    </div>
-
-                    <!-- 信息来源 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">信息來源</span>
-                        </div>
-                        <select required class="flex-1 px-3 text-sm focus:outline-none text-gray-600 bg-white cursor-pointer">
-                            <option value="">請選擇</option>
-<option value="website">官網訪問</option>
-                            <option value="social">社交平台</option>
-                            <option value="referral">客戶推薦</option>
-                            <option value="online_event">線上活動</option>
-                            <option value="offline_event">線下金融活動</option>
-                            <option value="news_site">金融資訊網站</option>
-                            <option value="other">其他渠道</option>
-                        </select>
-                    </div>
-
-                    <!-- 咨询内容 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-sm text-gray-700 pl-2">咨詢內容</span>
-                        </div>
-                        <select class="flex-1 px-3 text-sm focus:outline-none text-gray-600 bg-white cursor-pointer">
-                            <option value="">請選擇</option>
-                            <option value="1">成為代理</option>
-                            <option value="2">政策了解</option>
-                            <option value="3">個人交易</option>
-                            <option value="4">其他</option>
-                        </select>
-                    </div>
-
-                    <!-- 微信 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-sm text-gray-700 pl-2">微信</span>
-                        </div>
-                        <input type="text" placeholder="請輸入（非必填）" class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                    </div>
-
-                    <!-- WhatsApp -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-sm text-gray-700 pl-2">WhatsApp</span>
-                        </div>
-                        <input type="text" placeholder="請輸入（非必填）" class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                    </div>
-
-                    <!-- 其他联系方式 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10 mt-4 mb-4">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-sm text-gray-700 pl-2">其他聯繫方式</span>
-                        </div>
-                        <input type="text" placeholder="請輸入（非必填）" class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                    </div>
-
-                    <!-- 验证码 -->
-                    <div class="flex border border-gray-200 rounded-sm overflow-hidden h-10">
-                        <div class="w-[100px] bg-gray-50 flex items-center justify-center border-r border-gray-200">
-                            <span class="text-red-500 mr-1">*</span><span class="text-sm text-gray-700">驗證碼</span>
-                        </div>
-                        <input type="text" placeholder="請輸入" required class="flex-1 px-3 text-sm focus:outline-none placeholder-gray-400 bg-white text-gray-800">
-                        <div class="w-[100px] border-l border-gray-200 cursor-pointer overflow-hidden relative bg-[#E6E6FA]">
-                            <!-- SVG pattern overlay for captcha look -->
-                            <div class="absolute inset-0 z-0">
-                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                                    <line x1="0" y1="0" x2="100" y2="40" stroke="#fca5a5" stroke-width="1" />
-                                    <line x1="0" y1="40" x2="100" y2="0" stroke="#fca5a5" stroke-width="1" />
-                                    <line x1="0" y1="20" x2="100" y2="20" stroke="#fca5a5" stroke-width="0.5" />
-                                </svg>
-                            </div>
-                            <div class="w-full h-full flex items-center justify-center relative z-10 text-[#1e3a8a] font-bold text-lg tracking-widest font-serif" style="text-shadow: 1px 1px 0px rgba(255,255,255,0.5);">
-                                eXp9
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Buttons -->
-                    <div class="pt-6 pb-2 flex justify-center gap-6">
-                        <button type="button" onclick="closeApplyModal()" class="w-28 h-10 text-sm text-[#3b82f6] bg-white border border-[#3b82f6] rounded hover:bg-blue-50 transition-colors">取消</button>
-                        <button type="submit" class="w-28 h-10 text-sm bg-[#3b82f6] hover:bg-blue-600 text-white rounded transition-colors shadow-sm">提交</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- 自定义 Alert 弹窗 -->
-    <div id="customAlert" class="fixed inset-0 z-[200] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeCustomAlert()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl p-6 w-[90%] max-w-[320px] text-center">
-            <div class="w-12 h-12 rounded-full bg-green-100 mx-auto flex items-center justify-center mb-4">
-                <i class="fa-solid fa-check text-2xl text-green-500"></i>
-            </div>
-            <p class="text-gray-800 font-medium mb-6">您的資料已提交，請注意郵箱信息</p>
-            <button onclick="closeCustomAlert()" class="w-full py-2.5 bg-[#fcd574] hover:bg-[#fbc543] text-gray-900 font-bold rounded transition-colors text-sm">
-                確定
+    <div id="prdOverlay" class="fixed inset-0 bg-black/40 hidden z-[60]" onclick="closePrd()"></div>
+    <aside id="prdDrawer" class="fixed top-0 right-0 h-full w-[860px] max-w-[92vw] bg-white shadow-2xl translate-x-full transition-transform duration-200 z-[70] flex flex-col">
+        <div class="h-14 px-5 border-b border-gray-200 flex items-center justify-between">
+            <div class="font-bold text-gray-900">PRD</div>
+            <button type="button" class="w-9 h-9 rounded hover:bg-gray-100 text-gray-600" onclick="closePrd()">
+                <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
-    </div>
-
-    <!-- PRD 文档预览弹窗 -->
-    <div id="prdModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-white w-[90%] h-[90%] rounded-xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="prdModalContent">
-            <!-- 弹窗头部 -->
-            <div class="h-14 bg-gray-900 flex items-center justify-between px-6 shrink-0">
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-file-alt text-indigo-400 text-lg"></i>
-                    <h3 class="text-white font-medium text-lg tracking-wide">需求文档 (PRD) - 个人开户表格 (HK)</h3>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="prd-account-registration.html" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors text-sm flex items-center gap-1.5" title="在新标签页中全屏打开">
-                        <i class="fas fa-external-link-alt"></i> 新窗口打开
-                    </a>
-                    <div class="w-px h-4 bg-gray-700"></div>
-                    <button onclick="closePrdModal()" class="text-gray-400 hover:text-white transition-colors p-1" title="关闭 (Esc)">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 弹窗内容区 -->
-            <div class="flex-1 w-full bg-gray-50 relative">
-                <div id="prdLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-10">
-                    <i class="fas fa-circle-notch fa-spin text-indigo-500 text-4xl mb-3"></i>
-                    <span class="text-gray-500 text-sm">文档加载中...</span>
-                </div>
-                <iframe id="prdIframe" src="prd-account-registration.html" class="w-full h-full border-0 opacity-0 transition-opacity duration-300" onload="document.getElementById('prdLoading').style.display='none'; this.classList.remove('opacity-0');"></iframe>
-            </div>
-        </div>
-    </div>
+        <iframe id="prdFrame" class="flex-1 w-full" src="prd-account-registration.html"></iframe>
+    </aside>
 
     <script>
-        // 留资弹窗逻辑
-        const applyModal = document.getElementById('applyModal');
-        const customAlert = document.getElementById('customAlert');
-        
-        function openApplyModal() {
-            applyModal.classList.remove('hidden');
-        }
-        
-        function closeApplyModal() {
-            applyModal.classList.add('hidden');
+        function handleSubmit() {
+            window.location.href = 'login.html';
         }
 
-        function closeCustomAlert() {
-            customAlert.classList.add('hidden');
+        function openPrd() {
+            const overlay = document.getElementById('prdOverlay');
+            const drawer = document.getElementById('prdDrawer');
+            const frame = document.getElementById('prdFrame');
+            frame.src = 'prd-account-registration.html?ts=' + Date.now();
+            overlay.classList.remove('hidden');
+            drawer.classList.remove('translate-x-full');
         }
 
-        function submitApply(e) {
-            e.preventDefault();
-            closeApplyModal();
-            customAlert.classList.remove('hidden');
+        function closePrd() {
+            const overlay = document.getElementById('prdOverlay');
+            const drawer = document.getElementById('prdDrawer');
+            overlay.classList.add('hidden');
+            drawer.classList.add('translate-x-full');
         }
-
-        // 步驟控制邏輯
-        let currentStep = 1;
-        const totalSteps = 4;
-
-        function showStep(step) {
-            document.querySelectorAll('.step-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${step}`).classList.add('active');
-
-            for (let i = 1; i <= totalSteps; i++) {
-                const navItem = document.getElementById(`nav-step-${i}`);
-                const arrow = document.getElementById(`arrow-${i}`);
-
-                if (i < step) {
-                    navItem.classList.add('completed');
-                    navItem.classList.remove('active');
-                    navItem.querySelector('.step-circle').innerHTML = '<i class="fa-solid fa-check"></i>';
-                    if(arrow) { arrow.classList.add('completed'); arrow.classList.remove('active'); }
-                } else if (i === step) {
-                    navItem.classList.add('active');
-                    navItem.classList.remove('completed');
-                    navItem.querySelector('.step-circle').innerHTML = i;
-                    if(arrow) { arrow.classList.add('active'); arrow.classList.remove('completed'); }
-                } else {
-                    navItem.classList.remove('active', 'completed');
-                    navItem.querySelector('.step-circle').innerHTML = i;
-                    if(arrow) { arrow.classList.remove('active', 'completed'); }
-                }
-            }
-
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-
-            if (step === 1) {
-                prevBtn.classList.add('hidden');
-            } else {
-                prevBtn.classList.remove('hidden');
-            }
-
-            if (step === totalSteps) {
-                nextBtn.classList.add('hidden');
-                submitBtn.classList.remove('hidden');
-            } else {
-                nextBtn.classList.remove('hidden');
-                submitBtn.classList.add('hidden');
-            }
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            // 原型演示中移除必填校验，直接进入下一步
-            if (currentStep < totalSteps) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        });
-
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-            }
-        });
-
-        // 提交按钮直接绑定 click，绕过 form submit
-        document.getElementById('submitBtn').addEventListener('click', () => {
-            // 原型演示中移除必填校验，直接显示成功弹窗
-            document.getElementById('successModal').classList.remove('hidden');
-        });
-
-        document.getElementById('closeModalBtn').addEventListener('click', () => {
-            window.location.href = '../Hk-Gw/index.html';
-        });
-
-        function toggleProOptions(show) {
-            const el = document.getElementById('proInvestorOptions');
-            if (show) {
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-                // 清空已勾选的选项
-                const checkboxes = el.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(cb => cb.checked = false);
-            }
-        }
-        
-        // PRD 弹窗控制逻辑
-        const prdModal = document.getElementById('prdModal');
-        const prdModalContent = document.getElementById('prdModalContent');
-
-        function openPrdModal() {
-            prdModal.classList.remove('hidden');
-            // 触发重绘以应用过渡动画
-            void prdModal.offsetWidth;
-            prdModal.classList.remove('opacity-0');
-            prdModalContent.classList.remove('scale-95');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePrdModal() {
-            prdModal.classList.add('opacity-0');
-            prdModalContent.classList.add('scale-95');
-            
-            setTimeout(() => {
-                prdModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape" && !prdModal.classList.contains('hidden')) {
-                closePrdModal();
-            }
-        });
-        
-        prdModal.addEventListener('click', function(event) {
-            if (event.target === prdModal) {
-                closePrdModal();
-            }
-        });
     </script>
 </body>
 </html>
+

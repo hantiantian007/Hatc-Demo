@@ -3,342 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM-HK 开户申请 PRD</title>
+    <title>CRM-HK 港版注册 PRD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 24px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
         th { background-color: #f9fafb; font-weight: 600; color: #374151; }
         td { color: #4b5563; }
-        .highlight { color: #1e3a8a; font-weight: 500; }
-        .step-title { border-left: 4px solid #1e3a8a; padding-left: 12px; margin-top: 24px; margin-bottom: 16px; font-size: 1.125rem; font-weight: 700; color: #1f2937; }
+        .highlight { color: #b7791f; font-weight: 600; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
     </style>
 </head>
 <body class="bg-gray-50 p-8 font-sans">
     <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
         <div class="flex justify-between items-center mb-8 border-b pb-4">
-            <h1 class="text-2xl font-bold text-gray-800">【需求文档】CRM-HK 个人开户表格 (多步注册)</h1>
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】CRM-HK 港版注册</h1>
             <div class="flex gap-4">
-                <a href="account-registration.html" class="px-4 py-2 bg-[#1e3a8a] hover:bg-blue-900 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
                 <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
             </div>
         </div>
 
-        <!-- 本期需求重点板块 (致产研测) -->
-        <div class="mb-8 border border-red-200 rounded-lg overflow-hidden shadow-sm prd-focus-block">
-            <div class="bg-red-50 px-5 py-3 border-b border-red-100 flex items-center">
-                <i class="fa-solid fa-bullseye text-red-600 mr-2 text-lg"></i>
-                <h2 class="text-red-600 font-bold text-base m-0">本期需求重点 (致产研测)</h2>
-            </div>
-            <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed focus-content">
-                <ul class="list-disc pl-5 space-y-2">
-                    <li><strong class="text-gray-900">登录页补充查询入口：</strong> 登录页面整体保持不变，但在底部新增了“开户审核进度查询”入口。点击后跳转至进度查询页面，输入邮箱和验证码即可查询开户与审核进度。<br>
-                        <span class="text-gray-500 ml-4 inline-block mt-1">
-                            <i class="fas fa-info-circle text-blue-400 mr-1"></i> <strong>原型体验提示：</strong>在进度查询页，输入包含 <code class="bg-gray-100 px-1 rounded text-blue-500">active</code> 的邮箱（如 active@test.com）可预览【待激活】状态；输入包含 <code class="bg-gray-100 px-1 rounded text-red-500">fail</code> 的邮箱（如 fail@test.com）可预览【审核失败】状态（含补充资料重新提交功能）；输入包含 <code class="bg-gray-100 px-1 rounded text-green-600">pass</code> 的邮箱（如 pass@test.com）可预览【已通过】状态（含登录 CRM 按钮）；输入其他邮箱则默认展示【审核中】状态。
-                        </span>
-                    </li>
-                    <li><strong class="text-gray-900">新老版本注册流程切换：</strong> <span class="highlight">本次注册流程调整，需要单独在后台系统配置中增加开关，保留原有的注册流程，确保可以随时对新老注册版本进行无缝切换。</span></li>
-                    <li><strong class="text-gray-900">原型表单填报：</strong> 注册相关页面的所有信息收集，需严格按照原型内展示的表单进行填写和校验。凡带有红色星号（*）的字段，均为必填项。</li>
-                    <li><strong class="text-gray-900">留资表单新增字段：</strong> 在无邀请码的留资申请表单中，新增必填字段“信息来源”，选项包含：“官网访问”、“社交平台”、“客户推荐”、“线上活动”、“线下金融活动”、“金融资讯网站”、“其他渠道”。该字段位置位于电子邮箱正下方。</li>
-                    <li><strong class="text-gray-900">专业投资者选项联动：</strong> 在步骤 4（投资问卷）中，当客户类别选择“專業投資者”后，下方必须展开显示对应的专业资质确认选项。注意：这些展开的选项并非强制必须勾选。</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="step-title">1. 业务说明</div>
-        <div class="mb-6 text-sm text-gray-600 bg-blue-50 p-4 rounded border border-blue-100 leading-relaxed">
-            <p>1. 本页面为 CRM-HK 独立对外的 C 端个人开户申请页面（繁体中文环境），采用多步骤（Wizard）表单引导模式。</p>
-            <p>2. <span class="highlight">核心流程分为 4 步</span>：個人資料 -> 銀行資料 -> 上傳證明文件 -> 投資者問卷。</p>
-            <p>3. 前端实现必填项强校验：只有当前步骤所有带红色星号（*）的必填项校验通过，才允许点击“下一步”。</p>
-        </div>
-
-        <div class="step-title">2. 步骤 1：個人資料 (登錄信息與基本資料)</div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="10%">是否必填</th>
-                    <th width="20%">字段类型/选项</th>
-                    <th width="55%">交互逻辑与说明</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>電郵地址</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文本输入 (Email)</td>
-                    <td>系统唯一登录凭证，需校验标准邮箱格式，<span class="highlight">同时需要判断系统内是否已存在，已存在的不可再次注册。</span></td>
-                </tr>
-                <tr>
-                    <td>登錄密碼 / 確認密碼</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>密码输入</td>
-                    <td>需校验两次输入的密码是否完全一致。</td>
-                </tr>
-                <tr>
-                    <td>推薦碼</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文本输入</td>
-                    <td>
-                        必填项，强制绑定上级代理关系。<br>
-                        下方附带提示：<span class="text-gray-500 text-xs">無邀請碼，請點擊此處：<span class="text-[#d4af37] font-bold">申請賬號</span></span><br>
-                        <span class="highlight">点击弹窗交互：</span>点击“申請賬號”弹出【留下資料】留资表单，收集散客姓名、电话等意向。<br>提交后关闭当前弹窗，弹出定制 UI 提示框：“您的資料已提交，請注意郵箱信息”，同步至后台留资列表。
-                    </td>
-                </tr>
-                <tr>
-                    <td>國籍</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>下拉选择</td>
-                    <td>选项包含：中國、中國香港、其他。</td>
-                </tr>
-                <tr>
-                    <td>客戶姓名</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文本输入</td>
-                    <td>真实姓名。此字段值将在步骤2中自动带入“開戶人名稱”中。</td>
-                </tr>
-                <tr>
-                    <td>性別</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>下拉选择</td>
-                    <td>选项包含：-請選擇-、保密、男士、女士。</td>
-                </tr>
-                <tr>
-                    <td>證件號碼 / 確認</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文本输入</td>
-                    <td>需校验两次输入的证件号码是否完全一致。</td>
-                </tr>
-                <tr>
-                    <td>居住地址</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>单选 + 文本域</td>
-                    <td>先选择“居住地址是否與證件上顯示的住址相同？”（是/否）。不论选哪项，都必须在下方多行文本框内填写详细地址。</td>
-                </tr>
-                <tr>
-                    <td>常用電話</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>下拉选择 + 文本输入</td>
-                    <td>前置区号选择（86/852/886），后置电话号码输入（需为数字）。</td>
-                </tr>
-                <tr>
-                    <td>微信 / QQ號碼</td>
-                    <td>否</td>
-                    <td>文本输入</td>
-                    <td>选填的辅助联系方式。</td>
-                </tr>
-            </tbody>
-        </table>
-
-                <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-teal-500 pl-3">2.1 【留下資料】留资弹窗说明</h2>
-        <div class="mb-4 text-sm text-gray-600">
-            <p>1. 点击“無邀請碼，請點擊此處：申請賬號”触发弹窗。</p>
-            <p>2. 收集散客意向并同步至后台留资列表。</p>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-[#C19B5E] inline-block">1. 需求背景</h2>
+        <div class="bg-amber-50 border-l-4 border-[#C19B5E] p-4 mb-5">
+            <p class="text-sm text-amber-900 font-medium">本需求属于<span class="highlight">已完成的 HK 开户/注册流程上的新增逻辑</span>，不重做整套港版注册流程，只新增“根据不同邀请链接，动态判断投资者类型是否展示、是否可改、是否进入专业投资者问卷”的规则，并将最终投资者类型自动归入对应客户分组。</p>
         </div>
         <table>
             <thead>
                 <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="15%">是否必填</th>
-                    <th width="20%">限制规则</th>
-                    <th width="50%">逻辑说明</th>
+                    <th width="20%">项</th>
+                    <th width="40%">说明</th>
+                    <th width="40%">口径</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>姓名</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>无</td>
-                    <td>标准文本输入框。</td>
+                    <td class="font-medium">需求名称</td>
+                    <td>港版注册</td>
+                    <td>CRM-HK 独立开户/注册向导的增量逻辑调整。</td>
                 </tr>
                 <tr>
-                    <td>联系电话</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>仅限数字</td>
-                    <td>输入失去焦点时校验。</td>
+                    <td class="font-medium">影响范围</td>
+                    <td>CRM-HK 注册入口、投资者类型页、专业投资者问卷、注册入库、后台审核回显、客户分组归属。</td>
+                    <td>仅 HK 版本生效，Group 端不受影响。</td>
                 </tr>
                 <tr>
-                    <td>电子邮箱</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>标准邮箱格式</td>
-                    <td>失去焦点时校验邮箱格式。</td>
-                </tr>
-                <tr>
-                    <td>信息来源</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>下拉单选框</td>
-                    <td>选项包含：“请选择”（默认）、“官网访问”、“社交平台”、“客户推荐”、“线上活动”、“线下金融活动”、“金融资讯网站”、“其他渠道”。提交时若未选择则提示必填。</td>
-                </tr>
-                <tr>
-                    <td>咨询内容</td>
-                    <td>否</td>
-                    <td>下拉单选框</td>
-                    <td>选项包含：“请选择”（默认）、“成为代理”、“政策了解”、“个人交易”、“其他”。</td>
-                </tr>
-                <tr>
-                    <td>微信</td>
-                    <td>否</td>
-                    <td>文本输入框</td>
-                    <td>非必填。</td>
-                </tr>
-                <tr>
-                    <td>WhatsApp</td>
-                    <td>否</td>
-                    <td>文本输入框</td>
-                    <td>非必填。</td>
-                </tr>
-                <tr>
-                    <td>其他联系方式</td>
-                    <td>否</td>
-                    <td>文本输入框</td>
-                    <td>非必填。</td>
-                </tr>
-                <tr>
-                    <td>验证码</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>4位图形验证码</td>
-                    <td>点击图片可刷新。</td>
-                </tr>
-                <tr>
-                    <td>提交按钮</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>提交后校验必填项，校验通过后弹出提示：“您的資料已提交，請注意郵箱信息”。</td>
+                    <td class="font-medium">目标</td>
+                    <td>根据邀请链接控制注册路径。</td>
+                    <td>减少错误开户路径，确保不同开户链接导入的客户走正确的投资者类型流程。</td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="step-title">3. 步骤 2：銀行資料</div>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">2. 核心原则</h2>
         <table>
             <thead>
                 <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="10%">是否必填</th>
-                    <th width="20%">字段类型/选项</th>
-                    <th width="55%">交互逻辑与说明</th>
+                    <th width="20%">原则</th>
+                    <th width="40%">定义</th>
+                    <th width="40%">说明</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>開戶人名稱</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文本展示 (Readonly)</td>
-                    <td>不可编辑，灰色背景。系统自动带入步骤 1 中填写的“客戶姓名”。</td>
+                    <td class="font-medium">链接驱动</td>
+                    <td>注册页加载后先识别邀请链接类型，再决定后续页面路径。</td>
+                    <td>不允许前端脱离链接自行猜测流程。</td>
                 </tr>
                 <tr>
-                    <td>銀行賬號 / 確認</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文本输入</td>
-                    <td>需校验两次输入的银行卡号是否完全一致。下方附带提示：開戶名必須為客戶本人。</td>
+                    <td class="font-medium">类型受控</td>
+                    <td>当邀请链接已明确投资者类型时，用户不能修改类型。</td>
+                    <td>避免代理渠道导流后用户自行切换到不匹配的开户类型。</td>
                 </tr>
                 <tr>
-                    <td>開戶行名稱</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>下拉选择</td>
-                    <td>仅支持香港地区银行。<span class="highlight">需要单独用字典进行维护。</span></td>
+                    <td class="font-medium">最少展示</td>
+                    <td>只有在业务上确实需要用户选择或确认时，才展示投资者类型页面。</td>
+                    <td>能隐藏就隐藏，减少用户理解负担。</td>
                 </tr>
                 <tr>
-                    <td>開戶行地區</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>联动下拉选择</td>
-                    <td>由于仅支持香港地区，左侧固定且置灰不可更改（值为“香港特別行政區”），右侧下拉选择分區（香港島、九龍、新界）。</td>
-                </tr>
-                <tr>
-                    <td>分行與支行</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>多行文本域</td>
-                    <td>要求用户详细填写支行名称以便处理存取款。</td>
+                    <td class="font-medium">自动归组</td>
+                    <td>注册提交成功后，系统按最终投资者类型自动写入对应分组。</td>
+                    <td>不依赖人工在后台二次维护。</td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="step-title">4. 步骤 3：上傳證明文件</div>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">3. 邀请链接规则总表</h2>
         <table>
             <thead>
                 <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="10%">是否必填</th>
-                    <th width="20%">字段类型/选项</th>
-                    <th width="55%">交互逻辑与说明</th>
+                    <th width="20%">链接来源/类型</th>
+                    <th width="20%">是否展示投资者类型</th>
+                    <th width="20%">是否允许修改类型</th>
+                    <th width="20%">是否进入问卷</th>
+                    <th width="20%">最终投资者类型</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>證件正面照片</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文件上传</td>
-                    <td>支持 .jpg/.jpeg/.png/.gif，限制最大 3M。前端需提供点击选择文件的交互区域。</td>
+                    <td class="font-medium">公司账户分享链接</td>
+                    <td>展示</td>
+                    <td>允许用户自行选择</td>
+                    <td>按所选类型决定</td>
+                    <td>以用户所选结果为准</td>
                 </tr>
                 <tr>
-                    <td>證件背面照片</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文件上传</td>
-                    <td>要求同上。与正面照片共同用于核实客户身份。</td>
+                    <td class="font-medium">代理分享一般投资者邀请链接</td>
+                    <td>不展示</td>
+                    <td>不允许修改</td>
+                    <td>不进入专业投资者问卷</td>
+                    <td>固定为一般投资者</td>
                 </tr>
                 <tr>
-                    <td>銀行卡正面照片</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>文件上传</td>
-                    <td>要求同上。用于后台审核客户的资金出入合规性。</td>
+                    <td class="font-medium">代理分享专业投资者邀请链接</td>
+                    <td>展示页面</td>
+                    <td>不允许修改</td>
+                    <td>必须进入专业投资者问卷</td>
+                    <td>固定为专业投资者</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理分享标准邀请链接</td>
+                    <td>不展示</td>
+                    <td>不允许修改</td>
+                    <td>不进入专业投资者问卷</td>
+                    <td>为空</td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="step-title">5. 步骤 4：投資者問卷</div>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">4. 页面展示与交互规则</h2>
         <table>
             <thead>
                 <tr>
-                    <th width="15%">字段名称</th>
-                    <th width="10%">是否必填</th>
-                    <th width="20%">字段类型/选项</th>
-                    <th width="55%">交互逻辑与说明</th>
+                    <th width="20%">模块</th>
+                    <th width="40%">展示与交互规则</th>
+                    <th width="40%">备注</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>客戶類別</td>
-                    <td><span class="text-red-500 font-bold">是</span></td>
-                    <td>单选框</td>
-                    <td>选项：“一般投資者”（默认）与“專業投資者”。<br>
-                    <span class="highlight">联动逻辑：</span>当选择“專業投資者”时，下方自动展开【請明確投資風險和後果】的 4 项专业资质确认复选框组。选择“一般投資者”时则隐藏。</td>
+                    <td class="font-medium">投资者类型选择页</td>
+                    <td>仅在“公司账户分享链接”场景下展示为可选页面。</td>
+                    <td>用户必须选择后才能进入下一步。</td>
                 </tr>
                 <tr>
-                    <td>专业资质选项<br>(仅专业投资者)</td>
-                    <td>否</td>
-                    <td>复选框组</td>
-                    <td>
-                        包含 4 大项确认，其中第 1 项下属 3 个子资质复选框（如：金融學士、CFA/CFP、合資格律師）。用户可多选。
-                    </td>
+                    <td class="font-medium">专业投资者确认页</td>
+                    <td>在“代理专业投资者邀请链接”场景展示，但页面中的投资者类型不可修改。</td>
+                    <td>页面重点是说明当前开户链接只支持专业投资者，并引导进入问卷。</td>
                 </tr>
                 <tr>
-                    <td>提交開戶申請</td>
-                    <td>-</td>
-                    <td>按钮</td>
-                    <td>
-                        到达第 4 步时，“下一步”按钮变为“提交開戶申請”。<br>
-                        点击提交后，弹出全屏的【成功提交彈窗】，提示“您的資料已經提交，請注意郵箱信息”。
-                    </td>
+                    <td class="font-medium">专业投资者问卷</td>
+                    <td>仅专业投资者路径进入。</td>
+                    <td>一般投资者与默认标准链接不展示该问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开户资料页</td>
+                    <td>沿用现有 HK 开户资料表单。</td>
+                    <td>本需求不改资料字段，仅新增邀请链接驱动的展示与归组逻辑。</td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="step-title">6. 提交成功后动作</div>
-        <div class="mb-4 text-sm text-gray-600 bg-green-50 p-4 rounded border border-green-100">
-            <p>1. 弹窗内提供两个按钮流向：</p>
-            <p class="ml-4">- <strong>返回首頁</strong>：直接跳转回登录或系统入口首页。</p>
-        </div>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">5. 数据字段建议</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">字段</th>
+                    <th width="40%">说明</th>
+                    <th width="40%">建议值 / 口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">invite_link_type</td>
+                    <td>邀请链接类型。</td>
+                    <td><code>company</code> / <code>agent_retail</code> / <code>agent_professional</code> / <code>agent_standard</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">investor_type</td>
+                    <td>最终投资者类型。</td>
+                    <td><code>retail</code> / <code>professional</code> / 空</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">investor_type_source</td>
+                    <td>投资者类型来源。</td>
+                    <td><code>user_selected</code> / <code>link_fixed</code> / 空</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">need_investor_type_page</td>
+                    <td>是否展示投资者类型页面。</td>
+                    <td><code>true</code> / <code>false</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">need_professional_questionnaire</td>
+                    <td>是否进入专业投资者问卷。</td>
+                    <td><code>true</code> / <code>false</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">customer_group</td>
+                    <td>客户分组。</td>
+                    <td>一般投资者自动归属一般投资者分组；专业投资者自动归属专业投资者分组；标准邀请链接自动归属代理的分组。</td>
+                </tr>
+            </tbody>
+        </table>
 
-        <div class="step-title">7. 開戶審核進度查詢</div>
-        <div class="mb-4 text-sm text-gray-600">
-            <ul class="list-disc pl-5 mt-2 space-y-2">
-                <li><strong>待激活：</strong> 提示用户已发送激活邮件，需先点击激活链接，合规部门才会开始审核。</li>
-                <li><strong>審核中：</strong> 默认状态，提示合规部门正在审核，预计 1-2 个工作日。</li>
-                <li><strong>已通過：</strong> 提示开户申请已处理完毕，账号详情已发送至邮箱，并提供“登錄 CRM”快捷入口。</li>
-                <li><strong>審核失敗：</strong> 提示未能通过审核，可能原因如证件模糊，提供“補充資料重新提交”快捷入口。</li>
-            </ul>
-        </div>
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">6. 自动归组规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">最终投资者类型</th>
+                    <th width="40%">自动归组</th>
+                    <th width="40%">触发时机</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">一般投资者</td>
+                    <td>自动归属一般投资者分组</td>
+                    <td>注册提交成功并入库时自动写入</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">专业投资者</td>
+                    <td>自动归属专业投资者分组</td>
+                    <td>注册提交成功并入库时自动写入</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">投资者类型为空（标准邀请链接）</td>
+                    <td>自动归属代理的分组</td>
+                    <td>注册提交成功并入库时自动写入</td>
+                </tr>
+            </tbody>
+        </table>
 
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">7. 后台审核与回显联动</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="40%">联动要求</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">审核详情页</td>
+                    <td>回显投资者类型、投资者类型来源、是否完成专业投资者问卷。</td>
+                    <td>若为标准邀请链接，则投资者类型允许为空，并需回显归属代理分组。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">登录控制</td>
+                    <td>延续现有 HK 审核强控逻辑。</td>
+                    <td>本需求不改变“审核通过后才能登录”的既有规则。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">新老流程切换</td>
+                    <td>继续支持后台开关切换。</td>
+                    <td>本需求属于新流程上的增强逻辑，旧流程是否启用由后台配置决定。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">8. 边界规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">场景</th>
+                    <th width="40%">规则</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">邀请链接缺失或非法</td>
+                    <td>按公司账户分享链接处理。</td>
+                    <td>展示投资者类型页面，由用户自行选择，避免因链接异常导致无法注册。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">标准邀请链接未配置默认类型</td>
+                    <td>投资者类型保持为空，直接归属代理的分组。</td>
+                    <td>标准邀请链接不再强制映射到一般或专业投资者类型。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">专业投资者链接下尝试改类型</td>
+                    <td>前端不可编辑，后端再次校验为专业投资者。</td>
+                    <td>避免前端篡改。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">公司账户分享链接下选择专业投资者</td>
+                    <td>必须完成专业投资者问卷后才允许提交。</td>
+                    <td>问卷未完成时不可进入最终提交状态。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">9. 验收标准</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">用例</th>
+                    <th width="40%">操作</th>
+                    <th width="40%">预期结果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">公司账户链接</td>
+                    <td>用户通过公司账户分享链接进入注册页。</td>
+                    <td>展示投资者类型页面，用户可自行选择；若选择专业投资者，则进入专业投资者问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理一般投资者链接</td>
+                    <td>用户通过代理分享的一般投资者邀请链接进入。</td>
+                    <td>不展示投资者类型页面；系统固定为一般投资者；直接进入一般投资者开户路径。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理专业投资者链接</td>
+                    <td>用户通过代理分享的专业投资者邀请链接进入。</td>
+                    <td>展示专业投资者确认页，但不能改类型；必须完成专业投资者问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理标准邀请链接</td>
+                    <td>用户通过代理标准邀请链接进入。</td>
+                    <td>不展示投资者类型页面；最终投资者类型为空；注册成功后自动归属代理的分组。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">自动归组</td>
+                    <td>用户提交注册成功。</td>
+                    <td>系统根据最终投资者类型或标准邀请链接规则自动归入对应分组，后台审核页可正确回显。</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
