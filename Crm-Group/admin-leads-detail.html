@@ -455,11 +455,34 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">国家/地区</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">咨询内容</label>
                             <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn">
-                                <option>中国大陆</option>
-                                <option>中国香港</option>
+                                <option>成为代理</option>
+                                <option>活动咨询</option>
+                                <option>开户咨询</option>
+                                <option selected>个人交易</option>
                                 <option>其他</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">信息来源</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn">
+                                <option selected>官网访问</option>
+                                <option>社交平台</option>
+                                <option>客户推荐</option>
+                                <option>线上活动</option>
+                                <option>线下金融活动</option>
+                                <option>金融资讯网站</option>
+                                <option>其他渠道</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">查询渠道</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn">
+                                <option>WhatsApp</option>
+                                <option selected>Email</option>
+                                <option>Zendesk</option>
+                                <option>Telegram</option>
                             </select>
                         </div>
                         <div class="hidden">
@@ -486,7 +509,7 @@
                     <div class="flex border-b border-gray-200 bg-gray-50 px-4 pt-2 overflow-x-auto whitespace-nowrap no-scrollbar" id="demo-tab-container">
                         <button onclick="switchTab('followup')" id="tab-followup" class="px-4 py-2 text-sm font-medium text-primaryBtn border-b-2 border-primaryBtn bg-white rounded-t-lg">跟进记录</button>
                         <button onclick="switchTab('changelog')" id="tab-changelog" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">变更记录</button>
-                        <button onclick="switchTab('lead-records')" id="tab-lead-records" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">留资记录</button>
+                        <button onclick="switchTab('lead-records')" id="tab-lead-records" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">留资记录（3）</button>
                         <button onclick="switchTab('conversion')" id="tab-conversion" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">转化成果</button>
                     </div>
 
@@ -499,11 +522,14 @@
                                 <textarea rows="3" placeholder="输入跟进内容..." class="w-full border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn mb-2"></textarea>
                                 <div class="flex justify-between items-center">
                                     <div class="flex gap-4">
-                                        <select class="border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-primaryBtn">
-                                            <option>更新状态：跟进中</option>
-                                            <option>更新状态：无效线索</option>
-                                            <option>更新状态：已转化</option>
-                                        </select>
+                                        <div class="flex flex-col gap-1">
+                                            <select class="border border-gray-300 rounded px-2 py-1 text-sm outline-none focus:border-primaryBtn">
+                                                <option>更新状态：跟进中</option>
+                                                <option>更新状态：无效线索</option>
+                                                <option>更新状态：已转化</option>
+                                            </select>
+                                            <span class="text-xs text-gray-400">当前即使为“已转化”或“无效线索”，也支持再次修改状态</span>
+                                        </div>
                                         <input type="datetime-local" class="border border-gray-300 rounded px-2 py-1 text-sm text-gray-600 outline-none focus:border-primaryBtn" title="下次跟进时间">
                                     </div>
                                     <button class="px-4 py-1.5 bg-primaryBtn text-white text-sm rounded hover:bg-primaryBtnHover transition-colors">发布跟进</button>
@@ -640,6 +666,8 @@
                                     <div class="grid grid-cols-2 gap-y-2 text-sm">
                                         <div><span class="text-gray-500">联系电话：</span>13800138000</div>
                                         <div><span class="text-gray-500">信息来源：</span>官网访问</div>
+                                        <div><span class="text-gray-500">客户来源：</span>官网录入</div>
+                                        <div><span class="text-gray-500">查询渠道：</span>Email</div>
                                         <div><span class="text-gray-500">咨询内容：</span>外汇交易</div>
                                         <div><span class="text-gray-500">线索热度：</span>高</div>
                                         <div class="col-span-2"><span class="text-gray-500">备注：</span>对高杠杆外汇交易感兴趣，资金量约5万美金。</div>
@@ -655,6 +683,8 @@
                                     <div class="grid grid-cols-2 gap-y-2 text-sm text-gray-600">
                                         <div><span class="text-gray-400">联系电话：</span>13800138000</div>
                                         <div><span class="text-gray-400">信息来源：</span>线下金融活动</div>
+                                        <div><span class="text-gray-400">客户来源：</span>销售录入</div>
+                                        <div><span class="text-gray-400">查询渠道：</span>WhatsApp</div>
                                         <div><span class="text-gray-400">咨询内容：</span>活动咨询</div>
                                         <div class="col-span-2"><span class="text-gray-400">备注：</span>询问广州展会的具体地址和参会福利。</div>
                                     </div>
@@ -669,6 +699,8 @@
                                     <div class="grid grid-cols-2 gap-y-2 text-sm text-gray-600">
                                         <div><span class="text-gray-400">联系电话：</span>未提供</div>
                                         <div><span class="text-gray-400">信息来源：</span>社交平台广告</div>
+                                        <div><span class="text-gray-400">客户来源：</span>注册页录入</div>
+                                        <div><span class="text-gray-400">查询渠道：</span>Telegram</div>
                                         <div><span class="text-gray-400">咨询内容：</span>了解开户</div>
                                         <div class="col-span-2"><span class="text-gray-400">备注：</span>无</div>
                                     </div>
@@ -692,11 +724,12 @@
                                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4 bg-white p-4 rounded border border-green-100">
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">关联客户账户</p>
-                                        <p class="font-medium text-gray-800">
+                                        <div class="font-medium text-gray-800 flex items-center gap-3">
                                             <a href="client-detail.html" class="text-blue-600 hover:underline flex items-center gap-1">
                                                 ID: 88820391 <i class="fa-solid fa-external-link-alt text-[10px]"></i>
                                             </a>
-                                        </p>
+                                            <button class="text-xs text-indigo-600 border border-indigo-200 bg-indigo-50 px-2 py-0.5 rounded hover:bg-indigo-100 transition-colors">修改关联</button>
+                                        </div>
                                     </div>
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">开户状态</p>
@@ -740,12 +773,12 @@
                             
                             <!-- 手动关联区 (当未转化时显示，此处仅做UI占位演示) -->
                             <div class="mt-6 p-5 border border-dashed border-gray-300 rounded-lg bg-gray-50">
-                                <h4 class="font-medium text-gray-800 mb-2"><i class="fa-solid fa-link text-gray-400 mr-2"></i>手动关联客户账户</h4>
-                                <p class="text-xs text-gray-500 mb-4">如果客户已自行在官网注册，可在此处输入客户CRM账号ID进行强制绑定。</p>
+                                <h4 class="font-medium text-gray-800 mb-2"><i class="fa-solid fa-link text-gray-400 mr-2"></i>关联客户账户</h4>
+                                <p class="text-xs text-gray-500 mb-4">如果客户已自行在官网注册，可在此处输入客户 CRM 账号 ID 进行绑定；如已存在绑定关系，也支持修改为新的关联账户。</p>
                                 <div class="flex gap-3">
                                     <input type="text" placeholder="输入CRM客户ID (如: 88820391)" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-primaryBtn focus:ring-1 focus:ring-primaryBtn">
                                     <button class="px-4 py-2 bg-gray-800 text-white text-sm rounded hover:bg-gray-900 transition-colors">
-                                        确认关联
+                                        保存关联
                                     </button>
                                 </div>
                             </div>

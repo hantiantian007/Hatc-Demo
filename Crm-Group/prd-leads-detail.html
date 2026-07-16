@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRD - 留资详情</title>
+    <title>PRD - 留资详情（三期）</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -20,7 +20,7 @@
     </script>
     <style>
         .module-title { font-size: 1.125rem; font-weight: bold; color: #111827; margin-top: 2rem; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 4px solid #C19B5E; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; text-sm; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
         th, td { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; text-align: left; }
         th { background-color: #f9fafb; font-weight: 500; color: #4b5563; }
         td { color: #374151; vertical-align: top; }
@@ -32,18 +32,18 @@
         
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
-            <h2 class="text-xl text-primary font-medium">留资详情 (admin-leads-detail.html)</h2>
+            <h2 class="text-xl text-primary font-medium">留资详情（三期） (admin-leads-detail.html)</h2>
             <div class="mt-4 flex gap-4 text-sm text-gray-500">
-                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-07-01</span>
+                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-07-16</span>
                 <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
-                <span class="px-2 py-0.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded text-xs">V2.1.0</span>
+                <span class="px-2 py-0.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded text-xs">V3.0.0</span>
             </div>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
             
             <div class="text-sm text-gray-600 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <span class="font-bold">页面整体布局：</span>采用经典的“上-左-右”结构。顶部为客户全局身份与操作区；左侧固定为基础档案表单（25%宽度）；右侧为主工作区（75%宽度），通过多 Tab 承载跟进记录、留资溯源及转化资产数据。
+                <span class="font-bold">页面整体布局：</span>采用经典的“上-左-右”结构。顶部为客户全局身份与操作区；左侧固定为基础档案表单（25%宽度）；右侧为主工作区（75%宽度），通过多 Tab 承载跟进记录、留资溯源及转化资产数据，并支持基础信息修正、状态再次调整、关联账户修改等三期能力。
             </div>
 
             <!-- 模块一：客户头部与全局操作 -->
@@ -136,9 +136,19 @@
                             <td>交互：当系统匹配错误或未匹配时，销售在此输入代理名称/邮箱进行模糊匹配，选中后覆盖该线索的归属代理逻辑。</td>
                         </tr>
                         <tr>
-                            <td class="font-medium whitespace-nowrap">国家地区 / 期望服务</td>
-                            <td>来源：客户下拉选择。<br>状态：可编辑下拉框。</td>
-                            <td>标准 Select 交互，支持销售修改客户的归属地与意向服务类型。</td>
+                            <td class="font-medium whitespace-nowrap">咨询内容</td>
+                            <td>来源：客户录入时填写的初始内容。<br>状态：<span class="highlight">可编辑</span>。</td>
+                            <td>标准 Select 交互。枚举值包含：成为代理、活动咨询、开户咨询、个人交易、其他。销售可在详情页内修正客户最初填写的咨询内容，保存后按最新值生效。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">信息来源</td>
+                            <td>来源：客户录入时填写的初始内容。<br>状态：<span class="highlight">可编辑</span>。</td>
+                            <td>标准 Select 交互。枚举值包含：官网访问、社交平台、客户推荐、线上活动、线下金融活动、金融资讯网站、其他渠道。销售可在详情页内修正客户录入时填写的信息来源，保存后按最新值生效。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">查询渠道</td>
+                            <td>来源：销售人工维护。<br>状态：可编辑下拉框。</td>
+                            <td>枚举值固定为：<code>WhatsApp</code>、<code>Email</code>、<code>Zendesk</code>、<code>Telegram</code>。用于记录销售当前主要通过哪个沟通渠道查询或承接该客户。</td>
                         </tr>
                         <tr>
                             <td class="font-medium whitespace-nowrap">保存修改按钮</td>
@@ -172,7 +182,8 @@
                                 <strong>交互逻辑</strong>：<br>
                                 1. 销售填写内容并点击发布后，新记录无刷新追加至时间轴顶部。<br>
                                 2. 若下拉更改了线索状态（如“转为无效”），系统不仅生成一条跟进记录，同时会自动触发线索全局状态变更。<br>
-                                3. <strong>信息处理</strong>：时间轴区分“人工记录”（显示销售姓名及内容）与“系统日志”（特殊底色，如“系统：已成功转化为客户”）。
+                                3. <span class="highlight">状态可再次修改</span>：即便当前线索已经处于“已转化”或“无效线索”，销售仍可再次通过跟进状态下拉框调整为其他状态，系统需保留完整变更轨迹。<br>
+                                4. <strong>信息处理</strong>：时间轴区分“人工记录”（显示销售姓名及内容）与“系统日志”（特殊底色，如“系统：已成功转化为客户”）。
                             </td>
                         </tr>
                         <tr>
@@ -188,7 +199,7 @@
                             <td>来源：基于当前客户“唯一电子邮箱”在全渠道（如官网、展会、开户页）的多次提交历史。</td>
                             <td>
                                 <strong>排列方式</strong>：时间倒序排列的卡片列表。<br>
-                                <strong>信息处理</strong>：卡片头部展示“第 N 次留资”及时间。卡片内展示当时填写的联系电话、信息来源、咨询内容及备注。此 Tab 仅供查阅，不可编辑，用于销售分析客户的长期关注点。
+                                <strong>信息处理</strong>：Tab 名称需展示数量，如 <code>留资记录（3）</code>。卡片头部展示“第 N 次留资”及时间。卡片内展示当时填写的联系电话、信息来源、咨询内容及备注。此 Tab 仅供查阅，不可编辑，用于销售分析客户的长期关注点。
                             </td>
                         </tr>
                         <tr>
@@ -200,7 +211,7 @@
                                 2. 累计盈亏 = 该名下所有交易账户平仓盈亏之和。<br>
                                 <strong>交互方式</strong>：<br>
                                 1. 若线索已开户，展示资产数据看板，底部提供“查看完整客户画像”按钮，点击<strong>新开标签页</strong>跳转至 <code>admin-client-detail.html</code>。<br>
-                                2. 若系统未自动匹配到开户数据，提供“手动关联客户”的输入框及绑定按钮。
+                                2. 关联账户支持新增与修改：若系统未自动匹配到开户数据，提供输入框及绑定按钮；若已存在关联账户，也需提供“修改关联”入口，允许销售改绑为新的客户账户，并记录变更日志。
                             </td>
                         </tr>
                     </tbody>

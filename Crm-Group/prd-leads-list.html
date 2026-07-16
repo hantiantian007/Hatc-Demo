@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>留资管理 (二期) PRD</title>
+    <title>留资管理 (三期) PRD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +19,7 @@
     <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
         
         <div class="flex justify-between items-center mb-8 border-b pb-4">
-            <h1 class="text-2xl font-bold text-gray-800">【需求文档】留资管理 (二期)</h1>
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】留资管理 (三期)</h1>
             <div class="flex gap-4">
                 <a href="admin-leads-list.html" class="px-4 py-2 bg-[#C19B5E] hover:opacity-90 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 返回高保真原型</a>
                 <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
@@ -32,9 +32,9 @@
             <p class="text-sm text-yellow-700">原型列表顶部可能存在的「销售主管 / 销售人员」视角切换按钮，<strong>仅用于产品原型交互演示</strong>，以便向业务确认不同角色下的数据可见性和按钮权限隔离。实际生产开发中，<strong>非研发内容，无需开发此切换按钮</strong>。用户权限与数据可见范围请直接通过后端 RBAC 及组织架构树进行系统控制。</p>
         </div>
 
-        <!-- 模块一：新增线下线索弹窗 -->
-        <div class="module-title">1. 独立模块：新增线下线索弹窗</div>
-        <p class="text-sm text-gray-500 mb-4">触发方式：点击列表顶部「新增线下线索」按钮，弹出右侧抽屉或居中 Modal 弹窗。</p>
+        <!-- 模块一：销售录入弹窗 -->
+        <div class="module-title">1. 独立模块：销售录入弹窗</div>
+        <p class="text-sm text-gray-500 mb-4">触发方式：点击列表顶部「销售录入」按钮，弹出右侧抽屉或居中 Modal 弹窗。</p>
         <div class="overflow-x-auto">
             <table>
                 <thead>
@@ -71,10 +71,16 @@
                         <td>选填项，限制最大长度 50 字符。</td>
                     </tr>
                     <tr>
+                        <td class="font-medium whitespace-nowrap">其他联系方式</td>
+                        <td>文本输入框<br><span class="text-xs text-gray-400">来源：手工录入</span></td>
+                        <td>无</td>
+                        <td>选填项。用于补充记录客户除手机号、邮箱、微信/WhatsApp 之外的其他联系信息，限制最大长度 100 字符。</td>
+                    </tr>
+                    <tr>
                         <td class="font-medium whitespace-nowrap">线索热度</td>
                         <td>下拉单选框<br><span class="text-xs text-gray-400">来源：人工选择</span></td>
-                        <td>穷举值：<br>1. 高<br>2. 中<br>3. 低</td>
-                        <td>选填。销售/主管根据初步沟通意向预判。</td>
+                        <td>穷举值：<br>1. 高<br>2. 中<br>3. 低<br>4. 暂不评估</td>
+                        <td>选填。销售/主管根据初步沟通意向预判；若当前暂不判断，可保留为空或选择“暂不评估”。</td>
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">咨询内容</td>
@@ -267,8 +273,18 @@
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">线索热度</td>
-                        <td>销售根据沟通情况给出的意向评级（包含：高、中、低）。</td>
-                        <td>帮助销售识别高优跟进目标。</td>
+                        <td>销售根据沟通情况给出的意向评级（包含：高、中、低、暂不评估）。</td>
+                        <td>选填字段。未评估时显示为 <code>--</code>；若销售主动标记“暂不评估”，则按该枚举值展示，帮助销售识别高优跟进目标。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">留资次数</td>
+                        <td>同一客户在留资系统中的累计留资次数。</td>
+                        <td>按客户唯一标识（默认邮箱；无邮箱时按手机号作为补充口径）聚合统计。用于在列表页快速识别重复留资客户。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium whitespace-nowrap">客户来源</td>
+                        <td>客户输入留资信息的页面入口来源。</td>
+                        <td>字段名称由原“页面来源 / 来源网页”统一调整为“客户来源”，枚举值仅保留：销售录入、官网录入、注册页录入。列表表头旁需增加提示 icon，鼠标移入时显示“客户来源代表客户从哪里输入的留资信息”。</td>
                     </tr>
                     <tr>
                         <td class="font-medium whitespace-nowrap">有无关联代理</td>
