@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 委托查看规则配置</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        mainBg: '#F3F4F6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-mainBg text-gray-800">
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-menuBg text-white shrink-0 min-h-screen">
+            <div class="h-16 px-6 flex items-center border-b border-white/10">
+                <div>
+                    <div class="text-lg font-bold tracking-wide">HATC CRM</div>
+                    <div class="text-xs text-menuText mt-1">委托交易管理</div>
+                </div>
+            </div>
+            <nav class="p-4 space-y-2 text-sm">
+                <a href="admin-client-list.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-menuText hover:bg-menuHover transition-colors">
+                    <i class="fa-solid fa-users w-4"></i>
+                    <span>客户管理</span>
+                </a>
+                <a href="admin-trust-account-management.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-menuText hover:bg-menuHover transition-colors">
+                    <i class="fa-solid fa-user-shield w-4"></i>
+                    <span>委托账户管理</span>
+                </a>
+                <a href="admin-trust-rule-config.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-menuHover text-white border border-menuActive/30">
+                    <i class="fa-solid fa-sliders w-4 text-menuActive"></i>
+                    <span>查看规则配置</span>
+                </a>
+                <a href="admin-trust-group-config.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-menuText hover:bg-menuHover transition-colors">
+                    <i class="fa-solid fa-layer-group w-4"></i>
+                    <span>委托分组配置</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 min-w-0">
+            <header class="h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between">
+                <div>
+                    <h1 class="text-lg font-bold text-gray-800">委托查看规则配置</h1>
+                    <p class="text-xs text-gray-500 mt-1">委托分组可随时增删；支持按委托分组或按 MT 账号配置交易数据查看时间，时间模式支持每月固定、每周固定或每月内指定时间。</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="prd-trust-account-visibility.html" class="px-4 py-2 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                        <i class="fa-solid fa-file-lines mr-1"></i> 查看 PRD
+                    </a>
+                    <button class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm hover:bg-[#a88651] transition-colors">
+                        <i class="fa-solid fa-plus mr-1"></i> 新建规则
+                    </button>
+                </div>
+            </header>
+
+            <div class="p-6 space-y-6">
+                <section class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                    <div class="grid grid-cols-1 xl:grid-cols-7 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-2">规则名称</label>
+                            <input type="text" value="" placeholder="输入规则名称" class="w-full h-10 rounded border border-gray-300 px-3 text-sm outline-none focus:border-[#C19B5E]">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-2">作用范围</label>
+                            <select class="w-full h-10 rounded border border-gray-300 px-3 text-sm outline-none focus:border-[#C19B5E]">
+                                <option>全部</option>
+                                <option>按组</option>
+                                <option>按MT账号</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-2">目标对象</label>
+                            <input type="text" placeholder="组名或 MT 账号" class="w-full h-10 rounded border border-gray-300 px-3 text-sm outline-none focus:border-[#C19B5E]">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-2">开启模式</label>
+                            <select class="w-full h-10 rounded border border-gray-300 px-3 text-sm outline-none focus:border-[#C19B5E]">
+                                <option>全部</option>
+                                <option>手动开关</option>
+                                <option>自动定时</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-2">时间模式</label>
+                            <select class="w-full h-10 rounded border border-gray-300 px-3 text-sm outline-none focus:border-[#C19B5E]">
+                                <option>全部</option>
+                                <option>每月固定时间</option>
+                                <option>每周固定时间</option>
+                                <option>每月内指定时间</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-2">规则状态</label>
+                            <select class="w-full h-10 rounded border border-gray-300 px-3 text-sm outline-none focus:border-[#C19B5E]">
+                                <option>全部</option>
+                                <option>开放中</option>
+                                <option>未开放</option>
+                                <option>手动开启</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end gap-3">
+                            <button class="h-10 px-4 rounded bg-[#C19B5E] text-white text-sm hover:bg-[#a88651] transition-colors">查询</button>
+                            <button class="h-10 px-4 rounded border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50 transition-colors">重置</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,1.65fr)_380px] gap-6">
+                    <section class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <div>
+                                <h2 class="text-base font-bold text-gray-800">规则列表</h2>
+                                <p class="text-xs text-gray-500 mt-1">优先级：MT账号规则 &gt; 分组规则</p>
+                            </div>
+                            <div class="text-xs text-gray-500">共 3 条规则</div>
+                        </div>
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="w-full min-w-[1180px] text-sm text-left whitespace-nowrap">
+                                <thead class="bg-gray-50 text-gray-500 border-b border-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-3 font-medium">规则名称</th>
+                                        <th class="px-4 py-3 font-medium">作用范围</th>
+                                        <th class="px-4 py-3 font-medium">目标对象</th>
+                                        <th class="px-4 py-3 font-medium">开启模式</th>
+                                        <th class="px-4 py-3 font-medium">时间模式</th>
+                                        <th class="px-4 py-3 font-medium">开放数据</th>
+                                        <th class="px-4 py-3 font-medium">开放时间</th>
+                                        <th class="px-4 py-3 font-medium">当前状态</th>
+                                        <th class="px-4 py-3 font-medium">手动开关</th>
+                                        <th class="px-4 py-3 font-medium">最近更新</th>
+                                        <th class="px-4 py-3 font-medium">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-700 divide-y divide-gray-100">
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-4 font-medium text-gray-800">托管主组月度开放</td>
+                                        <td class="px-4 py-4">按组</td>
+                                        <td class="px-4 py-4">real\Trust\Managed\Main</td>
+                                        <td class="px-4 py-4">自动定时</td>
+                                        <td class="px-4 py-4">每月固定时间</td>
+                                        <td class="px-4 py-4">持仓 / 交易 / 平仓记录</td>
+                                        <td class="px-4 py-4">每月 15 日 00:00 - 23:59</td>
+                                        <td class="px-4 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">开放中</span>
+                                        </td>
+                                        <td class="px-4 py-4">关闭</td>
+                                        <td class="px-4 py-4">2026-07-21 10:12</td>
+                                        <td class="px-4 py-4">
+                                            <a href="javascript:void(0)" class="text-[#C19B5E] hover:underline">编辑</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-4 font-medium text-gray-800">8801732 特殊开放规则</td>
+                                        <td class="px-4 py-4">按MT账号</td>
+                                        <td class="px-4 py-4">8801732</td>
+                                        <td class="px-4 py-4">手动开关</td>
+                                        <td class="px-4 py-4">--</td>
+                                        <td class="px-4 py-4">持仓 / 交易 / 平仓记录</td>
+                                        <td class="px-4 py-4">长期有效</td>
+                                        <td class="px-4 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">手动开启</span>
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            <span class="inline-flex h-6 items-center rounded-full bg-[#f7efe2] px-2 text-xs font-medium text-[#a88651]">开启</span>
+                                        </td>
+                                        <td class="px-4 py-4">2026-07-20 18:06</td>
+                                        <td class="px-4 py-4">
+                                            <a href="javascript:void(0)" class="text-[#C19B5E] hover:underline">编辑</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-4 font-medium text-gray-800">8802451 月内指定开放</td>
+                                        <td class="px-4 py-4">按MT账号</td>
+                                        <td class="px-4 py-4">8802451</td>
+                                        <td class="px-4 py-4">自动定时</td>
+                                        <td class="px-4 py-4">每月内指定时间</td>
+                                        <td class="px-4 py-4">持仓 / 交易 / 平仓记录</td>
+                                        <td class="px-4 py-4">每月 5/20 日 09:00 - 18:00</td>
+                                        <td class="px-4 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">未开放</span>
+                                        </td>
+                                        <td class="px-4 py-4">关闭</td>
+                                        <td class="px-4 py-4">2026-07-19 14:33</td>
+                                        <td class="px-4 py-4">
+                                            <a href="javascript:void(0)" class="text-[#C19B5E] hover:underline">编辑</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <aside class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <h2 class="text-base font-bold text-gray-800">规则详情 / 编辑</h2>
+                            <span class="text-xs text-[#C19B5E]">示例态</span>
+                        </div>
+                        <div class="p-5 space-y-5 text-sm">
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-2">规则名称</label>
+                                <input type="text" value="托管主组月度开放" class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">作用范围</label>
+                                    <select class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                        <option selected>按组</option>
+                                        <option>按MT账号</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">目标对象</label>
+                                    <input type="text" value="real\Trust\Managed\Main" class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">开启模式</label>
+                                    <select class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                        <option>手动开关</option>
+                                        <option selected>自动定时</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">时间模式</label>
+                                    <select class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                        <option selected>每月固定时间</option>
+                                        <option>每周固定时间</option>
+                                        <option>每月内指定时间</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">手动开关</label>
+                                    <div class="h-10 rounded border border-gray-300 px-3 flex items-center justify-between bg-gray-50">
+                                        <span class="text-gray-500">当前关闭</span>
+                                        <span class="inline-flex h-6 items-center rounded-full bg-gray-200 px-2 text-xs text-gray-600">OFF</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">开放开始</label>
+                                    <input type="text" value="每月 15 日 00:00" class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">开放结束</label>
+                                    <input type="text" value="每月 15 日 23:59" class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-2">时间表达式</label>
+                                    <input type="text" value="每月 15 日" class="w-full h-10 rounded border border-gray-300 px-3 outline-none focus:border-[#C19B5E]">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-2">规则说明</label>
+                                <textarea class="w-full h-24 rounded border border-gray-300 px-3 py-2 outline-none focus:border-[#C19B5E] resize-none">用于托管主组的月度查看窗口控制。客户在 MT5 中查看数据，CRM 仅展示结果。</textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-2">开放数据</label>
+                                <div class="h-10 rounded border border-gray-300 px-3 flex items-center bg-gray-50 text-gray-700">
+                                    持仓 / 交易 / 平仓记录
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl bg-[#fbfaf7] border border-[#efe4d4] p-4 space-y-3">
+                                <div class="text-xs font-medium text-gray-500">规则生效说明</div>
+                                <div class="text-xs text-gray-600 leading-6">
+                                    <div>1. 命中任一委托分组后默认禁内转、可出入金、禁密码修改重置。</div>
+                                    <div>2. 未开放时不可查看持仓、交易、平仓记录；开放后由 MT5 侧统一放开。</div>
+                                    <div>3. 若同时命中账号规则和分组规则，优先采用 MT 账号规则。</div>
+                                    <div>4. 自动定时支持每月固定时间、每周固定时间、每月内指定时间。</div>
+                                    <div>5. 委托结束后需先切换到非托管组，受限能力才恢复。</div>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end gap-3 pt-2">
+                                <button class="px-4 py-2 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors">取消</button>
+                                <button class="px-4 py-2 rounded bg-[#C19B5E] text-white hover:bg-[#a88651] transition-colors">保存规则</button>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

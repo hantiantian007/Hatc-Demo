@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委托交易账号管控与查看规则 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #e11d48; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】委托交易账号管控与查看规则</h1>
+            <div class="flex gap-4">
+                <a href="admin-trust-account-management.html" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-laptop-code mr-1"></i> 返回管理原型
+                </a>
+                <a href="admin-trust-rule-config.html" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-sliders mr-1"></i> 查看规则配置原型
+                </a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-list mr-1"></i> 返回需求看板
+                </a>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-blue-500 inline-block">1. 需求目标</h2>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+            <p class="text-sm text-blue-800 font-medium">
+                业务目标：客户名下可能存在多个 MT 账号，但仅有其中一个为<span class="highlight">委托交易账号</span>。客户先正常注册 CRM 账户并开通 MT5 账号，后续当 MT5 账号被切入<span class="highlight">委托组/托管组</span>时才进入委托限制态。限制态下需同步受到<span class="highlight">禁内转</span>、<span class="highlight">禁密码修改/重置</span>、<span class="highlight">按规则开放交易数据查看</span>三类限制；CRM 仅负责识别、展示与规则配置，客户实际查看动作在 <span class="highlight">MT5 系统</span> 内完成。
+            </p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">业务口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">承载页面</td>
+                    <td>新增独立的<span class="highlight">委托交易账户管理页</span>与<span class="highlight">规则配置页</span>。</td>
+                    <td>委托交易账户管理页负责账号识别、限制状态、开放时间与结束状态管理；规则配置页负责按组/按 MT 账号配置查看开放规则。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">本期边界</td>
+                    <td>本期 CRM 仅做<span class="highlight">记录、识别、限制展示、规则配置</span>，不在 CRM 内承接“查看数据”的实际入口。</td>
+                    <td>客户是否能看到数据，由 MT5 侧根据规则开关/定时结果处理；CRM 只展示当前规则结果与来源。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">委托分组配置</td>
+                    <td>委托分组通过后台配置维护，可<span class="highlight">随时新增或删除</span>。</td>
+                    <td>MT5 账号命中任一委托分组即进入委托限制态；移出所有委托分组后视为委托结束并恢复普通能力。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">2. 委托交易流程</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="14%">步骤</th>
+                    <th width="43%">流程说明</th>
+                    <th width="43%">业务口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">1. 正常开户</td>
+                    <td>用户正常注册 CRM 账户，并通过 CRM 开通 MT5 账号。</td>
+                    <td>该阶段 MT5 账号为普通交易账号，不自动带入委托限制。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">2. 初始分组</td>
+                    <td>MT5 账号开通时，可属于任意分组。</td>
+                    <td>开通时是否属于普通组、测试组或其他交易组，不影响后续是否能进入委托态。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">3. 转入委托组</td>
+                    <td>当 MT5 账号被转移至任一<span class="highlight">委托交易分组</span>后，系统开始对该账号施加委托限制。</td>
+                    <td>“切入委托分组”是委托限制的正式触发点，而不是账号开通时间；系统需记录<span class="highlight">移入委托组时间</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">4. 限制生效</td>
+                    <td>限制期间，用户默认不能看见<span class="highlight">持仓</span>、<span class="highlight">交易</span>、<span class="highlight">平仓记录</span>等交易相关数据。</td>
+                    <td>限制范围仅针对交易数据可见性；资金相关能力中保留出入金，禁用内转。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">5. 按规则开放</td>
+                    <td>到达后台配置的指定时间后，用户可在 MT5 中查看持仓、交易和平仓记录等交易数据。</td>
+                    <td>开放时间由后台规则控制，可为手动开启或自动定时开启。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">3. 委托账号识别规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">规则项</th>
+                    <th width="40%">规则描述</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">识别方式</td>
+                    <td>委托交易账号按<span class="highlight">MT 分组</span>识别，不由后台人工逐个指定。</td>
+                    <td>后台维护一套“委托交易分组名单”。客户名下 MT 账号命中任一委托分组时，系统自动标记为“委托账号”。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">单客户多账号</td>
+                    <td>一个客户可有多个 MT 账号，但同一客户同一时点仅应识别出<span class="highlight">一个有效委托账号</span>。</td>
+                    <td>若客户名下多个账号同时命中委托分组，属于异常数据，后台需按异常状态高亮提示，便于人工核查。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">未命中场景</td>
+                    <td>客户名下账号均未命中委托分组时，账号列表不展示“委托账号”标签。</td>
+                    <td>该客户视为普通客户，无需展示委托开放规则。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">识别结果展示</td>
+                    <td>账号列表新增“账号用途”字段，枚举值为：<span class="highlight">委托账号</span>、普通账号、异常。</td>
+                    <td>
+                        委托账号：命中委托分组且唯一。<br>
+                        普通账号：未命中委托分组。<br>
+                        异常：同一客户命中多个委托账号或缺少必要规则配置。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">4. 托管组限制规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">规则项</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">业务口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">内转限制</td>
+                    <td>命中托管组的委托账号<span class="highlight">不支持内转</span>。</td>
+                    <td>仅当委托结束，账号从托管组切换到<span class="highlight">非托管组</span>后，才恢复内转能力。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">出入金能力</td>
+                    <td>命中托管组的委托账号<span class="highlight">支持出入金</span>。</td>
+                    <td>委托限制不影响正常入金、出金；仅限制内转能力，不限制资金进出。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">密码限制</td>
+                    <td>命中托管组的委托账号<span class="highlight">不支持在 CRM 系统内修改或重置 MT5 账号密码</span>。</td>
+                    <td>托管中禁止通过 CRM 触发 MT5 密码修改或密码重置；脱离托管组后恢复正常能力。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">能力恢复</td>
+                    <td>委托结束后，需先将账号切换到<span class="highlight">非托管组</span>，再恢复受限能力。</td>
+                    <td>恢复能力的前置条件不是“委托结束”状态本身，而是账号已不在托管组中。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">CRM 职责</td>
+                    <td>CRM 仅展示当前是否受限，不在 CRM 中提供“强制内转”“强制重置密码”等例外入口。</td>
+                    <td>避免后台人员绕开托管限制，保持限制口径一致。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">5. 查看数据开放规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">规则项</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">业务口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">查看入口</td>
+                    <td>客户查看数据的实际入口在<span class="highlight">MT5 系统</span>，CRM 不承接查看动作。</td>
+                    <td>CRM 只负责展示“当前能否查看”的规则结果，以及该结果来源于哪条规则。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开启方式</td>
+                    <td>查看数据支持两种开启方式：<span class="highlight">手动开关</span>、<span class="highlight">按月定时自动开启</span>。</td>
+                    <td>同一条规则仅选择一种主模式；如为手动开关，则由运营手工控制开/关；如为自动开启，则按配置时间自动生效。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">配置粒度</td>
+                    <td>规则支持按<span class="highlight">某个组</span>或<span class="highlight">某个 MT 账号</span>配置。</td>
+                    <td>优先级为：<span class="highlight">MT账号规则 &gt; 分组规则</span>。当账号命中个人规则时，优先使用个人规则，不再回退组规则。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">自动开启周期</td>
+                    <td>自动开启支持三种时间模式：<span class="highlight">每月固定时间</span>、<span class="highlight">每周固定时间</span>、<span class="highlight">每月内指定时间</span>。</td>
+                    <td>
+                        每月固定时间：例如每月 15 日 00:00 - 23:59。<br>
+                        每周固定时间：例如每周三 09:00 - 18:00。<br>
+                        每月内指定时间：例如每月第 1/3/5/20 日的指定时间段。
+                    </td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开放时间</td>
+                    <td>规则需明确“什么时间开放查看数据”，至少包含：开始时间、结束时间，或按月固定的开放日/开放时段。</td>
+                    <td>当当前时间落在开放窗口内时，状态为“开放中”；否则为“未开放”。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">数据范围</td>
+                    <td>开放规则控制的数据范围包括：<span class="highlight">持仓</span>、<span class="highlight">交易</span>、<span class="highlight">平仓记录</span>等交易相关数据。</td>
+                    <td>未开放时，上述交易数据均不可见；开放后由 MT5 侧统一放开查看。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">CRM 范围</td>
+                    <td>本期规则控制的是“是否允许在 MT5 查看交易数据”，不扩展到 CRM 内部报表开放。</td>
+                    <td>用户能否看到数据由 MT5 侧消费规则结果执行。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">6. 委托结束 / 移出委托组</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">规则项</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">业务口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">结束触发点</td>
+                    <td>委托结束的系统判定触发点为：<span class="highlight">MT5 账号被移出委托组</span>。</td>
+                    <td>仅有“口头结束”“业务确认结束”但账号仍在委托组中时，系统仍视为委托中；系统需记录<span class="highlight">移出委托组时间</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">恢复顺序</td>
+                    <td>账号移出委托组后，系统解除委托限制并恢复普通账号能力。</td>
+                    <td>恢复内容包括：恢复内转、恢复 CRM 内 MT5 密码修改/重置、恢复交易数据常态可见。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">规则失效</td>
+                    <td>账号移出委托组后，不再命中委托查看规则。</td>
+                    <td>委托交易账户管理页中可展示为“已结束”或进入历史记录；客户详情页不做委托信息展示。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">历史追溯</td>
+                    <td>委托结束后，建议保留一条“曾为委托账号”的变更记录。</td>
+                    <td>便于运营、客服、风控追溯该账号<span class="highlight">何时移入委托组</span>、<span class="highlight">何时移出委托组</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">异常场景</td>
+                    <td>若业务声称委托结束，但账号仍在委托组，则继续按委托中处理。</td>
+                    <td>分组结果优先于人工口径，避免系统状态与业务口径不一致。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">7. 规则配置页</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="40%">交互与显示规则</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">规则列表</td>
+                    <td>列表至少展示：规则名称、作用范围、目标对象、开启模式、开放数据、开放时间、当前状态、优先级、最近更新时间。</td>
+                    <td>便于运营快速核查某个组/某个 MT 账号当前到底受哪条规则控制。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">新建规则</td>
+                    <td>支持选择<span class="highlight">按组配置</span>或<span class="highlight">按 MT 账号配置</span>，并设置手动开关或定时自动开启。</td>
+                    <td>目标对象支持单选；若按组配置，输入组名；若按账号配置，输入 MT 账号。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开放数据</td>
+                    <td>规则需明确开放的数据范围，默认包括<span class="highlight">持仓、交易、平仓记录</span>。</td>
+                    <td>本期按整组交易数据统一开放，不拆分成单独子权限。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">时间配置</td>
+                    <td>支持配置<span class="highlight">每月固定时间</span>、<span class="highlight">每周固定时间</span>、<span class="highlight">每月内指定时间</span>三种时间模式。</td>
+                    <td>用于表达“每月什么时候开放查看数据”或“每周什么时候开放查看数据”的业务要求。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">委托分组配置</td>
+                    <td>新增独立的“委托交易分组配置”页面，用于维护委托分组名单，支持新增、编辑、删除与启停用。</td>
+                    <td>分组配置变更将影响后续识别逻辑；删除分组需谨慎，避免导致委托识别范围变化。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">生效结果</td>
+                    <td>保存后生成规则结果，供 CRM 展示与 MT5 侧消费。</td>
+                    <td>规则保存成功不等于用户已查看，仅表示查看权限在该时间窗内可开启。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">8. 委托交易账户管理页</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">改动位置</th>
+                    <th width="40%">显示字段</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">管理列表表格</td>
+                    <td>
+                        在现有账号列表中新增：<span class="highlight">账号用途</span>、<span class="highlight">查看方式</span>、<span class="highlight">查看状态</span>、<span class="highlight">规则来源</span>、<span class="highlight">开放时间</span>、<span class="highlight">委托状态</span>、<span class="highlight">移入委托组时间</span>、<span class="highlight">移出委托组时间</span>。
+                    </td>
+                    <td>独立集中展示委托账号与已结束委托账号；普通客户详情页不展示这些管控字段。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">时间字段口径</td>
+                    <td>“移入委托组时间”取 MT5 账号最近一次进入委托分组的时间；“移出委托组时间”取最近一次离开委托分组的时间。</td>
+                    <td>若账号当前仍在委托中，则“移出委托组时间”显示 <span class="highlight">--</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">委托账号标识</td>
+                    <td>委托账号以金棕色标签高亮展示，文案为“委托账号”。</td>
+                    <td>颜色与现有品牌强调色保持一致，便于在管理页中快速识别。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">查看方式文案</td>
+                    <td>固定展示为<span class="highlight">MT5 查看</span>。</td>
+                    <td>明确告诉后台：CRM 不处理查看动作，仅做规则透传与核查。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">查看状态文案</td>
+                    <td>客户可见字段展示枚举：<span class="highlight">未开放</span>、开放中、手动开启、异常。</td>
+                    <td>异常用于承载规则缺失、多个规则冲突或命中多个委托账号等场景。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">委托状态文案</td>
+                    <td>展示枚举：<span class="highlight">委托中</span>、已结束、异常。</td>
+                    <td>委托中以“仍在委托组”为准；移出委托组后展示已结束。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">客户详情页</td>
+                    <td>客户详情页<span class="highlight">不新增任何委托交易管理字段</span>。</td>
+                    <td>客户详情仅显示原本信息，不承接委托识别、规则展示和结束状态展示。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">9. 字段定义</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="18%">字段名</th>
+                    <th width="18%">类型</th>
+                    <th width="28%">枚举/示例</th>
+                    <th width="36%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">isEntrustedAccount</td>
+                    <td>Boolean</td>
+                    <td>true / false</td>
+                    <td>是否为委托交易账号，来源于 MT 分组识别结果。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">accountUsage</td>
+                    <td>String</td>
+                    <td>委托账号 / 普通账号 / 异常</td>
+                    <td>账号用途展示文案。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">visibilityStatus</td>
+                    <td>String</td>
+                    <td>未开放 / 开放中 / 手动开启 / 异常</td>
+                    <td>客户当前是否可在 MT5 中查看该委托账号数据。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">transferRestricted</td>
+                    <td>Boolean</td>
+                    <td>true / false</td>
+                    <td>是否处于禁内转状态；命中托管组时为 true。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">depositWithdrawAllowed</td>
+                    <td>Boolean</td>
+                    <td>true / false</td>
+                    <td>是否允许出入金；委托账号在限制期间仍为 true。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">passwordResetRestricted</td>
+                    <td>Boolean</td>
+                    <td>true / false</td>
+                    <td>是否处于禁密码重置状态；命中托管组时为 true。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">passwordModifyRestricted</td>
+                    <td>Boolean</td>
+                    <td>true / false</td>
+                    <td>是否处于禁密码修改状态；命中托管组时为 true。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">viewChannel</td>
+                    <td>String</td>
+                    <td>MT5</td>
+                    <td>客户查看数据的承载系统。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">visibleDataScope</td>
+                    <td>String</td>
+                    <td>持仓 / 交易 / 平仓记录</td>
+                    <td>规则控制的交易数据范围。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">ruleMode</td>
+                    <td>String</td>
+                    <td>手动开关 / 自动定时</td>
+                    <td>查看权限的开启模式。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">scheduleType</td>
+                    <td>String</td>
+                    <td>monthly_fixed / weekly_fixed / monthly_custom</td>
+                    <td>自动开启的时间模式类型，分别对应每月固定时间、每周固定时间、每月内指定时间。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">ruleScope</td>
+                    <td>String</td>
+                    <td>按组 / 按MT账号</td>
+                    <td>规则配置粒度。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">ruleSource</td>
+                    <td>String</td>
+                    <td>组规则 real\Trust\Managed\Main</td>
+                    <td>当前账号所命中的规则来源，用于后台核查。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">openStartAt</td>
+                    <td>Datetime</td>
+                    <td>2026-08-15 00:00:00</td>
+                    <td>当前规则的开放开始时间。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">openEndAt</td>
+                    <td>Datetime</td>
+                    <td>2026-08-15 23:59:59</td>
+                    <td>当前规则的开放结束时间。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">entrustStatus</td>
+                    <td>String</td>
+                    <td>委托中 / 已结束 / 异常</td>
+                    <td>当前委托状态，是否仍受委托限制。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">movedIntoTrustGroupAt</td>
+                    <td>Datetime</td>
+                    <td>2026-07-01 10:21:08</td>
+                    <td>最近一次移入委托组时间；用于判断该轮委托是什么时候开始的。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">movedOutOfTrustGroupAt</td>
+                    <td>Datetime</td>
+                    <td>2026-08-21 12:00:00</td>
+                    <td>最近一次移出委托组时间；仍在委托中时显示 <span class="highlight">--</span>。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-blue-500 inline-block">10. 异常与边界</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">场景</th>
+                    <th width="40%">处理规则</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">多个账号命中委托分组</td>
+                    <td>账号用途统一标为<span class="highlight">异常</span>，客户可见状态也显示异常。</td>
+                    <td>提示后台先修正规则，不允许默认任选其一作为委托账号。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开放日未配置</td>
+                    <td>客户可见状态显示异常，规则来源、开放时间均显示 <span class="highlight">--</span>。</td>
+                    <td>便于后台快速发现配置缺失。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">非委托账号</td>
+                    <td>客户可见相关字段全部显示 <span class="highlight">--</span>。</td>
+                    <td>避免普通账号误被解释为也受开放规则限制。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">组规则与账号规则同时命中</td>
+                    <td>优先采用<span class="highlight">MT账号规则</span>，委托交易账户管理页需展示实际命中的规则来源。</td>
+                    <td>保证规则优先级明确，避免同一账号被多条规则重复解释。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">委托结束但仍在托管组</td>
+                    <td>仍视为受限状态，继续禁内转、禁密码重置，并沿用查看规则。</td>
+                    <td>必须先切换到非托管组，相关限制才解除。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

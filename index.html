@@ -76,133 +76,18 @@
             <!-- 需求列表容器 -->
             <div class="p-6 flex flex-col gap-4 bg-gray-50/50">
                 
-                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">风控管理</span>
-                                <h3 class="text-lg font-bold text-gray-800">登录环境异常预警</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">比对客户 CRM 与 MT5 的登录 IP、地区、ASN 与历史画像，识别异常登录环境并提醒风控人工核查，当前阶段仅做预警，不对客户执行自动限制。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个页面</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-gray-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[200px]">页面名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[220px]">页面概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[320px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 font-medium text-gray-800">异常预警列表页</td>
-                                        <td class="py-3 px-4 text-gray-600">展示异常预警概览、筛选区、预警表格与右侧详情 Drawer，支持风控查看 CRM/MT5 登录环境差异及人工备注。</td>
-                                        <td class="py-3 px-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="py-3 px-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-risk-login-alert.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-risk-login-alert.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 font-medium text-gray-800">客户详情风险摘要卡</td>
-                                        <td class="py-3 px-4 text-gray-600">在客户详情页常驻显示最近一次登录环境预警结果，便于业务与风控在客户侧快速看到当前状态并跳转到异常明细。</td>
-                                        <td class="py-3 px-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="py-3 px-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-client-detail.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-client-detail.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-amber-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-amber-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold">基础逻辑</span>
-                                <h3 class="text-lg font-bold text-gray-800">审批提醒</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">统一 CRM 审批模块左侧菜单提醒逻辑，当前纳入出金审核二级审批，以及银行卡审核、账户审核一级审批；转账审核暂不纳入审批提醒，并按当前管理员权限与当前审核节点精确统计待处理数量。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 1 个任务</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-gray-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[220px]">概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">审批提醒</td>
-                                        <td class="px-6 py-4 text-gray-500">在左侧一级、二级菜单增加红色角标，按当前管理员可处理的待审批数量展示，进入页面不清零，仅随审批状态流转变化；当前覆盖出金审核、银行卡审核、账户审核，转账审核不做提醒。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-approval-reminder.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-audit-list.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 账户审核原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- 需求卡片 3: 其他 -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden accordion-item">
                     <div class="px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
                         <div class="flex flex-col gap-1">
                             <div class="flex items-center gap-3">
-                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-bold">系统维护</span>
-                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
+                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-bold">客户留资</span>
+                                <h3 class="text-lg font-bold text-gray-800">客户留资三期</h3>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">包含首页大盘升级、后台解锁密码功能、港版注册、海外版身份校验与客户留资三期等零星调整。</p>
+                            <p class="text-sm text-gray-500 mt-1">围绕留资列表、销售录入弹窗与线索详情继续细化：补充留资次数、增强详情可维护能力，并完善轻量录入字段。</p>
                         </div>
                         <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 5 个任务</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个任务</span>
                             <i class="fas fa-chevron-down accordion-icon"></i>
                         </div>
                     </div>
@@ -219,64 +104,6 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">首页 (数据概览)</td>
-                                        <td class="px-6 py-4 text-gray-500">所有核心数据概览（出入金、返佣、盈亏胜率图表等）的统计方式变更为：包含自己及伞下所有层级客户数据汇总。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-home.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-home.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">后台账号解锁</td>
-                                        <td class="px-6 py-4 text-gray-500">用户密码错误次数过多时，可在后台直接解锁</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="text-gray-400 text-xs italic"><i class="fas fa-info-circle mr-1"></i>无原型、PRD，按设计图开发</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">港版注册</td>
-                                        <td class="px-6 py-4 text-gray-500">基于既有 CRM-HK 开户/注册流程新增邀请链接分流逻辑：按链接类型决定投资者类型是否展示、是否可改、是否进入专业投资者问卷，并自动归入对应分组。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">CRM-HK</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="CRM-HK/prd-account-registration.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">海外版身份校验</td>
-                                        <td class="px-6 py-4 text-gray-500">仅海外版实名认证时校验是否为香港身份证；若命中有效 HKID，则提示“暂时不支持香港身份证开户注册。”并禁止提交（提交时后端也需要校验）。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-overseas-id-check.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/profile-fill.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 资料填写原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
                                         <td class="px-6 py-4 font-bold text-gray-800">客户留资三期</td>
                                         <td class="px-6 py-4 text-gray-500">围绕留资列表、销售录入弹窗与线索详情继续细化：补充留资次数、增强详情可维护能力，并完善轻量录入字段。</td>
                                         <td class="px-6 py-4">
@@ -292,6 +119,117 @@
                                                 </a>
                                                 <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-leads-detail.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 详情原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">留资消息提醒</td>
+                                        <td class="px-6 py-4 text-gray-500">左侧菜单角标提醒：主管新增待分配未读数量；销售新分配与公海新增未读数量。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-leads-message-reminder.html" target="_blank">
+                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-amber-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-amber-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold">基础逻辑</span>
+                                <h3 class="text-lg font-bold text-gray-800">委托交易</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">委托交易分组支持配置，可随时新增或删除；委托交易账户独立页面管理，客户详情仅保留原本信息。委托账户在独立管理页中统一查看限制状态、开放时间和结束状态，实际查看动作在 MT5 中完成。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 4 个页面</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-gray-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">委托交易一期</td>
+                                        <td class="px-6 py-4 text-gray-500">委托交易的一期基础需求占位，归档一期范围内的业务规则、页面与交付物，便于与后续查看规则、分组配置等能力拆分管理。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-phase1.html" target="_blank">
+                                                    <i class="fas fa-desktop"></i> 原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">委托交易账户管理</td>
+                                        <td class="px-6 py-4 text-gray-500">独立集中展示委托账号与已结束委托账号，查看交易数据查看状态、规则来源、开放时间与委托状态；客户详情不承载这些信息。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
+                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-account-management.html" target="_blank">
+                                                    <i class="fas fa-desktop"></i> 原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">查看规则配置</td>
+                                        <td class="px-6 py-4 text-gray-500">支持按委托分组或 MT 账号设置持仓、交易、平仓记录的数据开放时间，并选择手动开关或每月固定、每周固定、每月内指定时间的自动开启规则；CRM 仅负责配置与展示，MT5 负责实际放行。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
+                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-rule-config.html" target="_blank">
+                                                    <i class="fas fa-desktop"></i> 规则原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">委托交易分组配置</td>
+                                        <td class="px-6 py-4 text-gray-500">维护委托交易分组名单，支持随时新增、删除与启停用；分组名单用于识别哪些 MT 账号进入委托限制态。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
+                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-group-config.html" target="_blank">
+                                                    <i class="fas fa-desktop"></i> 分组原型
                                                 </a>
                                             </div>
                                         </td>
@@ -527,54 +465,6 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">系统提醒</span>
-                                <h3 class="text-lg font-bold text-gray-800">其他需求集合</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">承载暂未独立拆分父级的规划需求，当前包含留资消息提醒一条需求，便于后续继续补充和拆分。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 1 个任务</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-gray-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[200px]">页面名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[200px]">页面概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">留资消息提醒</td>
-                                        <td class="px-6 py-4 text-gray-500">左侧菜单角标提醒：主管新增待分配未读数量；销售新分配与公海新增未读数量。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-leads-message-reminder.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-                
                 <!-- 留作占位，可后续补充更多规划需求 -->
 
             </div>
@@ -608,6 +498,137 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 divide-y divide-gray-100" id="completed-tbody">
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">风控管理</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">登录环境异常预警</td>
+                            <td class="px-5 py-4 text-gray-500">比对客户 CRM 与 MT5 的登录 IP、地区、ASN 与历史画像，识别异常登录环境并提醒风控人工核查，当前阶段仅做预警，不对客户执行自动限制。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-risk-login-alert.html" target="_blank">
+                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-risk-login-alert.html" target="_blank">
+                                            <i class="fas fa-laptop-code"></i> 预警列表原型
+                                        </a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-client-detail.html" target="_blank">
+                                            <i class="fas fa-laptop-code"></i> 客户详情原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">基础逻辑</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">审批提醒</td>
+                            <td class="px-5 py-4 text-gray-500">统一 CRM 审批模块左侧菜单提醒逻辑，按当前管理员权限与当前审核节点精确统计待处理数量，当前覆盖出金审核、银行卡审核、账户审核。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-approval-reminder.html" target="_blank">
+                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-audit-list.html" target="_blank">
+                                            <i class="fas fa-laptop-code"></i> 原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">系统维护</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">首页 (数据概览)</td>
+                            <td class="px-5 py-4 text-gray-500">所有核心数据概览的统计方式变更为：包含自己及伞下所有层级客户数据汇总。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-home.html" target="_blank">
+                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-home.html" target="_blank">
+                                            <i class="fas fa-laptop-code"></i> 原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">系统维护</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">后台账号解锁</td>
+                            <td class="px-5 py-4 text-gray-500">用户密码错误次数过多时，可在后台直接解锁。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
+                            <td class="px-5 py-4">
+                                <span class="text-gray-400 text-xs italic">
+                                    <i class="fas fa-info-circle mr-1"></i>无原型、PRD，按设计图开发
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">系统维护</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">港版注册</td>
+                            <td class="px-5 py-4 text-gray-500">基于既有 CRM-HK 开户/注册流程新增邀请链接分流逻辑：按链接类型决定投资者类型是否展示、是否可改、是否进入专业投资者问卷，并自动归入对应分组。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">CRM-HK</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="CRM-HK/prd-account-registration.html" target="_blank">
+                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">系统维护</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">海外版身份校验</td>
+                            <td class="px-5 py-4 text-gray-500">仅海外版实名认证时校验是否为香港身份证；若命中有效 HKID，则提示“暂时不支持香港身份证开户注册。”并禁止提交。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-overseas-id-check.html" target="_blank">
+                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        </a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/profile-fill.html" target="_blank">
+                                            <i class="fas fa-laptop-code"></i> 资料填写原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                         <tr class="table-row-hover bg-white">
                             <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
                             <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">客户留资二期</td>
