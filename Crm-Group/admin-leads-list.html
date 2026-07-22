@@ -809,7 +809,7 @@
                     <div class="w-8 h-8 rounded bg-[#C19B5E]/20 flex items-center justify-center mr-3 border border-[#C19B5E]/30">
                         <i class="fa-solid fa-file-lines text-[#C19B5E]"></i>
                     </div>
-                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 留资列表</h3>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 客户留资三期</h3>
                 </div>
                 <button onclick="closePrdModal()" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
                     <i class="fas fa-times"></i>
@@ -818,7 +818,7 @@
             
             <!-- 弹窗内容 -->
             <div class="flex-1 overflow-hidden bg-white">
-                <iframe id="prdIframe" src="prd-leads-list.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+                <iframe id="prdIframe" src="prd-leads-phase3.html" class="w-full h-full border-0" title="PRD Document"></iframe>
             </div>
             
             <!-- 弹窗底部 -->
@@ -1032,7 +1032,7 @@
 
         function openPrdModal() {
             // 每次打开时强制刷新 iframe 避免缓存
-            if (prdIframe) prdIframe.src = 'prd-leads-list.html?t=' + new Date().getTime();
+            if (prdIframe) prdIframe.src = 'prd-leads-phase3.html?t=' + new Date().getTime();
             if (prdModal) prdModal.classList.remove('hidden');
             setTimeout(() => {
                 if (prdModalContent) {
