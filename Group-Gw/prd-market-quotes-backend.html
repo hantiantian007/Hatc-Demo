@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group-Gw 官网行情模块前后端与测试交付文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #1E40AF; font-weight: 600; }
+        .code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background: #f3f4f6; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+        pre { background: #111827; color: #f9fafb; padding: 16px; border-radius: 10px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【交付文档】官网行情模块前后端与测试说明</h1>
+            <div class="flex gap-4">
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-list mr-1"></i> 返回需求看板
+                </a>
+            </div>
+        </div>
+
+        <div class="mb-8 border border-red-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-red-50 px-5 py-3 border-b border-red-100 flex items-center">
+                <i class="fa-solid fa-bullseye text-red-600 mr-2 text-lg"></i>
+                <h2 class="text-red-600 font-bold text-base m-0">本期重点</h2>
+            </div>
+            <div class="p-5 bg-white text-sm text-gray-700 leading-relaxed">
+                <p class="mb-3 font-medium text-gray-900">本需求目标是在官网新增一个“行情报价表”模块，用于展示外汇、贵金属、加密品种的实时参考行情。页面字段以 <span class="highlight">Symbol / Bid / Ask / Change / Change % / Sparkline</span> 为主。</p>
+                <div class="space-y-3">
+                    <div class="flex items-start">
+                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-red-100 text-red-600 font-bold text-xs mr-3 mt-0.5">1</span>
+                        <div>前端<span class="highlight">不能直接请求第三方行情源</span>，必须由后端统一拉取、标准化、缓存后再对官网输出。</div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-red-100 text-red-600 font-bold text-xs mr-3 mt-0.5">2</span>
+                        <div>第一期建议采用 <span class="highlight">REST 轮询 + 后端缓存</span> 方案，先保证稳定上线；第二期可升级为 WebSocket 持续接收。</div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-red-100 text-red-600 font-bold text-xs mr-3 mt-0.5">3</span>
+                        <div>所有对官网返回的字段名称、计算口径、错误码、延迟标记都以本文档为准，前后端不要直接依赖第三方原始字段。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-[#1E40AF] pl-3">1. 需求背景与适用范围</h2>
+        <div class="mb-6 text-sm text-gray-600 bg-blue-50 p-4 rounded border border-blue-100 leading-relaxed">
+            <p>1. 官网需要新增一块“行情报价”区域，用于展示常见交易品种的实时参考价格，提升页面专业感与转化效率。</p>
+            <p>2. 本期仅做<span class="highlight">行情展示</span>，不承接下单、开户、交易登录等行为。</p>
+            <p>3. 本期默认支持：<span class="code">EURUSD</span>、<span class="code">GBPUSD</span>、<span class="code">USDJPY</span>、<span class="code">XAUUSD</span>、<span class="code">XAGUSD</span>、<span class="code">BTCUSD</span>、<span class="code">ETHUSD</span>。</p>
+            <p>4. 本文档以 Group-Gw 官网为承载对象，但接口设计允许后续复用到 Hk-Gw 或其他官网站点。</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-[#1E40AF] pl-3">2. 数据源选型建议</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="18%">项</th>
+                    <th width="32%">建议</th>
+                    <th width="50%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">首选方案</td>
+                    <td>TraderMade</td>
+                    <td>支持 Forex、Crypto、Precious Metals，且官方字段支持 <span class="code">bid</span>、<span class="code">ask</span>、<span class="code">mid</span>，与官网行情表需求匹配度高。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">一期接入方式</td>
+                    <td>后端轮询第三方 REST</td>
+                    <td>简单、稳定、可快速上线；配合后端缓存即可满足官网场景。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">二期升级方式</td>
+                    <td>后端订阅第三方 WebSocket</td>
+                    <td>后端维护最新报价缓存，再继续对官网输出统一接口，不要求官网前端直接连 WebSocket。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">不建议方案</td>
+                    <td>官网前端直连第三方</td>
+                    <td>会暴露 API Key，且后续无法做统一字段、缓存、限流、降级和供应商替换。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-[#1E40AF] pl-3">3. 总体架构</h2>
+        <div class="mb-4 text-sm text-gray-600 leading-relaxed">
+            <p>后端统一承接第三方行情接入、字段映射、缓存、涨跌计算、错误降级，对官网暴露标准化接口。</p>
+        </div>
+<pre>第三方行情源（TraderMade / 备用供应商）
+            ↓
+    官网行情后端服务
+            ↓
+  标准化 / 计算 / 缓存 / 降级
+            ↓
+       官网前端报价表</pre>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">4. 品种配置规范</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="18%">字段</th>
+                    <th width="22%">示例</th>
+                    <th width="60%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">symbol</td>
+                    <td><span class="code">EURUSD</span></td>
+                    <td>系统内部唯一标识，作为接口出参和缓存 key 使用。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">display_name</td>
+                    <td><span class="code">EUR/USD</span></td>
+                    <td>官网展示名称，由后端统一返回，前端不要自己拼接。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">category</td>
+                    <td><span class="code">forex</span></td>
+                    <td>枚举建议：<span class="code">forex</span> / <span class="code">metal</span> / <span class="code">crypto</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">sort</td>
+                    <td><span class="code">1</span></td>
+                    <td>列表排序值，由后端统一控制。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">price_precision</td>
+                    <td><span class="code">5</span></td>
+                    <td>价格展示精度。建议外汇 4~5 位，贵金属 2 位，加密 1~2 位。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-4 text-sm text-gray-600">建议维护一份后端配置，例如：</div>
+<pre>[
+  { "symbol": "EURUSD", "display_name": "EUR/USD", "category": "forex", "sort": 1, "price_precision": 5 },
+  { "symbol": "XAUUSD", "display_name": "XAU/USD", "category": "metal", "sort": 2, "price_precision": 2 },
+  { "symbol": "BTCUSD", "display_name": "BTC/USD", "category": "crypto", "sort": 3, "price_precision": 1 }
+]</pre>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">5. 接口清单</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="25%">接口</th>
+                    <th width="20%">方法</th>
+                    <th width="55%">用途</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">/api/market/quotes</span></td>
+                    <td>GET</td>
+                    <td>获取官网行情报价列表，供行情表主区域使用。</td>
+                </tr>
+                <tr>
+                    <td><span class="code">/api/market/sparkline</span></td>
+                    <td>GET</td>
+                    <td>获取单品种小趋势图数据；如果主接口已包含 sparkline，可先不单独实现。</td>
+                </tr>
+                <tr>
+                    <td><span class="code">/api/market/health</span></td>
+                    <td>GET</td>
+                    <td>内部健康检查，可选；用于监控第三方行情拉取状态和缓存状态。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">6. 主接口：报价列表</h2>
+        <div class="mb-4 text-sm text-gray-600">
+            <p><span class="code">GET /api/market/quotes?symbols=EURUSD,XAUUSD,BTCUSD</span></p>
+            <p>当 <span class="code">symbols</span> 为空时，后端按默认官网配置返回全部启用品种。</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">参数</th>
+                    <th width="15%">必填</th>
+                    <th width="20%">类型</th>
+                    <th width="45%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>symbols</td>
+                    <td>否</td>
+                    <td>string</td>
+                    <td>逗号分隔的品种代码列表。若不传，则返回默认官网品种列表。</td>
+                </tr>
+                <tr>
+                    <td>site</td>
+                    <td>否</td>
+                    <td>string</td>
+                    <td>站点标识，可选。若未来 Group-Gw 与 Hk-Gw 品种不同，可通过此参数区分。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-4 text-sm text-gray-600">返回示例：</div>
+<pre>{
+  "success": true,
+  "server_time": "2026-07-29T10:30:25Z",
+  "data": [
+    {
+      "symbol": "EURUSD",
+      "display_name": "EUR/USD",
+      "category": "forex",
+      "bid": 1.08422,
+      "ask": 1.08424,
+      "mid": 1.08423,
+      "spread": 0.00002,
+      "change": 0.00043,
+      "change_percent": 0.04,
+      "direction": "up",
+      "sparkline": [1.08390, 1.08400, 1.08410, 1.08400, 1.08420],
+      "updated_at": "2026-07-29T10:30:25Z",
+      "is_delayed": false
+    },
+    {
+      "symbol": "XAUUSD",
+      "display_name": "XAU/USD",
+      "category": "metal",
+      "bid": 2345.18,
+      "ask": 2345.42,
+      "mid": 2345.30,
+      "spread": 0.24,
+      "change": -2.81,
+      "change_percent": -0.12,
+      "direction": "down",
+      "sparkline": [2348.10, 2347.40, 2346.80, 2347.20, 2345.30],
+      "updated_at": "2026-07-29T10:30:25Z",
+      "is_delayed": false
+    }
+  ]
+}</pre>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">7. 主接口字段定义</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="18%">字段</th>
+                    <th width="16%">类型</th>
+                    <th width="16%">是否必返</th>
+                    <th width="50%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>symbol</td>
+                    <td>string</td>
+                    <td>是</td>
+                    <td>品种代码，例如 <span class="code">EURUSD</span>。</td>
+                </tr>
+                <tr>
+                    <td>display_name</td>
+                    <td>string</td>
+                    <td>是</td>
+                    <td>官网展示名称，例如 <span class="code">EUR/USD</span>。</td>
+                </tr>
+                <tr>
+                    <td>category</td>
+                    <td>string</td>
+                    <td>是</td>
+                    <td>品种分类，用于前端样式或筛选。</td>
+                </tr>
+                <tr>
+                    <td>bid</td>
+                    <td>number</td>
+                    <td>是</td>
+                    <td>买价。直接来自行情源或经过统一精度处理后的值。</td>
+                </tr>
+                <tr>
+                    <td>ask</td>
+                    <td>number</td>
+                    <td>是</td>
+                    <td>卖价。直接来自行情源或经过统一精度处理后的值。</td>
+                </tr>
+                <tr>
+                    <td>mid</td>
+                    <td>number</td>
+                    <td>是</td>
+                    <td>中间价，计算口径为 <span class="code">(bid + ask) / 2</span>。</td>
+                </tr>
+                <tr>
+                    <td>spread</td>
+                    <td>number</td>
+                    <td>是</td>
+                    <td>点差，计算口径为 <span class="code">ask - bid</span>。</td>
+                </tr>
+                <tr>
+                    <td>change</td>
+                    <td>number</td>
+                    <td>是</td>
+                    <td>涨跌额，基于约定基准价计算，详见第 9 节。</td>
+                </tr>
+                <tr>
+                    <td>change_percent</td>
+                    <td>number</td>
+                    <td>是</td>
+                    <td>涨跌幅百分比，保留两位小数，数值本身不含 <span class="code">%</span> 字符。</td>
+                </tr>
+                <tr>
+                    <td>direction</td>
+                    <td>string</td>
+                    <td>是</td>
+                    <td>枚举：<span class="code">up</span> / <span class="code">down</span> / <span class="code">flat</span>。</td>
+                </tr>
+                <tr>
+                    <td>sparkline</td>
+                    <td>number[]</td>
+                    <td>否</td>
+                    <td>小趋势图数据，建议返回最近 5~20 个点即可。</td>
+                </tr>
+                <tr>
+                    <td>updated_at</td>
+                    <td>string</td>
+                    <td>是</td>
+                    <td>该品种最近一次成功更新时间，UTC ISO8601 格式。</td>
+                </tr>
+                <tr>
+                    <td>is_delayed</td>
+                    <td>boolean</td>
+                    <td>是</td>
+                    <td>是否为延迟数据。第三方拉取失败但命中缓存时返回 <span class="code">true</span>。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">8. 辅助接口：Sparkline</h2>
+        <div class="mb-4 text-sm text-gray-600">
+            <p><span class="code">GET /api/market/sparkline?symbol=EURUSD&points=20</span></p>
+            <p>若前端主列表已经能从主接口拿到 <span class="code">sparkline</span>，此接口可延后实现；但为了后续扩展资产详情页，建议预留。</p>
+        </div>
+
+<pre>{
+  "success": true,
+  "symbol": "EURUSD",
+  "updated_at": "2026-07-29T10:30:25Z",
+  "points": [
+    { "t": "10:26:00", "v": 1.08390 },
+    { "t": "10:27:00", "v": 1.08400 },
+    { "t": "10:28:00", "v": 1.08410 },
+    { "t": "10:29:00", "v": 1.08400 },
+    { "t": "10:30:00", "v": 1.08420 }
+  ]
+}</pre>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">9. 核心计算口径</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">字段</th>
+                    <th width="30%">公式 / 口径</th>
+                    <th width="48%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">mid</td>
+                    <td><span class="code">(bid + ask) / 2</span></td>
+                    <td>如果第三方已提供 mid，也建议后端统一自行计算，避免供应商口径差异。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">spread</td>
+                    <td><span class="code">ask - bid</span></td>
+                    <td>前端只展示结果，不自行计算。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">change</td>
+                    <td><span class="code">latest_mid - baseline_price</span></td>
+                    <td>一期建议 baseline_price 取“上一交易日收盘中间价”或“上一自然日 00:00 基准价”，由后端固定一种口径，不允许前后端混用。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">change_percent</td>
+                    <td><span class="code">(change / baseline_price) * 100</span></td>
+                    <td>保留两位小数；前端再拼接 <span class="code">%</span> 展示。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">direction</td>
+                    <td>change 正负判断</td>
+                    <td><span class="code">&gt; 0</span> 为 <span class="code">up</span>，<span class="code">&lt; 0</span> 为 <span class="code">down</span>，等于 0 为 <span class="code">flat</span>。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-6 text-sm text-amber-800 bg-amber-50 p-4 rounded border border-amber-200 leading-relaxed">
+            <p><strong>重要：</strong>后端必须统一定义 <span class="highlight">baseline_price</span> 口径，并在一期内保持不变。否则同一品种在不同时间点返回的涨跌幅会出现不可解释的跳变。</p>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">10. 缓存与刷新策略</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">项</th>
+                    <th width="28%">建议值</th>
+                    <th width="50%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">第三方拉取频率</td>
+                    <td>每 3 秒一次</td>
+                    <td>满足官网展示即可，不追求交易级实时。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">后端缓存 TTL</td>
+                    <td>3~5 秒</td>
+                    <td>避免前端并发请求直接打穿第三方接口。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">前端请求频率</td>
+                    <td>每 5 秒一次</td>
+                    <td>由官网前端控制；后端无需强推。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">Sparkline 点数</td>
+                    <td>5~20 点</td>
+                    <td>官网只需轻量趋势图，不建议返回长时间序列。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">11. 错误处理与降级</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">场景</th>
+                    <th width="24%">处理方式</th>
+                    <th width="54%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">第三方接口短暂失败</td>
+                    <td>返回上一次缓存</td>
+                    <td>同时将 <span class="code">is_delayed</span> 置为 <span class="code">true</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">第三方长时间失败</td>
+                    <td>返回业务错误码</td>
+                    <td>若缓存也已失效，则返回失败状态，前端展示“行情暂不可用”。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">单个 symbol 不存在</td>
+                    <td>忽略该 symbol 或返回局部错误</td>
+                    <td>建议一期采用“忽略非法 symbol + 返回有效数据”的宽容策略。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">部分品种拿不到 sparkline</td>
+                    <td>该字段可为空</td>
+                    <td>主报价字段可用时，不应影响整条行情展示。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-4 text-sm text-gray-600">建议错误码：</div>
+<pre>{
+  "success": false,
+  "code": "MARKET_QUOTES_UNAVAILABLE",
+  "message": "行情服务暂不可用，请稍后再试"
+}</pre>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">12. 安全与运维要求</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">项</th>
+                    <th width="78%">要求</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">API Key</td>
+                    <td>只能保存在后端环境变量或安全配置中，严禁下发到浏览器。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">日志</td>
+                    <td>记录第三方请求耗时、成功率、缓存命中率、错误码，但不要打印密钥。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">限流</td>
+                    <td>官网前端流量统一打到后端缓存，不直接打第三方；后端需防止突发流量重复拉取第三方。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">监控</td>
+                    <td>建议监控第三方请求失败率、缓存更新时间、返回延迟状态占比。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">13. 一期开发边界</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="50%">本期要做</th>
+                    <th width="50%">本期不做</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        1. 接入第三方行情源 REST。<br>
+                        2. 完成报价列表接口。<br>
+                        3. 完成基础涨跌与点差计算。<br>
+                        4. 完成缓存与延迟标记。<br>
+                        5. 支持官网默认品种配置。
+                    </td>
+                    <td>
+                        1. 不做官网前端直连 WebSocket。<br>
+                        2. 不做交易终端级逐 tick 推送。<br>
+                        3. 不做下单、开户、登录联动。<br>
+                        4. 不做复杂历史 K 线接口。<br>
+                        5. 不做多供应商自动切换。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">14. 后端验收标准</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">验收项</th>
+                    <th width="78%">标准</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">接口可用性</td>
+                    <td>默认品种列表可正常返回，字段名与本文档完全一致。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">数值完整性</td>
+                    <td><span class="code">bid</span>、<span class="code">ask</span>、<span class="code">mid</span>、<span class="code">spread</span>、<span class="code">change</span>、<span class="code">change_percent</span> 均有值。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">异常兜底</td>
+                    <td>第三方短暂失败时仍能返回缓存，且 <span class="code">is_delayed = true</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">安全性</td>
+                    <td>前端和浏览器网络请求中看不到第三方 API Key。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">可扩展性</td>
+                    <td>后续新增品种或切换供应商，不要求前端改字段结构。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">15. 前端对接说明</h2>
+        <div class="mb-4 text-sm text-gray-600 leading-relaxed">
+            <p>前端只消费本系统接口，不消费第三方接口；前端页面只负责展示、轮询、状态切换与轻量交互，不承接任何价格计算逻辑。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">项</th>
+                    <th width="28%">规则</th>
+                    <th width="50%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">主列表接口</td>
+                    <td><span class="code">GET /api/market/quotes</span></td>
+                    <td>行情表主区域统一请求该接口，不拆多个接口并发请求。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">刷新频率</td>
+                    <td>每 5 秒一次</td>
+                    <td>建议使用固定轮询，不做高频抖动请求。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">价格展示精度</td>
+                    <td>以后端返回规则为准</td>
+                    <td>前端不自行猜测品种精度；若需格式化，仅按后端配置渲染。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">涨跌颜色</td>
+                    <td><span class="code">up</span> 绿色，<span class="code">down</span> 红色，<span class="code">flat</span> 灰色</td>
+                    <td>适用于 <span class="code">change</span>、<span class="code">change_percent</span> 与右侧 sparkline。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">数值计算</td>
+                    <td>前端禁止计算</td>
+                    <td><span class="code">mid</span>、<span class="code">spread</span>、<span class="code">change</span>、<span class="code">change_percent</span> 均以后端结果为准。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">排序</td>
+                    <td>按后端返回顺序展示</td>
+                    <td>前端不自行按涨跌幅或名称重排，避免与业务配置不一致。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-4 text-sm text-gray-600">前端建议消费字段：</div>
+<pre>{
+  "symbol": "EURUSD",
+  "display_name": "EUR/USD",
+  "bid": 1.08422,
+  "ask": 1.08424,
+  "change": 0.00043,
+  "change_percent": 0.04,
+  "direction": "up",
+  "sparkline": [1.08390, 1.08400, 1.08410, 1.08400, 1.08420],
+  "updated_at": "2026-07-29T10:30:25Z",
+  "is_delayed": false
+}</pre>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">16. 前端状态与交互规范</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="18%">状态</th>
+                    <th width="22%">触发条件</th>
+                    <th width="60%">页面表现</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">loading</td>
+                    <td>页面首次加载且尚未返回数据</td>
+                    <td>显示表格骨架屏或 loading 占位，避免直接闪空白。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">normal</td>
+                    <td>接口成功且 <span class="code">is_delayed = false</span></td>
+                    <td>正常展示报价表。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">delayed</td>
+                    <td>接口成功但部分或全部行 <span class="code">is_delayed = true</span></td>
+                    <td>报价表继续展示，同时在模块右上或底部轻提示“数据稍有延迟”。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">empty</td>
+                    <td>接口成功但 <span class="code">data = []</span></td>
+                    <td>展示空状态文案，例如“暂无行情数据”。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">error</td>
+                    <td>接口失败且无可用缓存</td>
+                    <td>展示错误占位文案，例如“行情暂不可用，请稍后再试”。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mb-4 text-sm text-gray-600">前端交互要求：</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="25%">项</th>
+                    <th width="75%">要求</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">更新时间</td>
+                    <td>可在模块底部展示“更新于 xx:xx:xx”，取主接口 <span class="code">server_time</span> 或行级 <span class="code">updated_at</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">百分点展示</td>
+                    <td><span class="code">change_percent</span> 由前端拼接 <span class="code">%</span>，数值正负号以后端结果为准。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">趋势图</td>
+                    <td>若 <span class="code">sparkline</span> 为空，则展示占位线或隐藏该列图形，不影响其他字段展示。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">响应式</td>
+                    <td>移动端允许横向滚动或裁剪非核心列，但 <span class="code">Symbol / Bid / Ask / Change %</span> 需优先保留。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">17. 测试范围</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">测试模块</th>
+                    <th width="78%">覆盖内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">接口测试</td>
+                    <td>主接口、辅助接口、错误码、缓存命中、延迟标记、空数据返回。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">前端联调测试</td>
+                    <td>loading、normal、delayed、empty、error 五种状态展示是否正确。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">数据正确性</td>
+                    <td><span class="code">mid</span>、<span class="code">spread</span>、<span class="code">change</span>、<span class="code">change_percent</span> 的计算口径是否与约定一致。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">刷新与性能</td>
+                    <td>前端 5 秒轮询下，页面不卡顿、不抖动；后端不会因多用户并发而重复高频打第三方。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">安全性</td>
+                    <td>浏览器网络面板不暴露第三方 API 域名密钥；接口返回不带第三方敏感字段。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">18. 测试用例清单</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="10%">编号</th>
+                    <th width="30%">测试场景</th>
+                    <th width="60%">预期结果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">TC-01</td>
+                    <td>首次进入页面，请求成功</td>
+                    <td>先展示 loading，占位结束后展示报价表，字段完整无空列。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-02</td>
+                    <td>默认品种列表请求</td>
+                    <td>返回默认官网品种，顺序与后端配置一致。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-03</td>
+                    <td>指定 symbols 请求</td>
+                    <td>仅返回请求中的有效 symbols；非法 symbol 不导致接口整体失败。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-04</td>
+                    <td>上涨数据展示</td>
+                    <td><span class="code">direction = up</span> 时涨跌文字与折线均为绿色。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-05</td>
+                    <td>下跌数据展示</td>
+                    <td><span class="code">direction = down</span> 时涨跌文字与折线均为红色。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-06</td>
+                    <td>持平数据展示</td>
+                    <td><span class="code">direction = flat</span> 时涨跌文字为灰色，数值不出现异常正负号。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-07</td>
+                    <td>第三方失败但缓存存在</td>
+                    <td>接口继续返回缓存数据，且 <span class="code">is_delayed = true</span>；页面展示“数据稍有延迟”。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-08</td>
+                    <td>第三方失败且缓存失效</td>
+                    <td>接口返回错误码 <span class="code">MARKET_QUOTES_UNAVAILABLE</span>，页面展示错误占位。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-09</td>
+                    <td>空数据场景</td>
+                    <td>接口返回空数组时，页面展示“暂无行情数据”，不报错。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-10</td>
+                    <td>sparkline 为空</td>
+                    <td>不影响 Symbol、Bid、Ask、Change、Change % 展示，趋势图列可展示占位。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-11</td>
+                    <td>精度检查</td>
+                    <td>EURUSD、XAUUSD、BTCUSD 的展示精度符合后端配置，不出现前端擅自四舍五入导致的差异。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">TC-12</td>
+                    <td>浏览器安全检查</td>
+                    <td>浏览器中只能看到本系统接口，不能看到第三方密钥或第三方请求地址。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 border-l-4 border-[#1E40AF] pl-3">19. 联调验收清单</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">角色</th>
+                    <th width="76%">验收点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">后端</td>
+                    <td>接口返回结构、字段名、计算口径、错误码、缓存逻辑全部符合本文档。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">前端</td>
+                    <td>五种页面状态齐全，涨跌颜色正确，移动端与桌面端表现符合设计。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">测试</td>
+                    <td>完成 TC-01 ~ TC-12，并对异常降级与安全项出具验证结论。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">产品</td>
+                    <td>页面字段、品种范围、文案提示、延迟提示、空状态与错误状态均符合预期。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-10 text-sm text-gray-500 border-t pt-4">
+            <p>备注：官网如需展示“以上行情仅供参考，实际交易价格以交易平台实时数据为准”，该文案由前端页面承接，不在接口层处理。</p>
+        </div>
+    </div>
+</body>
+</html>
