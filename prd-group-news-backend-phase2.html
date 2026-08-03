@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集团动态二期 - 后台发布能力 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; white-space: nowrap; }
+        td { color: #4b5563; line-height: 1.75; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin-bottom: 16px; margin-top: 32px; font-size: 18px; font-weight: bold; color: #1f2937; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【PRD】集团动态二期 - 后台发布能力</h1>
+            <div class="flex gap-4 flex-wrap justify-end">
+                <a href="admin-group-news-create-optimized.html" class="px-4 py-2 bg-[#C19B5E] hover:opacity-90 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-laptop-code mr-1"></i> 后台原型
+                </a>
+                <a href="prd-group-news-frontend-phase2.html" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-display mr-1"></i> 前端 PRD
+                </a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-list mr-1"></i> 返回看板
+                </a>
+            </div>
+        </div>
+
+        <div class="rounded-lg border border-[#ebd9c1] bg-[#fdf8f2] p-6 mb-6">
+            <div class="text-lg font-bold text-gray-800">需求定位</div>
+            <div class="mt-2 text-sm leading-7 text-gray-600">
+                本需求只承接 <span class="highlight">集团官网动态后台发布能力</span>，重点解决后台如何更稳定地创建内容、配置模块、管理发布状态与预览结果，不包含官网前端详情页的展示实现。
+            </div>
+        </div>
+
+        <div class="module-title">1. 需求背景</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">背景项</th>
+                    <th width="76%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">现有问题</td>
+                    <td>当前后台主要通过一个富文本编辑器承接标题以外的大部分内容，图片、正文、图注、排版都混在一起，导致内容结构不可控。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">业务目标</td>
+                    <td>让运营在后台创建集团动态时，按照结构化规则录入，减少对个人排版习惯的依赖。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">适用站点</td>
+                    <td>本需求同时适用于 <span class="highlight">HK 官网</span> 与 <span class="highlight">Group 官网</span>，后台需支持创建内容时明确投放站点或同时投放双站点。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">本期边界</td>
+                    <td>本期只关注后台创建、编辑、模块组织、预览与发布链路，不展开官网前端样式实现。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 功能目标</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">目标项</th>
+                    <th width="76%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">结构化录入</td>
+                    <td>支持标题、发布时间、语言、排序、发布状态、封面图、摘要等结构化字段。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">站点适配配置</td>
+                    <td>创建动态时需支持选择投放站点（HK / Group / 双站点），并考虑不同站点展示口径下的发布适配。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">模块化组织</td>
+                    <td>支持正文块、单图模块、双图模块、轮播模块，并按顺序组合成完整文章。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">后台可操作</td>
+                    <td>支持新增模块、删除模块、上移下移、查看模块配置摘要。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">发布链路明确</td>
+                    <td>支持草稿、待发布、已发布等状态配置，并在后台预览中直观看到不同状态结果。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 页面结构</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">区域</th>
+                    <th width="78%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">基础信息</td>
+                    <td>标题、发布时间、语言版本、站点范围、排序值、发布状态。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">封面与摘要</td>
+                    <td>封面图上传、摘要/导语维护，可复用到分享与 SEO 描述。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">正文编辑</td>
+                    <td>承接连续阅读的文字内容，仅允许基础富文本。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">内容模块</td>
+                    <td>承接单图、双图、轮播等结构化内容，支持排序与删除。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">官网预览</td>
+                    <td>用于后台提前查看桌面端和移动端效果，不作为前端实现细则。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">4. 模块定义</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">模块</th>
+                    <th width="28%">后台配置项</th>
+                    <th width="50%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">正文块</td>
+                    <td>正文内容</td>
+                    <td>用于在文章中继续插入一段正文说明。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">单图模块</td>
+                    <td>图片、图注、展示比例</td>
+                    <td>适合长图、主图、单张活动图，不做并排逻辑。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">双图模块</td>
+                    <td>两张图片、图注、展示比例、移动端堆叠开关</td>
+                    <td>适合两张强关联图片，桌面端并排，移动端默认堆叠。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">轮播模块</td>
+                    <td>多张图片、展示比例、自动播放、指示点、图注</td>
+                    <td>适合 3 张及以上活动现场图，避免正文被过多图片拉长。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">5. MVP 范围</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">范围项</th>
+                    <th width="76%">内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">字段</td>
+                    <td>标题、发布时间、语言、站点范围、排序、发布状态、封面图、摘要。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">模块</td>
+                    <td>正文块、单图模块、双图模块、轮播模块。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">模块交互</td>
+                    <td>新增、删除、上移、下移、数量统计。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">预览</td>
+                    <td>后台可切换桌面端/移动端预览，并支持发布状态切换示意。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">6. 非本期范围</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">事项</th>
+                    <th width="76%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">复杂拖拽编辑器</td>
+                    <td>任意拖拽布局、自由拼贴、多列排版不作为本期目标。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">高级模块扩展</td>
+                    <td>图库、图文卡片、视频、附件等后续按场景再补。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">7. 验收标准</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">验收项</th>
+                    <th width="76%">标准</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">字段录入</td>
+                    <td>运营可完成文章基础字段、站点选择、封面图和摘要录入。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">模块交互</td>
+                    <td>运营可新增、删除、排序模块，并直观看到模块配置摘要。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">内容组织</td>
+                    <td>支持“正文 - 两张长图上下 - 正文 - 两张方图并排 - 轮播组图”等真实内容场景。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">后台预览</td>
+                    <td>可切换桌面端和移动端预览，能感知发布态差异。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">8. 交付物</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="24%">类型</th>
+                    <th width="76%">链接</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">后台原型</td>
+                    <td><a class="text-blue-600 hover:underline" href="admin-group-news-create-optimized.html" target="_blank">admin-group-news-create-optimized.html</a></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">前端关联需求</td>
+                    <td><a class="text-blue-600 hover:underline" href="prd-group-news-frontend-phase2.html" target="_blank">prd-group-news-frontend-phase2.html</a></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">列表管理关联需求</td>
+                    <td><a class="text-blue-600 hover:underline" href="prd-group-news-list-management-phase2.html" target="_blank">prd-group-news-list-management-phase2.html</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

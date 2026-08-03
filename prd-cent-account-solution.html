@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美分账户系统改造方案 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        secondary: '#8c6b45',
+                        bgLight: '#Fdf8f2',
+                        borderLight: '#ebd9c1'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .section-title { position: relative; padding-left: 12px; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 4px; background-color: #C19B5E; border-radius: 2px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; line-height: 1.75; }
+        .code-block { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; color: #334155; font-size: 0.9em; }
+        .highlight { color: #1d4ed8; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border-t-4 border-primary">
+            <div class="flex justify-between items-start gap-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 mb-2">系统方案：美分账户接入与全链路改造</h1>
+                    <div class="flex flex-wrap gap-4 text-sm text-gray-500 mt-3 mb-4">
+                        <span class="flex items-center"><i class="fas fa-clock mr-1.5 text-primary"></i> 更新: 2026-07-30</span>
+                        <span class="flex items-center"><i class="fas fa-users mr-1.5 text-primary"></i> 面向: 产品 / 研发 / 测试</span>
+                        <span class="flex items-center bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-200">
+                            <i class="fas fa-flag mr-1.5"></i> 状态: 方案版
+                        </span>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-md border border-yellow-200 text-yellow-800 text-sm">
+                        <strong><i class="fas fa-bullseye mr-1"></i> 文档目标：</strong>
+                        本文档用于统一美分账户需求的业务口径、研发改造边界、测试验收标准，并给出研发成本与排期建议，供产品、研发、测试同步评估。
+                    </div>
+                </div>
+                <a href="../index.html" class="text-primary hover:text-secondary text-sm font-medium flex items-center bg-bgLight px-3 py-1.5 rounded border border-borderLight transition-colors whitespace-nowrap">
+                    <i class="fas fa-arrow-left mr-1.5"></i> 返回总看板
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border-t-4 border-green-500">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-lightbulb text-green-500 mr-2"></i>0. 一句话结论</h2>
+            <div class="text-sm text-gray-600 space-y-3">
+                <p>美分账户不是简单增加一个账户名称，而是新增一种<span class="highlight">常规账户类型</span>。它将影响开户、账户展示、资金流转、客户资产汇总、活动与提成、报表导出等整条链路。</p>
+                <p>本次改造的核心不是页面加一个“美分账户”选项，而是让系统具备<span class="highlight">按账户单位识别金额，并统一按美元口径做汇总计算</span>的能力。</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">1. 需求背景与目标</h2>
+            <div class="space-y-3 text-sm text-gray-600">
+                <p>业务希望平台支持美分账户，且面向<span class="highlight">所有用户</span>开放，不区分新用户和老用户。</p>
+                <p>美分账户与标准账户共享现有交易规则、审核规则、产品范围与活动范围，仅在<span class="highlight">金额单位</span>与<span class="highlight">MT 分组</span>上存在差异。</p>
+                <p>因此，本次需求目标为：</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>支持用户在开户或增开账户时自行选择标准账户或美分账户；</li>
+                    <li>支持同一用户同时拥有多个标准账户和多个美分账户；</li>
+                    <li>支持标准账户与美分账户之间的内转，并按固定比例自动换算；</li>
+                    <li>支持前后台对美分账户金额进行双展示；</li>
+                    <li>确保客户资产、活动、返佣、提成、报表汇总全部统一按美元口径计算。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">2. 已确认业务规则</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="26%">规则项</th>
+                        <th width="24%">确认结果</th>
+                        <th width="50%">业务口径</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">适用人群</td>
+                        <td>全量用户开放</td>
+                        <td>不区分新用户和老用户，美分账户属于平台常规账户类型。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">账户关系</td>
+                        <td>可同时拥有</td>
+                        <td>同一用户可同时持有标准账户和美分账户。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">美分账户数量</td>
+                        <td>不限数量</td>
+                        <td>用户可开多个美分账户，不设数量上限。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">开户方式</td>
+                        <td>用户自行选择</td>
+                        <td>客户在开户或增开账户时，前台可直接选择标准账户或美分账户。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">MT 分组</td>
+                        <td>独立分组</td>
+                        <td>美分账户使用独立 MT 分组，与标准账户明确分开。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">资金规则</td>
+                        <td>与标准账户一致</td>
+                        <td>入金、出金、信用金、赠金规则与标准账户完全一致。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">产品与活动支持</td>
+                        <td>全部支持</td>
+                        <td>现有产品、活动、返佣、提成均支持美分账户参与。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">账户转换</td>
+                        <td>不允许直接转换</td>
+                        <td>已有标准账户不可直接改为美分账户，只能新开美分账户。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">内转规则</td>
+                        <td>允许并自动换算</td>
+                        <td>标准账户和美分账户之间允许内转，系统自动按固定比例换算。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">换算比例</td>
+                        <td>固定 1:100</td>
+                        <td>统一按 <span class="highlight">1 USD = 100 USC</span> 处理，不做动态比例。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">金额展示</td>
+                        <td>前后台都双展示</td>
+                        <td>前台和后台都同时展示原始金额与折算后的美元金额。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">汇总口径</td>
+                        <td>统一按美元</td>
+                        <td>活动、返佣、提成、客户总资产、报表汇总统一按美元口径统计。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">交易与审核参数</td>
+                        <td>与标准账户一致</td>
+                        <td>杠杆、最小手数、交易品种、审核流程均与标准账户保持一致。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">3. 产品方案</h2>
+
+            <h3 class="font-bold text-gray-800 mb-3">3.1 产品原则</h3>
+            <div class="space-y-3 text-sm text-gray-600 mb-6">
+                <p>1. 单账号页面展示<span class="highlight">原始金额 + 折算美元金额</span>。</p>
+                <p>2. 跨账号汇总、活动门槛、返佣提成、客户总资产、报表统计统一按<span class="highlight">折算美元金额</span>计算。</p>
+                <p>3. 美分账户与标准账户同权，仅金额单位不同，不在产品能力上做额外削减。</p>
+            </div>
+
+            <h3 class="font-bold text-gray-800 mb-3">3.2 影响模块</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="24%">模块</th>
+                        <th width="38%">产品调整点</th>
+                        <th width="38%">说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">开户 / 增开账户</td>
+                        <td>新增账户类型选择</td>
+                        <td>用户可在开户时选择“标准账户 / 美分账户”。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">客户详情 / 账户列表</td>
+                        <td>增加账户类型、单位、双金额展示</td>
+                        <td>需区分标准账户和美分账户，并展示原始金额与折算金额。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">入金 / 出金 / 内转</td>
+                        <td>支持双单位和换算逻辑</td>
+                        <td>标准户与美分户内转时自动按 1:100 换算。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">客户资产汇总</td>
+                        <td>统一按美元口径汇总</td>
+                        <td>客户名下多账户统一换算后再统计总资产。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">活动 / 返佣 / 提成</td>
+                        <td>统一按美元口径判断门槛和发放基数</td>
+                        <td>避免美分账户因原始金额放大 100 倍导致口径失真。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">报表 / 导出</td>
+                        <td>增加账户类型和双金额字段</td>
+                        <td>导出文件必须明确单位和折算值，避免误读。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-bold text-gray-800 mb-3 mt-6">3.3 前后台展示口径</h3>
+            <div class="code-block mb-3">
+                示例：<br>
+                账户类型：美分账户<br>
+                原始余额：10,000.00 USC<br>
+                折算余额：100.00 USD
+            </div>
+            <p class="text-sm text-gray-600">无论前台还是后台，均建议明确展示金额单位，避免运营、财务、客户误将 USC 理解为 USD。</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">4. 研发改造方案</h2>
+
+            <h3 class="font-bold text-gray-800 mb-3">4.1 研发核心原则</h3>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-gray-600 mb-6">
+                <li>账户的<span class="highlight">原始金额</span>与<span class="highlight">标准金额</span>必须同时保留。</li>
+                <li>所有汇总型逻辑必须以<span class="highlight">标准金额（USD）</span>为准。</li>
+                <li>前端禁止自行换算金额，统一由后端输出原始金额、折算金额与单位。</li>
+                <li>内转需保留转出原始金额、转入原始金额、换算比例、折算美元金额，便于对账。</li>
+            </ul>
+
+            <h3 class="font-bold text-gray-800 mb-3">4.2 建议新增字段</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="24%">对象</th>
+                        <th width="26%">字段</th>
+                        <th width="50%">说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">账户表</td>
+                        <td><span class="highlight">account_mode</span></td>
+                        <td>账户模式：standard / cent。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">账户表</td>
+                        <td><span class="highlight">currency_unit</span></td>
+                        <td>金额单位：USD / USC。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">账户表</td>
+                        <td><span class="highlight">amount_scale</span></td>
+                        <td>换算倍数：标准账户 1，美分账户 100。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">账户表</td>
+                        <td><span class="highlight">mt_group</span></td>
+                        <td>当前 MT 分组，美分账户需进入独立分组。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">流水 / 报表明细表</td>
+                        <td><span class="highlight">original_amount</span></td>
+                        <td>MT 原始金额。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">流水 / 报表明细表</td>
+                        <td><span class="highlight">normalized_amount_usd</span></td>
+                        <td>统一折算后的美元金额。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">流水 / 报表明细表</td>
+                        <td><span class="highlight">conversion_ratio</span></td>
+                        <td>换算比例，固定记录为 1:100。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">流水 / 报表明细表</td>
+                        <td><span class="highlight">original_currency_unit</span></td>
+                        <td>原始单位，防止后续导出时丢失语义。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-bold text-gray-800 mb-3 mt-6">4.3 核心公式</h3>
+            <div class="code-block mb-4">
+                标准账户：normalized_amount_usd = original_amount<br>
+                美分账户：normalized_amount_usd = original_amount / 100<br><br>
+                spread / 净入金 / 客户总资产 / 活动门槛 / 提成基数 / 报表汇总<br>
+                => 全部使用 normalized_amount_usd
+            </div>
+
+            <h3 class="font-bold text-gray-800 mb-3">4.4 重点改造模块</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="22%">模块</th>
+                        <th width="38%">研发改造点</th>
+                        <th width="40%">风险说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">开户服务</td>
+                        <td>新增账户模式参数，开户后写入独立 MT 分组。</td>
+                        <td>若分组映射错误，会导致账户类型识别错误。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">账户管理</td>
+                        <td>账户列表和详情统一输出原始金额、折算金额、单位。</td>
+                        <td>前后端若字段未统一，容易出现展示口径不一致。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">资金服务</td>
+                        <td>入金、出金、内转记录增加换算逻辑与双金额字段。</td>
+                        <td>标准户与美分户互转是本次最容易出错的环节。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">客户资产汇总</td>
+                        <td>按账户汇总前先统一折算为美元。</td>
+                        <td>否则客户资产会被放大 100 倍。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">返佣 / 提成服务</td>
+                        <td>所有提成基数统一切到美元口径。</td>
+                        <td>若仍使用原始金额，发钱会严重失真。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">报表 / 导出服务</td>
+                        <td>新增账户类型、原始金额、折算金额、单位列。</td>
+                        <td>若导出不带单位，财务和运营会误读数据。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-bold text-gray-800 mb-3 mt-6">4.5 明确不做</h3>
+            <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+                <li>不支持把已有标准账户直接改造成美分账户；</li>
+                <li>不引入动态换算比例或后台可配置倍率；</li>
+                <li>不为美分账户单独制定新的杠杆、手数、审核、活动规则。</li>
+            </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">5. 测试方案与验收标准</h2>
+
+            <h3 class="font-bold text-gray-800 mb-3">5.1 测试范围</h3>
+            <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600 mb-6">
+                <li>开户与增开账户流程；</li>
+                <li>账户列表 / 客户详情的双金额展示；</li>
+                <li>标准账户与美分账户之间的内转换算；</li>
+                <li>客户总资产、活动门槛、返佣、提成的美元汇总；</li>
+                <li>报表、导出与对账口径；</li>
+                <li>异常与边界场景：多个美分账户、多账户混合、历史数据兼容。</li>
+            </ul>
+
+            <h3 class="font-bold text-gray-800 mb-3">5.2 核心测试用例</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="12%">编号</th>
+                        <th width="34%">测试场景</th>
+                        <th width="54%">预期结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">TC-01</td>
+                        <td>用户新开美分账户</td>
+                        <td>开户成功，账户类型为美分账户，分组落到美分分组。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-02</td>
+                        <td>老用户增开美分账户</td>
+                        <td>允许成功增开，不因老用户身份被限制。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-03</td>
+                        <td>同一用户同时持有多个美分账户</td>
+                        <td>客户详情和账户列表正常展示，不因数量限制报错。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-04</td>
+                        <td>标准账户转 100 USD 到美分账户</td>
+                        <td>转出记录为 100 USD，转入记录为 10,000 USC，折算金额均为 100 USD。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-05</td>
+                        <td>美分账户转 10,000 USC 到标准账户</td>
+                        <td>转出记录为 10,000 USC，转入记录为 100 USD，折算金额一致。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-06</td>
+                        <td>客户总资产汇总</td>
+                        <td>标准账户和美分账户统一折算后汇总，结果按美元口径正确。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-07</td>
+                        <td>活动门槛判断</td>
+                        <td>活动、返佣、提成统一按折算后的美元金额判断，不按原始金额判断。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-08</td>
+                        <td>前后台双展示</td>
+                        <td>所有相关页面均展示原始金额、折算金额和金额单位。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-09</td>
+                        <td>导出文件校验</td>
+                        <td>导出中包含账户类型、原始金额、折算金额、单位字段。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">TC-10</td>
+                        <td>尝试直接转换已有标准账户</td>
+                        <td>系统明确拒绝，不支持直接转换。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-bold text-gray-800 mb-3 mt-6">5.3 测试验收标准</h3>
+            <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+                <li>不存在任何因美分账户原始金额放大导致的客户资产、提成、报表口径错误；</li>
+                <li>标准户与美分户互转在页面展示、流水记录、报表汇总三处结果一致；</li>
+                <li>所有跨账户汇总场景均按美元口径输出；</li>
+                <li>前后台与导出文件的字段语义完全一致。</li>
+            </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">6. 风险点</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="24%">风险点</th>
+                        <th width="36%">风险描述</th>
+                        <th width="40%">建议</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">金额放大 100 倍</td>
+                        <td>若有模块继续使用原始金额做汇总，会导致客户资产、提成、活动判断错误。</td>
+                        <td>统一下沉到服务端做标准金额换算，不允许前端自算。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">内转换算错误</td>
+                        <td>标准户和美分户互转时，若转入转出记录不一致，会直接影响对账。</td>
+                        <td>资金流水中同时保留原始金额、折算金额和换算比例。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">导出误读</td>
+                        <td>若报表和导出缺少单位字段，财务容易把 USC 当成 USD。</td>
+                        <td>导出强制带单位和折算字段。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">历史兼容</td>
+                        <td>老数据若未补足账户单位，可能导致部分统计无法准确追溯。</td>
+                        <td>上线前确认是否需要对历史账户补标识。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">7. 研发成本与周期评估</h2>
+            <div class="space-y-3 text-sm text-gray-600 mb-4">
+                <p>本次需求应定义为<span class="highlight">中高成本</span>的账户体系改造，而不是简单的页面新增需求。</p>
+                <p>原因在于：美分账户会穿透到账户、资金、报表、活动、返佣提成、导出等多模块，且允许标准户与美分户互转，这会显著提升改造复杂度。</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="24%">评估项</th>
+                        <th width="26%">结论</th>
+                        <th width="50%">说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">研发成本</td>
+                        <td>中高</td>
+                        <td>不是单点功能，而是账户体系和金额口径的链路级调整。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">合理周期</td>
+                        <td>4 - 8 周</td>
+                        <td>视现有资金、报表、提成模块耦合程度而定。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">建议预估</td>
+                        <td>约 6 周</td>
+                        <td>作为正式排期时更稳妥的评估值。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">排期建议</td>
+                        <td>建议分两期</td>
+                        <td>先完成账户与资金主链路，再完成报表、提成、导出等扩展链路。</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="font-bold text-gray-800 mb-3 mt-6">7.1 建议排期</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="20%">阶段</th>
+                        <th width="30%">建议周期</th>
+                        <th width="50%">内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-medium">第一期</td>
+                        <td>3 - 4 周</td>
+                        <td>账户类型、开户 / 增开、MT 分组、账户展示、入金 / 出金 / 内转、客户总资产美元汇总。</td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">第二期</td>
+                        <td>2 - 4 周</td>
+                        <td>活动、返佣、提成、报表、导出、回归测试与历史兼容处理。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">8. 剩余待确认实施细节</h2>
+            <div class="text-sm text-gray-600 space-y-2">
+                <p>当前大方向已经明确，剩余建议补充确认的内容主要用于提升实施细节完整度：</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>前台和后台对于“美分账户”的正式命名文案；</li>
+                    <li>导出文件是否固定增加“账户类型 / 原始金额 / 折算金额 / 单位”四列；</li>
+                    <li>内转流水是否需要额外展示换算比例与换算前后金额；</li>
+                    <li>是否需要为美分账户的开立与互转单独记录审计日志。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-10 text-sm text-gray-500 border-t pt-4">
+            <p>备注：本文档已按当前已确认业务规则整理；若后续业务规则变更，应以“汇总统一按美元口径”作为不可变的底层约束。</p>
+        </div>
+    </div>
+</body>
+</html>

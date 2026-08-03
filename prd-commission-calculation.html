@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全局规范：多周期提成核算与底层数据防刷标准 - PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        secondary: '#8c6b45',
+                        bgLight: '#Fdf8f2',
+                        borderLight: '#ebd9c1'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .section-title { position: relative; padding-left: 12px; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 4px; background-color: #C19B5E; border-radius: 2px; }
+        .code-block { font-family: 'Courier New', Courier, monospace; background-color: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; color: #334155; font-size: 0.9em; }
+        .flow-box { border: 2px solid #C19B5E; border-radius: 8px; padding: 16px; background-color: white; position: relative; }
+        .flow-arrow { text-align: center; color: #C19B5E; font-size: 24px; margin: 10px 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        
+        <!-- 头部信息 -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8 border-t-4 border-primary">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 mb-2">架构规范：多周期提成核算与底层防刷单标准</h1>
+                    <div class="flex flex-wrap gap-4 text-sm text-gray-500 mt-3 mb-4">
+                        <span class="flex items-center"><i class="fas fa-clock mr-1.5 text-primary"></i> 更新: 2026-07-03</span>
+                        <span class="flex items-center"><i class="fas fa-user-tie mr-1.5 text-primary"></i> 产品经理</span>
+                        <span class="flex items-center bg-green-50 text-green-700 px-2 py-0.5 rounded border border-green-200">
+                            <i class="fas fa-check-circle mr-1.5"></i> 状态: 底层基准 (定稿)
+                        </span>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-md border border-yellow-200 text-yellow-800 text-sm">
+                        <strong><i class="fas fa-bullseye mr-1"></i> 研发执行范围限定（重要！）：</strong><br>
+                        本计算规范（含防互转防暴增算法）当前<strong>仅限于在【销售交易奖励报表】和【销售净入金奖励统计】这两个模块内执行</strong>。<br>
+                        系统内其他老旧报表暂不调整。后续会通过独立的排期需求逐步覆盖系统其他模块。
+                    </div>
+                </div>
+                <a href="../index.html" class="text-primary hover:text-secondary text-sm font-medium flex items-center bg-bgLight px-3 py-1.5 rounded border border-borderLight transition-colors">
+                    <i class="fas fa-arrow-left mr-1.5"></i> 返回总看板
+                </a>
+            </div>
+            <p class="mt-4 text-gray-600 text-sm bg-gray-50 p-3 rounded border border-gray-100">
+                <i class="fas fa-bullhorn text-orange-500 mr-1"></i> 
+                <strong>导读：</strong>本文档是系统发钱（提成结算）的最高风控准则。不仅定义了规则，更通过详细的【场景沙盘推演】向研发展示如何拦截刷单漏洞，向测试指明如何制造极端测试数据。
+            </p>
+        </div>
+
+        <!-- 1. 产品经理想法与业务逻辑（PM专属导读） -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border-t-4 border-green-500">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2"><i class="fas fa-lightbulb text-green-500 mr-2"></i>0. 产品经理想法与业务逻辑（PM专属导读）</h2>
+            <div class="space-y-4 text-gray-600 text-sm leading-relaxed">
+                <p><strong>我为什么要制定这套算钱的规则？</strong></p>
+                <p>因为我们的底层账户架构是“全 MT5 体系”（每个客户既有佣金账户，又有交易账户）。如果在算销售提成时，只是简单地把所有账户的入金加起来，会引发灾难性的“左脚踩右脚”刷单漏洞。比如：平台发了 1000 块佣金给客户，客户把这 1000 块转到交易账户，如果不做过滤，系统就会误以为客户又“真实入金”了 1000 块，销售又能跟着拿提成，这会导致平台资金无限流失。</p>
+                
+                <p class="mt-4"><strong>这套规范的核心逻辑是什么？</strong></p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>“大钱包”抵消法：</strong> 我们不再看单个账户的流水，而是把一个客户名下的所有账户当成一个“大钱包”。左口袋（佣金账户）转到右口袋（交易账户），在大钱包的层面看，总资金没变。所以我们在计算时，要求研发直接在底层把“内部互转”的记录全部删掉，只算真正从外面充进来的钱。</li>
+                    <li><strong>自客同享：</strong> 销售自己往往也是平台的交易客户。他自己充的钱、交易的手数，也必须算进他自己的业绩里拿提成。</li>
+                    <li><strong>搭积木架构（防性能崩溃）：</strong> 因为我们需要支持按日（测试用）、按月（主营业务发钱）、按季、按年计算。为了防止月底算账时系统去查海量流水导致崩溃，我要求系统每天凌晨偷偷跑个“日切片账单”存起来。到了月底，直接把 30 张日账单加起来发钱就行了。</li>
+                </ul>
+                <div class="bg-green-50 p-3 rounded-md text-green-800 mt-2">
+                    <strong>PM 总结：</strong> 这份文档就是为了让研发写出“绝对防刷”的代码，让测试知道怎么去“造最恶心的互转数据”来验证系统漏洞。
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. 业务背景与名词解释 -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">1. 核心痛点与防刷单漏洞预警（为什么我们要这么做）</h2>
+            <div class="space-y-4 text-sm text-gray-600">
+                <p>我们采用“全 MT5 账户体系（Wallet in MT5）”。即系统中没有独立于 MT5 之外的资金钱包，客户的佣金账户和交易账户均开设在 MT5 底层。</p>
+                <div class="bg-red-50 p-4 rounded border border-red-100">
+                    <h4 class="font-bold text-red-800 mb-2"><i class="fas fa-bomb mr-1"></i> 必须防范的底层漏洞（研发必读）：</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-red-700">
+                        <li><strong>防漏洞 1：内转导致“累计出入金暴增”：</strong>如果客户真实充值 1 万，然后在自己的佣金账户和多个交易账户之间频繁互转 10 次。若系统不剔除内转记录，该客户当月的“累计入金”会暴增至 10 万，“累计出金”也会暴增至 10 万。这会直接导致销售利用“累计入金”指标套取高额提成。</li>
+                        <li><strong>防漏洞 2：平台发钱导致“无限套娃”：</strong>平台给销售发放了 1000 美金提成（打入佣金账户），销售将其转入交易账户。如果系统不拦截系统发放标识，这 1000 美金又会变成该销售当月新增的“入金业绩”，下个月又会据此发提成。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 防刷单核心算法：User ID 维度抵消法 -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">2. 研发执行标准：内转计算逻辑与出入金公式</h2>
+            
+            <div class="bg-blue-50 p-4 rounded mb-6 border border-blue-100">
+                <h3 class="font-bold text-blue-800 mb-2"><i class="fas fa-code mr-1"></i> 研发数据过滤与聚合规则（必须拆分现金与内转）</h3>
+                <p class="text-sm text-blue-700 mb-2">
+                    在计算客户业绩时，虽然以 `User ID`（CRM 客户标识）为维度进行大资金池聚合，但<strong>必须在底层严格区分“现金流水”和“内转流水”</strong>。因为内转也是入金的一种形式，需要被记录在报表中，但绝不能用来发提成。
+                </p>
+                <div class="bg-white text-gray-800 p-3 rounded text-sm font-mono border border-blue-200 mt-2">
+                    // 研发必须在底层查询时对流水进行打标分类：<br>
+                    IF comment LIKE '%Internal Transfer%' THEN <span class="text-green-600">Type = '内转'</span> <span class="text-gray-400">// 计入累计内转，不发钱</span><br>
+                    ELSE IF comment NOT LIKE '%Commission%' AND comment NOT LIKE '%Bonus%' THEN <span class="text-blue-600">Type = '现金'</span> <span class="text-gray-400">// 计入累计现金，用来发钱</span><br>
+                    ELSE <span class="text-red-600">DROP</span> <span class="text-gray-400">// 拦截平台发钱，彻底丢弃，防套娃</span>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-gray-800 mb-2">【出入金与净入金】计算公式：</h3>
+            <div class="space-y-3 mb-4">
+                <div class="code-block text-base text-gray-700 bg-gray-50 border-gray-200 flex justify-between items-center">
+                    <span><strong>1. 累计现金入金 / 出金：</strong> 只统计真正走支付通道进出的外部资金。</span>
+                    <span class="text-xs bg-gray-200 px-2 py-1 rounded text-gray-600">报表展示 + 提成基数</span>
+                </div>
+                <div class="code-block text-base text-gray-700 bg-gray-50 border-gray-200 flex justify-between items-center">
+                    <span><strong>2. 累计内转入金 / 出金：</strong> 统计佣金账户与交易账户互转的内部资金。</span>
+                    <span class="text-xs bg-gray-200 px-2 py-1 rounded text-gray-600">仅作报表展示</span>
+                </div>
+                <div class="code-block text-lg font-bold text-center text-primary bg-bgLight border-primary shadow-sm">
+                    有效净入金 (发提成唯一指标) = SUM(累计现金入金) - SUM(累计现金出金)
+                </div>
+                <p class="text-xs text-red-600 text-center mt-1">注：累计内转入金和出金，在“大钱包”层面相互抵消，绝对不允许参与“有效净入金”的计算！</p>
+            </div>
+
+        <!-- 3. 测试用例与对账沙盘 -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">3. 测试执行标准：对账沙盘推演</h2>
+            <p class="text-sm text-gray-600 mb-4">测试团队必须按照以下沙盘逻辑，在测试环境中制造极端数据，并断言最终的日结/月结账单。</p>
+            
+            <div class="space-y-4">
+                <!-- 场景 1 -->
+                <div class="border rounded p-4">
+                    <h5 class="font-bold text-gray-800 mb-2">测试用例 1：内转与平台发钱不入账（断言净入金与累计量）</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-bold text-gray-700 mb-1">测试造数据：</p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>客户 A 通过微信向 [佣金账户] 充值 $1,000。</li>
+                                <li>客户 A 将 $1,000 从 [佣金账户] 内转至 [交易账户]。</li>
+                                <li>平台向客户 A（如果他也是销售）发放提成 $500，随后客户 A 将其转入 [交易账户]。</li>
+                            </ol>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded border border-green-100">
+                            <p class="font-bold text-green-800 mb-1">系统必须输出（断言）：</p>
+                            <ul class="list-disc pl-4 space-y-1 text-green-700">
+                                <li>累计现金入金：$1,000</li>
+                                <li>累计内转入金：$1,000（不可与现金混淆导致暴增至 $2,000）</li>
+                                <li>累计现金出金：$0</li>
+                                <li class="font-bold border-t border-green-200 mt-2 pt-1">最终有效净入金必须等于：$1,000</li>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- 场景 2 -->
+                 <div class="border rounded p-4">
+                     <h5 class="font-bold text-gray-800 mb-2">测试用例 2：新销售注册时间边界（时区与起算点断言）</h5>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                         <div class="bg-gray-50 p-3 rounded">
+                             <p class="font-bold text-gray-700 mb-1">测试造数据：</p>
+                             <ol class="list-decimal pl-4 space-y-1">
+                                 <li>造一个新销售，绝对注册时间转换为 MT5 时间后恰好为 <code>11月15日 14:30:00</code>。</li>
+                                 <li>在 <code>14:29:59</code> 为其名下客户造一笔 $10,000 入金。</li>
+                                 <li>在 <code>14:30:01</code> 为其名下客户造一笔 $5,000 入金。</li>
+                             </ol>
+                         </div>
+                         <div class="bg-green-50 p-3 rounded border border-green-100">
+                             <p class="font-bold text-green-800 mb-1">系统必须输出（断言）：</p>
+                             <ul class="list-disc pl-4 space-y-1 text-green-700">
+                                 <li>11月15日的日结账单中，净入金必须等于：$5,000</li>
+                                 <li><span class="text-gray-500 line-through">$10,000</span> 必须被丢弃（因为发生在注册前一秒）。</li>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- 场景 3 -->
+                 <div class="border rounded p-4">
+                     <h5 class="font-bold text-gray-800 mb-2">测试用例 3：搭积木快照聚合（防重查流水断言）</h5>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                         <div class="bg-gray-50 p-3 rounded">
+                             <p class="font-bold text-gray-700 mb-1">测试造数据：</p>
+                             <ol class="list-decimal pl-4 space-y-1">
+                                 <li>系统已正常跑完 11月1日 至 11月30日 的所有日结账单。</li>
+                                 <li>测试人员在数据库中，手动将 11月15日 的《日结账单》净入金强行从 $1,000 修改为 $5,000。</li>
+                                 <li>触发 12月1日凌晨的“月结跑批”任务。</li>
+                             </ol>
+                         </div>
+                         <div class="bg-green-50 p-3 rounded border border-green-100">
+                             <p class="font-bold text-green-800 mb-1">系统必须输出（断言）：</p>
+                             <ul class="list-disc pl-4 space-y-1 text-green-700">
+                                 <li>11月的《月结汇总单》总入金，必须比修改前多出 $4,000。</li>
+                                 <li class="font-bold border-t border-green-200 mt-2 pt-1">核心断言：月结跑批时，系统日志中绝对不能出现连接 MT5 数据库查询历史流水的 SQL。</li>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- 场景 4 -->
+                 <div class="border rounded p-4">
+                     <h5 class="font-bold text-gray-800 mb-2">测试用例 4：销售自客业绩同享（自交易断言）</h5>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                         <div class="bg-gray-50 p-3 rounded">
+                             <p class="font-bold text-gray-700 mb-1">测试造数据：</p>
+                             <ol class="list-decimal pl-4 space-y-1">
+                                 <li>销售 A 邀请了直客 B。</li>
+                                 <li>直客 B 当月净入金 $10,000，交易 50 手。</li>
+                                 <li>销售 A 用自己的 [交易账户] 净入金 $2,000，交易 10 手。</li>
+                             </ol>
+                         </div>
+                         <div class="bg-green-50 p-3 rounded border border-green-100">
+                             <p class="font-bold text-green-800 mb-1">系统必须输出（断言）：</p>
+                             <ul class="list-disc pl-4 space-y-1 text-green-700">
+                                 <li>销售 A 的当月总入金业绩必须为：$12,000</li>
+                                 <li>销售 A 的当月总交易量业绩必须为：60 手</li>
+                                 <li>（即：本人数据必须被完美纳入提成基数）</li>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+
+            <!-- 公式 3 -->
+            <div class="border-t border-gray-100 pt-6 mt-6">
+                <h3 class="text-md font-bold text-gray-800 mb-4 flex items-center"><span class="bg-primary text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">!</span> 提成派发核算模式（三种提成计算场景）</h3>
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-200 mb-3">
+                    <p class="text-sm text-yellow-800 font-bold"><i class="fas fa-info-circle mr-1"></i> 模式互斥声明（单选规则）</p>
+                    <p class="text-xs text-yellow-700 mt-1">系统后台配置奖励规则时，以下三种计算方式为<strong>严格单选互斥（只能选其一）</strong>。同一条奖励规则绝对不能同时应用多种计算模式，以彻底防范“同一笔入金在不同维度被多次结算”的双重计费漏洞。</p>
+                </div>
+                <p class="text-sm text-gray-600 mb-3">系统必须支持以下三种不同的提成核算模式，以满足不同代理线和销售团队的考核规则：</p>
+                
+                <div class="space-y-3">
+                    <!-- 模式 1 -->
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-gray-800 text-sm">模式一：按单个用户独立计算（不抵消）</h4>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">场景：高净值单客奖励</span>
+                        </div>
+                        <p class="text-xs text-gray-600"><strong>逻辑：</strong> 独立计算每个直客的净入金。只要客户 A 的净入金达标，就给销售发客户 A 的提成。客户 B 哪怕大额亏损出金，也不影响客户 A 带来的奖励。</p>
+                        <p class="text-xs text-red-600 mt-1"><i class="fas fa-exclamation-triangle"></i> <strong>风控预警：</strong> 极易发生“黑市对敲刷单”（用B出金的钱垫资给A入金套利），建议仅用于严控的大客户渠道。</p>
+                    </div>
+
+                    <!-- 模式 2 -->
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-gray-800 text-sm">模式二：按销售伞下全员汇总（抵消大资金池）</h4>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">场景：标准销售月度考核</span>
+                        </div>
+                        <p class="text-xs text-gray-600"><strong>逻辑：</strong> 销售当期总业绩 = <code>SUM(伞下所有客户当期入金) - SUM(伞下所有客户当期出金)</code>。客户 A 的入金必须填平客户 B 的出金后，如果有正向结余，销售才能拿提成。</p>
+                        <p class="text-xs text-green-700 mt-1"><i class="fas fa-shield-alt"></i> <strong>风控优势：</strong> 彻底杜绝对敲套利，倒逼销售维护全局资金盘。</p>
+                    </div>
+
+                    <!-- 模式 3 -->
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-gray-800 text-sm">模式三：按分组/代理条线汇总</h4>
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">场景：团队/机构代理结算</span>
+                        </div>
+                        <p class="text-xs text-gray-600"><strong>逻辑：</strong> 突破单个销售的界限，以一个“代理组”或整条“代理树”为一个大资金池进行抵消计算。用于计算团队总监管理奖或机构代理的总返佣。</p>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-100 mt-4">
+                    <h4 class="font-bold text-purple-800 text-sm mb-2"><i class="fas fa-user-check mr-1"></i> 业务红线：销售自客数据同等享受奖励</h4>
+                    <p class="text-sm text-purple-700">
+                        <strong>无论采用上述哪种模式，销售本人的 User ID 必须视为其伞下的第一个有效客户。</strong>销售自己名下交易账户产生的“有效净入金”和“有效交易量”，必须与旗下其他普通用户的数据一并汇总（或单独计算），同等享受业绩提成和奖励。
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 4. 多周期“搭积木”底层架构 -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">4. 研发架构标准：多周期独立核算（搭积木架构）</h2>
+            <p class="text-sm text-gray-600 mb-4">尽管业务上周期是“单选”的（主要按月），但在底层系统架构上，为了支持日结验收测试，且防止未来长周期直接查流水导致数据库崩溃，系统必须采用“底层切片，向上聚合”的搭积木架构。</p>
+
+            <!-- 流程图替代方案 -->
+            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+                <h4 class="font-bold text-center text-gray-700 mb-4">提成结算底层数据流转图</h4>
+                
+                <!-- 步骤 1 -->
+                <div class="flow-box">
+                    <h5 class="font-bold text-primary mb-1">Step 1: 每日打底座（单日基础业绩单）</h5>
+                    <p class="text-sm text-gray-600">每天 MT5 Server Time <code>00:05</code>，系统自动抓取昨日一整天（00:00:00 - 23:59:59）的流水，计算出每个 User ID 昨日的【有效净入金】和【有效交易量】，生成一条不可变的日账单记录存入数据库。</p>
+                    <div class="mt-2 text-xs bg-blue-50 text-blue-700 p-1.5 rounded border border-blue-100 inline-block">触发动作：如果配置了“按日”规则（如UAT测试），则依此切片进行日结派发。</div>
+                </div>
+                
+                <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                
+                <!-- 步骤 2 -->
+                <div class="flow-box">
+                    <h5 class="font-bold text-primary mb-1">Step 2: 主营月结向上搭积木（月度汇总业绩单）</h5>
+                    <p class="text-sm text-gray-600">到了月底最后一天 <code>23:59:59</code>（MT5时间），系统<strong>不再去 MT5 查流水</strong>，而是直接在数据库里把本月生成的 28~31 张【单日基础业绩单】进行 <code>SUM</code> 汇总求和，生成月度账单。</p>
+                    <div class="mt-2 text-xs bg-purple-50 text-purple-700 p-1.5 rounded border border-purple-100 inline-block">触发动作：这是生产环境 99% 的触发场景，依此汇总单进行月结提成派发。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 时间取值与结算周期定义 -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 section-title">5. 研发与测试基准：结算周期定义与时区红线</h2>
+            
+            <div class="bg-red-50 p-4 rounded mb-6 border border-red-100">
+                <h3 class="font-bold text-red-800 mb-2"><i class="fas fa-globe mr-1"></i> 全局时区处理红线（严防对账错位）</h3>
+                <p class="text-sm text-red-700 mb-2">
+                    在所有的业绩考核和提成计算中，世界里只有一种时间，那就是 <strong>MT5 Server Time</strong>。为了规避夏冬令时带来的灾难，研发必须遵守以下时区转换规范：
+                </p>
+                <ul class="list-disc pl-5 space-y-1 text-sm text-red-700">
+                    <li><strong>底层存储：</strong>所有业务时间（如销售注册时间）在数据库底层统一存储为绝对的 UTC 时间戳。</li>
+                    <li><strong>查询转换：</strong>在跑批执行 SQL 前，必须通过标准的 Timezone 库，将 UTC 转换为 MT5 当下所在时区的当地时间。</li>
+                    <li><strong>绝对禁止：</strong>严禁在后端业务代码中使用 <code>Local Time</code>，严禁使用硬编码的 <code>+6h</code> 或 <code>+8h</code> 来处理时间偏移。</li>
+                </ul>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-4">以下是各周期（日、月、季、年）结算单的精确时间范围定义。<strong>注意：以下表格中的时间点均指代转换后的 MT5 Server Time。</strong></p>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left border-collapse border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700">
+                            <th class="px-4 py-3 border border-gray-200 font-bold w-1/6">结算周期</th>
+                            <th class="px-4 py-3 border border-gray-200 font-bold w-1/4">统计起止时间 (MT5 Time)</th>
+                            <th class="px-4 py-3 border border-gray-200 font-bold w-1/4">跑批触发时间 (MT5 Time)</th>
+                            <th class="px-4 py-3 border border-gray-200 font-bold">取值逻辑与数据源</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 text-gray-600">
+                        <!-- 日结 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 border border-gray-200 font-bold text-blue-700 bg-blue-50">按日结算<br><span class="text-xs font-normal text-gray-500">(主要用于UAT)</span></td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs">
+                                <strong>起：</strong>昨日 00:00:00<br>
+                                <strong>止：</strong>昨日 23:59:59
+                            </td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs text-red-600 font-bold">今日 00:05:00</td>
+                            <td class="px-4 py-3 border border-gray-200">
+                                <strong>直接查流水：</strong>根据起止时间，转换回绝对 UTC 后，直接去 MT5 数据库拉取流水计算【有效净入金】和【有效交易量】，生成《单日基础业绩单》。
+                            </td>
+                        </tr>
+                        <!-- 月结 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 border border-gray-200 font-bold text-green-700 bg-green-50">按月结算<br><span class="text-xs font-normal text-gray-500">(99% 主营场景)</span></td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs">
+                                <strong>起：</strong>本月 1日 00:00:00<br>
+                                <strong>止：</strong>本月 最后一日 23:59:59
+                            </td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs text-red-600 font-bold">下月 1日 00:10:00</td>
+                            <td class="px-4 py-3 border border-gray-200">
+                                <strong>搭积木汇总：</strong>严禁重查流水！系统直接 <code>SUM</code> 本月生成的 28~31 张《单日基础业绩单》，生成《月度汇总单》。
+                            </td>
+                        </tr>
+                        <!-- 季结 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 border border-gray-200 font-bold text-purple-700 bg-purple-50">按季结算</td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs">
+                                <strong>起：</strong>本季首月 1日 00:00:00<br>
+                                <strong>止：</strong>本季末月 最后一日 23:59:59
+                            </td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs text-red-600 font-bold">下季首月 1日 00:15:00</td>
+                            <td class="px-4 py-3 border border-gray-200">
+                                <strong>搭积木汇总：</strong>系统直接 <code>SUM</code> 本季内的 3 张《月度汇总单》（或对应约 90 张单日单），生成《季度汇总单》。
+                            </td>
+                        </tr>
+                        <!-- 年结 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 border border-gray-200 font-bold text-orange-700 bg-orange-50">按年结算</td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs">
+                                <strong>起：</strong>本年 1月1日 00:00:00<br>
+                                <strong>止：</strong>本年 12月31日 23:59:59
+                            </td>
+                            <td class="px-4 py-3 border border-gray-200 font-mono text-xs text-red-600 font-bold">次年 1月1日 00:20:00</td>
+                            <td class="px-4 py-3 border border-gray-200">
+                                <strong>搭积木汇总：</strong>系统直接 <code>SUM</code> 本年内的 12 张《月度汇总单》，生成《年度汇总单》。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 text-sm text-red-700 bg-red-50 p-3 rounded border border-red-100">
+                <i class="fas fa-exclamation-triangle mr-1"></i> <strong>关于新销售考核起点的特殊说明（覆盖以上所有周期）：</strong><br>
+                无论处于哪个结算周期，如果销售是在该周期内新注册的，那么上述表格中的<strong>“统计起始时间”</strong>，必须被强制替换为该销售经过时区转换后的<strong>“MT5 注册时间（精确到秒）”</strong>。注册时间之前的任何流水绝对不可纳入该销售业绩。
+            </div>
+        </div>
+
+        <!-- 5. 异常处理与兜底机制 -->

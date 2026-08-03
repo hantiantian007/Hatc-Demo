@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美分账户页面 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; white-space: nowrap; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin-bottom: 16px; margin-top: 32px; font-size: 18px; font-weight: bold; color: #1f2937; }
+        .note-box { background: #fdf8f2; border: 1px solid #ebd9c1; border-radius: 10px; padding: 16px; }
+        .small-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+            color: #4b5563;
+            font-size: 12px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】美分账户页面需求清单</h1>
+            <div class="flex gap-4">
+                <a href="prd-cent-account-product.html" class="px-4 py-2 bg-[#C19B5E] hover:opacity-90 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-file-lines mr-1"></i> 产品文档
+                </a>
+                <a href="prd-cent-account-solution.html" class="px-4 py-2 bg-[#8c6b45] hover:opacity-90 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-sitemap mr-1"></i> 系统方案
+                </a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors">
+                    <i class="fas fa-list mr-1"></i> 返回需求看板
+                </a>
+            </div>
+        </div>
+
+        <div class="rounded-lg border border-[#ebd9c1] bg-[#fdf8f2] p-6 mb-6">
+            <div class="text-lg font-bold text-gray-800">文档说明</div>
+            <div class="mt-2 text-sm text-gray-600 leading-7">
+                本文档按页面整理已增加<span class="highlight">美分账户功能</span>的原型与需求，方便产品、研发、测试逐页确认。
+                页面范围覆盖：入金、出金、客户、账户管理、账户审核五类场景。
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+            <p class="text-sm text-blue-800 font-medium">
+                页面级设计遵循同一原则：<span class="highlight">单账户场景展示原始币种与单位，跨账户汇总场景统一按 USD 口径展示</span>；
+                美分账户固定换算关系为 <span class="highlight">1 USD = 100 USC</span>。
+            </p>
+        </div>
+
+        <div class="module-title">1. 页面范围总览</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">页面名称</th>
+                    <th width="20%">原型文件</th>
+                    <th width="25%">页面职责</th>
+                    <th width="35%">核心美分改动</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">入金</td>
+                    <td><a class="small-link" href="client-deposit-cent-account.html">client-deposit-cent-account.html</a></td>
+                    <td>提交入金申请</td>
+                    <td>账号下拉展示账户类型；标准/美分账户按不同单位输入；人民币通道汇率固定展示。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">入金列表</td>
+                    <td><a class="small-link" href="client-deposit-record-cent-account.html">client-deposit-record-cent-account.html</a></td>
+                    <td>查看入金记录并发起入金</td>
+                    <td>列表直接展示美分账户标识与 USC 单位，并可跳转入金申请页。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">出金列表</td>
+                    <td><a class="small-link" href="client-withdraw-record-cent-account.html">client-withdraw-record-cent-account.html</a></td>
+                    <td>查看出金记录并发起出金</td>
+                    <td>保留现网结构，补齐美分账户出金记录展示与跳转链路。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">出金管理</td>
+                    <td><a class="small-link" href="client-withdraw-cent-account.html">client-withdraw-cent-account.html</a></td>
+                    <td>展示可出金账号列表</td>
+                    <td>区分标准/佣金/美分账户；金额列展示对应单位；支持跳转出金申请。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">出金申请</td>
+                    <td><a class="small-link" href="client-withdraw-apply-cent-account.html">client-withdraw-apply-cent-account.html</a></td>
+                    <td>提交出金申请</td>
+                    <td>根据账号类型切换输入单位与展示单位；美分账户按 USC 整数输入。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">客户列表</td>
+                    <td><a class="small-link" href="admin-client-list.html">admin-client-list.html</a></td>
+                    <td>客户汇总查询</td>
+                    <td>新增账户类型筛选；客户级金额统一按 USD 汇总展示；MT 账户数量展示构成。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">客户详情</td>
+                    <td><a class="small-link" href="admin-client-detail.html">admin-client-detail.html</a></td>
+                    <td>查看单客户资产与账号明细</td>
+                    <td>展示“标准账户 + 美分账户”；账号列表区分账户属性；美分金额仅展示 USC/美分。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">账户管理</td>
+                    <td><a class="small-link" href="admin-account-management-cent-account.html">admin-account-management-cent-account.html</a></td>
+                    <td>后台查看 MT 账号列表</td>
+                    <td>新增账户类型筛选；列表区分标准/佣金/美分账户；金额列展示对应单位。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">账户审核</td>
+                    <td><a class="small-link" href="admin-audit-list.html">admin-audit-list.html</a></td>
+                    <td>查看待审核开户申请</td>
+                    <td>新增账户类型筛选与列表列；补充美分账户待审核记录。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开户审核详情</td>
+                    <td><a class="small-link" href="admin-audit.html">admin-audit.html</a></td>
+                    <td>查看单条开户审核信息</td>
+                    <td>新增开户申请区块；展示账户类型、申请分组、杠杆、交易单位；记录中补充美分申请。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 入金</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>支持标准账户与美分账户在同一套入金页面内完成申请，页面自动识别账户类型与单位。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>账号下拉直接展示 <span class="highlight">标准账户 / 美分账户</span>；选择美分账户后，页面展示单位为 <span class="highlight">USC/美分</span>。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>标准账户与美分账户的入金金额均限制为<span class="highlight">整数输入</span>；人民币通道展示固定汇率 <span class="highlight">7.18</span>，支付汇率与支付金额保留 2 位小数。</td></tr>
+                <tr><td class="font-medium">页面取舍</td><td>已移除余额、折算美元金额、到账规则、预计到账时间等说明性信息，只保留必要输入与结果展示。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验标准账户与美分账户切换时单位是否同步切换；人民币通道下支付汇率、支付金额、预计到账金额精度是否正确。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 入金列表</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>在现网入金记录列表结构上补充美分账户记录展示，并支持继续发起入金申请。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>记录中直接体现账户类型与单位；美分账户记录展示为 <span class="highlight">美分账户 / USC</span>。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>点击 <span class="highlight">入金申请</span> 跳转到入金页；左侧菜单“入金”跳转到当前列表页。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>列表按单账户记录展示原始入金金额，不在该页做跨账户汇总。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验列表到入金申请页的跳转、列表中美分账户标签与金额单位展示是否正确。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">4. 出金列表</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>在现网出金列表基础上兼容美分账户出金记录，并支持进入出金管理页。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>保留现网表格结构，记录中补充美分账户相关字段与数据口径。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>点击 <span class="highlight">出金申请</span> 或后续操作入口，可进入出金管理页继续选择账号。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>列表展示单笔出金记录，以账户原始币种为主，避免在记录列表页混入客户级汇总逻辑。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验美分账户记录与标准账户记录混排时，单位与账户识别是否清晰，跳转链路是否完整。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">5. 出金管理</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>统一展示当前客户可操作的 MT 账号，作为出金申请前的账号选择页。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>账号列表明确展示 <span class="highlight">账户类型</span>；标准账户、佣金账户使用 <span class="highlight">USD/美元</span>，美分账户使用 <span class="highlight">USC/美分</span>。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>点击某行 <span class="highlight">出金</span> 按钮，带账号参数跳转到出金申请页。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>本页展示单账号余额、净值、保证金、可用预付款，不做跨账号汇总。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验标准账户、佣金账户、美分账户三类账号的单位和类型是否准确，出金按钮是否把账号类型正确带入下一页。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">6. 出金申请</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>支持根据账号类型发起标准账户或美分账户出金申请。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>页面显示当前 <span class="highlight">出金账号</span> 的账户类型；标准账户按 USD，美分账户按 USC 展示与输入。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>标准账户与美分账户出金金额均为整数输入；页面文案、单位、到账金额联动随账号类型变化。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>单账户申请页展示账户原始币种，不再附加折合美元提示，避免页面冗余。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验从出金管理页带参进入时，账号类型、单位、金额输入规则、支付方式联动是否一致。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">7. 客户列表</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>在客户维度支持识别标准账户、美分账户、混合账户，并输出统一汇总口径。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>新增 <span class="highlight">账户类型</span> 筛选；<span class="highlight">MT 账户数量</span> 展示为“标准 x / 美分 x”；金额列改为 <span class="highlight">未提现(USD) / 入金金额(USD) / 出金金额(USD)</span>。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>客户级汇总统一按 USD 展示：标准账户按原始 USD 汇总，美分账户先按 1:100 折算为 USD 后汇总；列表页保留 2 位小数。</td></tr>
+                <tr><td class="font-medium">页面取舍</td><td>已移除“账户结构”“资产口径”等重复信息，避免和列表已有字段重复。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验仅标准、仅美分、混合账户三类客户在筛选、MT 账户数量、金额汇总上的展示是否正确。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">8. 客户详情</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>在单客户视角下完整展示其标准账户与美分账户的并存状态。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td><span class="highlight">账户类型</span> 可展示“标准账户 + 美分账户”；<span class="highlight">MT账号数量</span> 展示构成为“3（标准 2 / 美分 1）”；账号列表区分 <span class="highlight">标准账户[交易] / 标准账户[佣金] / 美分账户[交易]</span>。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>资金信息区展示客户级汇总值；账号列表中的美分账户金额仅展示 <span class="highlight">USC/美分</span> 原始金额，不再展示“折合 USD”文案。</td></tr>
+                <tr><td class="font-medium">页面取舍</td><td>累计入金、累计出金、净入金仅保留数值本身，不加“USD 汇总”提示。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验客户类型、MT 账号数量构成、账号属性、资金信息与账号行内币种展示是否一致。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">9. 账户管理</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>后台运营可在统一列表中查看标准账户、佣金账户、美分账户的账号明细。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>新增 <span class="highlight">账户类型</span> 筛选；表格新增账户类型列；金额列按账号类型分别展示 <span class="highlight">USD/美元</span> 或 <span class="highlight">USC/美分</span>。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>账户管理页为单 MT 账号视图，余额、净值、佣金、可用预付款、入金金额、出金金额均按该账号原始币种展示。</td></tr>
+                <tr><td class="font-medium">页面取舍</td><td>当前列表中不追加折算美元字段，重点先解决账号类型识别与单位歧义问题。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验标准账户、佣金账户、美分账户混排时，账户类型、单位与金额列是否匹配；筛选是否能单独筛出美分账户。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">10. 账户审核</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>在开户待审核列表中区分标准账户申请与美分账户申请，便于运营识别开户分组与审核对象。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>新增 <span class="highlight">账户类型</span> 筛选；列表新增账户类型列；新增一条美分账户待审核数据，分组为 <span class="highlight">real\HATC\Cent\Real-02</span>。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>开户审核列表是申请单视图，不涉及资金汇总，只需清晰展示申请账号、分组、账户类型与审核状态。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>点击审核进入详情页，后续审核动作沿用现有流程，不新增额外审批步骤。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验标准账户与美分账户申请可同时出现在待审核列表中，筛选与审核跳转保持正常。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">11. 开户审核详情</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium" width="18%">页面目标</td><td>在单条开户审核详情中完整展示本次申请是否为美分账户及其分组信息。</td></tr>
+                <tr><td class="font-medium">关键展示</td><td>新增 <span class="highlight">开户申请</span> 区块，展示 <span class="highlight">MT账号 / 账户类型 / 账户属性 / 申请分组 / 杠杆 / 交易单位</span>；申请记录表格新增账户类型列。</td></tr>
+                <tr><td class="font-medium">数据口径</td><td>当前审核详情聚焦申请本身，不展示折算金额；美分账户以 <span class="highlight">USC/美分</span> 作为交易单位标识。</td></tr>
+                <tr><td class="font-medium">交互规则</td><td>审核、退回、备注修改等操作沿用现有流程，只补足美分账户识别信息。</td></tr>
+                <tr><td class="font-medium">测试重点</td><td>校验详情页与列表页的账户类型、分组、杠杆、账号数据是否一致；申请记录中美分账户数据是否能正确回显。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">12. 通用规则</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="22%">规则项</th>
+                    <th width="78%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">账户类型</td>
+                    <td>页面中涉及 MT 账号时，需明确区分标准账户、佣金账户、美分账户，不允许只展示账号不展示类型。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">币种单位</td>
+                    <td>标准账户、佣金账户统一展示 <span class="highlight">USD/美元</span>；美分账户统一展示 <span class="highlight">USC/美分</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">汇总口径</td>
+                    <td>跨账户、跨客户汇总场景统一按 USD 口径展示；单账号、单记录场景展示原始币种金额。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">换算关系</td>
+                    <td>1 USD = 100 USC；仅在需要做客户级或报表级汇总时进行折算。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">精度规则</td>
+                    <td>列表与页面展示优先按业务要求控制展示精度；底层计算保留高精度，避免提前截断。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

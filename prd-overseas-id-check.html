@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海外版身份校验 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 24px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #b7791f; font-weight: 600; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】海外版身份校验</h1>
+            <div class="flex gap-4">
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-[#C19B5E] inline-block">1. 需求目标</h2>
+        <div class="bg-amber-50 border-l-4 border-[#C19B5E] p-4 mb-5">
+            <p class="text-sm text-amber-900 font-medium">客户在 <span class="highlight">Crm-Group（海外版）</span> 注册时，系统需要识别客户填写的证件号码是否为 <span class="highlight">香港身份证（HKID）</span>。若识别为香港身份证，则 <span class="highlight">禁止申请</span>（不允许提交注册）。本需求重点在于 HKID 的 <span class="highlight">格式识别 + 校验位算法</span>，避免误判。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">项</th>
+                    <th width="40%">说明</th>
+                    <th width="40%">口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">需求名称</td>
+                    <td>海外版身份校验</td>
+                    <td>仅针对 Crm-Group 生效。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">拦截条件</td>
+                    <td>证件号码被识别为香港身份证（HKID）。</td>
+                    <td>必须同时满足：格式匹配 + 校验位（check digit）正确。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">处理方式</td>
+                    <td>前端提示并阻止提交；后端再次校验并拒绝。</td>
+                    <td>提交时，后端也需要校验。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">2. 生效范围</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">项</th>
+                    <th width="40%">范围</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">系统</td>
+                    <td>Crm-Group</td>
+                    <td>仅海外版实名认证时校验。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">校验时机</td>
+                    <td>提交注册前（前端）与提交注册时（后端）</td>
+                    <td>前端用于即时提示；后端用于强制拦截。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">字段</td>
+                    <td>证件号码字段（身份证/证件号输入框）</td>
+                    <td>若页面存在“证件类型”选择，则仅在类型为“身份证/ID”时启用该校验；若无证件类型，则对输入内容直接做 HKID 识别。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">3. 香港身份证（HKID）定义</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">项</th>
+                    <th width="40%">定义</th>
+                    <th width="40%">示例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">格式</td>
+                    <td>1 或 2 个英文字母 + 6 位数字 + 校验位（0-9 或 A）。常见写法包含括号。</td>
+                    <td><code>A123456(3)</code>、<code>AB123456(9)</code>、<code>A1234563</code>（无括号写法也允许识别）</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">允许字符</td>
+                    <td>字母必须 A-Z（不区分大小写），数字 0-9，校验位允许 A。</td>
+                    <td>统一转换为大写后再校验。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">识别准则</td>
+                    <td>必须通过校验位算法才算 HKID。</td>
+                    <td>仅靠正则匹配会导致误判。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">4. 规范化（Normalization）规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">步骤</th>
+                    <th width="40%">规则</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">去空白</td>
+                    <td>移除空格与制表符。</td>
+                    <td>允许用户输入带空格的格式。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">去括号</td>
+                    <td>允许 <code>(X)</code> 或无括号写法；统一提取末位为校验位。</td>
+                    <td>例如 <code>A123456(3)</code> → <code>A1234563</code>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">字母大写</td>
+                    <td>统一将字母转换为大写。</td>
+                    <td>忽略大小写差异。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">5. HKID 校验算法（Check Digit）</h2>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-5 text-sm text-gray-700 leading-relaxed">
+            <div class="font-bold text-gray-800 mb-2">5.1 字符取值</div>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>字母：<code>A=10</code>，<code>B=11</code>，…，<code>Z=35</code></li>
+                <li>数字：按数值本身取值（0-9）</li>
+                <li>当 HKID 只有 1 个字母前缀时，视为前面补一个“空格位”，其取值为 <code>36</code></li>
+                <li>校验位：<code>0-9</code> 或 <code>A</code>（表示 10）</li>
+            </ul>
+            <div class="font-bold text-gray-800 mt-4 mb-2">5.2 权重</div>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>总共 9 个权重：从 <code>9</code> 到 <code>1</code></li>
+                <li>权重依次对应：前缀位（若有两位则两位都算；若一位则补空格位）→ 6 位数字 → 校验位</li>
+            </ul>
+            <div class="font-bold text-gray-800 mt-4 mb-2">5.3 计算规则</div>
+            <ol class="list-decimal pl-5 space-y-1">
+                <li>把前缀与 6 位数字共 8 位（不足补空格位）按权重 <code>9..2</code> 计算加权和</li>
+                <li>计算 <code>sum % 11</code></li>
+                <li>计算 <code>check = (11 - (sum % 11)) % 11</code></li>
+                <li>若 <code>check = 10</code>，则校验位应为 <code>A</code>；若 <code>check = 0..9</code>，则校验位应为对应数字</li>
+                <li>将计算得到的校验位与输入的校验位比对，相等则 HKID 有效</li>
+            </ol>
+            <div class="font-bold text-gray-800 mt-4 mb-2">5.4 研发判定步骤</div>
+            <ol class="list-decimal pl-5 space-y-1">
+                <li>先对输入内容做规范化：去空格、去括号、转大写</li>
+                <li>再做格式判断：必须满足 <code>^[A-Z]{1,2}\d{6}[0-9A]$</code></li>
+                <li>若格式不匹配，直接判定为 <code>非 HKID</code></li>
+                <li>若格式匹配，则继续执行校验位算法</li>
+                <li>只有当 <code>格式匹配 + 校验位正确</code> 同时成立时，才判定为 <code>有效 HKID</code></li>
+                <li>一旦判定为有效 HKID，则前端提示拦截，提交时后端也需要校验并拒绝提交</li>
+            </ol>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">输出</th>
+                    <th width="40%">规则</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">is_hkid</td>
+                    <td>只有当“格式匹配 + 校验位正确”时才为 true。</td>
+                    <td>若仅格式匹配但校验位不对，则视为非 HKID。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">最终判定口径</td>
+                    <td>先判断是否长得像 HKID，再判断校验位是否正确。</td>
+                    <td>不能仅靠正则；也不能跳过格式判断直接算校验位。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">拦截</td>
+                    <td>当 is_hkid=true 时，禁止注册提交。</td>
+                    <td>前端提示，后端返回错误码。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">6. 前后端校验要求</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">层级</th>
+                    <th width="40%">要求</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">前端</td>
+                    <td>输入框失焦与点击提交时进行 HKID 识别；命中则提示并阻止提交。</td>
+                    <td>提示语建议：<code>暂时不支持香港身份证开户注册。</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">后端</td>
+                    <td>注册接口必须二次校验；命中则返回失败。</td>
+                    <td>用于防止抓包/篡改绕过前端。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">7. 测试用例（重点）</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">用例</th>
+                    <th width="40%">输入</th>
+                    <th width="40%">预期</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">格式 + 校验位正确</td>
+                    <td>示例：<code>A123456(3)</code> / <code>AB123456(9)</code>（以校验通过为准）</td>
+                    <td>识别为 HKID，禁止提交。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">格式正确但校验位错误</td>
+                    <td><code>A123456(0)</code></td>
+                    <td>不识别为 HKID，不触发本需求拦截。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">无括号写法</td>
+                    <td><code>A1234563</code></td>
+                    <td>可识别；若校验通过则拦截。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">大小写混输</td>
+                    <td><code>a123456(3)</code></td>
+                    <td>可识别；若校验通过则拦截。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">非 HKID 证件</td>
+                    <td><code>P1234567</code> / <code>G12345678</code> 等</td>
+                    <td>不识别为 HKID，不拦截。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

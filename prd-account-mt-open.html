@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请MT账户页面 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】申请MT账户</h1>
+            <div class="flex gap-3">
+                <a href="admin-account-mt-open.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回需求看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档描述<span class="highlight">账户管理</span>页面点击<span class="highlight">MT开户</span>按钮后进入的开户申请页原型。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">页面定位</td><td>作为账户管理页的二级跳转页，用于后台为当前客户发起 MT 账户开户申请。</td></tr>
+                <tr><td class="font-medium">展示字段</td><td>页面展示 <span class="highlight">真实姓名、邮箱、手机、账户类型、账号类型</span> 5 个核心字段，其中前三项默认回填且只读。</td></tr>
+                <tr><td class="font-medium">账户类型选择</td><td>在账号类型上方新增 <span class="highlight">账户类型</span> 下拉框，支持选择 <span class="highlight">标准账户</span>、<span class="highlight">美分账户</span>。</td></tr>
+                <tr><td class="font-medium">账号类型限制</td><td><span class="highlight">账号类型</span> 固定为 <span class="highlight">交易账号</span>，当前页面不支持开通佣金账号。</td></tr>
+                <tr><td class="font-medium">辅助入口</td><td>账号类型字段下方保留 <span class="highlight">客户自主领取号</span> 文本链接，用于后续补充跳转或说明。</td></tr>
+                <tr><td class="font-medium">操作按钮</td><td>底部提供 <span class="highlight">提交</span> 和 <span class="highlight">返回</span> 两个按钮，返回跳回账户管理页。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 交互规则</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">页面入口</td><td>从 <span class="highlight">admin-account-management-cent-account.html</span> 点击 MT开户 按钮进入。</td></tr>
+                <tr><td class="font-medium">只读信息</td><td>真实姓名、邮箱、手机为带入信息，原型中按只读样式展示，不支持修改。</td></tr>
+                <tr><td class="font-medium">字段顺序</td><td><span class="highlight">账户类型</span> 放置在 <span class="highlight">账号类型</span> 上方，账号类型固定展示为交易账号。</td></tr>
+                <tr><td class="font-medium">返回逻辑</td><td>点击返回按钮，回到账户管理页，不保留提交结果反馈。</td></tr>
+                <tr><td class="font-medium">视觉风格</td><td>整体沿用现有 CRM 后台布局、左侧菜单和顶部面包屑，页面主体按截图采用大留白表单布局。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 账户管理页的 MT开户 按钮是否可正常跳转到申请MT账户页。</td></tr>
+                <tr><td>2. 账户类型字段是否展示在账号类型上方，且仅包含标准账户、美分账户两个选项。</td></tr>
+                <tr><td>3. 账号类型是否固定展示为交易账号，不可切换为其他类型。</td></tr>
+                <tr><td>4. 返回按钮和顶部“查看页面PRD / 返回需求看板”链接是否可正常跳转。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

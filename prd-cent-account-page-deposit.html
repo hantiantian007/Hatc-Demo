@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入金页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】入金</h1>
+            <div class="flex gap-3">
+                <a href="client-deposit-cent-account.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">入金页面</span>因接入美分账户而新增或调整的需求，不重复描述原有标准账户入金能力。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">账号下拉展示账户类型</td><td>入金账号下拉中需直接展示账号 + 账户类型 + 单位，例如：<span class="highlight">9900456 - 美分账户 / USC</span>。</td></tr>
+                <tr><td class="font-medium">选择后显示账户类型</td><td>用户选中账号后，页面需明确识别当前为标准账户还是美分账户。</td></tr>
+                <tr><td class="font-medium">入金金额单位切换</td><td>标准账户按 <span class="highlight">USD/美元</span> 输入；美分账户按 <span class="highlight">USC/美分</span> 输入。</td></tr>
+                <tr><td class="font-medium">金额输入限制</td><td>标准账户与美分账户的入金金额均限制为<span class="highlight">整数输入</span>。</td></tr>
+                <tr><td class="font-medium">最低入金金额</td><td>需增加最低入金门槛校验：标准账户最低入金金额为 <span class="highlight">50 USD</span>；美分账户最低入金金额为 <span class="highlight">5000 USC</span>，即折合 <span class="highlight">50 USD</span>。</td></tr>
+                <tr><td class="font-medium">单位后缀</td><td>金额展示需补充单位后缀，如 <span class="highlight">/美分、/人民币、/美元</span>。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 交互规则</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">账号切换</td><td>切换账号时，页面中的金额标签、单位文案、提示文案需同步切换。</td></tr>
+                <tr><td class="font-medium">最低金额校验</td><td>当用户输入金额低于当前账户类型对应的最低入金门槛时，页面需给出明确提示，且不可提交保存。</td></tr>
+                <tr><td class="font-medium">支付方式切换</td><td>切换支付方式时，支付汇率、支付金额与到账金额需按当前通道规则联动更新。</td></tr>
+                <tr><td class="font-medium">展示口径</td><td>本页展示单账户原始币种，不在页面中附加“折合 USD”提示。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 标准账户 / 美分账户切换后，金额输入单位是否正确切换。</td></tr>
+                <tr><td>2. 标准账户与美分账户是否都只能输入整数。</td></tr>
+                <tr><td>3. 标准账户输入小于 50 USD、美分账户输入小于 5000 USC 时，是否能正确提示且禁止保存。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

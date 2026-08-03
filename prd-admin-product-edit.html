@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - 新增/编辑商品</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        dark: '#1E2126',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .module-title { font-size: 1.125rem; font-weight: bold; color: #111827; margin-top: 2rem; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 4px solid #C19B5E; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; text-sm; }
+        th, td { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; text-align: left; }
+        th { background-color: #f9fafb; font-weight: 500; color: #4b5563; }
+        td { color: #374151; vertical-align: top; }
+        .highlight { color: #b45309; background-color: #fef3c7; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed pb-20">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
+            <h2 class="text-xl text-primary font-medium">新增/编辑商品 (admin-product-edit.html)</h2>
+            <div class="mt-4 flex gap-4 text-sm text-gray-500">
+                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-07-01</span>
+                <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
+                <span class="px-2 py-0.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded text-xs">V1.1.0</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            
+            <!-- 模块一：页面初始化与来源逻辑 -->
+            <div class="module-title">1. 页面初始化与来源逻辑</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">入口场景</th>
+                            <th width="25%">参数传递</th>
+                            <th width="60%">处理逻辑与数据渲染</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">新增商品</td>
+                            <td>无参数传递。</td>
+                            <td>页面标题显示为“新增商品”。所有表单项均为空，仅保留 1 个空白的默认套餐卡片供填写。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">编辑商品</td>
+                            <td>URL 携带 <code>id</code> 参数。<br>例如：<code>?id=PRD-001</code></td>
+                            <td>
+                                页面标题显示为“编辑商品”。<br>
+                                前端解析 URL 中的 ID，调用获取详情接口，将返回的商品名称、类型、简介、图片、图文详情以及<strong>所有关联套餐列表</strong>，完整回显在对应的表单控件中。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块二：基础信息与图片表单 -->
+            <div class="module-title">2. 基础信息与图片表单</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">字段名称</th>
+                            <th width="25%">输入类型与限制</th>
+                            <th width="60%">前端交互与数据处理规则</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品名称</td>
+                            <td>单行文本，<span class="text-red-600 font-bold">必填</span>。<br>最多 50 字符。</td>
+                            <td>失焦时检查是否为空，若为空则在输入框下方红色提示“商品名称不能为空”。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品类型</td>
+                            <td>下拉单选框，<span class="text-red-600 font-bold">必填</span>。</td>
+                            <td>枚举值：虚拟商品、实体商品。该字段将决定客户端展示的视觉标签。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品简介</td>
+                            <td>多行文本 (Textarea)，<span class="text-red-600 font-bold">必填</span>。<br>最多 100 字符。</td>
+                            <td>用于填写商品的一句话卖点或短描述。该内容将直接输出并展示在 C 端商品列表的卡片中。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">支付方式</td>
+                            <td>纯文本展示。</td>
+                            <td>状态为 <span class="highlight">只读</span>，固定显示“余额购买”，不可更改。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">上架状态</td>
+                            <td>单选框 (Radio)。</td>
+                            <td>
+                                选项：立即上架、定时上架、暂入仓库。<br>
+                                <strong>联动交互</strong>：当且仅当选中“定时上架”时，下方动态展开一个精确到分钟的日期时间选择器 (Datetime picker) 供操作者设定生效时间。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">列表展示图</td>
+                            <td>图片上传组件，限制 1 张。</td>
+                            <td>
+                                <strong>尺寸约束</strong>：比例必须严格约束为 <strong>2.4:1</strong>（建议尺寸 600x250 px）。<br>
+                                处理：上传时前端应进行长宽比校验并可提供裁剪工具，该图将作为商品在各端列表页的主视觉封面。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">详情轮播图</td>
+                            <td>图片上传组件，最多 3 张。</td>
+                            <td>支持拖拽排序。这组图片将用于客户端商品详情页的顶部轮播图模块。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">图文详情</td>
+                            <td>富文本编辑器。</td>
+                            <td>集成基础的图文排版能力（加粗、改色、插图），用于承载长篇详细介绍。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块三：多套餐配置区与底部操作 -->
+            <div class="module-title">3. 多套餐配置与提交操作</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">操作/区块</th>
+                            <th width="25%">数据结构</th>
+                            <th width="60%">交互流转与信息处理</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">动态套餐卡片</td>
+                            <td>JSON 数组形式。</td>
+                            <td>
+                                <strong>卡片内字段</strong>：套餐名称、原价(选填)、优惠价(必填)、规格后缀(如“/月”)、库存数量(必填)。<br>
+                                <strong>增删交互</strong>：<br>
+                                1. 点击“+ 添加套餐”按钮，在列表末尾追加一个全新的空白套餐卡片。<br>
+                                2. 点击任一套餐卡片右上角的“删除”图标，移除该卡片。<br>
+                                <strong>约束条件</strong>：无论怎么删除，<span class="highlight">页面中至少必须保留 1 个套餐卡片</span>。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">取消按钮</td>
+                            <td>路由跳转。</td>
+                            <td>点击后，放弃当前所有修改，直接返回 <code>admin-product-management.html</code>。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">保存商品按钮</td>
+                            <td>表单提交与流转。</td>
+                            <td>
+                                <strong>处理逻辑</strong>：<br>
+                                1. <strong>拦截校验</strong>：点击时，前端遍历所有必填字段（包含所有未被删除的套餐卡片内部字段）。若有未填项，页面滚动至错误位置并高亮红框提示。<br>
+                                2. <strong>提交与反馈</strong>：校验通过后，拼装数据对象发送至后端保存接口。按钮变为 Loading 状态。<br>
+                                3. <strong>成功跳转</strong>：收到后端成功响应后，弹出“保存成功” Toast，延时 1 秒后跳转回 <code>admin-product-management.html</code> 列表页。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块四：逆向与异常流转处理 -->
+            <div class="module-title">4. 逆向与异常流转处理</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">异常场景分类</th>
+                            <th width="25%">触发条件与场景描述</th>
+                            <th width="60%">前端处理方案与交互阻断</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">表单防丢与强退</td>
+                            <td>表单内容发生过任何变动（Dirty 状态）后，用户点击浏览器“后退”或页面上的“取消”按钮。</td>
+                            <td>
+                                <strong>二次确认阻断</strong>：拦截路由跳转，弹出确认框提示：“您有未保存的更改，确认要离开吗？未保存的内容将会丢失。”点击确认后方可离开。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">库存超卖边界约束</td>
+                            <td>操作人员在套餐库存输入非法字符（如负数、字母），或输入库存为 0。</td>
+                            <td>
+                                <strong>输入约束</strong>：前端强制输入框只允许输入 <code>&gt;= 0</code> 的正整数。<br>
+                                <strong>为零逻辑</strong>：允许保存库存为 0 的套餐。保存后，该套餐在客户端直接显示为“已售罄”，且“立即购买”按钮置灰不可点击。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">图片上传异常</td>
+                            <td>
+                                1. 列表展示图比例不是 2.4:1。<br>
+                                2. 单张图片体积超过 5MB。<br>
+                                3. 网络超时导致上传中断。
+                            </td>
+                            <td>
+                                <strong>比例与大小拦截</strong>：唤起前端裁剪工具强制按 2.4:1 比例框选。超出 5MB 则拦截上传并提示“图片大小不能超过 5MB”。<br>
+                                <strong>断网处理</strong>：若接口超时，图片预览区呈现红色占位并显示“重新上传”按钮供用户重试。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">提交防重与防连击</td>
+                            <td>因网络延迟卡顿，用户在表单填写完毕后，疯狂连续点击“保存商品”按钮。</td>
+                            <td>
+                                <strong>Loading 锁死</strong>：点击一次“保存商品”后，按钮立刻进入 Loading 动画状态并添加 <code>Disabled</code> 属性，彻底阻断后续点击。直到接口返回明确结果（无论 200 还是 500），若失败则解除禁用并保留用户已填写的数据。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
