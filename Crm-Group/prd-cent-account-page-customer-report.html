@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户报表页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】客户报表</h1>
+            <div class="flex gap-3">
+                <a href="admin-report-customer-cent-account.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">客户报表页面</span>因接入美分账户而新增或调整的需求，不重复描述原有标准账户客户报表能力。
+        </div>
+
+        <div class="module-title">1. 页面目标</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">目标</td><td>在客户报表中支持标准账户与美分账户混合查询，确保搜索、统计卡片、客户列表与展开明细在美分场景下口径一致，便于运营查看客户层级的资产与资金汇总。</td></tr>
+                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-report-customer-cent-account.html</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">新增账户类型筛选</td><td>搜索区新增 <span class="highlight">账户类型</span>，支持全部、仅标准账户、仅美分账户、标准+美分筛选。</td></tr>
+                <tr><td class="font-medium">新增手数口径筛选</td><td>搜索区新增 <span class="highlight">手数口径</span>，支持全部、仅标准手、仅美分手、标准+美分筛选，用于按客户维度筛出不同手数体系。</td></tr>
+                <tr><td class="font-medium">统计卡片金额统一按 USD</td><td>统计区中的 <span class="highlight">入金、出金、净入金、佣金、MT净值、MT余额</span> 统一按 <span class="highlight">USD</span> 口径展示，保证客户级汇总可直接比较。</td></tr>
+                <tr><td class="font-medium">交易量按手数体系分开展示</td><td>统计卡片中的 <span class="highlight">交易量</span> 不允许合并为单一总手数，需拆分为 <span class="highlight">标准交易量</span> 与 <span class="highlight">美分交易量</span> 展示，并直接采用 <span class="highlight">数值 + 单位</span> 形式，例如 <span class="highlight">0.25标准手</span>、<span class="highlight">0.32美分手</span>。</td></tr>
+                <tr><td class="font-medium">MT账户数量补构成信息</td><td>统计卡片中的 <span class="highlight">MT账户数量</span> 需补充标准/美分账户构成；列表中的 <span class="highlight">MT数量(个)</span> 也需体现构成明细。</td></tr>
+                <tr><td class="font-medium">列表新增账户类型列</td><td>列表中新增 <span class="highlight">账户类型</span> 列，区分标准账户、美分账户及混合客户。</td></tr>
+                <tr><td class="font-medium">列表新增交易量列</td><td>列表中新增 <span class="highlight">交易量(手)</span> 列，用于分别展示客户的 <span class="highlight">标准手交易量</span> 与 <span class="highlight">美分手交易量</span>，两者不合并展示；主表中需直接显示为 <span class="highlight">0.25标准手 / 0.32美分手</span> 这类格式。</td></tr>
+                <tr><td class="font-medium">客户级金额统一按 USD</td><td>列表中的 <span class="highlight">入金(USD)、出金(USD)、净入金(USD)、佣金(USD)</span> 均按客户级 USD 汇总展示；美分账户金额需先按 <span class="highlight">1 USD = 100 USC</span> 折算后再汇总。</td></tr>
+                <tr><td class="font-medium">展开明细补原始 USC</td><td>当客户存在美分账户时，展开行需补充 <span class="highlight">标准账户交易量、美分账户交易量</span> 以及 <span class="highlight">美分账户原始入金、原始出金、原始净入金、原始净值、原始余额</span> 等 <span class="highlight">USC/美分</span> 字段。</td></tr>
+                <tr><td class="font-medium">小额返佣保留高精度</td><td>客户报表中的 <span class="highlight">佣金(USD)</span> 若来源于美分账户返佣，需支持至少 <span class="highlight">4 位小数</span> 展示；如存在小于 0.01 USD 的未入账返佣，可在展开明细展示 <span class="highlight">待结转返佣</span>。</td></tr>
+                <tr><td class="font-medium">页面 PRD 抽屉化</td><td>页面内的 <span class="highlight">查看页面PRD</span> 按钮需沿用当前右侧抽屉形式打开，不再跳转新页面。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">列表维度</td><td>本页按客户维度展示，允许标准账户客户、美分账户客户、混合客户混排。</td></tr>
+                <tr><td class="font-medium">客户级汇总口径</td><td><span class="highlight">入金、出金、净入金、佣金、MT净值、MT余额</span> 统一按 <span class="highlight">USD</span> 展示；底层需保留高精度计算，页面仅在展示阶段按既定精度展示。</td></tr>
+                <tr><td class="font-medium">MT数量口径</td><td><span class="highlight">MT数量(个)</span> 显示客户的总 MT 账户数量，并补充标准/美分构成，例如：<span class="highlight">2（标准 1 / 美分 1）</span>。</td></tr>
+                <tr><td class="font-medium">交易量口径</td><td><span class="highlight">交易量(手)</span> 必须分开展示 <span class="highlight">标准手</span> 与 <span class="highlight">美分手</span>；两类手数不可折算后汇总为单一总手数。若主表或统计卡片在同一区域同时展示两类手数，需直接带上单位，避免仅写“标准 0.25 / 美分 0.32”这类弱提示写法。</td></tr>
+                <tr><td class="font-medium">佣金口径</td><td>客户级 <span class="highlight">佣金(USD)</span> 统一按 USD 展示；如涉及美分账户返佣，允许出现 <span class="highlight">0.0014 USD</span> 这类高精度值，不能直接显示为 0.00。</td></tr>
+                <tr><td class="font-medium">原始金额口径</td><td>展开行中的美分金额字段保留原始 <span class="highlight">USC/美分</span> 展示，仅用于核对，不在主表再次展示折算文案。</td></tr>
+                <tr><td class="font-medium">换算关系</td><td>美分账户金额换算规则固定为 <span class="highlight">1 USD = 100 USC</span>。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">4. 交互规则</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">筛选联动</td><td>选择账户类型或手数口径后，统计卡片、客户列表和导出结果均需同步刷新。</td></tr>
+                <tr><td class="font-medium">展开明细</td><td>点击列表前置箭头后，在下方逐行展开 MT账户构成及美分账户原始金额字段；标准账户客户可仅展示基础构成信息。</td></tr>
+                <tr><td class="font-medium">页面精简</td><td>不新增独立说明模块，仅在搜索、统计卡片、列表与展开明细中补充必要的美分识别信息。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">5. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 账户类型筛选是否可正确筛出仅标准账户、仅美分账户和混合客户。</td></tr>
+                <tr><td>2. 统计卡片中的金额字段是否统一按 USD 展示。</td></tr>
+                <tr><td>3. 交易量卡片及列表是否已分开展示标准手和美分手，未被合并统计。</td></tr>
+                <tr><td>4. 列表中的 MT数量是否能正确展示标准/美分账户构成。</td></tr>
+                <tr><td>5. 混合客户的入金、出金、净入金、佣金是否按 USD 统一汇总，且美分账户金额先折算后再汇总。</td></tr>
+                <tr><td>6. 展开行是否能正确展示交易量拆分和美分账户原始 USC/美分 字段。</td></tr>
+                <tr><td>7. 小于 0.01 USD 的佣金是否能显示高精度值，而不是被截断成 0.00。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

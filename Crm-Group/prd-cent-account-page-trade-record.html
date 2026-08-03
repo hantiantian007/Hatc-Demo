@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易记录页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】交易记录</h1>
+            <div class="flex gap-3">
+                <a href="admin-report-trade-record-cent-account.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">交易记录页面</span>因接入美分账户而新增或调整的需求，不重复描述原有标准账户交易记录能力。
+        </div>
+
+        <div class="module-title">1. 页面目标</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">目标</td><td>在交易记录报表中支持标准账户与美分账户混合查询，确保筛选、列表、汇总统计和导出在美分场景下口径一致。</td></tr>
+                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-report-trade-record-cent-account.html</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">新增账户类型筛选</td><td>搜索区新增 <span class="highlight">账户类型</span>，支持全部、标准账户、美分账户筛选。</td></tr>
+                <tr><td class="font-medium">新增手数口径筛选</td><td>搜索区新增 <span class="highlight">手数口径</span>，支持全部、标准手、美分手筛选，用于按手数体系独立查询交易记录。</td></tr>
+                <tr><td class="font-medium">新增账户类型列</td><td>列表中新增 <span class="highlight">账户类型</span> 列，明确当前记录属于标准账户还是美分账户。</td></tr>
+                <tr><td class="font-medium">新增手数口径列</td><td>列表中新增 <span class="highlight">手数口径</span> 列，明确当前交易手数属于 <span class="highlight">标准手</span> 还是 <span class="highlight">美分手</span>。</td></tr>
+                <tr><td class="font-medium">汇总金额口径调整</td><td>汇总区中的 <span class="highlight">库存费 / 手续费 / 客户盈亏</span> 统一按 <span class="highlight">USD</span> 口径展示，便于混合账户统计。</td></tr>
+                <tr><td class="font-medium">交易手数分开统计</td><td>汇总区不再展示单一 <span class="highlight">交易手数总计</span>，改为分别展示 <span class="highlight">标准账户交易手数</span> 与 <span class="highlight">美分账户交易手数</span>；两类手数不可合并统计。</td></tr>
+                <tr><td class="font-medium">美分记录展示原始金额</td><td>美分账户记录在行内金额下方补充原始 <span class="highlight">USC/美分</span> 金额，用于辅助识别原始交易结果。</td></tr>
+                <tr><td class="font-medium">展开行补充手数说明</td><td>点击列表展开箭头后，补充显示 <span class="highlight">手数口径</span>、原始手续费、原始盈亏；不额外展示折算规则文案。</td></tr>
+                <tr><td class="font-medium">导出遵循同页口径</td><td>报表导出字段和列表保持一致，汇总金额按 USD，明细可同时保留美分原始金额提示。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">列表维度</td><td>本页按单笔交易记录展示，允许标准账户和美分账户混排。</td></tr>
+                <tr><td class="font-medium">汇总口径</td><td>交易手数按账户类型分开累加，分别展示 <span class="highlight">标准手</span> 与 <span class="highlight">美分手</span>；库存费、手续费、客户盈亏在汇总区统一按 <span class="highlight">USD</span> 折算后汇总展示。</td></tr>
+                <tr><td class="font-medium">明细口径</td><td>标准账户明细按 USD/美元 展示；美分账户明细主值展示折算后的 USD，辅助信息展示原始 USC/美分。</td></tr>
+                <tr><td class="font-medium">价格字段口径</td><td><span class="highlight">开仓价格、结算价格</span> 属于交易品种成交价，不区分标准账户或美分账户单位，页面保持原始成交价展示；如不同 MT5 分组存在点差差异，则直接展示该账户所属分组的真实成交价。</td></tr>
+                <tr><td class="font-medium">换算关系</td><td>美分账户金额换算规则固定为 <span class="highlight">1 USD = 100 USC</span>。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">4. 交互规则</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">筛选联动</td><td>选择账户类型或手数口径后，列表、汇总统计和导出结果均需同步刷新。</td></tr>
+                <tr><td class="font-medium">展开行</td><td>点击列表前置箭头可展开当前记录的手续费、奖励、原始金额等补充信息，再次点击可收起。</td></tr>
+                <tr><td class="font-medium">页面精简</td><td>不单独增加说明文案块，仅在列表和展开明细中补充必要的美分识别信息。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">5. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 账户类型、手数口径筛选是否可正确筛出目标交易记录。</td></tr>
+                <tr><td>2. 汇总区中的标准账户交易手数和美分账户交易手数是否分开展示，未被合并统计。</td></tr>
+                <tr><td>3. 汇总区中的库存费、手续费、客户盈亏是否统一按 USD 展示。</td></tr>
+                <tr><td>4. 美分账户记录是否能同时看到折算后的 USD 值和原始 USC 值。</td></tr>
+                <tr><td>5. 展开行中的手数口径、原始金额、原始手续费是否展示正确。</td></tr>
+                <tr><td>6. 导出结果字段与页面口径是否一致。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

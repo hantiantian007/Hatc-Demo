@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户列表页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】客户列表</h1>
+            <div class="flex gap-3">
+                <a href="admin-client-list.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">客户列表页面</span>因接入美分账户而新增或调整的需求。
+        </div>
+
+        <div class="module-title">1. 页面目标</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">目标</td><td>在客户维度支持识别标准账户、美分账户及混合账户，并统一客户级金额汇总口径。</td></tr>
+                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-client-list.html</span></td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">新增账户类型筛选</td><td>支持 <span class="highlight">全部 / 仅标准账户 / 仅美分账户 / 标准+美分</span> 筛选。</td></tr>
+                <tr><td class="font-medium">MT账号数量展示构成</td><td>MT账号数量除总数外，还需展示构成，例如：<span class="highlight">标准 1 / 美分 1</span>。</td></tr>
+                <tr><td class="font-medium">金额列文案调整</td><td>列表金额列统一调整为 <span class="highlight">未提现(USD) / 入金金额(USD) / 出金金额(USD)</span>。</td></tr>
+                <tr><td class="font-medium">补充美分金额辅助展示</td><td>当客户存在美分账户时，列表中的 <span class="highlight">入金金额 / 出金金额</span> 在保留 USD 主值的同时，可补充一行红色辅助值，展示对应的 <span class="highlight">USC/美分</span> 金额；展开详情中也需保留 <span class="highlight">入金金额(USC)</span>、<span class="highlight">出金金额(USC)</span> 字段。</td></tr>
+                <tr><td class="font-medium">去除重复信息</td><td>删除详情展开中的“账户结构”“资产口径”等重复信息。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">汇总口径</td><td>客户级金额统一按 USD 汇总展示；标准账户金额按原始 USD 汇总，美分账户金额需先按 <span class="highlight">1:100</span> 折算为 USD 后再汇总。</td></tr>
+                <tr><td class="font-medium">展示精度</td><td>列表页汇总金额统一保留 <span class="highlight">2 位小数</span>；底层计算需保留高精度。</td></tr>
+                <tr><td class="font-medium">展示边界</td><td>列表主值继续展示客户级 USD 汇总结果；若客户包含美分账户，可在主值下方或展开详情中补充 USC/美分辅助展示，用于核对原始金额。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">4. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 仅标准、仅美分、混合账户三类客户的筛选结果是否正确。</td></tr>
+                <tr><td>2. MT账号数量是否能正确展示标准/美分构成。</td></tr>
+                <tr><td>3. 未提现、入金金额、出金金额的 USD 汇总口径是否正确。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
