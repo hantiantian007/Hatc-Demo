@@ -31,7 +31,7 @@
         <div class="module-title">1. 页面目标</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在待审核出金流程中补齐出金审核详情页，帮助审核人员查看出金申请主体信息、资金信息、历史入金记录及审核流转轨迹，并识别美分账户的原始金额口径。</td></tr>
+                <tr><td width="22%" class="font-medium">目标</td><td>在待审核出金流程中补齐出金审核详情页，帮助审核人员查看出金申请主体信息、资金信息、历史入金记录及审核流转轨迹，并识别美分账户的资金展示口径。</td></tr>
                 <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-withdraw-audit-detail.html</span></td></tr>
             </tbody>
         </table>
@@ -45,7 +45,7 @@
                 <tr><td class="font-medium">页面入口</td><td>该页面作为<span class="highlight">待审核出金</span>列表的详情页使用，需支持从待审核出金页面点击“审核/查看”进入；看板入口默认落在美分账户示例，便于优先审阅本次改动。</td></tr>
                 <tr><td class="font-medium">基础信息区</td><td>展示 MT账号、账户名称、MT分组、上级信息、手机号、支付方式、银行名称、银行账号、证件信息、申请时间、处理时间及<span class="highlight">MT类型</span>。</td></tr>
                 <tr><td class="font-medium">资金信息区</td><td>展示出金金额、到账金额、汇率、手续费、账户净值、账户余额、可用保证金等字段。</td></tr>
-                <tr><td class="font-medium">美分逻辑</td><td>当账号为美分账户时，页面需通过醒目胶囊标识<span class="highlight">美分账户</span>，并在资金信息中额外展示<span class="highlight">原始出金金额（USC）</span>、USC 口径的账户净值、账户余额及可用保证金；支付方式可展示为 <span class="highlight">AIPAY</span> 等人民币口径方案。</td></tr>
+                <tr><td class="font-medium">美分逻辑</td><td>当账号为美分账户时，页面需通过醒目胶囊标识<span class="highlight">美分账户</span>，并在资金信息中展示<span class="highlight">美分/USC</span> 口径的账户净值、账户余额及可用保证金；支付方式可展示为 <span class="highlight">AIPAY</span> 等人民币口径方案。</td></tr>
                 <tr><td class="font-medium">时间线审核详情</td><td>右侧展示审核进度时间线，包括发起申请、客服审核、风险审核、财务审核的时间、审核人、审核时效与审核结果。</td></tr>
                 <tr><td class="font-medium">历史记录区</td><td>下方展示历史入金记录，便于审核人员在审核出金时查看账户资金流入情况；入金记录下方需保留分页信息。</td></tr>
                 <tr><td class="font-medium">支付信息区</td><td>在入金记录下方增加<span class="highlight">支付信息</span>表，展示支付方式、支付编号、支付时间、支付状态、实际支付金额、支付金额、操作者、原因、操作等字段。</td></tr>
@@ -56,7 +56,7 @@
         <div class="module-title">3. 数据口径</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">金额单位</td><td>标准账户按 <span class="highlight">USD/美元</span> 展示；美分账户在审核详情中同时保留 <span class="highlight">USD 审核金额</span> 与 <span class="highlight">USC 原始金额</span>。</td></tr>
+                <tr><td width="22%" class="font-medium">金额单位</td><td>标准账户按 <span class="highlight">USD/美元</span> 展示；美分账户在审核详情中保留 <span class="highlight">USD 审核金额</span>，账户净值、账户余额、可用保证金统一按 <span class="highlight">美分/USC</span> 展示。</td></tr>
                 <tr><td class="font-medium">汇率规则</td><td>人民币支付方式按对应汇率展示到账金额，示例中 <span class="highlight">AIPAY</span> 使用人民币口径。</td></tr>
                 <tr><td class="font-medium">美分换算</td><td>美分账户遵循 <span class="highlight">1 USD = 100 USC</span> 的换算关系，审核页仅做展示，不再额外增加解释性文案。</td></tr>
             </tbody>
@@ -67,7 +67,7 @@
             <tbody>
                 <tr><td>1. 待审核出金页的“审核/查看”是否可跳转到详情页。</td></tr>
                 <tr><td>2. 标准账户与美分账户场景下，详情页字段和金额单位是否正确切换。</td></tr>
-                <tr><td>3. 美分账户是否显示 MT类型胶囊、原始出金金额及 USC 口径资金字段。</td></tr>
+                <tr><td>3. 美分账户是否显示 MT类型胶囊，且账户净值、账户余额、可用保证金已统一按美分/USC 展示，并已取消原始出金金额。</td></tr>
                 <tr><td>4. 右侧审核时间线是否包含完整的审核节点与审核信息。</td></tr>
                 <tr><td>5. 入金记录表及分页信息是否可正常展示。</td></tr>
                 <tr><td>6. 支付信息表是否可正确展示支付状态、支付金额和操作者信息。</td></tr>

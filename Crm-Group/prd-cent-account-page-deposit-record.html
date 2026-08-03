@@ -47,7 +47,8 @@
                 <tr><td class="font-medium">入金申请跳转</td><td>点击 <span class="highlight">入金申请</span> 按钮，跳转至入金申请页。</td></tr>
                 <tr><td class="font-medium">菜单跳转统一</td><td>左侧菜单中的“入金”需跳转到当前入金列表页，保持和原型链路一致。</td></tr>
                 <tr><td class="font-medium">页面精简</td><td>不显示额外说明文案，只保留列表与操作入口。</td></tr>
-                <tr><td class="font-medium">入金金额展示精度</td><td>列表中的 <span class="highlight">入金金额</span> 统一保留 <span class="highlight">2 位小数</span> 展示；美分账户示例展示为 USC，标准账户示例展示为 USD，对应折算美元辅助值也保持 2 位小数。</td></tr>
+                <tr><td class="font-medium">入金金额展示精度</td><td>列表中的 <span class="highlight">入金金额</span> 按账户类型分别展示：<span class="highlight">标准账户</span> 保留 <span class="highlight">2 位小数</span>，<span class="highlight">美分账户</span> 按 <span class="highlight">整数 USC</span> 展示；美分账户下方折算美元辅助值保持 <span class="highlight">2 位小数</span>。</td></tr>
+                <tr><td class="font-medium">人民币通道支付金额</td><td>当支付方式为 <span class="highlight">UGATE</span> 等人民币通道时，<span class="highlight">支付金额</span> 列需按 <span class="highlight">CNY/人民币</span> 展示，并显示对应汇率。</td></tr>
             </tbody>
         </table>
 
@@ -56,16 +57,18 @@
             <tbody>
                 <tr><td width="22%" class="font-medium">展示维度</td><td>本页为单笔入金记录视图，展示账户原始币种与单位，不做客户级 USD 汇总。</td></tr>
                 <tr><td class="font-medium">单位规则</td><td>标准账户记录按 USD/美元 展示；美分账户记录按 USC/美分 展示。</td></tr>
-                <tr><td class="font-medium">精度规则</td><td>当前页面内 <span class="highlight">入金金额</span> 与其下方折算美元辅助值统一展示为 <span class="highlight">2 位小数</span>。</td></tr>
+                <tr><td class="font-medium">支付金额口径</td><td><span class="highlight">支付金额</span> 根据支付通道币种展示：美元通道按 <span class="highlight">USD</span> 展示，人民币通道按 <span class="highlight">CNY/人民币</span> 展示。</td></tr>
+                <tr><td class="font-medium">精度规则</td><td><span class="highlight">标准账户</span> 的入金金额按 <span class="highlight">2 位小数</span> 展示；<span class="highlight">美分账户</span> 的入金金额按 <span class="highlight">整数 USC</span> 展示，不显示小数位；其下方折算美元辅助值保持 <span class="highlight">2 位小数</span>。</td></tr>
             </tbody>
         </table>
 
         <div class="module-title">4. 测试重点</div>
         <table>
             <tbody>
-                <tr><td>1. 美分账户记录是否能在列表中正确展示账户类型与单位。</td></tr>
-                <tr><td>2. 点击入金申请是否能正常跳转到入金页。</td></tr>
-                <tr><td>3. 左侧菜单“入金”是否正确跳转到当前页面。</td></tr>
+                <tr><td>1. 美分账户记录是否能在列表中正确展示账户类型、单位及整数 USC 金额。</td></tr>
+                <tr><td>2. UGATE 等人民币通道的支付金额是否按 CNY/人民币 展示，并显示正确汇率。</td></tr>
+                <tr><td>3. 点击入金申请是否能正常跳转到入金页。</td></tr>
+                <tr><td>4. 左侧菜单“入金”是否正确跳转到当前页面。</td></tr>
             </tbody>
         </table>
     </div>

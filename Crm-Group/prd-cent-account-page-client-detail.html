@@ -45,8 +45,9 @@
                 <tr><td class="font-medium">账户类型展示</td><td>客户详情需支持展示 <span class="highlight">标准账户 + 美分账户</span> 的混合状态。</td></tr>
                 <tr><td class="font-medium">MT账号数量展示构成</td><td>MT账号数量需展示为总数 + 构成，例如：<span class="highlight">3（标准 2 / 美分 1）</span>。</td></tr>
                 <tr><td class="font-medium">账号属性区分</td><td>账号列表中需区分 <span class="highlight">标准账户[交易] / 标准账户[佣金] / 美分账户[交易]</span>。</td></tr>
-                <tr><td class="font-medium">资金信息调整</td><td>累计入金、累计出金、净入金等信息保留数值本身，不增加“USD 汇总”提示文案。</td></tr>
+                <tr><td class="font-medium">资金信息调整</td><td><span class="highlight">累计入金</span>、<span class="highlight">累计出金</span>、<span class="highlight">累计净入金</span> 统一按 <span class="highlight">USD/美元</span> 展示；标准账户直接汇总，美分账户按 <span class="highlight">1 USD = 100 USC</span> 折算后汇总，并在字段下方补充汇总说明；其中<span class="highlight">累计入金</span>、<span class="highlight">累计出金</span>、<span class="highlight">累计净入金</span>下方可分别补充展示<span class="highlight">包含美分入金：123.00 USC</span>、<span class="highlight">包含美分出金：45.00 USC</span>、<span class="highlight">包含美分净入金：78.00 USC</span> 作为原始金额辅助说明。</td></tr>
                 <tr><td class="font-medium">美分金额展示</td><td>美分账户行内金额只展示 <span class="highlight">USC/美分</span> 原始金额，不展示“折合 USD”。</td></tr>
+                <tr><td class="font-medium">佣金账户精度</td><td>客户详情中的 <span class="highlight">佣金账户</span> 行金额统一保留 <span class="highlight">4 位小数</span>，使用 <span class="highlight">USD/美元</span> 展示。</td></tr>
                 <tr><td class="font-medium">交易手数分开展示</td><td>客户详情中的累计交易手数不再展示为单一总值，需拆分为 <span class="highlight">累计标准交易手数</span> 与 <span class="highlight">累计美分交易手数</span>。</td></tr>
                 <tr><td class="font-medium">账号列表补手数口径</td><td>账号列表新增 <span class="highlight">手数口径</span> 列，标准账户显示 <span class="highlight">标准手</span>，美分账户显示 <span class="highlight">美分手</span>。</td></tr>
             </tbody>
@@ -55,7 +56,8 @@
         <div class="module-title">3. 数据口径</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">客户级信息</td><td>顶部资金信息为客户级汇总视图。</td></tr>
+                <tr><td width="22%" class="font-medium">客户级信息</td><td>顶部资金信息为客户级汇总视图，其中 <span class="highlight">累计入金 / 累计出金 / 累计净入金</span> 统一按 <span class="highlight">USD/美元</span> 展示。</td></tr>
+                <tr><td class="font-medium">资金汇总规则</td><td><span class="highlight">累计净入金 = 累计入金 - 累计出金</span>；客户名下的标准账户金额直接按 <span class="highlight">USD/美元</span> 汇总，美分账户金额按 <span class="highlight">1 USD = 100 USC</span> 折算后汇总。</td></tr>
                 <tr><td class="font-medium">账号级信息</td><td>账号列表是单 MT 账号视图，标准账户显示 USD/美元，美分账户显示 USC/美分。</td></tr>
                 <tr><td class="font-medium">交易手数口径</td><td>客户级交易手数需按 <span class="highlight">标准手</span> 与 <span class="highlight">美分手</span> 分开统计和展示，两类手数不可融合为单一总手数。</td></tr>
             </tbody>
@@ -66,9 +68,11 @@
             <tbody>
                 <tr><td>1. 账户类型、MT账号数量构成、账号属性是否展示正确。</td></tr>
                 <tr><td>2. 美分账户行内金额是否仅展示 USC/美分，无折合 USD 文案。</td></tr>
-                <tr><td>3. 资金信息区是否已移除“USD 汇总”提示。</td></tr>
-                <tr><td>4. 累计标准交易手数和累计美分交易手数是否已分开展示，未被合并统计。</td></tr>
-                <tr><td>5. 账号列表中的手数口径列是否与账户类型匹配。</td></tr>
+                <tr><td>3. 资金信息区的累计入金、累计出金、累计净入金是否均已按 USD/美元 展示，并补充汇总说明。</td></tr>
+                <tr><td>4. 美分账户金额是否已按 1 USD = 100 USC 折算后汇总进客户级资金信息。</td></tr>
+                <tr><td>5. 客户详情中佣金账户行的金额是否已统一按 4 位小数展示。</td></tr>
+                <tr><td>6. 累计标准交易手数和累计美分交易手数是否已分开展示，未被合并统计。</td></tr>
+                <tr><td>7. 账号列表中的手数口径列是否与账户类型匹配。</td></tr>
             </tbody>
         </table>
     </div>
