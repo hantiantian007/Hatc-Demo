@@ -23,6 +23,7 @@
         /* 标签样式 */
         .tag-hk { background-color: #e0f2fe; color: #1e40af; border: 1px solid #bfdbfe; }
         .tag-group { background-color: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
+        .tag-group-only { background-color: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; }
         .tag-gw { background-color: #ecfdf5; color: #115e59; border: 1px solid #a7f3d0; }
         
         /* 折叠动画 */
@@ -80,13 +81,13 @@
                     <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
                         <div class="flex flex-col gap-1">
                             <div class="flex items-center gap-3">
-                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">其他需求</span>
-                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">业务改造</span>
+                                <h3 class="text-lg font-bold text-gray-800">美分业务</h3>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
+                            <p class="text-sm text-gray-500 mt-1">集中承接美分账户相关的产品、系统、流程与统计口径调整，便于按业务主题统一跟踪。</p>
                         </div>
                         <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 6 个任务</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 19 个任务</span>
                             <i class="fas fa-chevron-down accordion-icon"></i>
                         </div>
                     </div>
@@ -103,6 +104,329 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 注册页</td>
+                                        <td class="px-6 py-4 text-gray-500">在 Crm-Group 注册页新增账户类型选择，支持用户在注册阶段直接选择美元账户或美分账户，为后续开户分组与账户链路提供入口。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/register.html" target="_blank">
+                                                    <i class="fas fa-laptop-code text-gray-400"></i> 注册页原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-register.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 开户审核详情</td>
+                                        <td class="px-6 py-4 text-gray-500">在 Crm-Group 开户审核详情中补齐 MT类型、审核弹窗、分组过滤与申请记录展示，便于审核员完成标准账户 / 美分账户开户审核。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Crm-Group</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-audit.html" target="_blank">
+                                                    <i class="fas fa-laptop-code text-gray-400"></i> 审核详情原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-audit-detail.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 入金</td>
+                                        <td class="px-6 py-4 text-gray-500">围绕美分账户入金流程补齐账户选择、到账单位识别、双金额展示、1:100 自动换算与 4 位小数精度展示。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-deposit-cent-account.html" target="_blank">
+                                                    <i class="fas fa-object-group text-gray-400"></i> 入金原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-deposit.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 入金列表</td>
+                                        <td class="px-6 py-4 text-gray-500">基于现有入金记录页样式补齐美分账户列表展示，在记录中直接呈现账户类型、原始到账金额、折算美元金额与 4 位小数精度。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-deposit-record-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 入金列表原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-deposit-record.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 待审核入金</td>
+                                        <td class="px-6 py-4 text-gray-500">在后台待审核入金页面中补齐 MT类型筛选、标准/美分账户识别、原始入金金额(USC)与美分账户余额口径展示，便于审核员处理美分账户入金审核。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-deposit-pending-review.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 待审核入金原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-deposit-pending-review.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 出金列表</td>
+                                        <td class="px-6 py-4 text-gray-500">基于现有出金记录页样式补齐美分账户列表展示，在记录中直接呈现账户类型、原始出金金额、等值美元金额、到账币种与汇率口径。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-withdraw-record-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 出金列表原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-withdraw-record.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 出金管理</td>
+                                        <td class="px-6 py-4 text-gray-500">基于现有出金二级页补齐美分账户可选账号展示，在账户列表中直接体现账户类型、单位以及等值美元口径，便于进入下一步出金申请流程。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-withdraw-cent-account.html" target="_blank">
+                                                    <i class="fas fa-object-group text-gray-400"></i> 出金管理原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-withdraw-manage.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 出金申请</td>
+                                        <td class="px-6 py-4 text-gray-500">基于现有出金申请页补齐标准账户与美分账户的申请能力，支持按账户类型切换金额单位、支付通道汇率与到账金额联动展示。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-withdraw-apply-cent-account.html" target="_blank">
+                                                    <i class="fas fa-object-group text-gray-400"></i> 出金申请原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-withdraw-apply.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 待审核出金</td>
+                                        <td class="px-6 py-4 text-gray-500">在后台待审核出金页面中补齐 MT类型筛选、标准/美分账户识别、原始出金金额(USC)与到账金额口径展示，便于审核员处理美分账户出金审核。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-withdraw-pending-review.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 待审核出金原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-withdraw-pending-review.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 出金审核详情</td>
+                                        <td class="px-6 py-4 text-gray-500">在待审核出金详情页中补齐出金主体信息、资金信息、历史入金记录与审核时间线，并增加美分账户的 USC 原始金额与 MT类型识别能力。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-withdraw-audit-detail.html?account=9900456" target="_blank">
+                                                    <i class="fas fa-laptop-code text-gray-400"></i> 出金审核原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-withdraw-audit-detail.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 客户列表</td>
+                                        <td class="px-6 py-4 text-gray-500">在客户列表中补齐美分账户筛选与展示能力，支持按账户类型搜索，并在 MT 账户数量与详情区域体现标准/美分账户构成及美元汇总口径。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-client-list.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 客户列表原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-client-list.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 客户详情</td>
+                                        <td class="px-6 py-4 text-gray-500">在客户详情中补齐标准账户与美分账户的并存展示，明确账号属性、账户类型、MT账号结构以及单账号币种口径。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-client-detail.html" target="_blank">
+                                                    <i class="fas fa-laptop-code text-gray-400"></i> 客户详情原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-client-detail.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 账户管理</td>
+                                        <td class="px-6 py-4 text-gray-500">在账户管理页补齐美分账户的筛选、账户类型识别和金额单位展示，列表中明确区分标准账户、佣金账户与美分账户。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-account-management-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 账户管理原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-account-management.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - MT开户</td>
+                                        <td class="px-6 py-4 text-gray-500">在账户管理页新增 MT开户 二级跳转页面，支持后台为当前客户发起 MT 账户申请，并展示真实姓名、邮箱、手机及账号类型等基础开户信息。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Crm-Group</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-account-mt-open.html" target="_blank">
+                                                    <i class="fas fa-laptop-code text-gray-400"></i> MT开户原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-account-mt-open.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 账户审核</td>
+                                        <td class="px-6 py-4 text-gray-500">在账户审核列表中补齐美分账户开户申请的筛选、账户类型识别与分组展示，便于运营识别美分开户申请。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-audit-list.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 账户审核原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-audit-list.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 客户报表</td>
+                                        <td class="px-6 py-4 text-gray-500">在客户报表中补齐账户类型筛选、客户级 USD 汇总、MT账户构成展示，并在展开明细中保留美分账户原始 USC 字段。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-customer-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 客户报表原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-customer-report.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 交易记录</td>
+                                        <td class="px-6 py-4 text-gray-500">在交易记录报表中补齐美分账户筛选、账户类型识别和 USD 汇总口径，并在明细中辅助展示 USC 原始金额。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-trade-record-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 交易记录原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-trade-record.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 财务报表</td>
+                                        <td class="px-6 py-4 text-gray-500">在财务报表中补齐美分账户筛选、账户类型识别和 USD 汇总口径，并在展开明细中展示 USC 原始金额。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-finance-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 财务报表原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-finance-report.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">美分账户 - 佣金报表</td>
+                                        <td class="px-6 py-4 text-gray-500">在佣金报表中补齐美分账户筛选、账户类型识别和 USD 返佣口径，并增加搜索条件模块折叠功能。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-commission-cent-account.html" target="_blank">
+                                                    <i class="fas fa-table-list text-gray-400"></i> 佣金报表原型
+                                                </a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-commission-report.html" target="_blank">
+                                                    <i class="fas fa-book-open"></i> 页面PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
                                         <td class="px-6 py-4 font-bold text-gray-800">美分账户系统改造</td>
                                         <td class="px-6 py-4 text-gray-500">围绕美分账户接入，统一业务规则、研发改造范围、测试验收标准与排期评估，覆盖账户、资金、报表、提成与导出链路。</td>
                                         <td class="px-6 py-4">
@@ -113,12 +437,41 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-cent-account-solution.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> 系统方案
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded transition-colors flex items-center gap-1 border border-amber-200" href="Crm-Group/prd-cent-account-product.html" target="_blank">
-                                                    <i class="fas fa-file-lines"></i> 产品文档
-                                                </a>
                                             </div>
                                         </td>
                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">其他需求</span>
+                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 7 个任务</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-orange-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
                                     <tr class="table-row-hover">
                                         <td class="px-6 py-4 font-bold text-gray-800">官网数据源</td>
                                         <td class="px-6 py-4 text-gray-500">为官网行情报价模块补齐数据源接入方案、前后端接口规范、缓存降级策略，以及前端联调与测试验收口径。</td>
@@ -158,12 +511,28 @@
                     </div>
                 </div>
 
-                <!-- 需求卡片 3: 其他 -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+            </div>
+        </div>
+
+        <!-- 规划中需求 -->
+        <div class="mb-10 bg-purple-50/30 rounded-xl shadow-sm border border-purple-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-purple-200 bg-purple-50/50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-inbox text-[#8B5CF6]"></i> 规划中需求
+                    </h2>
+                    <span class="text-xs font-medium text-gray-500 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full border border-purple-200">排期中</span>
+                </div>
+            </div>
+
+            <!-- 需求列表容器 -->
+            <div class="p-6 flex flex-col gap-4 bg-gray-50/50">
+
+                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
                         <div class="flex flex-col gap-1">
                             <div class="flex items-center gap-3">
-                                <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-bold">客户留资</span>
+                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">客户留资</span>
                                 <h3 class="text-lg font-bold text-gray-800">客户留资三期</h3>
                             </div>
                             <p class="text-sm text-gray-500 mt-1">围绕留资列表、销售录入弹窗与线索详情继续细化：补充留资次数、增强详情可维护能力，并完善轻量录入字段。</p>
@@ -205,11 +574,11 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-amber-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-amber-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
                         <div class="flex flex-col gap-1">
                             <div class="flex items-center gap-3">
-                                <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold">基础逻辑</span>
+                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">基础逻辑</span>
                                 <h3 class="text-lg font-bold text-gray-800">委托交易</h3>
                             </div>
                             <p class="text-sm text-gray-500 mt-1">委托交易分组支持配置，可随时新增或删除；委托交易账户独立页面管理，客户详情仅保留原本信息。委托账户在独立管理页中统一查看限制状态、开放时间和结束状态，实际查看动作在 MT5 中完成。</p>
@@ -239,7 +608,7 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-phase1.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-phase1.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                             </div>
@@ -256,7 +625,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-account-management.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-account-management.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                             </div>
@@ -273,7 +642,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-rule-config.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-rule-config.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 规则原型
                                                 </a>
                                             </div>
@@ -290,7 +659,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-trust-group-config.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-group-config.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 分组原型
                                                 </a>
                                             </div>
@@ -301,23 +670,6 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-
-        <!-- 规划中需求 -->
-        <div class="mb-10 bg-purple-50/30 rounded-xl shadow-sm border border-purple-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-purple-200 bg-purple-50/50 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                        <i class="fa-solid fa-inbox text-[#8B5CF6]"></i> 规划中需求
-                    </h2>
-                    <span class="text-xs font-medium text-gray-500 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full border border-purple-200">排期中</span>
-                </div>
-            </div>
-
-            <!-- 需求列表容器 -->
-            <div class="p-6 flex flex-col gap-4 bg-gray-50/50">
                 
                 <!-- 规划需求卡片 1 -->
                 <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
@@ -351,7 +703,7 @@
                                         <td class="px-6 py-4 text-gray-500">官网双端新增“商品购买”按钮，支持重定向至CRM登录页，并在登录后自动跳转至商品列表。</td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-col gap-1">
-                                                <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group</span>
+                                                <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Group</span>
                                                 <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">CRM-HK</span>
                                             </div>
                                         </td>
@@ -369,7 +721,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-product-list.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> 列表 PRD</a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/client-product-list.html" target="_blank"><i class="fas fa-desktop"></i> 列表原型</a>
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-product-list.html" target="_blank"><i class="fas fa-desktop"></i> 列表原型</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -380,7 +732,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-product-detail.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> 详情 PRD</a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/product-detail.html" target="_blank"><i class="fas fa-desktop"></i> 详情原型</a>
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/product-detail.html" target="_blank"><i class="fas fa-desktop"></i> 详情原型</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -391,7 +743,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-management.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-product-management.html" target="_blank"><i class="fas fa-desktop"></i> 原型</a>
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-product-management.html" target="_blank"><i class="fas fa-desktop"></i> 原型</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -402,7 +754,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-edit.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-product-edit.html" target="_blank"><i class="fas fa-desktop"></i> 原型</a>
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-product-edit.html" target="_blank"><i class="fas fa-desktop"></i> 原型</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -413,7 +765,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-client-my-orders.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/client-my-orders.html" target="_blank"><i class="fas fa-desktop"></i> 客户端订单原型</a>
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-my-orders.html" target="_blank"><i class="fas fa-desktop"></i> 客户端订单原型</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -424,7 +776,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-orders.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-product-orders.html" target="_blank"><i class="fas fa-desktop"></i> 后台订单原型</a>
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-product-orders.html" target="_blank"><i class="fas fa-desktop"></i> 后台订单原型</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -470,7 +822,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-pnl-1.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-report-pnl-1.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-pnl-1.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                             </div>
@@ -485,7 +837,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-pnl-2.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-report-pnl-2.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-pnl-2.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                             </div>
@@ -500,7 +852,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-equity.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-report-equity.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-equity.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                             </div>
@@ -515,7 +867,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-position.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-report-position.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-position.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                             </div>
@@ -558,14 +910,14 @@
                                         <td class="px-6 py-4 font-bold text-gray-800">集团动态二期 - 后台发布能力</td>
                                         <td class="px-6 py-4 text-gray-500">聚焦后台创建与编辑能力：支持 HK / Group 双站点投放、创建页适配、正文块与图片模块配置，以及桌面端/移动端预览。</td>
                                         <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Crm-Group</span>
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-group-news-backend-phase2.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-group-news-create-optimized.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-group-news-create-optimized.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 后台原型
                                                 </a>
                                             </div>
@@ -575,14 +927,14 @@
                                         <td class="px-6 py-4 font-bold text-gray-800">集团动态二期 - 后台列表管理</td>
                                         <td class="px-6 py-4 text-gray-500">聚焦已创建动态的后台管理能力：支持 HK / Group 双站点维度查看、搜索筛选、状态管理、编辑入口，以及一键复制已创建动态。</td>
                                         <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Crm-Group</span>
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-group-news-list-management-phase2.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded transition-colors flex items-center gap-1 border border-purple-200" href="Crm-Group/admin-group-news-list.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-group-news-list.html" target="_blank">
                                                     <i class="fas fa-table-list"></i> 列表原型
                                                 </a>
                                             </div>
@@ -599,7 +951,7 @@
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-group-news-frontend-phase2.html" target="_blank">
                                                     <i class="fas fa-project-diagram text-gray-400"></i> PRD
                                                 </a>
-                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/group-news-display-modes.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/group-news-display-modes.html" target="_blank">
                                                     <i class="fas fa-globe"></i> 前端原型
                                                 </a>
                                             </div>
@@ -642,32 +994,6 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 divide-y divide-gray-100" id="completed-tbody">
-                        <tr class="table-row-hover bg-white">
-                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">客户管理</td>
-                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">客户留资三期</td>
-                            <td class="px-5 py-4 text-gray-500">围绕留资列表、销售录入弹窗与线索详情继续细化：补充留资次数、增强详情可维护能力，并完善轻量录入字段。</td>
-                            <td class="px-5 py-4">
-                                <div class="flex flex-col gap-1">
-                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                </div>
-                            </td>
-                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-29</td>
-                            <td class="px-5 py-4">
-                                <div class="flex flex-col gap-2">
-                                    <div class="flex flex-wrap gap-2 items-center">
-                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-phase3.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                        </a>
-                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
-                                            <i class="fas fa-laptop-code"></i> 列表原型
-                                        </a>
-                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-detail.html" target="_blank">
-                                            <i class="fas fa-laptop-code"></i> 详情原型
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
                         <tr class="table-row-hover bg-white">
                             <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">局部架构调整</td>
                             <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">统计报表时区添加</td>
@@ -830,7 +1156,7 @@
                             <td class="px-5 py-4 text-gray-500">仅海外版实名认证时校验是否为香港身份证；若命中有效 HKID，则提示“暂时不支持香港身份证开户注册。”并禁止提交。</td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col gap-1">
-                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Crm-Group</span>
                                 </div>
                             </td>
                             <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-21</td>
@@ -931,7 +1257,7 @@
                             <td class="px-5 py-4 text-gray-500">按设计稿调整邮件样式。</td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col gap-1">
-                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group</span>
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Group</span>
                                 </div>
                             </td>
                             <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-07-09</td>
@@ -1085,7 +1411,7 @@
                             <td class="px-5 py-4 text-gray-500">提供新用户的注册入口，包含邮箱、密码、推荐码、图形验证码及注册条款确认。无邀请码增加弹窗留资入口。</td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col gap-1">
-                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Crm-Group</span>
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group-only w-max">Crm-Group</span>
                                 </div>
                             </td>
                             <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-6-24</td>
@@ -1343,6 +1669,51 @@
                 icon.classList.add('open');
             }
         }
+
+        function renameBoardLabels() {
+            const replacements = [
+                ['Group(含HK)', '海外版(含港版)'],
+                ['官网(HK/Group)', '官网(港版/海外版)'],
+                ['HK / Group', '港版 / 海外版'],
+                ['HK/Group', '港版/海外版'],
+                ['CRM-HK', 'CRM-港版'],
+                ['Crm-Group', 'CRM-海外版'],
+                ['Group-Gw', '海外版官网'],
+                ['Hk-Gw', '港版官网'],
+                ['Group 官网', '海外版官网'],
+                ['HK 官网', '港版官网'],
+                ['(Group)', '(海外版)'],
+                ['(HK)', '(港版)'],
+                ['Group', '海外版'],
+                ['HK', '港版']
+            ];
+
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            const textNodes = [];
+
+            while (walker.nextNode()) {
+                textNodes.push(walker.currentNode);
+            }
+
+            textNodes.forEach((node) => {
+                const parentTag = node.parentElement?.tagName;
+                if (parentTag === 'SCRIPT' || parentTag === 'STYLE') {
+                    return;
+                }
+
+                let text = node.textContent;
+
+                replacements.forEach(([from, to]) => {
+                    if (text.includes(from)) {
+                        text = text.split(from).join(to);
+                    }
+                });
+
+                node.textContent = text;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renameBoardLabels);
     </script>
 </body>
 </html>
