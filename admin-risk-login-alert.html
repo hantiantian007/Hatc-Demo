@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 登录 IP 一致性比对</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#C19B5E',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        mainBg: '#F3F4F6',
+                        primaryBtn: '#41B8AF',
+                        primaryBtnHover: '#359f97',
+                        brandGold: '#C19B5E',
+                        softGold: '#F6EFE2',
+                        riskLow: '#2F9E8F',
+                        riskMedium: '#F59E0B',
+                        riskHigh: '#E85D75'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 500px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+        .shadow-panel { box-shadow: 0 14px 44px rgba(15, 23, 42, 0.08); }
+        .table-scroll::-webkit-scrollbar { height: 10px; }
+        .table-scroll::-webkit-scrollbar-thumb { background: rgba(193, 155, 94, 0.35); border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+    <div id="drawerOverlay" class="fixed inset-0 bg-slate-900/30 z-[180] hidden" onclick="closeAllDrawers()"></div>
+    <div id="customerListOverlay" class="fixed inset-0 bg-slate-900/40 z-[210] hidden" onclick="closeCustomerListModal()"></div>
+    <div id="customerListModal" class="fixed inset-0 z-[220] hidden items-center justify-center p-6">
+        <div class="w-full max-w-lg bg-white rounded-2xl border border-gray-200 shadow-panel overflow-hidden">
+            <div class="px-5 py-4 border-b border-gray-100 flex items-start justify-between gap-4">
+                <div>
+                    <div id="customerListTitle" class="text-sm font-bold text-gray-800">客户明细（近30天）</div>
+                    <div id="customerListMeta" class="text-xs text-gray-500 mt-1"></div>
+                </div>
+                <button type="button" onclick="closeCustomerListModal()" class="w-9 h-9 rounded-full bg-gray-100 text-gray-500 hover:text-gray-700 hover:bg-gray-200 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-5">
+                <div id="customerListItems" class="divide-y divide-gray-100"></div>
+                <div class="mt-4 flex justify-end">
+                    <button type="button" onclick="closeCustomerListModal()" class="px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:border-gray-300 transition-colors">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="admin-withdraw-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">成长计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动审核</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-bullhorn w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">动态公告</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">集团动态</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">最新公告</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">推送消息</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
+                    <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
+                    <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">盈亏报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">系统设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">MT设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">群发管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">消息管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">日志管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">配置参数</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付币种</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
+            </a>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-wallet w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表明细</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户信息表</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-shield w-6 text-center text-lg text-menuActive group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px] text-menuActive">风控管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated text-menuActive"></i>
+                </button>
+                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-white transition-colors">登录 IP 一致性比对</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 w-full relative">
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="hover:text-gray-800 cursor-pointer">风控管理</span>
+                <span class="mx-2 text-gray-300">/</span>
+                <span class="text-gray-800 font-medium">登录 IP 一致性比对</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="prd-risk-login-alert.html" onclick="event.preventDefault(); event.stopPropagation(); openPrdDrawer();" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded border border-gray-200 transition-colors">
+                    <i class="fa-solid fa-file-lines"></i> PRD 文档
+                </a>
+                <a href="admin-client-detail.html" class="hidden sm:flex items-center gap-2 text-sm text-brandGold hover:text-[#a88651] bg-softGold px-3 py-1.5 rounded-full transition-colors">
+                    <i class="fa-solid fa-user"></i> 查看客户详情联动
+                </a>
+                <a href="../index.html" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded border border-gray-200 transition-colors">
+                    <i class="fa-solid fa-list"></i> 需求看板
+                </a>
+                <div class="w-9 h-9 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold">RC</div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+            <section class="bg-white rounded-2xl border border-gray-100 shadow-panel p-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-2">客户邮箱 / 姓名</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input id="searchInput" type="text" placeholder="支持邮箱或姓名模糊搜索" class="w-full h-10 pl-9 pr-3 rounded-lg border border-gray-200 text-sm text-gray-700 bg-gray-50 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-2">登录IP</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-globe absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input id="ipSearchInput" type="text" placeholder="支持 CRM / MT5 登录IP搜索" class="w-full h-10 pl-9 pr-3 rounded-lg border border-gray-200 text-sm text-gray-700 bg-gray-50 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-2">比对结果 / 提示标签</label>
+                        <select id="resultSelect" class="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700">
+                            <option selected>全部结果</option>
+                            <option>同一IP</option>
+                            <option>IP不一致</option>
+                            <option>未匹配到MT5登录</option>
+                            <option>同IP多客户</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-500 mb-2">登录时间（CRM）</label>
+                        <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+                            <input type="date" class="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-700 bg-white focus:outline-none">
+                            <span class="text-xs text-gray-400">至</span>
+                            <input type="date" class="w-full h-10 rounded-lg border border-gray-200 px-3 text-sm text-gray-700 bg-white focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="flex items-end gap-3">
+                        <button class="h-10 px-4 rounded-lg bg-primaryBtn text-white text-sm hover:bg-primaryBtnHover transition-colors">查询</button>
+                        <button onclick="resetFilters()" class="h-10 px-4 rounded-lg border border-gray-200 text-sm text-gray-600 hover:border-gray-300 transition-colors">重置</button>
+                        <button class="h-10 px-4 rounded-lg bg-white border border-gray-200 text-sm text-gray-600 hover:border-brandGold hover:text-brandGold transition-colors">
+                            <i class="fa-solid fa-download mr-2"></i>导出
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-2xl border border-gray-100 shadow-panel overflow-hidden">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                    <div>
+                        <h2 class="text-base font-bold text-gray-800">IP 一致性比对清单</h2>
+                    </div>
+                    <div></div>
+                </div>
+                <div class="table-scroll overflow-x-auto">
+                    <table class="w-full min-w-[1640px] whitespace-nowrap text-sm">
+                        <thead class="bg-[#2f3648] text-white">
+                            <tr>
+                                <th class="text-left font-medium px-4 py-3">客户信息</th>
+                                <th class="text-left font-medium px-4 py-3">CRM 登录</th>
+                                <th class="text-left font-medium px-4 py-3">MT5 登录</th>
+                                <th class="text-left font-medium px-4 py-3">30天内累计登录次数</th>
+                                <th class="text-left font-medium px-4 py-3">CRM同IP30天内汇总</th>
+                                <th class="text-left font-medium px-4 py-3">MT5同IP30天内汇总</th>
+                                <th class="text-left font-medium px-4 py-3">比对结果</th>
+                                <th class="text-left font-medium px-4 py-3">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr onclick="openDrawer(0)" class="cursor-pointer hover:bg-[#fbfaf7] transition-colors">
+                                <td class="px-4 py-4">
+                                    <div class="font-semibold text-gray-800">林先生-lin@example.com</div>
+                                    <div class="text-xs text-gray-500 mt-1">MT5: 8801732</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">103.12.18.21</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国广东省广州市</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 09:12:18</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">45.88.201.10</div>
+                                    <div class="text-xs text-gray-500 mt-1">英国伦敦</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 09:19:42</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <div class="text-gray-800">18次（IP不一致5次）</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(0, 'crm')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">3个客户</button>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(0, 'mt5')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">2个客户</button>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-1 rounded-full bg-[#ffe5ea] text-riskHigh">IP不一致</span>
+                                        <span class="px-2 py-1 rounded-full bg-[#fff3dd] text-riskMedium text-xs">同IP多客户</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <button onclick="event.stopPropagation(); openDrawer(0)" class="text-brandGold hover:text-[#a88651]">查看详情</button>
+                                        <a onclick="event.stopPropagation()" href="admin-client-detail.html" class="text-gray-500 hover:text-gray-700">客户详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr onclick="openDrawer(1)" class="cursor-pointer hover:bg-[#fbfaf7] transition-colors">
+                                <td class="px-4 py-4">
+                                    <div class="font-semibold text-gray-800">陈小姐-chen@example.com</div>
+                                    <div class="text-xs text-gray-500 mt-1">MT5: 8801941</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">58.62.19.87</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国广东省深圳市</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 11:08:05</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">58.62.19.99</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国广东省深圳市</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 11:14:10</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <div class="text-gray-800">9次（IP不一致2次）</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(1, 'crm')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">1个客户</button>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(1, 'mt5')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">1个客户</button>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 rounded-full bg-[#fff3dd] text-riskMedium">IP不一致</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <button onclick="event.stopPropagation(); openDrawer(1)" class="text-brandGold hover:text-[#a88651]">查看详情</button>
+                                        <a onclick="event.stopPropagation()" href="admin-client-detail.html" class="text-gray-500 hover:text-gray-700">客户详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr onclick="openDrawer(2)" class="cursor-pointer hover:bg-[#fbfaf7] transition-colors">
+                                <td class="px-4 py-4">
+                                    <div class="font-semibold text-gray-800">张先生-zhang@example.com</div>
+                                    <div class="text-xs text-gray-500 mt-1">MT5: 8802013</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">203.186.12.19</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国香港</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 13:42:55</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">203.186.12.19</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国香港</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 13:51:24</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <div class="text-gray-800">6次（IP不一致0次）</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(2, 'crm')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">2个客户</button>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(2, 'mt5')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">2个客户</button>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-1 rounded-full bg-[#edf9f7] text-riskLow">同一IP</span>
+                                        <span class="px-2 py-1 rounded-full bg-[#fff3dd] text-riskMedium text-xs">同IP多客户</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <button onclick="event.stopPropagation(); openDrawer(2)" class="text-brandGold hover:text-[#a88651]">查看详情</button>
+                                        <a onclick="event.stopPropagation()" href="admin-client-detail.html" class="text-gray-500 hover:text-gray-700">客户详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr onclick="openDrawer(3)" class="cursor-pointer hover:bg-[#fbfaf7] transition-colors">
+                                <td class="px-4 py-4">
+                                    <div class="font-semibold text-gray-800">赵女士-zhao@example.com</div>
+                                    <div class="text-xs text-gray-500 mt-1">MT5: 8802407</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">171.221.10.51</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国四川省成都市</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 15:12:06</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">171.221.54.12</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国四川省成都市</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 15:45:39</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <div class="text-gray-800">11次（IP不一致4次）</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(3, 'crm')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">1个客户</button>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(3, 'mt5')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">3个客户</button>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 rounded-full bg-[#fff3dd] text-riskMedium">IP不一致</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <button onclick="event.stopPropagation(); openDrawer(3)" class="text-brandGold hover:text-[#a88651]">查看详情</button>
+                                        <a onclick="event.stopPropagation()" href="admin-client-detail.html" class="text-gray-500 hover:text-gray-700">客户详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr onclick="openDrawer(4)" class="cursor-pointer hover:bg-[#fbfaf7] transition-colors">
+                                <td class="px-4 py-4">
+                                    <div class="font-semibold text-gray-800">吴先生-wu@example.com</div>
+                                    <div class="text-xs text-gray-500 mt-1">MT5: 8802688</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-800">61.145.77.203</div>
+                                    <div class="text-xs text-gray-500 mt-1">中国广东省东莞市</div>
+                                    <div class="text-xs text-gray-400 mt-1">2026-07-09 17:26:41</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-medium text-gray-400">--</div>
+                                    <div class="text-xs text-gray-400 mt-1">--</div>
+                                    <div class="text-xs text-gray-400 mt-1">未匹配到 MT5 登录</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <div class="text-gray-800">3次（IP不一致0次）</div>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <button type="button" onclick="event.stopPropagation(); openCustomerListModal(4, 'crm')" class="p-0 bg-transparent border-0 text-blue-600 hover:text-blue-700 underline underline-offset-2 focus:outline-none">4个客户</button>
+                                </td>
+                                <td class="px-4 py-4 text-xs text-gray-600">
+                                    <div class="text-gray-400">--</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-1 rounded-full bg-[#f3f0ff] text-[#6d59d9]">未匹配到MT5登录</span>
+                                        <span class="px-2 py-1 rounded-full bg-[#fff3dd] text-riskMedium text-xs">同IP多客户</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <button onclick="event.stopPropagation(); openDrawer(4)" class="text-brandGold hover:text-[#a88651]">查看详情</button>
+                                        <a onclick="event.stopPropagation()" href="admin-client-detail.html" class="text-gray-500 hover:text-gray-700">客户详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
+                    <span>展示第 1-5 条，共 27 条</span>
+                    <div class="flex items-center gap-2">
+                        <button class="w-9 h-9 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">‹</button>
+                        <button class="w-9 h-9 rounded-lg bg-brandGold text-white">1</button>
+                        <button class="w-9 h-9 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">2</button>
+                        <button class="w-9 h-9 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">›</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <aside id="detailDrawer" class="absolute top-0 right-0 h-full w-[620px] bg-white shadow-2xl border-l border-gray-200 z-[190] translate-x-full transition-transform duration-300 flex flex-col">
+            <div class="px-6 py-5 border-b border-gray-100 bg-white sticky top-0 z-10">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span id="drawerLevel" class="px-3 py-1 rounded-full text-xs bg-[#ffe5ea] text-riskHigh">IP不一致</span>
+                        </div>
+                        <h3 id="drawerTitle" class="text-lg font-bold text-gray-800">林先生-lin@example.com</h3>
+                        <p id="drawerSubtitle" class="text-xs text-gray-500 mt-1">判定时间 2026-07-09 09:20:03 · MT5 账号 8801732</p>
+                    </div>
+                    <button onclick="closeDrawer()" class="w-10 h-10 rounded-full bg-gray-100 text-gray-500 hover:text-gray-700 hover:bg-gray-200 transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="detailDrawerBody" class="flex-1 overflow-y-auto p-6 space-y-5">
+                <section class="rounded-2xl border border-[#eadcc4] bg-[#fbfaf7] p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-bold text-gray-800">登录环境对比</h4>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="rounded-xl bg-white border border-gray-100 p-4">
+                            <div class="text-xs text-gray-500 mb-3">CRM 登录</div>
+                            <div id="crmIp" class="font-medium text-gray-800 break-all"></div>
+                            <div id="crmLocation" class="text-xs text-gray-500 mt-2"></div>
+                            <div id="crmTime" class="text-xs text-gray-400 mt-2"></div>
+                        </div>
+                        <div class="rounded-xl bg-white border border-gray-100 p-4">
+                            <div class="text-xs text-gray-500 mb-3">MT5 登录</div>
+                            <div id="mt5Ip" class="font-medium text-gray-800 break-all"></div>
+                            <div id="mt5Location" class="text-xs text-gray-500 mt-2"></div>
+                            <div id="mt5Time" class="text-xs text-gray-400 mt-2"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rounded-2xl border border-gray-100 p-4">
+                    <h4 class="text-sm font-bold text-gray-800 mb-4">比对结果说明</h4>
+                    <div id="ruleHits" class="space-y-3"></div>
+                </section>
+
+                <section class="rounded-2xl border border-gray-100 p-4">
+                    <h4 class="text-sm font-bold text-gray-800 mb-4">补充信息</h4>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">注册 IP（参考）</div>
+                            <div id="registerIp" class="text-gray-800 leading-5"></div>
+                            <div id="registerIpLocation" class="text-gray-500 leading-5 mt-1"></div>
+                        </div>
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">结果说明</div>
+                            <div id="ipCount30d" class="text-gray-800 leading-5"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="statsSummarySection" class="rounded-2xl border border-gray-100 p-4 transition-all duration-300">
+                    <h4 class="text-sm font-bold text-gray-800 mb-4">统计（近30天）</h4>
+                    <div class="grid grid-cols-3 gap-3 text-xs">
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">30天内累计登录次数</div>
+                            <div id="customerStats" class="text-gray-800 leading-5"></div>
+                        </div>
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">CRM同IP30天内汇总</div>
+                            <div id="crmIpStats" class="text-gray-800 leading-5"></div>
+                        </div>
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">MT5同IP30天内汇总</div>
+                            <div id="mt5IpStats" class="text-gray-800 leading-5"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="statsDetailSection" class="rounded-2xl border border-gray-100 p-4 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-bold text-gray-800">统计明细</h4>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">CRM同IP维度明细</div>
+                            <div id="crmIpStatsDetail" class="space-y-2 text-gray-800 leading-5"></div>
+                        </div>
+                        <div class="rounded-xl bg-gray-50 p-3">
+                            <div class="text-gray-500 mb-2">MT5同IP维度明细</div>
+                            <div id="mt5IpStatsDetail" class="space-y-2 text-gray-800 leading-5"></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <div class="border-t border-gray-100 bg-white px-6 py-5">
+                <div class="rounded-xl bg-gray-50 border border-gray-100 px-4 py-3 flex items-center justify-end">
+                    <button onclick="closeDrawer()" class="px-4 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:border-gray-300 transition-colors">关闭</button>
+                </div>
+            </div>
+        </aside>
+
+        <aside id="prdDrawer" class="absolute top-0 right-0 h-full w-[860px] bg-white shadow-2xl border-l border-gray-200 z-[200] translate-x-full transition-transform duration-300 flex flex-col">
+            <div class="px-6 py-5 border-b border-gray-100 bg-white sticky top-0 z-10">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800">PRD 文档</h3>
+                        <p class="text-xs text-gray-500 mt-1">在右侧抽屉中查看，不跳出当前页面</p>
+                    </div>
+                    <button onclick="closePrdDrawer()" class="w-10 h-10 rounded-full bg-gray-100 text-gray-500 hover:text-gray-700 hover:bg-gray-200 transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 bg-white">
+                <iframe id="prdFrame" src="prd-risk-login-alert.html" class="w-full h-full" style="border:0;"></iframe>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        const drawerData = [
+            {
+                title: '林先生-lin@example.com',
+                subtitle: '判定时间 2026-07-09 09:20:03 · MT5 账号 8801732',
+                level: { text: 'IP不一致', className: 'bg-[#ffe5ea] text-riskHigh' },
+                customerLoginCount30d: 18,
+                customerDiffIpCount30d: 5,
+                crmIpCustomerCount30d: 3,
+                crmIpDiffIpCount30d: 7,
+                mt5IpCustomerCount30d: 2,
+                mt5IpDiffIpCount30d: 4,
+                crmIpStatsDetail: [
+                    '该 CRM 登录 IP 近30天被 3 个客户使用',
+                    '关联客户示例：林先生、周先生、黄女士',
+                    '该 IP 关联记录中命中 IP不一致 7 次',
+                    '最近一次被其他客户使用：2026-07-09 08:47:22'
+                ],
+                mt5IpStatsDetail: [
+                    '该 MT5 登录 IP 近30天被 2 个客户使用',
+                    '关联客户示例：林先生、赵女士',
+                    '该 IP 关联记录中命中 IP不一致 4 次',
+                    '最近一次被其他客户使用：2026-07-09 08:51:10'
+                ],
+                crmIpCustomers: [
+                    '林先生-lin@example.com',
+                    '周先生-zhou@example.com',
+                    '黄女士-huang@example.com'
+                ],
+                mt5IpCustomers: [
+                    '林先生-lin@example.com',
+                    '赵女士-zhao@example.com'
+                ],
+                crmTime: '2026-07-09 09:12:18',
+                crmIp: '103.12.18.21',
+                crmLocation: '中国广东省广州市',
+                registerIp: '103.12.18.21',
+                registerIpLocation: '中国广东省广州市',
+                mt5Time: '2026-07-09 09:19:42',
+                mt5Ip: '45.88.201.10',
+                mt5Location: '英国伦敦',
+                rules: [
+                    { badge: 'IP不一致', tone: 'high', desc: 'CRM 与 MT5 登录出口 IP 不一致，本次仅做记录展示。' }
+                ],
+                ipCount30d: 'CRM 登录 09:12:18，与匹配 MT5 登录相差 7 分钟。'
+            },
+            {
+                title: '陈小姐-chen@example.com',
+                subtitle: '判定时间 2026-07-09 11:15:11 · MT5 账号 8801941',
+                level: { text: 'IP不一致', className: 'bg-[#fff3dd] text-riskMedium' },
+                customerLoginCount30d: 9,
+                customerDiffIpCount30d: 2,
+                crmIpCustomerCount30d: 1,
+                crmIpDiffIpCount30d: 2,
+                mt5IpCustomerCount30d: 1,
+                mt5IpDiffIpCount30d: 2,
+                crmIpStatsDetail: [
+                    '该 CRM 登录 IP 近30天仅 1 个客户使用',
+                    '未发现同IP多客户共用',
+                    '该 IP 关联记录中命中 IP不一致 2 次',
+                    '最近一次使用时间：2026-07-09 11:08:05'
+                ],
+                mt5IpStatsDetail: [
+                    '该 MT5 登录 IP 近30天仅 1 个客户使用',
+                    '未发现同IP多客户共用',
+                    '该 IP 关联记录中命中 IP不一致 2 次',
+                    '最近一次使用时间：2026-07-09 11:14:10'
+                ],
+                crmIpCustomers: [
+                    '陈小姐-chen@example.com'
+                ],
+                mt5IpCustomers: [
+                    '陈小姐-chen@example.com'
+                ],
+                crmTime: '2026-07-09 11:08:05',
+                crmIp: '58.62.19.87',
+                crmLocation: '中国广东省深圳市',
+                registerIp: '58.62.19.87',
+                registerIpLocation: '中国广东省深圳市',
+                mt5Time: '2026-07-09 11:14:10',
+                mt5Ip: '58.62.19.99',
+                mt5Location: '中国广东省深圳市',
+                rules: [
+                    { badge: 'IP不一致', tone: 'medium', desc: 'CRM 与 MT5 登录出口 IP 不一致，但两次登录时间接近。' }
+                ],
+                ipCount30d: 'CRM 登录 11:08:05，与匹配 MT5 登录相差 6 分钟。'
+            },
+            {
+                title: '张先生-zhang@example.com',
+                subtitle: '判定时间 2026-07-09 13:52:04 · MT5 账号 8802013',
+                level: { text: '同一IP', className: 'bg-[#edf9f7] text-riskLow' },
+                customerLoginCount30d: 6,
+                customerDiffIpCount30d: 0,
+                crmIpCustomerCount30d: 2,
+                crmIpDiffIpCount30d: 0,
+                mt5IpCustomerCount30d: 2,
+                mt5IpDiffIpCount30d: 0,
+                crmIpStatsDetail: [
+                    '该 CRM 登录 IP 近30天被 2 个客户使用',
+                    '关联客户示例：张先生、何先生',
+                    '该 IP 关联记录中命中 IP不一致 1 次',
+                    '最近一次被其他客户使用：2026-07-07 10:21:45'
+                ],
+                mt5IpStatsDetail: [
+                    '该 MT5 登录 IP 近30天被 2 个客户使用',
+                    '关联客户示例：张先生、李先生',
+                    '该 IP 关联记录中命中 IP不一致 0 次',
+                    '最近一次被其他客户使用：2026-07-08 21:16:48'
+                ],
+                crmIpCustomers: [
+                    '张先生-zhang@example.com',
+                    '何先生-he@example.com'
+                ],
+                mt5IpCustomers: [
+                    '张先生-zhang@example.com',
+                    '李先生-li@example.com'
+                ],
+                crmTime: '2026-07-09 13:42:55',
+                crmIp: '203.186.12.19',
+                crmLocation: '中国香港',
+                registerIp: '203.186.12.19',
+                registerIpLocation: '中国香港',
+                mt5Time: '2026-07-09 13:51:24',
+                mt5Ip: '203.186.12.19',
+                mt5Location: '中国香港',
+                rules: [
+                    { badge: '同一IP', tone: 'low', desc: 'CRM 与 MT5 使用相同 IP，本次比对结果为同一IP。' }
+                ],
+                ipCount30d: 'CRM 登录 13:42:55，与匹配 MT5 登录相差 8 分钟。'
+            },
+            {
+                title: '赵女士-zhao@example.com',
+                subtitle: '判定时间 2026-07-09 15:46:12 · MT5 账号 8802407',
+                level: { text: 'IP不一致', className: 'bg-[#fff3dd] text-riskMedium' },
+                customerLoginCount30d: 11,
+                customerDiffIpCount30d: 4,
+                crmIpCustomerCount30d: 1,
+                crmIpDiffIpCount30d: 4,
+                mt5IpCustomerCount30d: 3,
+                mt5IpDiffIpCount30d: 6,
+                crmIpStatsDetail: [
+                    '该 CRM 登录 IP 近30天仅 1 个客户使用',
+                    '未发现同IP多客户共用',
+                    '该 IP 关联记录中命中 IP不一致 4 次',
+                    '最近一次使用时间：2026-07-09 15:12:06'
+                ],
+                mt5IpStatsDetail: [
+                    '该 MT5 登录 IP 近30天被 3 个客户使用',
+                    '关联客户示例：赵女士、林先生、黄女士',
+                    '该 IP 关联记录中命中 IP不一致 6 次',
+                    '最近一次被其他客户使用：2026-07-09 08:47:22'
+                ],
+                crmIpCustomers: [
+                    '赵女士-zhao@example.com'
+                ],
+                mt5IpCustomers: [
+                    '赵女士-zhao@example.com',
+                    '林先生-lin@example.com',
+                    '黄女士-huang@example.com'
+                ],
+                crmTime: '2026-07-09 15:12:06',
+                crmIp: '171.221.10.51',
+                crmLocation: '中国四川省成都市',
+                registerIp: '171.221.10.51',
+                registerIpLocation: '中国四川省成都市',
+                mt5Time: '2026-07-09 15:45:39',
+                mt5Ip: '171.221.54.12',
+                mt5Location: '中国四川省成都市',
+                rules: [
+                    { badge: 'IP不一致', tone: 'medium', desc: 'CRM 与 MT5 登录出口 IP 不一致，需要结合业务场景自行判断。' }
+                ],
+                ipCount30d: 'CRM 登录 15:12:06，与匹配 MT5 登录相差 33 分钟。'
+            },
+            {
+                title: '吴先生-wu@example.com',
+                subtitle: '判定时间 2026-07-09 17:26:41 · MT5 账号 8802688',
+                level: { text: '未匹配到MT5登录', className: 'bg-[#f3f0ff] text-[#6d59d9]' },
+                customerLoginCount30d: 3,
+                customerDiffIpCount30d: 0,
+                crmIpCustomerCount30d: 4,
+                crmIpDiffIpCount30d: 1,
+                mt5IpCustomerCount30d: null,
+                mt5IpDiffIpCount30d: null,
+                crmIpStatsDetail: [
+                    '该 CRM 登录 IP 近30天被 4 个客户使用',
+                    '关联客户示例：吴先生、郑先生、胡女士、谢女士',
+                    '该 IP 关联记录中命中 IP不一致 0 次',
+                    '最近一次被其他客户使用：2026-07-09 17:02:11'
+                ],
+                mt5IpStatsDetail: [
+                    '本条记录未匹配到 MT5 登录',
+                    '因此无法计算 MT5 登录 IP 的同IP汇总'
+                ],
+                crmIpCustomers: [
+                    '吴先生-wu@example.com',
+                    '郑先生-zheng@example.com',
+                    '胡女士-hu@example.com',
+                    '谢女士-xie@example.com'
+                ],
+                mt5IpCustomers: [],
+                crmTime: '2026-07-09 17:26:41',
+                crmIp: '61.145.77.203',
+                crmLocation: '中国广东省东莞市',
+                registerIp: '61.145.77.203',
+                registerIpLocation: '中国广东省东莞市',
+                mt5Time: '--',
+                mt5Ip: '--',
+                mt5Location: '--',
+                rules: [
+                    { badge: '未匹配到MT5登录', tone: 'medium', desc: 'CRM 登录后在默认匹配窗口内持续等待补配，但窗口结束仍未找到该客户的 MT5 登录记录，本次仅保留 CRM 登录结果。' }
+                ],
+                ipCount30d: 'CRM 登录 17:26:41 后已进入补配等待；截止窗口结束仍未找到 MT5 登录，最终记为未匹配到MT5登录。'
+            }
+        ];
+
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.fa-chevron-right');
+            submenu.classList.toggle('submenu-expanded');
+            arrow.classList.toggle('arrow-rotated');
+        }
+
+        function renderStatsDetails(list, targetId) {
+            document.getElementById(targetId).innerHTML = list.map((text, index) => `
+                <div class="${index === 0 ? '' : 'mt-2'}">${text}</div>
+            `).join('');
+        }
+
+        function openDrawer(index, focusSection = 'default') {
+            closePrdDrawer();
+            const item = drawerData[index];
+            document.getElementById('drawerTitle').innerText = item.title;
+            document.getElementById('drawerSubtitle').innerText = item.subtitle;
+            document.getElementById('drawerLevel').innerText = item.level.text;
+            document.getElementById('drawerLevel').className = `px-3 py-1 rounded-full text-xs ${item.level.className}`;
+            document.getElementById('detailDrawerBody').scrollTop = 0;
+            document.getElementById('crmTime').innerText = item.crmTime;
+            document.getElementById('crmIp').innerText = item.crmIp;
+            document.getElementById('crmLocation').innerText = item.crmLocation || '--';
+            document.getElementById('registerIp').innerText = item.registerIp || '--';
+            document.getElementById('registerIpLocation').innerText = item.registerIpLocation || '--';
+            document.getElementById('mt5Time').innerText = item.mt5Time;
+            document.getElementById('mt5Ip').innerText = item.mt5Ip;
+            document.getElementById('mt5Location').innerText = item.mt5Location || '--';
+            document.getElementById('ipCount30d').innerText = item.ipCount30d;
+            document.getElementById('customerStats').innerText = `${item.customerLoginCount30d}次（IP不一致${item.customerDiffIpCount30d}次）`;
+            document.getElementById('crmIpStats').innerText = `${item.crmIpCustomerCount30d ?? '--'}个客户`;
+            document.getElementById('mt5IpStats').innerText = item.mt5IpCustomerCount30d === null || item.mt5IpCustomerCount30d === undefined ? '--' : `${item.mt5IpCustomerCount30d}个客户`;
+            renderStatsDetails(item.crmIpStatsDetail || [], 'crmIpStatsDetail');
+            renderStatsDetails(item.mt5IpStatsDetail || [], 'mt5IpStatsDetail');
+
+            const toneMap = {
+                high: 'bg-[#fff1f3] border-[#ffd9df] text-riskHigh',
+                medium: 'bg-[#fff9ef] border-[#f6e1b2] text-riskMedium',
+                low: 'bg-[#eff9f7] border-[#cdebe5] text-riskLow'
+            };
+
+            const ruleList = [...item.rules];
+            if (item.mt5IpCustomerCount30d && item.mt5IpCustomerCount30d > 1) {
+                ruleList.unshift({ badge: 'MT5同IP多客户', tone: 'medium', desc: `近30天内，该 MT5 登录 IP 被 ${item.mt5IpCustomerCount30d} 个不同客户使用，建议关注。` });
+            }
+            if (item.crmIpCustomerCount30d > 1) {
+                ruleList.unshift({ badge: 'CRM同IP多客户', tone: 'medium', desc: `近30天内，该 CRM 登录 IP 被 ${item.crmIpCustomerCount30d} 个不同客户使用，建议关注。` });
+            }
+
+            document.getElementById('ruleHits').innerHTML = ruleList.map((rule) => `
+                <div class="rounded-xl border ${toneMap[rule.tone]} p-3">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="text-xs font-semibold">${rule.badge}</span>
+                    </div>
+                    <p class="text-xs leading-5 mt-2">${rule.desc}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('detailDrawer').classList.remove('translate-x-full');
+            updateOverlay();
+
+            if (focusSection === 'stats') {
+                window.setTimeout(() => {
+                    const body = document.getElementById('detailDrawerBody');
+                    const section = document.getElementById('statsDetailSection');
+                    body.scrollTo({ top: section.offsetTop - 8, behavior: 'smooth' });
+                }, 120);
+            }
+        }
+
+        function openCustomerListModal(index, source) {
+            const item = drawerData[index];
+            const list = source === 'mt5' ? (item.mt5IpCustomers || []) : (item.crmIpCustomers || []);
+            const ipText = source === 'mt5' ? item.mt5Ip : item.crmIp;
+            const label = source === 'mt5' ? 'MT5 IP' : 'CRM IP';
+            document.getElementById('customerListMeta').innerText = `${label} ${ipText} · 共 ${list.length} 个客户`;
+            document.getElementById('customerListItems').innerHTML = list.length === 0 ? `
+                <div class="text-sm text-gray-400 py-3">--</div>
+            ` : list.map((text) => `
+                <div class="py-3 text-sm text-gray-800">${text}</div>
+            `).join('');
+            document.getElementById('customerListOverlay').classList.remove('hidden');
+            document.getElementById('customerListModal').classList.remove('hidden');
+            document.getElementById('customerListModal').classList.add('flex');
+        }
+
+        function closeCustomerListModal() {
+            document.getElementById('customerListOverlay').classList.add('hidden');
+            const modal = document.getElementById('customerListModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function closeDrawer() {
+            closeCustomerListModal();
+            document.getElementById('detailDrawer').classList.add('translate-x-full');
+            updateOverlay();
+        }
+
+        function openPrdDrawer() {
+            closeDrawer();
+            document.getElementById('prdDrawer').classList.remove('translate-x-full');
+            updateOverlay();
+        }
+
+        function closePrdDrawer() {
+            document.getElementById('prdDrawer').classList.add('translate-x-full');
+            updateOverlay();
+        }
+
+        function closeAllDrawers() {
+            closeCustomerListModal();
+            document.getElementById('detailDrawer').classList.add('translate-x-full');
+            document.getElementById('prdDrawer').classList.add('translate-x-full');
+            updateOverlay();
+        }
+
+        function updateOverlay() {
+            const overlay = document.getElementById('drawerOverlay');
+            const detailOpen = !document.getElementById('detailDrawer').classList.contains('translate-x-full');
+            const prdOpen = !document.getElementById('prdDrawer').classList.contains('translate-x-full');
+            if (detailOpen || prdOpen) {
+                overlay.classList.remove('hidden');
+            } else {
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('ipSearchInput').value = '';
+            document.getElementById('resultSelect').selectedIndex = 0;
+        }
+    </script>
+</body>
+</html>

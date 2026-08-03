@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 客户报表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="cent-prd-drawer.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        mainBg: '#F3F4F6',
+                        primaryBtn: '#d1a84f',
+                        primaryBtnHover: '#b89241',
+                        tableHeader: '#f9fafb'
+                    }
+                }
+            }
+        };
+
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.arrow-transition');
+            submenu.classList.toggle('submenu-expanded');
+            arrow.classList.toggle('arrow-rotated');
+        }
+
+        function toggleDetailRow(id, button) {
+            const row = document.getElementById(id);
+            const icon = button.querySelector('i');
+            row.classList.toggle('hidden');
+            icon.classList.toggle('rotate-90');
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 560px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+        .custom-input {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 7px 12px;
+            font-size: 13px;
+            background: #fff;
+            outline: none;
+        }
+        .custom-select {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 7px 12px;
+            font-size: 13px;
+            background: #fff;
+            outline: none;
+        }
+        .custom-input:focus, .custom-select:focus { border-color: #d1a84f; }
+        .custom-table th {
+            color: #6b7280;
+            font-weight: 600;
+            padding: 14px 10px;
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+        .custom-table td {
+            padding: 14px 10px;
+            font-size: 12px;
+            color: #4b5563;
+            text-align: center;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .custom-table tbody tr:hover { background-color: #fafafa; }
+        .change-highlight { color: #DC2626 !important; }
+        .change-bg { background-color: #FEF2F2; }
+        .stat-card {
+            border: 1px solid #f1f5f9;
+            border-radius: 14px;
+            background: #fff;
+            padding: 18px 20px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+        .stat-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 9999px;
+            background: #f3f4f6;
+            color: #d1a84f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-row-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 40px;
+            padding: 0 12px;
+            border-bottom: 1px solid #f3d6d6;
+            white-space: normal;
+        }
+        .detail-row-item:last-child { border-bottom: none; }
+        .detail-label {
+            width: 160px;
+            flex-shrink: 0;
+            color: #6b7280;
+            font-weight: 600;
+            text-align: left;
+        }
+        .detail-value {
+            color: #374151;
+            text-align: left;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="client-deposit-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="client-withdraw-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="admin-withdraw-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="admin-account-management-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-white bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
+                </button>
+                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-report-customer-cent-account.html" class="block py-2 text-sm text-white transition-colors">客户报表</a>
+                    <a href="admin-report-trade-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                    <a href="admin-report-finance-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-commission-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">系统设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">配置参数</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0">
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-menuActive font-medium mr-4">客户报表</span>
+                <a href="prd-cent-account-page-customer-report.html" data-prd-drawer data-prd-title="客户报表 - 页面PRD" class="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded transition-colors border border-indigo-200 text-xs font-medium mr-3">
+                    <i class="fas fa-file-alt"></i> 查看页面PRD
+                </a>
+                <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
+                    <i class="fas fa-arrow-left"></i> 返回需求看板
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm">
+                    <span class="text-sm font-bold text-gray-600">AD</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 class="font-bold text-gray-800 mb-5 text-[15px]">搜索</h3>
+                <div class="grid grid-cols-5 gap-4 items-center">
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-14 shrink-0 text-right mr-3">邮箱:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-14 shrink-0 text-right mr-3">姓名:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
+                    </div>
+                    <div class="flex items-center col-span-2">
+                        <label class="text-[13px] text-gray-600 w-20 shrink-0 text-right mr-3">时间范围:</label>
+                        <div class="flex items-center w-full">
+                            <input type="text" class="custom-input rounded-r-none border-r-0 text-center" placeholder="开始日期">
+                            <span class="px-3 py-[8px] bg-gray-50 border-y border-gray-200 text-[13px] text-gray-400">到</span>
+                            <input type="text" class="custom-input rounded-l-none border-l-0 text-center" placeholder="结束日期">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end gap-3">
+                        <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-5 py-1.5 rounded text-[13px] transition-colors shadow-sm">搜索</button>
+                        <button class="bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-5 py-1.5 rounded text-[13px] transition-colors shadow-sm">重置</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-5 gap-4 mt-4">
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-14 shrink-0 text-right mr-3 change-highlight">账户类型:</label>
+                        <select class="custom-select change-highlight">
+                            <option>全部</option>
+                            <option>仅标准账户</option>
+                            <option>仅美分账户</option>
+                            <option>标准+美分</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-20 shrink-0 text-right mr-3 change-highlight">手数口径:</label>
+                        <select class="custom-select change-highlight">
+                            <option>全部</option>
+                            <option>仅标准手</option>
+                            <option>仅美分手</option>
+                            <option>标准+美分</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-5 gap-4">
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3">客户数量</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">6</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-user"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">入金(USD)</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">12,680.00</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">出金(USD)</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">180.00</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">净入金(USD)</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">12,500.00</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">佣金(USD)</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">86.2414</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">交易量(手)</div>
+                            <div class="text-[16px] font-bold text-gray-800 leading-none change-highlight">0.25标准手</div>
+                            <div class="text-[16px] font-bold text-gray-800 leading-none mt-2 change-highlight">0.32美分手</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-chart-column"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3">持仓</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">2</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3">MT账户数量</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">11</div>
+                            <div class="text-[12px] mt-2 change-highlight">标准 7 / 美分 4</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-id-card"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">MT净值(USD)</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">11,994.78</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">MT余额(USD)</div>
+                            <div class="text-[30px] font-bold text-gray-800 leading-none">12,021.54</div>
+                        </div>
+                        <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full custom-table">
+                        <thead class="bg-tableHeader">
+                            <tr>
+                                <th class="w-8"></th>
+                                <th>客户名称</th>
+                                <th>角色</th>
+                                <th>联系方式</th>
+                                <th class="change-highlight">账户类型</th>
+                                <th class="change-highlight">MT数量(个)</th>
+                                <th class="change-highlight">入金(USD)</th>
+                                <th class="change-highlight">出金(USD)</th>
+                                <th class="change-highlight">净入金(USD)</th>
+                                <th class="change-highlight">佣金(USD)</th>
+                                <th class="change-highlight">交易量(手)</th>
+                                <th>客户数量</th>
+                                <th>新增客户数量</th>
+                                <th>状态</th>
+                                <th>注册时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><button onclick="toggleDetailRow('customerReportDetail1', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
+                                <td class="text-left font-medium text-gray-800">客户A-演示</td>
+                                <td>代理(PIB)</td>
+                                <td>demo.a@example.com</td>
+                                <td class="change-highlight">标准账户 + 美分账户</td>
+                                <td class="change-highlight"><span class="text-blue-500 underline">2</span><div class="text-[11px] mt-1 change-highlight">标准 1 / 美分 1</div></td>
+                                <td>12,000.00</td>
+                                <td>0.00</td>
+                                <td>12,000.00</td>
+                                <td>86.2400</td>
+                                <td class="change-highlight">0.25标准手 / 0.32美分手</td>
+                                <td>5</td>
+                                <td>0</td>
+                                <td class="text-[#22C55E] font-medium">正常</td>
+                                <td>2026-06-08 14:31</td>
+                            </tr>
+                            <tr id="customerReportDetail1" class="hidden change-bg">
+                                <td></td>
+                                <td colspan="14" class="text-left">
+                                    <div class="detail-list">
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">MT账户构成</span>
+                                            <span class="detail-value change-highlight">标准账户 1 个，美分账户 1 个</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">标准账户交易量</span>
+                                            <span class="detail-value change-highlight">0.25 标准手</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户交易量</span>
+                                            <span class="detail-value change-highlight">0.32 美分手</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始入金</span>
+                                            <span class="detail-value change-highlight">600,000 USC/美分</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始出金</span>
+                                            <span class="detail-value change-highlight">0 USC/美分</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始净值</span>
+                                            <span class="detail-value change-highlight">756,000 USC/美分</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始余额</span>
+                                            <span class="detail-value change-highlight">760,000 USC/美分</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><button onclick="toggleDetailRow('customerReportDetail2', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
+                                <td class="text-left font-medium text-gray-800">客户B-演示</td>
+                                <td>代理(PIB)</td>
+                                <td>demo.b@example.com</td>
+                                <td class="change-highlight">标准账户</td>
+                                <td class="change-highlight"><span class="text-blue-500 underline">2</span></td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.0000</td>
+                                <td class="change-highlight">0.25标准手</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td class="text-[#22C55E] font-medium">正常</td>
+                                <td>2026-06-08 14:55</td>
+                            </tr>
+                            <tr id="customerReportDetail2" class="hidden change-bg">
+                                <td></td>
+                                <td colspan="14" class="text-left">
+                                    <div class="detail-list">
+                                        <div class="detail-row-item">
+                                            <span class="detail-label">MT账户构成</span>
+                                            <span class="detail-value">标准账户 2 个</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">标准账户交易量</span>
+                                            <span class="detail-value change-highlight">0.25 标准手</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><button onclick="toggleDetailRow('customerReportDetail3', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
+                                <td class="text-left font-medium text-gray-800 change-highlight">客户C-演示</td>
+                                <td>代理(PIB)</td>
+                                <td>cent.demo@example.com</td>
+                                <td class="change-highlight">美分账户</td>
+                                <td class="change-highlight"><span class="text-blue-500 underline">2</span><div class="text-[11px] mt-1 change-highlight">美分 2</div></td>
+                                <td>680.00</td>
+                                <td>180.00</td>
+                                <td>500.00</td>
+                                <td>0.0014</td>
+                                <td class="change-highlight">0.32美分手</td>
+                                <td>3</td>
+                                <td>0</td>
+                                <td class="text-[#22C55E] font-medium">正常</td>
+                                <td>2026-06-08 14:57</td>
+                            </tr>
+                            <tr id="customerReportDetail3" class="hidden change-bg">
+                                <td></td>
+                                <td colspan="14" class="text-left">
+                                    <div class="detail-list">
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">MT账户构成</span>
+                                            <span class="detail-value change-highlight">美分账户 2 个</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户交易量</span>
+                                            <span class="detail-value change-highlight">0.32 美分手</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始入金</span>
+                                            <span class="detail-value change-highlight">68,000 USC/美分</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始出金</span>
+                                            <span class="detail-value change-highlight">18,000 USC/美分</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">美分账户原始净入金</span>
+                                            <span class="detail-value change-highlight">50,000 USC/美分</span>
+                                        </div>
+                                        <div class="detail-row-item">
+                                            <span class="detail-label change-highlight">待结转返佣</span>
+                                            <span class="detail-value change-highlight">0.0014 USD</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
