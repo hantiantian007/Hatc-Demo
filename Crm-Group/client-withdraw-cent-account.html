@@ -31,6 +31,7 @@
         .arrow-transition { transition: transform 0.3s ease; }
         .arrow-rotated { transform: rotate(90deg); }
         .change-highlight { color: #DC2626 !important; }
+        .standard-black { color: #111827 !important; }
     </style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased flex h-screen overflow-hidden">
@@ -213,35 +214,38 @@
                             <tbody class="divide-y divide-gray-100">
                                 <tr class="hover:bg-gray-50/70">
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-700">8300251</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">佣金</td>
+                                    <td class="px-5 py-5 whitespace-nowrap">
+                                        <div class="text-gray-600 change-highlight">佣金</div>
+                                        <div class="text-xs text-gray-500 mt-2 change-highlight">佣金账户 / USD/美元</div>
+                                    </td>
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-600">test-b5</td>
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-500">b8@qq.com</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">0.00 USD/美元</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">0.00 USD/美元</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">0.00 USD/美元</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">0.00 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">125.4012 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">125.4012 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">0.0000 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">125.4012 USD/美元</td>
                                     <td class="px-5 py-5 whitespace-nowrap">
-                                        <button class="px-4 py-1.5 rounded-md bg-gray-100 text-gray-400 text-xs font-medium cursor-not-allowed">
+                                        <a href="client-withdraw-apply-cent-account.html?account=8300251" class="inline-flex px-4 py-1.5 rounded-md bg-primary hover:bg-primaryHover text-white text-xs font-medium transition-colors">
                                             出金
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-gray-50/70">
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-700">8100453</td>
                                     <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="text-gray-600 change-highlight">交易</div>
-                                        <div class="text-xs text-gray-500 mt-2 change-highlight">标准账户 / USD/美元</div>
+                                        <div class="text-gray-600 standard-black">交易</div>
+                                        <div class="text-xs text-gray-500 mt-2 standard-black">标准账户 / USD/美元</div>
                                     </td>
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-600">test-b5</td>
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-500">b8@qq.com</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">10,000.00 USD/美元</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">10,000.00 USD/美元</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">0.00 USD/美元</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">10,000.00 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 standard-black">0.00 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 standard-black">0.00 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 standard-black">0.00 USD/美元</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 standard-black">0.00 USD/美元</td>
                                     <td class="px-5 py-5 whitespace-nowrap">
-                                        <a href="client-withdraw-apply-cent-account.html?account=8100453" class="inline-flex px-4 py-1.5 rounded-md bg-primary hover:bg-primaryHover text-white text-xs font-medium transition-colors">
+                                        <button class="px-4 py-1.5 rounded-md bg-gray-100 text-gray-400 text-xs font-medium cursor-not-allowed">
                                             出金
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-gray-50/70">
@@ -253,17 +257,14 @@
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-600">test-b5</td>
                                     <td class="px-5 py-5 whitespace-nowrap text-gray-500">b8@qq.com</td>
                                     <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="text-gray-600 change-highlight">12,540.00 USC/美分</div>
-                                        <div class="text-xs text-gray-400 mt-2 change-highlight">等值 125.40 USD/美元</div>
+                                        <div class="text-gray-600 change-highlight">12,540.1234 USC/美分</div>
                                     </td>
                                     <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="text-gray-600 change-highlight">12,540.00 USC/美分</div>
-                                        <div class="text-xs text-gray-400 mt-2 change-highlight">等值 125.40 USD/美元</div>
+                                        <div class="text-gray-600 change-highlight">12,540.1234 USC/美分</div>
                                     </td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">0.00 USC/美分</td>
+                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">0.0000 USC/美分</td>
                                     <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="text-gray-600 change-highlight">12,540.00 USC/美分</div>
-                                        <div class="text-xs text-gray-400 mt-2 change-highlight">等值 125.40 USD/美元</div>
+                                        <div class="text-gray-600 change-highlight">12,540.1234 USC/美分</div>
                                     </td>
                                     <td class="px-5 py-5 whitespace-nowrap">
                                         <a href="client-withdraw-apply-cent-account.html?account=9900456" class="inline-flex px-4 py-1.5 rounded-md bg-primary hover:bg-primaryHover text-white text-xs font-medium transition-colors">

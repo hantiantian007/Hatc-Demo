@@ -32,6 +32,7 @@
         .arrow-rotated { transform: rotate(90deg); }
         .pay-card.selected { border-color: #3B82F6; box-shadow: 0 0 0 1px #3B82F6 inset; position: relative; }
         .change-highlight { color: #DC2626 !important; }
+        .standard-black { color: #111827 !important; }
         .pay-card.selected::after {
             content: '\f00c';
             font-family: 'Font Awesome 6 Free';
@@ -216,7 +217,7 @@
 
                 <div class="mt-5 space-y-4">
                     <div>
-                        <label class="block text-sm text-gray-700 mb-2 change-highlight">出金账号:</label>
+                        <label id="accountLabel" class="block text-sm text-gray-700 mb-2 change-highlight">出金账号:</label>
                         <input id="accountField" type="text" readonly class="w-full max-w-[385px] h-11 rounded border border-gray-200 px-4 text-sm text-gray-700 bg-gray-50">
                     </div>
 
@@ -268,10 +269,12 @@
                         <div class="mb-2 flex flex-wrap items-center justify-between gap-2 max-w-[620px]">
                             <label id="amountLabel" class="block text-sm text-gray-700 change-highlight">* 出金金额(美元):</label>
                             <div class="text-xs text-gray-500 change-highlight">
-                                <span>可出金金额：</span>
-                                <span id="availableUsdHint" class="text-[#22A3FF] font-medium change-highlight">8,767.00 USD/美元</span>
-                                <span class="mx-1">|</span>
-                                <span>原始金额：</span>
+                                <span id="availableUsdWrap">
+                                    <span>可出金金额：</span>
+                                    <span id="availableUsdHint" class="text-[#22A3FF] font-medium change-highlight">8,767.00 USD/美元</span>
+                                    <span id="availableHintDivider" class="mx-1">|</span>
+                                </span>
+                                <span id="availableOriginalLabel">原始金额：</span>
                                 <span id="availableOriginalHint" class="font-medium change-highlight">8,767.00 USD/美元</span>
                             </div>
                         </div>
@@ -280,12 +283,12 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm text-gray-700 mb-2 change-highlight">* 当前汇率:</label>
+                        <label id="rateLabel" class="block text-sm text-gray-700 mb-2 change-highlight">* 当前汇率:</label>
                         <input id="rateField" type="text" readonly value="7.18" class="w-full max-w-[620px] h-11 rounded border border-gray-200 px-4 text-sm text-gray-700 bg-gray-50">
                     </div>
 
                     <div class="max-w-[620px] rounded-md bg-gray-50 border border-gray-200 px-4 py-3 flex items-center justify-between">
-                        <div class="text-sm text-gray-500 change-highlight">到账金额:</div>
+                        <div id="receivedLabel" class="text-sm text-gray-500 change-highlight">到账金额:</div>
                         <div id="receivedText" class="text-[16px] md:text-[18px] font-bold text-gray-800 change-highlight">0.00 <span class="text-xs font-medium text-gray-500 change-highlight">(CNY/人民币)</span></div>
                     </div>
 
@@ -299,17 +302,33 @@
 
     <script>
         const accounts = {
+            '8300251': {
+                login: '8300251',
+                type: '佣金账户',
+                unit: 'USD/美元',
+                amountLabel: '出金金额(美元):',
+                balanceLabel: '余额(美元):',
+                balance: 125.4012,
+                available: 125.4012,
+                withdrawing: 0,
+                bonus: 0,
+                allowIntegerOnly: true,
+                inputStep: '1',
+                inputMin: '1'
+            },
             '8100453': {
                 login: '8100453',
                 type: '标准账户',
                 unit: 'USD/美元',
                 amountLabel: '出金金额(美元):',
                 balanceLabel: '余额(美元):',
-                balance: 10000,
-                available: 8767,
-                withdrawing: 1233,
+                balance: 0,
+                available: 0,
+                withdrawing: 0,
                 bonus: 0,
-                allowIntegerOnly: true
+                allowIntegerOnly: true,
+                inputStep: '1',
+                inputMin: '1'
             },
             '9900456': {
                 login: '9900456',
@@ -317,11 +336,13 @@
                 unit: 'USC/美分',
                 amountLabel: '出金金额(美元):',
                 balanceLabel: '余额(美分):',
-                balance: 12540,
-                available: 12000,
-                withdrawing: 540,
+                balance: 12540.1234,
+                available: 12540.1234,
+                withdrawing: 0,
                 bonus: 0,
-                allowIntegerOnly: true
+                allowIntegerOnly: false,
+                inputStep: '0.01',
+                inputMin: '0.01'
             }
         };
 
@@ -344,6 +365,14 @@
             });
         }
 
+        function formatAccountAmount(num, account) {
+            const fractionDigits = account.type === '美分账户' || account.type === '佣金账户' ? 4 : 2;
+            return Number(num).toLocaleString('en-US', {
+                minimumFractionDigits: fractionDigits,
+                maximumFractionDigits: fractionDigits
+            });
+        }
+
         function getAccount() {
             const params = new URLSearchParams(window.location.search);
             const account = params.get('account');
@@ -360,29 +389,77 @@
             return account.type === '美分账户' ? account.available / 100 : account.available;
         }
 
-        function normalizeUsdInput(value) {
-            return String(value || '').replace(/[^\d]/g, '').replace(/^0+(?=\d)/, '');
+        function normalizeUsdInput(value, account) {
+            const raw = String(value || '');
+
+            if (account.allowIntegerOnly) {
+                return raw.replace(/[^\d]/g, '').replace(/^0+(?=\d)/, '');
+            }
+
+            const sanitized = raw.replace(/[^\d.]/g, '');
+            const parts = sanitized.split('.');
+            const integerPart = (parts[0] || '').replace(/^0+(?=\d)/, '') || (sanitized.startsWith('.') ? '0' : '');
+            const decimalPart = parts.slice(1).join('').slice(0, 2);
+
+            if (sanitized.includes('.')) {
+                return `${integerPart}.${decimalPart}`;
+            }
+
+            return integerPart;
+        }
+
+        function toggleStandardAccountStyle(account) {
+            const isStandard = account.type === '标准账户';
+            const ids = [
+                'accountLabel',
+                'balanceLabel',
+                'balanceText',
+                'availableText',
+                'withdrawingText',
+                'bonusText',
+                'amountLabel',
+                'availableUsdHint',
+                'availableOriginalHint',
+                'amountHint',
+                'rateLabel',
+                'receivedLabel',
+                'receivedText'
+            ];
+
+            ids.forEach((id) => {
+                const element = document.getElementById(id);
+                if (!element) return;
+                element.classList.toggle('standard-black', isStandard);
+            });
+        }
+
+        function toggleCentEquivalentHint(account) {
+            const isCent = account.type === '美分账户';
+            document.getElementById('availableUsdWrap').style.display = isCent ? 'none' : 'inline';
+            document.getElementById('availableOriginalLabel').textContent = isCent ? '可出金金额：' : '原始金额：';
         }
 
         function renderAccount() {
             const account = getAccount();
             document.getElementById('accountField').value = `${account.login} / ${account.type}`;
             document.getElementById('backToManageLink').href = `client-withdraw-cent-account.html?account=${account.login}`;
+            toggleStandardAccountStyle(account);
+            toggleCentEquivalentHint(account);
             document.getElementById('balanceLabel').textContent = account.balanceLabel;
             document.getElementById('amountLabel').textContent = `* ${account.amountLabel}`;
             document.getElementById('amountHint').textContent = account.type === '美分账户'
-                ? '美分账户出金金额统一按美元输入，仅支持整数；系统按 1:100 校验对应 USC/美分余额。'
-                : '标准账户出金金额统一按美元输入，仅支持整数。';
-            document.getElementById('balanceText').textContent = `${formatAmount(account.balance)} ${account.unit}`;
-            document.getElementById('availableText').textContent = `${formatAmount(account.available)} ${account.unit}`;
-            document.getElementById('withdrawingText').textContent = `${formatAmount(account.withdrawing)} ${account.unit}`;
-            document.getElementById('bonusText').textContent = `${formatAmount(account.bonus)} ${account.unit}`;
-            document.getElementById('availableUsdHint').textContent = `${formatAmount(getAvailableUsdAmount(account))} USD/美元`;
-            document.getElementById('availableOriginalHint').textContent = `${formatAmount(account.available)} ${account.unit}`;
+                ? '美分账户出金金额统一按美元输入，支持输入到小数点后两位；系统按 1:100 校验对应 USC/美分余额。'
+                : `${account.type}出金金额统一按美元输入，仅支持整数。`;
+            document.getElementById('balanceText').textContent = `${formatAccountAmount(account.balance, account)} ${account.unit}`;
+            document.getElementById('availableText').textContent = `${formatAccountAmount(account.available, account)} ${account.unit}`;
+            document.getElementById('withdrawingText').textContent = `${formatAccountAmount(account.withdrawing, account)} ${account.unit}`;
+            document.getElementById('bonusText').textContent = `${formatAccountAmount(account.bonus, account)} ${account.unit}`;
+            document.getElementById('availableUsdHint').textContent = `${formatAccountAmount(getAvailableUsdAmount(account), account)} USD/美元`;
+            document.getElementById('availableOriginalHint').textContent = `${formatAccountAmount(account.available, account)} ${account.unit}`;
 
             const amountInput = document.getElementById('amountInput');
-            amountInput.step = '1';
-            amountInput.min = '1';
+            amountInput.step = account.inputStep;
+            amountInput.min = account.inputMin;
             amountInput.value = '';
             updateReceived();
         }
@@ -418,7 +495,7 @@
         }
 
         document.getElementById('amountInput').addEventListener('input', (event) => {
-            event.target.value = normalizeUsdInput(event.target.value);
+            event.target.value = normalizeUsdInput(event.target.value, getAccount());
             updateReceived();
         });
 
