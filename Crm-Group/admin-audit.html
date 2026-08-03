@@ -6,6 +6,7 @@
     <title>HATC CRM - 开户审核详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="cent-prd-drawer.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -54,6 +55,60 @@
         }
         .custom-table td:last-child { border-right: none; }
         .custom-table tbody > tr:hover td { background-color: #f9fafb; }
+        .change-highlight { color: #DC2626 !important; }
+        .change-border { border-color: #FCA5A5 !important; }
+        .audit-type-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+        .audit-type-pill::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 9999px;
+            flex-shrink: 0;
+        }
+        .audit-type-pill.standard {
+            color: #334155;
+            background: #F1F5F9;
+            border-color: #CBD5E1;
+        }
+        .audit-type-pill.standard::before {
+            background: #64748B;
+        }
+        .audit-type-pill.cent {
+            color: #065F46;
+            background: #ECFDF5;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+        }
+        .audit-type-pill.cent::before {
+            background: #10B981;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.45);
+        }
+        .audit-modal-select {
+            width: 100%;
+            height: 42px;
+            padding: 0 14px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            color: #374151;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .audit-modal-select:focus {
+            border-color: #C19B5E;
+            box-shadow: 0 0 0 3px rgba(193, 155, 94, 0.12);
+        }
     </style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
@@ -82,12 +137,12 @@
                     <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="client-deposit-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="client-withdraw-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="admin-deposit-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="admin-withdraw-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
                     <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
@@ -156,7 +211,7 @@
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
                     <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-account-management-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
                     <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
@@ -311,85 +366,68 @@
         <main class="flex-1 overflow-y-auto p-6">
             
             <div class="max-w-7xl mx-auto space-y-6">
+
+                <div class="flex justify-end">
+                    <a href="prd-cent-account-page-audit-detail.html" data-prd-drawer data-prd-title="开户审核详情页面PRD" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
+                </div>
                 
                 <!-- 审核详情卡片 -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-                    
-                    <!-- 基本资料 -->
-                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">基本资料</h4>
-                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">邮箱 (登录账号)</span>
-                            <span class="text-gray-900 font-medium">client@example.com</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">真实姓名</span>
-                            <span class="text-gray-900 font-medium">张三</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">国籍</span>
-                            <span class="text-gray-900 font-medium">中国</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">性别</span>
-                            <span class="text-gray-900 font-medium">男士</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">证件号码</span>
-                            <span class="text-gray-900 font-medium">110105199001011234</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">居住地址</span>
-                            <span class="text-gray-900 font-medium truncate" title="广东省广州市天河区某某街道123号">广东省广州市天河区某某街道123号</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">客户类别</span>
-                            <span class="text-gray-900 font-medium">一般投资者</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">推荐码 (IB)</span>
-                            <span class="text-gray-900 font-medium">REF888999</span>
-                        </div>
+                    <div class="overflow-hidden rounded-lg border border-gray-100">
+                        <table class="w-full text-sm">
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="w-[14%] bg-gray-50 px-6 py-4 text-gray-500">邮箱</td>
+                                    <td class="w-[36%] px-6 py-4 text-gray-900 font-medium">test-user01@demo.com</td>
+                                    <td class="w-[14%] bg-gray-50 px-6 py-4 text-gray-500">地区</td>
+                                    <td class="w-[36%] px-6 py-4 text-gray-900 font-medium">中国</td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500">真实姓名</td>
+                                    <td class="px-6 py-4 text-gray-900 font-medium">测试-孙舟</td>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500">证件号码</td>
+                                    <td class="px-6 py-4 text-gray-900 font-medium">21010219950316****</td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500 align-top">身份证正面</td>
+                                    <td class="px-6 py-4">
+                                        <img src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=realistic%20identity%20document%20front%20photo%20on%20desk%2C%20compliance%20review%20mockup%2C%20sensitive%20information%20blurred%2C%20clean%20office%20lighting%2C%20photorealistic&image_size=portrait_4_3" alt="身份证正面" class="h-28 w-40 rounded border border-gray-200 object-cover">
+                                    </td>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500 align-top">身份证反面</td>
+                                    <td class="px-6 py-4">
+                                        <img src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=realistic%20identity%20document%20back%20photo%20on%20desk%2C%20compliance%20review%20mockup%2C%20sensitive%20information%20blurred%2C%20clean%20office%20lighting%2C%20photorealistic&image_size=portrait_4_3" alt="身份证反面" class="h-28 w-40 rounded border border-gray-200 object-cover">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500">手机</td>
+                                    <td class="px-6 py-4 text-gray-900 font-medium">137****9682</td>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500">推荐人</td>
+                                    <td class="px-6 py-4 text-gray-900 font-medium">test-刘测试 (ref-demo01@qq.com)</td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500 change-highlight">MT类型</td>
+                                    <td class="px-6 py-4 font-medium change-highlight">
+                                        <span class="audit-type-pill cent">美分账户</span>
+                                    </td>
+                                    <td class="bg-gray-50 px-6 py-4 text-gray-500">备注</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-gray-900 font-medium">暂无备注</span>
+                                            <button class="px-3 py-1 border border-blue-300 text-blue-500 text-xs rounded hover:bg-blue-50 transition-colors">修改备注</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <!-- 联系方式 -->
-                    <h4 class="text-sm font-bold text-gray-900 border-l-4 border-activeMenu pl-2 mb-6">联系方式</h4>
-                    <div class="grid grid-cols-2 gap-y-6 gap-x-12 text-sm mb-10">
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">手机号码</span>
-                            <span class="text-gray-900 font-medium">+86 13800138000</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">微信 (WeChat)</span>
-                            <span class="text-gray-900 font-medium">wx_zhangsan123</span>
-                        </div>
-                        <div class="flex">
-                            <span class="w-32 text-gray-500 shrink-0">QQ号码</span>
-                            <span class="text-gray-900 font-medium">123456789</span>
-                        </div>
-                    </div>
-
-                    <!-- 审核操作区 -->
-                    <div class="border-t border-gray-100 pt-8 mt-4">
-                        <div class="flex items-start mb-8">
-                            <span class="w-32 text-gray-500 shrink-0 text-sm">审核备注</span>
-                            <div class="flex-1 max-w-2xl flex flex-col gap-3">
-                                <span class="text-gray-900 text-sm">暂无备注</span>
-                                <div>
-                                    <button class="px-4 py-1.5 border border-blue-500 text-blue-500 text-xs rounded hover:bg-blue-50 transition-colors">修改备注</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 操作按钮组 -->
-                        <div class="flex justify-center gap-4">
-                            <button class="px-8 py-2.5 bg-activeMenu hover:bg-yellow-600 text-white font-medium rounded shadow-sm transition-colors text-sm">
-                                审 核
-                            </button>
-                            <button class="px-8 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded shadow-sm transition-colors text-sm">
-                                退 回
-                            </button>
-                        </div>
+                    <div class="flex justify-center gap-4 pt-8">
+                        <button onclick="openAuditModal()" class="px-8 py-2.5 bg-menuActive hover:bg-[#c39a43] text-white font-medium rounded shadow-sm transition-colors text-sm">
+                            审核
+                        </button>
+                        <button class="px-8 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded shadow-sm transition-colors text-sm">
+                            返回
+                        </button>
                     </div>
 
                 </div>
@@ -407,40 +445,47 @@
                                     <th class="px-4 py-3 font-medium">电话</th>
                                     <th class="px-4 py-3 font-medium">MT账号</th>
                                     <th class="px-4 py-3 font-medium">分组</th>
+                                    <th class="px-4 py-3 font-medium change-highlight">MT类型</th>
                                     <th class="px-4 py-3 font-medium">杠杆</th>
                                     <th class="px-4 py-3 font-medium">审核状态</th>
+                                    <th class="px-4 py-3 font-medium change-highlight">拒绝原因</th>
+                                    <th class="px-4 py-3 font-medium change-highlight">审核人</th>
                                     <th class="px-4 py-3 font-medium">申请时间</th>
                                     <th class="px-4 py-3 font-medium">处理时间</th>
-                                    <th class="px-4 py-3 font-medium">拒绝原因</th>
-                                    <th class="px-4 py-3 font-medium">审核人</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                                 <tr class="hover:bg-gray-50/50">
-                                    <td class="px-4 py-3 text-gray-900">张三</td>
-                                    <td class="px-4 py-3">client@example.com</td>
-                                    <td class="px-4 py-3">13800138000</td>
+                                    <td class="px-4 py-3 text-gray-900">测试-孙舟</td>
+                                    <td class="px-4 py-3">test-user01@demo.com</td>
+                                    <td class="px-4 py-3">137****9682</td>
                                     <td class="px-4 py-3">8300256</td>
-                                    <td class="px-4 py-3">real\HATC\Test\Agent</td>
+                                    <td class="px-4 py-3">real\HATC\Inland\Test\Stan</td>
+                                    <td class="px-4 py-3 change-highlight">
+                                        <span class="audit-type-pill standard">标准账户</span>
+                                    </td>
                                     <td class="px-4 py-3">1:100</td>
                                     <td class="px-4 py-3 text-green-600 font-medium">已通过</td>
-                                    <td class="px-4 py-3">2026-06-09 16:45:06</td>
-                                    <td class="px-4 py-3">2026-06-09 16:45:07</td>
-                                    <td class="px-4 py-3 text-center">-</td>
-                                    <td class="px-4 py-3 text-center">-</td>
+                                    <td class="px-4 py-3 change-highlight">-</td>
+                                    <td class="px-4 py-3 change-highlight">Olivia</td>
+                                    <td class="px-4 py-3">2026-07-19 09:32:16</td>
+                                    <td class="px-4 py-3">2026-07-19 09:35:41</td>
                                 </tr>
-                                <tr class="hover:bg-gray-50/50">
-                                    <td class="px-4 py-3 text-gray-900">张三</td>
-                                    <td class="px-4 py-3">client@example.com</td>
-                                    <td class="px-4 py-3">13800138000</td>
-                                    <td class="px-4 py-3">8100459</td>
-                                    <td class="px-4 py-3">real\HATC\Test\Stan</td>
-                                    <td class="px-4 py-3">1:100</td>
-                                    <td class="px-4 py-3 text-yellow-600 font-medium">待审核</td>
-                                    <td class="px-4 py-3">2026-06-09 16:45:00</td>
-                                    <td class="px-4 py-3">2026-06-09 16:45:02</td>
-                                    <td class="px-4 py-3 text-center">-</td>
-                                    <td class="px-4 py-3 text-center">-</td>
+                                <tr class="hover:bg-red-50/50">
+                                    <td class="px-4 py-3 text-gray-900 change-highlight">测试-孙舟</td>
+                                    <td class="px-4 py-3 change-highlight">test-user01@demo.com</td>
+                                    <td class="px-4 py-3 change-highlight">137****9682</td>
+                                    <td class="px-4 py-3 change-highlight">9900456</td>
+                                    <td class="px-4 py-3 change-highlight">real\HATC\Inland\Test\Cent</td>
+                                    <td class="px-4 py-3 change-highlight">
+                                        <span class="audit-type-pill cent">美分账户</span>
+                                    </td>
+                                    <td class="px-4 py-3 change-highlight">1:100</td>
+                                    <td class="px-4 py-3 font-medium change-highlight">待审核</td>
+                                    <td class="px-4 py-3 change-highlight">-</td>
+                                    <td class="px-4 py-3 change-highlight">-</td>
+                                    <td class="px-4 py-3 change-highlight">2026-07-21 15:21:28</td>
+                                    <td class="px-4 py-3 change-highlight">-</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -464,6 +509,91 @@
             </div>
         </main>
     </main>
+
+    <div id="auditModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/40" onclick="closeAuditModal()"></div>
+        <div class="relative h-full w-full flex items-center justify-center p-6">
+            <div class="w-full max-w-3xl bg-white rounded shadow-xl overflow-hidden">
+                <div class="flex items-center justify-between px-8 py-5 border-b border-gray-200">
+                    <h3 class="text-[15px] font-bold text-gray-700">客户资料审核</h3>
+                    <button onclick="closeAuditModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="px-8 py-6">
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-6 text-sm mb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500 font-medium">客户信息：</span>
+                            <span class="text-gray-700 font-semibold">测试-孙舟</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500 font-medium">邮箱：</span>
+                            <span class="text-[#8AA0B8] font-semibold">test-user01@demo.com</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-500 font-medium mb-2">用户类型：</label>
+                            <select class="audit-modal-select">
+                                <option selected>代理</option>
+                                <option>普通用户</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 font-medium mb-2">账户属性：</label>
+                            <select class="audit-modal-select">
+                                <option selected>模拟账户</option>
+                                <option>真实账户</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-500 font-medium mb-2">杠杆比例：</label>
+                            <select class="audit-modal-select">
+                                <option>1:50</option>
+                                <option selected>1:100</option>
+                                <option>1:200</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 font-medium mb-2">MT类型：</label>
+                            <select id="auditMtTypeSelect" onchange="syncMtTradeGroupOptions()" class="audit-modal-select change-highlight">
+                                <option>标准账户</option>
+                                <option selected>美分账户</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-500 font-medium mb-2">MT交易账号分组：</label>
+                            <select id="auditMtTradeGroupSelect" class="audit-modal-select">
+                                <option selected>美分分组XXXX</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-500 font-medium mb-2">MT佣金账号分组：</label>
+                            <select class="audit-modal-select">
+                                <option selected>real\HATC\Test\Agent</option>
+                                <option>real\HATC\Agent\Cent</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-sm text-red-500 py-3">
+                        提示：开户申请前，请确认 MT 组和杠杆，账户申请生成后不能修改
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 px-8 py-4 border-t border-gray-200">
+                    <button onclick="closeAuditModal()" class="px-6 py-2 border border-gray-300 rounded text-gray-600 bg-white hover:bg-gray-50 transition-colors">
+                        关闭
+                    </button>
+                    <button class="px-6 py-2 rounded bg-menuActive hover:bg-[#c39a43] text-white transition-colors">
+                        保存并开户
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <style>
         /* 隐藏滚动条但保留滚动功能 */
@@ -544,6 +674,38 @@
                 icon.classList.remove('fa-chevron-up');
                 icon.classList.add('fa-chevron-down');
             }
+        }
+
+        function syncMtTradeGroupOptions() {
+            const mtTypeSelect = document.getElementById('auditMtTypeSelect');
+            const tradeGroupSelect = document.getElementById('auditMtTradeGroupSelect');
+            const groupOptionsMap = {
+                '标准账户': [
+                    '标准分组XXXXX',
+                    '标准分组YYYYY'
+                ],
+                '美分账户': [
+                    '美分分组XXXX',
+                    '美分分组YYYY'
+                ]
+            };
+
+            const selectedType = mtTypeSelect.value;
+            const groupOptions = groupOptionsMap[selectedType] || [];
+
+            tradeGroupSelect.innerHTML = groupOptions.map((group, index) => {
+                const selectedAttr = index === 0 ? ' selected' : '';
+                return `<option${selectedAttr}>${group}</option>`;
+            }).join('');
+        }
+
+        function openAuditModal() {
+            syncMtTradeGroupOptions();
+            document.getElementById('auditModal').classList.remove('hidden');
+        }
+
+        function closeAuditModal() {
+            document.getElementById('auditModal').classList.add('hidden');
         }
     </script>
 </body>

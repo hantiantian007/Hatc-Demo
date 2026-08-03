@@ -6,6 +6,7 @@
     <title>HATC CRM - MT开户待审核</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="cent-prd-drawer.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -85,6 +86,8 @@
         }
         .custom-table td:last-child { border-right: none; }
         .custom-table tbody > tr:hover td { background-color: #f9fafb; }
+        .change-highlight { color: #DC2626 !important; }
+        .change-border { border-color: #FCA5A5 !important; }
     </style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
@@ -118,7 +121,7 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="admin-withdraw-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
                     <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
@@ -190,7 +193,7 @@
                 </button>
                 <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
                     <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-account-management-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
                     <a href="admin-audit-list.html" class="flex items-center justify-between py-2 text-sm text-white transition-colors">
                         <span class="font-medium">账户审核</span>
                         <span class="submenu-badge">6</span>
@@ -347,6 +350,10 @@
         <!-- 主要业务渲染区 -->
         <div class="flex-1 p-6 overflow-y-auto bg-white m-4 rounded-lg shadow-sm border border-gray-100 flex flex-col">
 
+            <div class="flex justify-end mb-4">
+                <a href="prd-cent-account-page-audit-list.html" data-prd-drawer data-prd-title="账户审核页面PRD" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
+            </div>
+
             <div class="mb-6 rounded-xl border border-red-100 bg-red-50 px-5 py-4">
                 <div class="flex items-start justify-between gap-4">
                     <div>
@@ -391,6 +398,14 @@
                             <option>未审核</option>
                         </select>
                     </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-right w-[80px] shrink-0 change-highlight">账户类型：</span>
+                        <select class="border rounded px-3 py-1.5 outline-none w-36 change-highlight change-border">
+                            <option>全部</option>
+                            <option>标准账户</option>
+                            <option>美分账户</option>
+                        </select>
+                    </div>
 
                     <!-- 操作按钮组 -->
                     <div class="flex items-center ml-2">
@@ -411,6 +426,7 @@
                                 <th class="py-4 px-4 font-medium">手机</th>
                                 <th class="py-4 px-4 font-medium">MT账号</th>
                                 <th class="py-4 px-4 font-medium">组</th>
+                                <th class="py-4 px-4 font-medium change-highlight">账户类型</th>
                                 <th class="py-4 px-4 font-medium">杠杆</th>
                                 <th class="py-4 px-4 font-medium">申请时间</th>
                                 <th class="py-4 px-4 font-medium">处理时间</th>
@@ -425,6 +441,7 @@
                                 <td class="py-4 px-4">15213099999</td>
                                 <td class="py-4 px-4">8300256</td>
                                 <td class="py-4 px-4">real\HATC\Test\Agent</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-09 16:45:06</td>
                                 <td class="py-4 px-4">2026-06-09 16:45:07</td>
@@ -439,10 +456,27 @@
                                 <td class="py-4 px-4">15213099999</td>
                                 <td class="py-4 px-4">8100459</td>
                                 <td class="py-4 px-4">real\HATC\Test\Stan</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-09 16:45:00</td>
                                 <td class="py-4 px-4">2026-06-09 16:45:02</td>
                                 <td class="py-4 px-4 text-gray-400">未审核</td>
+                                <td class="py-4 px-4">
+                                    <a href="admin-audit.html" class="inline-block border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</a>
+                                    <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-red-50/40 transition-colors">
+                                <td class="py-4 px-4 change-highlight">test-杨均</td>
+                                <td class="py-4 px-4 change-highlight">b13@qq.com</td>
+                                <td class="py-4 px-4 change-highlight">13670510921</td>
+                                <td class="py-4 px-4 change-highlight">9900456</td>
+                                <td class="py-4 px-4 change-highlight">real\HATC\Cent\Real-02</td>
+                                <td class="py-4 px-4 change-highlight">美分账户</td>
+                                <td class="py-4 px-4 change-highlight">1:100</td>
+                                <td class="py-4 px-4 change-highlight">2026-06-08 15:08:50</td>
+                                <td class="py-4 px-4 change-highlight">-</td>
+                                <td class="py-4 px-4 change-highlight">未审核</td>
                                 <td class="py-4 px-4">
                                     <a href="admin-audit.html" class="inline-block border border-blue-400 text-blue-500 px-3 py-1 rounded text-xs hover:bg-blue-50 transition-colors mr-1">审核</a>
                                     <button class="border border-red-400 text-red-500 px-3 py-1 rounded text-xs hover:bg-red-50 transition-colors">拒绝</button>
@@ -454,6 +488,7 @@
                                 <td class="py-4 px-4">13670510921</td>
                                 <td class="py-4 px-4">8100458</td>
                                 <td class="py-4 px-4">real\HATC\Test\Stan</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-08 15:08:40</td>
                                 <td class="py-4 px-4">2026-06-08 15:08:42</td>
@@ -469,6 +504,7 @@
                                 <td class="py-4 px-4">13993242210</td>
                                 <td class="py-4 px-4">8300255</td>
                                 <td class="py-4 px-4">real\HATC\Test\Agent</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-08 15:05:28</td>
                                 <td class="py-4 px-4">2026-06-08 15:05:29</td>
@@ -483,6 +519,7 @@
                                 <td class="py-4 px-4">13993242210</td>
                                 <td class="py-4 px-4">8100457</td>
                                 <td class="py-4 px-4">real\HATC\Test\Stan</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-08 15:05:14</td>
                                 <td class="py-4 px-4">2026-06-08 15:05:15</td>
@@ -498,6 +535,7 @@
                                 <td class="py-4 px-4">13560645079</td>
                                 <td class="py-4 px-4">8300254</td>
                                 <td class="py-4 px-4">real\HATC\Test\Agent</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-08 15:02:15</td>
                                 <td class="py-4 px-4">2026-06-08 15:02:16</td>
@@ -512,6 +550,7 @@
                                 <td class="py-4 px-4">13560645079</td>
                                 <td class="py-4 px-4">8100456</td>
                                 <td class="py-4 px-4">real\HATC\Test\Stan</td>
+                                <td class="py-4 px-4 change-highlight">标准账户</td>
                                 <td class="py-4 px-4">1:100</td>
                                 <td class="py-4 px-4">2026-06-08 15:02:11</td>
                                 <td class="py-4 px-4">2026-06-08 15:02:13</td>
