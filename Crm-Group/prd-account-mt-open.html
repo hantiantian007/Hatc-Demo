@@ -34,33 +34,16 @@
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
             </thead>
             <tbody>
-                <tr><td class="font-medium">页面定位</td><td>作为账户管理页的二级跳转页，用于后台为当前客户发起 MT 账户开户申请。</td></tr>
-                <tr><td class="font-medium">展示字段</td><td>页面展示 <span class="highlight">真实姓名、邮箱、手机、账户类型、账号类型</span> 5 个核心字段，其中前三项默认回填且只读。</td></tr>
                 <tr><td class="font-medium">账户类型选择</td><td>在账号类型上方新增 <span class="highlight">账户类型</span> 下拉框，支持选择 <span class="highlight">标准账户</span>、<span class="highlight">美分账户</span>。</td></tr>
-                <tr><td class="font-medium">账号类型限制</td><td><span class="highlight">账号类型</span> 固定为 <span class="highlight">交易账号</span>，当前页面不支持开通佣金账号。</td></tr>
-                <tr><td class="font-medium">辅助入口</td><td>账号类型字段下方保留 <span class="highlight">客户自主领取号</span> 文本链接，用于后续补充跳转或说明。</td></tr>
-                <tr><td class="font-medium">操作按钮</td><td>底部提供 <span class="highlight">提交</span> 和 <span class="highlight">返回</span> 两个按钮，返回跳回账户管理页。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">2. 交互规则</div>
+        <div class="module-title">2. 测试重点</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">页面入口</td><td>从 <span class="highlight">admin-account-management-cent-account.html</span> 点击 MT开户 按钮进入。</td></tr>
-                <tr><td class="font-medium">只读信息</td><td>真实姓名、邮箱、手机为带入信息，原型中按只读样式展示，不支持修改。</td></tr>
-                <tr><td class="font-medium">字段顺序</td><td><span class="highlight">账户类型</span> 放置在 <span class="highlight">账号类型</span> 上方，账号类型固定展示为交易账号。</td></tr>
-                <tr><td class="font-medium">返回逻辑</td><td>点击返回按钮，回到账户管理页，不保留提交结果反馈。</td></tr>
-                <tr><td class="font-medium">视觉风格</td><td>整体沿用现有 CRM 后台布局、左侧菜单和顶部面包屑，页面主体按截图采用大留白表单布局。</td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">3. 测试重点</div>
-        <table>
-            <tbody>
-                <tr><td>1. 账户管理页的 MT开户 按钮是否可正常跳转到申请MT账户页。</td></tr>
-                <tr><td>2. 账户类型字段是否展示在账号类型上方，且仅包含标准账户、美分账户两个选项。</td></tr>
-                <tr><td>3. 账号类型是否固定展示为交易账号，不可切换为其他类型。</td></tr>
-                <tr><td>4. 返回按钮和顶部“查看页面PRD / 返回需求看板”链接是否可正常跳转。</td></tr>
+                <tr><td>1. 页面内是否已展示账户类型选择字段，且选项仅包含标准账户、美分账户。</td></tr>
+                <tr><td>2. 账户类型选择字段是否展示在账号类型上方。</td></tr>
+                <tr><td>3. 切换不同账户类型时，页面展示是否正常，无异常文案或错位。</td></tr>
             </tbody>
         </table>
     </div>

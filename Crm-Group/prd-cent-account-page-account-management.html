@@ -28,15 +28,7 @@
             本文档仅描述<span class="highlight">账户管理页面</span>因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>支持后台在统一的 MT 账号列表中识别并管理标准账户、佣金账户、美分账户。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-account-management-cent-account.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
@@ -47,11 +39,10 @@
                 <tr><td class="font-medium">金额列单位展示</td><td>余额、净值、佣金、可用预付款、入金金额、出金金额均需带单位。</td></tr>
                 <tr><td class="font-medium">佣金账户精度</td><td><span class="highlight">佣金账户</span> 的余额、净值、佣金、可用预付款、入金金额、出金金额统一保留 <span class="highlight">4 位小数</span>。</td></tr>
                 <tr><td class="font-medium">美分账户数据示例</td><td>列表中需补充一条美分账户数据，使用 <span class="highlight">USC/美分</span> 作为单位。</td></tr>
-                <tr><td class="font-medium">菜单一致性</td><td>左侧菜单与现有后台页面保持一致，并高亮“客户管理 > 账户管理”。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 数据口径</div>
         <table>
             <tbody>
                 <tr><td width="22%" class="font-medium">展示维度</td><td>账户管理页是单 MT 账号维度，不做客户级 USD 汇总。</td></tr>
@@ -60,13 +51,14 @@
             </tbody>
         </table>
 
-        <div class="module-title">4. 测试重点</div>
+        <div class="module-title">3. 测试重点</div>
         <table>
             <tbody>
-                <tr><td>1. 账户类型筛选能否正确筛出美分账户。</td></tr>
-                <tr><td>2. 标准账户、佣金账户、美分账户三类记录的金额单位是否正确。</td></tr>
-                <tr><td>3. 佣金账户记录的金额是否已统一按 4 位小数展示。</td></tr>
-                <tr><td>4. 左侧菜单高亮与跳转是否正常。</td></tr>
+                <tr><td>1. 搜索区账户类型筛选是否支持全部、标准账户、佣金账户、美分账户，且筛选结果正确。</td></tr>
+                <tr><td>2. 列表中是否已新增账户类型列，并能明确区分标准账户、佣金账户、美分账户。</td></tr>
+                <tr><td>3. 余额、净值、佣金、可用预付款、入金金额、出金金额是否均已带单位展示。</td></tr>
+                <tr><td>4. 佣金账户的余额、净值、佣金、可用预付款、入金金额、出金金额是否已统一按 4 位小数展示。</td></tr>
+                <tr><td>5. 列表中是否已补充美分账户示例数据，且金额单位展示为 USC/美分。</td></tr>
             </tbody>
         </table>
     </div>

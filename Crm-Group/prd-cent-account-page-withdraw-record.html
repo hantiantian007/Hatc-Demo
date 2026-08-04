@@ -28,45 +28,29 @@
             本文档仅描述<span class="highlight">出金列表页面</span>因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在现网出金记录页中兼容美分账户记录展示，并保持原有出金列表操作习惯。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">client-withdraw-record-cent-account.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
             </thead>
             <tbody>
-                <tr><td class="font-medium">账户类型独立成列</td><td>列表中需将 <span class="highlight">账户类型</span> 作为独立字段展示，不再放在 <span class="highlight">MT账号</span> 下方；MT账号列仅保留纯账号。</td></tr>
-                <tr><td class="font-medium">记录中体现单位</td><td>账户类型列中需明确展示单位：标准账户展示 <span class="highlight">标准账户 / USD/美元</span>；美分账户展示 <span class="highlight">美分账户 / USC/美分</span>。</td></tr>
-                <tr><td class="font-medium">到账金额支持人民币口径</td><td>当支付方式为 <span class="highlight">AIPAY</span> 时，到账金额需直接按 <span class="highlight">人民币（CNY）</span> 展示，并同步展示对应汇率。</td></tr>
-                <tr><td class="font-medium">美分金额展示方式</td><td>美分账户记录在 <span class="highlight">出金金额</span> 列中保留 <span class="highlight">USC 原始金额</span> 主值，并在辅助行展示折合美元金额，便于用户理解申请口径。</td></tr>
-                <tr><td class="font-medium">出金申请入口</td><td>保留页面中的出金申请入口，支持进入出金管理页继续选择账号。</td></tr>
-                <tr><td class="font-medium">结构保持现网一致</td><td>不改动现网列表骨架，仅在现有字段中融入美分账户识别信息；本次新增/调整内容在原型中以红色字体标识，便于审查。</td></tr>
+                <tr><td class="font-medium">增加MT账户类型</td><td>列表中增加 <span class="highlight">MT账户类型</span> 字段。</td></tr>
+                <tr><td class="font-medium">记录中体现单位</td><td>账户类型列中需明确展示账户类型：标准账户展示 <span class="highlight">标准账户</span>；美分账户展示 <span class="highlight">美分账户</span>。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 数据口径</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">展示维度</td><td>本页为单笔出金记录视图，展示账号原始币种，不做客户级或多账号汇总。</td></tr>
-                <tr><td class="font-medium">币种规则</td><td>标准账户按 <span class="highlight">USD/美元</span> 展示；美分账户优先按 <span class="highlight">USC/美分</span> 展示，并可补充折合美元辅助值。</td></tr>
-                <tr><td class="font-medium">支付方式口径</td><td><span class="highlight">AIPAY</span> 对应人民币结算，到账金额需以 <span class="highlight">￥</span> 金额演示并展示汇率。</td></tr>
+                <tr><td class="font-medium">币种规则</td><td>出金列表中的 <span class="highlight">出金金额</span> 与 <span class="highlight">到账金额</span> 统一按 <span class="highlight">USD/美元</span> 展示；美分账户仅作为 <span class="highlight">MT账户类型</span> 进行识别，不再在列表金额中展示 <span class="highlight">USC/美分</span>。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">4. 测试重点</div>
+        <div class="module-title">3. 测试重点</div>
         <table>
             <tbody>
                 <tr><td>1. 标准账户和美分账户记录混排时，MT账号与账户类型是否已拆分清楚。</td></tr>
-                <tr><td>2. AIPAY 场景下，到账金额是否按人民币展示，汇率是否正确回显。</td></tr>
-                <tr><td>3. 美分账户记录是否同时展示 USC 原始金额与折合美元辅助值。</td></tr>
-                <tr><td>4. 页面中的出金申请入口是否能正常跳转。</td></tr>
+                <tr><td>2. 美分账户记录是否按 USD/美元 展示出金金额与到账金额，且不再展示 USC/美分 主金额。</td></tr>
             </tbody>
         </table>
     </div>

@@ -38,9 +38,8 @@
                 <tr><td class="font-medium">选择后显示账户类型</td><td>用户选中账号后，页面需明确识别当前为标准账户还是美分账户。</td></tr>
                 <tr><td class="font-medium">入金金额单位切换</td><td>标准账户按 <span class="highlight">USD/美元</span> 输入；美分账户按 <span class="highlight">USC/美分</span> 输入。</td></tr>
                 <tr><td class="font-medium">金额输入限制</td><td>标准账户与美分账户的入金金额均限制为<span class="highlight">整数输入</span>。</td></tr>
-                <tr><td class="font-medium">最低入金金额</td><td>需增加最低入金门槛校验：标准账户最低入金金额为 <span class="highlight">50 USD</span>；美分账户最低入金金额为 <span class="highlight">50000 USC</span>，即折合 <span class="highlight">500 USD</span>。</td></tr>
+                <tr><td class="font-medium">最低入金金额</td><td>最低入金门槛按<span class="highlight">现有逻辑</span>进行校验；最低金额支持后台配置，校验基准按<span class="highlight">USD</span>执行。</td></tr>
                 <tr><td class="font-medium">单位后缀</td><td>金额展示需补充单位后缀，如 <span class="highlight">/美分、/人民币、/美元</span>。</td></tr>
-                <tr><td class="font-medium">取消预计到账金额</td><td>页面中取消 <span class="highlight">预计到账金额</span> 展示，仅保留支付汇率与支付金额。</td></tr>
             </tbody>
         </table>
 
@@ -48,7 +47,7 @@
         <table>
             <tbody>
                 <tr><td width="22%" class="font-medium">账号切换</td><td>切换账号时，页面中的金额标签、单位文案、提示文案需同步切换。</td></tr>
-                <tr><td class="font-medium">最低金额校验</td><td>当用户输入金额低于当前账户类型对应的最低入金门槛时，页面需给出明确提示，且不可提交保存。</td></tr>
+                <tr><td class="font-medium">最低金额校验</td><td>当用户输入金额不满足当前页面<span class="highlight">现有最低入金逻辑</span>时，页面需给出明确提示，且不可提交保存；美分账户虽按<span class="highlight">USC/美分</span>输入，但需先自动换算为<span class="highlight">USD</span>后，再按后台配置的最低入金金额进行校验。</td></tr>
                 <tr><td class="font-medium">支付方式切换</td><td>切换支付方式时，支付汇率与支付金额需按当前通道规则联动更新。</td></tr>
                 <tr><td class="font-medium">展示口径</td><td>本页展示单账户原始币种，不在页面中附加“折合 USD”提示。</td></tr>
             </tbody>
@@ -59,8 +58,8 @@
             <tbody>
                 <tr><td>1. 标准账户 / 美分账户切换后，金额输入单位是否正确切换。</td></tr>
                 <tr><td>2. 标准账户与美分账户是否都只能输入整数。</td></tr>
-                <tr><td>3. 标准账户输入小于 50 USD、美分账户输入小于 50000 USC 时，是否能正确提示且禁止保存。</td></tr>
-                <tr><td>4. 页面中是否已移除“预计到账金额”字段，仅保留支付汇率与支付金额。</td></tr>
+                <tr><td>3. 不满足当前页面现有最低入金逻辑时，是否能正确提示且禁止保存。</td></tr>
+                <tr><td>4. 美分账户输入 USC/美分金额后，是否会先自动换算为 USD，再按后台配置的最低入金金额进行校验。</td></tr>
             </tbody>
         </table>
     </div>
