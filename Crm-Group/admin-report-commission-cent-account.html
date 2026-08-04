@@ -392,14 +392,6 @@
                             </select>
                         </div>
                         <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3 change-highlight">手数口径:</label>
-                            <select class="custom-select change-highlight">
-                                <option>全部</option>
-                                <option>标准手</option>
-                                <option>美分手</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center">
                             <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3 change-highlight">账户类型:</label>
                             <select class="custom-select change-highlight">
                                 <option>全部</option>
@@ -462,9 +454,8 @@
                                 <th>MT返佣账号</th>
                                 <th>返佣客户姓名</th>
                                 <th>返佣客户邮箱</th>
-                                <th class="change-highlight">手数口径</th>
+                                <th class="change-highlight">手数</th>
                                 <th>平台手数</th>
-                                <th class="change-highlight">返佣手数</th>
                                 <th>交易品种</th>
                                 <th class="change-highlight">返佣金额(USD)</th>
                             </tr>
@@ -485,13 +476,12 @@
                                 <td>rebate.r01@example.com</td>
                                 <td class="change-highlight">标准手</td>
                                 <td>0.01</td>
-                                <td class="change-highlight">0.01</td>
                                 <td>XAUUSD</td>
                                 <td class="change-highlight">0.1400</td>
                             </tr>
                             <tr id="commissionDetail1" class="hidden change-bg">
                                 <td></td>
-                                <td colspan="16" class="text-left">
+                                <td colspan="15" class="text-left">
                                     <div class="detail-list">
                                         <div class="detail-row-item">
                                             <span class="detail-label">平仓时间(mt)</span>
@@ -514,7 +504,7 @@
                                             <span class="detail-value">0.01 标准手</span>
                                         </div>
                                         <div class="detail-row-item">
-                                            <span class="detail-label">返佣单价</span>
+                                            <span class="detail-label">返佣标准</span>
                                             <span class="detail-value">14.0000 USD/手</span>
                                         </div>
                                     </div>
@@ -536,13 +526,12 @@
                                 <td>rebate.r02@example.com</td>
                                 <td class="change-highlight">标准手</td>
                                 <td>0.10</td>
-                                <td class="change-highlight">0.10</td>
                                 <td>XAUUSD</td>
                                 <td class="change-highlight">1.4000</td>
                             </tr>
                             <tr id="commissionDetail2" class="hidden change-bg">
                                 <td></td>
-                                <td colspan="16" class="text-left">
+                                <td colspan="15" class="text-left">
                                     <div class="detail-list">
                                         <div class="detail-row-item">
                                             <span class="detail-label">平仓时间(mt)</span>
@@ -565,7 +554,7 @@
                                             <span class="detail-value">0.10 标准手</span>
                                         </div>
                                         <div class="detail-row-item">
-                                            <span class="detail-label">返佣单价</span>
+                                            <span class="detail-label">返佣标准</span>
                                             <span class="detail-value">14.0000 USD/手</span>
                                         </div>
                                     </div>
@@ -587,13 +576,12 @@
                                 <td>rebate.c01@example.com</td>
                                 <td class="change-highlight">美分手</td>
                                 <td>0.01</td>
-                                <td class="change-highlight">0.01</td>
                                 <td>EURUSD</td>
                                 <td class="change-highlight">0.0014</td>
                             </tr>
                             <tr id="commissionDetail3" class="hidden change-bg">
                                 <td></td>
-                                <td colspan="16" class="text-left">
+                                <td colspan="15" class="text-left">
                                     <div class="detail-list">
                                         <div class="detail-row-item">
                                             <span class="detail-label change-highlight">平仓时间(mt)</span>
@@ -616,7 +604,7 @@
                                             <span class="detail-value change-highlight">0.01 美分手</span>
                                         </div>
                                         <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">返佣单价</span>
+                                            <span class="detail-label change-highlight">返佣标准</span>
                                             <span class="detail-value change-highlight">0.1400 USD/手</span>
                                         </div>
                                     </div>

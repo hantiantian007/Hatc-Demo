@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HATC CRM - 待审核出金</title>
+    <script src="cent-prd-drawer.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -311,7 +312,7 @@
                 出入金 <span class="mx-1 text-gray-300">&gt;</span> 待审核出金
             </div>
             <div class="flex items-center gap-4">
-                <a href="prd-cent-account-page-withdraw-pending-review.html" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
+                <a href="prd-cent-account-page-withdraw-pending-review.html" data-prd-drawer data-prd-title="待审核出金页面PRD" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
                 <a href="../index.html" class="text-xs text-gray-400 hover:text-gray-600 transition-colors">返回看板</a>
             </div>
         </header>
@@ -404,8 +405,7 @@
                             <div class="text-xs text-gray-500">
                                 出金汇总：
                                 <span class="ml-2">笔数：399 笔</span>
-                                <span class="ml-2">金额：$705,914.79</span>
-                                <span class="ml-2 text-emerald-600 change-highlight">美分原始金额：2,179,368.00 USC</span>
+                                <span class="ml-2 text-red-500">出金金额：合计$：200.00（USD：100.00、USC：10000.00）</span>
                             </div>
                         </div>
                         <button class="px-4 py-2 rounded-md bg-primary hover:bg-primaryHover text-white text-xs font-medium transition-colors">报表导出</button>
@@ -583,7 +583,7 @@
             </div>
             <div class="px-6 py-5 space-y-5">
                 <div>
-                    <label id="manageWithdrawAmountLabel" class="block text-[15px] font-medium text-gray-600 mb-3"><span class="change-highlight">*</span> 支付金额（美元）：</label>
+                    <label id="manageWithdrawAmountLabel" class="block text-[15px] font-medium text-gray-600 mb-3"><span class="change-highlight">*</span> 出金金额（美元）：</label>
                     <input id="manageWithdrawAmountInput" class="modal-input" placeholder="请输入金额" value="">
                 </div>
                 <div>
@@ -656,7 +656,7 @@
         const manageWithdrawTypeHint = document.getElementById('manageWithdrawTypeHint');
         const manageWithdrawAccountTypeMap = {
             '8100453': { type: '标准账户', unitLabel: '美元', placeholder: '请输入美元金额', hint: '当前 MT账号 为标准账户，出金金额按 USD/美元 输入。' },
-            '9900456': { type: '美分账户', unitLabel: '美分', placeholder: '请输入美分金额', hint: '当前 MT账号 为美分账户，出金金额按 USC/美分 输入。' }
+            '9900456': { type: '美分账户', unitLabel: '美元', placeholder: '请输入美元金额', hint: '当前 MT账号 为美分账户，出金金额按 USD/美元 输入。' }
         };
 
         function updateManageWithdrawType() {
@@ -668,12 +668,12 @@
             const accountInfo = manageWithdrawAccountTypeMap[mtAccount];
 
             if (accountInfo) {
-                manageWithdrawAmountLabel.innerHTML = `<span class="change-highlight">*</span> 支付金额（${accountInfo.unitLabel}）：`;
+                manageWithdrawAmountLabel.innerHTML = `<span class="change-highlight">*</span> 出金金额（${accountInfo.unitLabel}）：`;
                 manageWithdrawAmountInput.placeholder = accountInfo.placeholder;
                 manageWithdrawTypeHint.textContent = accountInfo.hint;
                 manageWithdrawTypeHint.classList.add('change-highlight');
             } else {
-                manageWithdrawAmountLabel.innerHTML = `<span class="change-highlight">*</span> 支付金额（美元）：`;
+                manageWithdrawAmountLabel.innerHTML = `<span class="change-highlight">*</span> 出金金额（美元）：`;
                 manageWithdrawAmountInput.placeholder = '请输入金额';
                 manageWithdrawTypeHint.textContent = mtAccount
                     ? '当前 MT账号 未匹配到 demo 账户类型，默认按 USD/美元 展示。'

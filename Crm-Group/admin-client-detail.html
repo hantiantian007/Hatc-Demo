@@ -7,22 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="cent-prd-drawer.js"></script>
-    <!-- PRD 预览弹窗 -->
-    <div id="prdModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 flex flex-col h-[85vh]">
-            <!-- 弹窗头部 -->
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-800">需求文档 (PRD) 预览</h3>
-                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <i class="fa-solid fa-times text-xl"></i>
-                </button>
-            </div>
-            <!-- 弹窗内容区 (iframe 嵌套) -->
-            <div class="flex-1 p-0 bg-gray-50 overflow-hidden rounded-b-lg">
-                <iframe src="prd-client-detail.html" class="w-full h-full border-0"></iframe>
-            </div>
-        </div>
-    </div>
 
     <!-- 代理选择弹窗 -->
     <div id="ibModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
@@ -357,9 +341,9 @@
                 </a>
                 
                 <!-- PRD 文档按钮 -->
-                <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition-colors mt-2 border border-gray-200">
+                <a href="prd-cent-account-page-client-detail.html" data-prd-drawer data-prd-title="客户详情页面PRD" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition-colors mt-2 border border-gray-200">
                     <i class="fa-solid fa-project-diagram"></i> PRD 文档
-                </button>
+                </a>
 
                 <a href="admin-risk-login-alert.html" class="hidden sm:flex items-center gap-2 text-sm text-[#C19B5E] hover:text-[#a88651] bg-[#f9f4ea] hover:bg-[#f4ead7] px-3 py-1.5 rounded-full transition-colors mt-2 border border-[#eadcc4]">
                     <i class="fa-solid fa-shield-halved"></i> 登录环境预警
@@ -476,18 +460,18 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-4 sm:gap-y-6 text-sm">
                             <div>
                                 <div class="text-gray-500 mb-1">累计入金:</div>
-                                <div class="text-red-500">10,100.00 USD/美元</div>
-                                <div class="text-xs text-red-500 mt-1">包含美分入金：123.00 USC</div>
+                                <div class="text-red-500">91.00 USD</div>
+                                <div class="text-xs text-red-500 mt-1">USD：90.00</div>
+                                <div class="text-xs text-red-500 mt-1">USC：100.01</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">累计出金:</div>
                                 <div class="text-red-500">1,230.00 USD/美元</div>
-                                <div class="text-xs text-red-500 mt-1">包含美分出金：45.00 USC</div>
+                                <div class="text-xs text-red-500 mt-1">包含美分账户出金：45.00 USD</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">累计净入金:</div>
                                 <div class="text-red-500">8,870.00 USD/美元</div>
-                                <div class="text-xs text-red-500 mt-1">包含美分净入金：78.00 USC</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">累计交易笔数:</div>
@@ -514,7 +498,6 @@
                                 <div class="text-gray-800">0.00</div>
                             </div>
                         </div>
-                        <div class="mt-4 text-xs text-red-500">统计范围：标准账户 + 美分账户，已统一按 USD/美元 折算汇总。</div>
                     </div>
 
                     <!-- 卡片4：留资溯源信息 (横向展示) -->
@@ -705,7 +688,7 @@
                                 <th class="font-medium py-4 px-4">账号属性</th>
                                 <th class="font-medium py-4 px-4">分组名称</th>
                                 <th class="font-medium py-4 px-4">杠杆</th>
-                                <th class="font-medium py-4 px-4 text-red-500">手数口径</th>
+                                <th class="font-medium py-4 px-4 text-red-500">手数</th>
                                 <th class="font-medium py-4 px-4">余额</th>
                                 <th class="font-medium py-4 px-4">赠金</th>
                                 <th class="font-medium py-4 px-4">入金金额</th>
@@ -744,10 +727,10 @@
                                 <td class="py-4 px-4 text-red-500">real\HATC\Cent\Real-02</td>
                                 <td class="py-4 px-4 text-red-500">1:100</td>
                                 <td class="py-4 px-4 text-red-500">美分手</td>
-                                <td class="py-4 px-4 text-red-500">756,000 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
-                                <td class="py-4 px-4 text-red-500">500 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
-                                <td class="py-4 px-4 text-red-500">760,000 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
-                                <td class="py-4 px-4 text-red-500">83,000 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">756,000.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">500.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">760,000.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">83,000.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
                                 <td class="py-4 px-4 text-red-500">2026-06-08 15:05:29</td>
                             </tr>
                         </tbody>
@@ -873,23 +856,6 @@
             <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-lg flex justify-end gap-3">
                 <button onclick="document.getElementById('createTagModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded hover:bg-gray-50 text-sm transition-colors">取消</button>
                 <button onclick="document.getElementById('createTagModal').classList.add('hidden'); alert('标签新建成功！');" class="px-4 py-2 bg-[#C19B5E] text-white rounded hover:bg-[#a88651] text-sm transition-colors">确认新建</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PRD 预览弹窗 -->
-    <div id="prdModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 flex flex-col h-[85vh]">
-            <!-- 弹窗头部 -->
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-800">需求文档 (PRD) 预览</h3>
-                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <i class="fa-solid fa-times text-xl"></i>
-                </button>
-            </div>
-            <!-- 弹窗内容区 (iframe 嵌套) -->
-            <div class="flex-1 p-0 bg-gray-50 overflow-hidden rounded-b-lg">
-                <iframe src="prd-client-detail.html" class="w-full h-full border-0"></iframe>
             </div>
         </div>
     </div>

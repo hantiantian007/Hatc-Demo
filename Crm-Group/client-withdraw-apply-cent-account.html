@@ -278,8 +278,8 @@
                                 <span id="availableOriginalHint" class="font-medium change-highlight">8,767.00 USD/美元</span>
                             </div>
                         </div>
-                        <input id="amountInput" type="number" step="1" min="1" placeholder="请输入出金金额（美元）" class="w-full max-w-[620px] h-11 rounded border border-gray-200 px-4 text-sm text-gray-700 placeholder:text-gray-400">
-                        <div id="amountHint" class="text-xs text-gray-400 mt-2 change-highlight">所有账户出金金额统一按美元输入，仅支持整数。</div>
+                        <input id="amountInput" type="number" step="0.01" min="0.01" placeholder="请输入出金金额（美元）" class="w-full max-w-[620px] h-11 rounded border border-gray-200 px-4 text-sm text-gray-700 placeholder:text-gray-400">
+                        <div id="amountHint" class="text-xs text-gray-400 mt-2 change-highlight">所有账户出金金额统一按美元输入，支持输入到小数点后两位。</div>
                     </div>
 
                     <div>
@@ -312,9 +312,9 @@
                 available: 125.4012,
                 withdrawing: 0,
                 bonus: 0,
-                allowIntegerOnly: true,
-                inputStep: '1',
-                inputMin: '1'
+                allowIntegerOnly: false,
+                inputStep: '0.01',
+                inputMin: '0.01'
             },
             '8100453': {
                 login: '8100453',
@@ -326,9 +326,9 @@
                 available: 0,
                 withdrawing: 0,
                 bonus: 0,
-                allowIntegerOnly: true,
-                inputStep: '1',
-                inputMin: '1'
+                allowIntegerOnly: false,
+                inputStep: '0.01',
+                inputMin: '0.01'
             },
             '9900456': {
                 login: '9900456',
@@ -373,6 +373,21 @@
             });
         }
 
+        function formatBalanceSummaryAmount(num, account) {
+            const fractionDigits = account.type === '美分账户' ? 2 : (account.type === '佣金账户' ? 4 : 2);
+            return Number(num).toLocaleString('en-US', {
+                minimumFractionDigits: fractionDigits,
+                maximumFractionDigits: fractionDigits
+            });
+        }
+
+        function formatCentWithdrawHintOriginal(num) {
+            return Number(num).toLocaleString('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+        }
+
         function getAccount() {
             const params = new URLSearchParams(window.location.search);
             const account = params.get('account');
@@ -391,10 +406,6 @@
 
         function normalizeUsdInput(value, account) {
             const raw = String(value || '');
-
-            if (account.allowIntegerOnly) {
-                return raw.replace(/[^\d]/g, '').replace(/^0+(?=\d)/, '');
-            }
 
             const sanitized = raw.replace(/[^\d.]/g, '');
             const parts = sanitized.split('.');
@@ -449,13 +460,15 @@
             document.getElementById('amountLabel').textContent = `* ${account.amountLabel}`;
             document.getElementById('amountHint').textContent = account.type === '美分账户'
                 ? '美分账户出金金额统一按美元输入，支持输入到小数点后两位；系统按 1:100 校验对应 USC/美分余额。'
-                : `${account.type}出金金额统一按美元输入，仅支持整数。`;
-            document.getElementById('balanceText').textContent = `${formatAccountAmount(account.balance, account)} ${account.unit}`;
-            document.getElementById('availableText').textContent = `${formatAccountAmount(account.available, account)} ${account.unit}`;
-            document.getElementById('withdrawingText').textContent = `${formatAccountAmount(account.withdrawing, account)} ${account.unit}`;
-            document.getElementById('bonusText').textContent = `${formatAccountAmount(account.bonus, account)} ${account.unit}`;
+                : `${account.type}出金金额统一按美元输入，支持输入到小数点后两位。`;
+            document.getElementById('balanceText').textContent = `${formatBalanceSummaryAmount(account.balance, account)} ${account.unit}`;
+            document.getElementById('availableText').textContent = `${formatBalanceSummaryAmount(account.available, account)} ${account.unit}`;
+            document.getElementById('withdrawingText').textContent = `${formatBalanceSummaryAmount(account.withdrawing, account)} ${account.unit}`;
+            document.getElementById('bonusText').textContent = `${formatBalanceSummaryAmount(account.bonus, account)} ${account.unit}`;
             document.getElementById('availableUsdHint').textContent = `${formatAccountAmount(getAvailableUsdAmount(account), account)} USD/美元`;
-            document.getElementById('availableOriginalHint').textContent = `${formatAccountAmount(account.available, account)} ${account.unit}`;
+            document.getElementById('availableOriginalHint').textContent = account.type === '美分账户'
+                ? `${formatCentWithdrawHintOriginal(account.available)} USC（${formatAmount(getAvailableUsdAmount(account))} USD）`
+                : `${formatAccountAmount(account.available, account)} ${account.unit}`;
 
             const amountInput = document.getElementById('amountInput');
             amountInput.step = account.inputStep;

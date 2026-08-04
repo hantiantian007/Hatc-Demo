@@ -33,12 +33,6 @@
             arrow.classList.toggle('arrow-rotated');
         }
 
-        function toggleDetailRow(id, button) {
-            const row = document.getElementById(id);
-            const icon = button.querySelector('i');
-            row.classList.toggle('hidden');
-            icon.classList.toggle('rotate-90');
-        }
     </script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -104,32 +98,6 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-        }
-        .detail-list {
-            display: flex;
-            flex-direction: column;
-        }
-        .detail-row-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            min-height: 40px;
-            padding: 0 12px;
-            border-bottom: 1px solid #f3d6d6;
-            white-space: normal;
-        }
-        .detail-row-item:last-child { border-bottom: none; }
-        .detail-label {
-            width: 160px;
-            flex-shrink: 0;
-            color: #6b7280;
-            font-weight: 600;
-            text-align: left;
-        }
-        .detail-value {
-            color: #374151;
-            text-align: left;
-            word-break: break-word;
         }
     </style>
 </head>
@@ -285,16 +253,6 @@
                             <option>全部</option>
                             <option>仅标准账户</option>
                             <option>仅美分账户</option>
-                            <option>标准+美分</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-20 shrink-0 text-right mr-3 change-highlight">手数口径:</label>
-                        <select class="custom-select change-highlight">
-                            <option>全部</option>
-                            <option>仅标准手</option>
-                            <option>仅美分手</option>
-                            <option>标准+美分</option>
                         </select>
                     </div>
                 </div>
@@ -379,8 +337,11 @@
                 <div class="stat-card">
                     <div class="flex items-start justify-between">
                         <div>
-                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">MT净值(USD)</div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">MT净值</div>
                             <div class="text-[30px] font-bold text-gray-800 leading-none">11,994.78</div>
+                            <div class="text-[12px] mt-2 change-highlight">统计汇总：11,994.78</div>
+                            <div class="text-[12px] mt-1 change-highlight">USD：4,434.78</div>
+                            <div class="text-[12px] mt-1 change-highlight">USC：756,000.00</div>
                         </div>
                         <div class="stat-icon"><i class="fa-solid fa-scale-balanced"></i></div>
                     </div>
@@ -388,8 +349,11 @@
                 <div class="stat-card">
                     <div class="flex items-start justify-between">
                         <div>
-                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">MT余额(USD)</div>
+                            <div class="text-[13px] text-gray-500 mb-3 change-highlight">MT余额</div>
                             <div class="text-[30px] font-bold text-gray-800 leading-none">12,021.54</div>
+                            <div class="text-[12px] mt-2 change-highlight">统计汇总：12,021.54</div>
+                            <div class="text-[12px] mt-1 change-highlight">USD：4,421.54</div>
+                            <div class="text-[12px] mt-1 change-highlight">USC：760,000.00</div>
                         </div>
                         <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                     </div>
@@ -401,7 +365,6 @@
                     <table class="w-full custom-table">
                         <thead class="bg-tableHeader">
                             <tr>
-                                <th class="w-8"></th>
                                 <th>客户名称</th>
                                 <th>角色</th>
                                 <th>联系方式</th>
@@ -420,7 +383,6 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><button onclick="toggleDetailRow('customerReportDetail1', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
                                 <td class="text-left font-medium text-gray-800">客户A-演示</td>
                                 <td>代理(PIB)</td>
                                 <td>demo.a@example.com</td>
@@ -436,44 +398,8 @@
                                 <td class="text-[#22C55E] font-medium">正常</td>
                                 <td>2026-06-08 14:31</td>
                             </tr>
-                            <tr id="customerReportDetail1" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="14" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">MT账户构成</span>
-                                            <span class="detail-value change-highlight">标准账户 1 个，美分账户 1 个</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">标准账户交易量</span>
-                                            <span class="detail-value change-highlight">0.25 标准手</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户交易量</span>
-                                            <span class="detail-value change-highlight">0.32 美分手</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始入金</span>
-                                            <span class="detail-value change-highlight">600,000 USC/美分</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始出金</span>
-                                            <span class="detail-value change-highlight">0 USC/美分</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始净值</span>
-                                            <span class="detail-value change-highlight">756,000 USC/美分</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始余额</span>
-                                            <span class="detail-value change-highlight">760,000 USC/美分</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
 
                             <tr>
-                                <td><button onclick="toggleDetailRow('customerReportDetail2', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
                                 <td class="text-left font-medium text-gray-800">客户B-演示</td>
                                 <td>代理(PIB)</td>
                                 <td>demo.b@example.com</td>
@@ -489,24 +415,8 @@
                                 <td class="text-[#22C55E] font-medium">正常</td>
                                 <td>2026-06-08 14:55</td>
                             </tr>
-                            <tr id="customerReportDetail2" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="14" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">MT账户构成</span>
-                                            <span class="detail-value">标准账户 2 个</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">标准账户交易量</span>
-                                            <span class="detail-value change-highlight">0.25 标准手</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
 
                             <tr>
-                                <td><button onclick="toggleDetailRow('customerReportDetail3', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
                                 <td class="text-left font-medium text-gray-800 change-highlight">客户C-演示</td>
                                 <td>代理(PIB)</td>
                                 <td>cent.demo@example.com</td>
@@ -521,37 +431,6 @@
                                 <td>0</td>
                                 <td class="text-[#22C55E] font-medium">正常</td>
                                 <td>2026-06-08 14:57</td>
-                            </tr>
-                            <tr id="customerReportDetail3" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="14" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">MT账户构成</span>
-                                            <span class="detail-value change-highlight">美分账户 2 个</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户交易量</span>
-                                            <span class="detail-value change-highlight">0.32 美分手</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始入金</span>
-                                            <span class="detail-value change-highlight">68,000 USC/美分</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始出金</span>
-                                            <span class="detail-value change-highlight">18,000 USC/美分</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">美分账户原始净入金</span>
-                                            <span class="detail-value change-highlight">50,000 USC/美分</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">待结转返佣</span>
-                                            <span class="detail-value change-highlight">0.0014 USD</span>
-                                        </div>
-                                    </div>
-                                </td>
                             </tr>
                         </tbody>
                     </table>

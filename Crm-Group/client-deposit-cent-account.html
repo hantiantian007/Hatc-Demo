@@ -448,7 +448,7 @@
 
             const hint = document.getElementById('topAccountHint');
             if (account.type === '美分账户') {
-                hint.textContent = '当前账号为美分账户，入金金额按 USC 输入';
+                hint.textContent = '';
                 depositMinError.textContent = '当前入金金额低于最低入金金额，请至少输入 50000 USC/美分。';
             } else {
                 hint.textContent = '当前账号为标准账户，入金金额按 USD 输入';

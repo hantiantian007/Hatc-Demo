@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HATC CRM - 待审核入金</title>
+    <script src="cent-prd-drawer.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -112,9 +113,9 @@
         }
         .list-grid {
             display: grid;
-            grid-template-columns: 28px 126px 92px 170px 112px 170px 176px 100px 120px 152px;
+            grid-template-columns: 28px 126px 92px 170px 112px 170px 176px 110px 100px 120px 152px;
             align-items: start;
-            min-width: 1246px;
+            min-width: 1372px;
             column-gap: 16px;
         }
         .detail-panel {
@@ -357,7 +358,7 @@
                 出入金 <span class="mx-1 text-gray-300">&gt;</span> 待审核入金
             </div>
             <div class="flex items-center gap-4">
-                <a href="prd-cent-account-page-deposit-pending-review.html" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
+                <a href="prd-cent-account-page-deposit-pending-review.html" data-prd-drawer data-prd-title="待审核入金页面PRD" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
                 <a href="../index.html" class="text-xs text-gray-400 hover:text-gray-600 transition-colors">返回看板</a>
             </div>
         </header>
@@ -449,9 +450,8 @@
                             <button type="button" onclick="openManageDepositModal()" class="inline-flex items-center px-3 py-1.5 rounded-md bg-primary text-white text-sm font-medium hover:bg-primaryHover transition-colors">管理入金</button>
                             <div class="text-xs text-gray-500">
                                 入金汇总：
-                                <span class="ml-2">笔数：399 笔</span>
-                                <span class="ml-2">金额：$ 705914.79</span>
-                                <span class="ml-2 text-emerald-600 change-highlight">美分原始金额：21,793,680.00 USC</span>
+                                <span class="ml-2 change-highlight">统计笔数：399 笔</span>
+                                <span class="ml-2 change-highlight">入金金额：合计$：200.00（USD：100.00、USC：10000.00）</span>
                             </div>
                         </div>
                         <button class="px-4 py-2 rounded-md bg-primary hover:bg-primaryHover text-white text-xs font-medium transition-colors">报表导出</button>
@@ -467,6 +467,7 @@
                                 <div>上级信息</div>
                                 <div>联系方式</div>
                                 <div class="change-highlight">金额</div>
+                                <div class="change-highlight">支付方式</div>
                                 <div>审核状态</div>
                                 <div>操作人</div>
                                 <div>操作时间</div>
@@ -501,6 +502,7 @@
                                             <div>入金金额：$1,233.00</div>
                                             <div class="mt-1 text-gray-400">支付金额：$1,233.00</div>
                                         </div>
+                                        <div class="text-sm text-gray-500">maxpay-usdt</div>
                                         <div class="text-sm text-gray-500">会签审核</div>
                                         <div class="text-sm text-gray-500">-</div>
                                         <div class="text-sm text-gray-500">
@@ -513,39 +515,11 @@
                             <div id="deposit-detail-1" class="hidden px-8 pb-5 border-t border-gray-100">
                                 <div class="detail-panel">
                                     <div class="detail-row">
-                                        <div class="detail-label">支付方式</div>
-                                        <div class="detail-value">maxpay-usdt</div>
-                                    </div>
-                                    <div class="detail-row">
                                         <div class="detail-label">时间</div>
                                         <div class="detail-value">
                                             <div>申请时间：2026-07-31 15:07:06</div>
                                             <div>处理时间：2026-07-31 15:07:08</div>
                                         </div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">账户余额</div>
-                                        <div class="detail-value">10,000.00</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">账户净值</div>
-                                        <div class="detail-value">10,000.00</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">入金金额</div>
-                                        <div class="detail-value">$1,233.00</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">支付金额</div>
-                                        <div class="detail-value">$1,233.00</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">持仓量</div>
-                                        <div class="detail-value">0手</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">可用保证金</div>
-                                        <div class="detail-value">10,000.00</div>
                                     </div>
                                     <div class="detail-row border-b-0">
                                         <div class="detail-label">操作</div>
@@ -584,6 +558,7 @@
                                             <div class="change-highlight">入金金额：100,000.00 USC</div>
                                             <div class="mt-1 text-gray-400">支付金额：￥7,180.00</div>
                                         </div>
+                                        <div class="text-sm text-gray-500">AIPAY</div>
                                         <div class="text-sm text-amber-600">已下发</div>
                                         <div class="text-sm text-gray-500">财务-A</div>
                                         <div class="text-sm text-gray-500">
@@ -597,43 +572,11 @@
                             <div id="deposit-detail-2" class="hidden px-8 pb-5 border-t border-gray-100">
                                 <div class="detail-panel">
                                     <div class="detail-row">
-                                        <div class="detail-label">支付方式</div>
-                                        <div class="detail-value">AIPAY</div>
-                                    </div>
-                                    <div class="detail-row">
                                         <div class="detail-label">时间</div>
                                         <div class="detail-value">
                                             <div>申请时间：2026-07-20 15:09:10</div>
                                             <div>处理时间：2026-07-20 15:16:56</div>
                                         </div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">账户余额</div>
-                                        <div class="detail-value">52,450.00 USC</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">账户净值</div>
-                                        <div class="detail-value">52,460.00 USC</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">入金金额</div>
-                                        <div class="detail-value change-highlight">100,000.00 USC</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">汇率</div>
-                                        <div class="detail-value change-highlight">7.18000</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">支付金额</div>
-                                        <div class="detail-value change-highlight">￥7,180.00</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">持仓量</div>
-                                        <div class="detail-value">0.15手</div>
-                                    </div>
-                                    <div class="detail-row">
-                                        <div class="detail-label">可用保证金</div>
-                                        <div class="detail-value">51,980.00 USC</div>
                                     </div>
                                     <div class="detail-row border-b-0">
                                         <div class="detail-label">操作</div>
