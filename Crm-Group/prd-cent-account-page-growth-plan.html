@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成长计划页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】成长计划</h1>
+            <div class="flex gap-3">
+                <a href="admin-activity-growth-detail.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">成长计划详情页面</span>因接入<span class="highlight">美分账户</span>而新增或调整的需求，不重复描述原有活动管理与标准账户逻辑。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">客户列表金额复合展示</td><td><span class="highlight">客户列表</span>中的 <span class="highlight">入金金额</span>、<span class="highlight">余额</span> 改为复合展示：主值保留当前页面展示值，辅助值按纵向展示 <span class="highlight">USD</span> 与 <span class="highlight">USC</span>。</td></tr>
+                <tr><td class="font-medium">客户列表手数复合展示</td><td><span class="highlight">客户列表</span>中的 <span class="highlight">累计交易手数</span> 改为复合展示：主值展示汇总手数，辅助值按纵向展示 <span class="highlight">标准手</span> 与 <span class="highlight">美分手</span>。</td></tr>
+                <tr><td class="font-medium">返佣记录保留 MT 账号维度</td><td><span class="highlight">返佣记录</span>按单笔返佣记录展示，列表中新增 <span class="highlight">MT类型</span>，用于区分当前返佣来源于标准账户还是美分账户。</td></tr>
+                <tr><td class="font-medium">交易记录保留 MT 账号维度</td><td><span class="highlight">交易记录</span>按单笔交易记录展示，列表中新增 <span class="highlight">MT类型</span>。</td></tr>
+                <tr><td class="font-medium">邀请记录补充账户类型与金额拆分</td><td><span class="highlight">邀请记录</span>新增 <span class="highlight">受邀账户类型</span>，受邀人累计入金金额改为复合展示，纵向展示 <span class="highlight">USD</span> 与 <span class="highlight">USC</span>。</td></tr>
+                <tr><td class="font-medium">等级配置兼容美分业务参与</td><td><span class="highlight">等级配置</span>涉及入金金额、交易手数等升级条件时，页面展示需兼容标准账户与美分账户同时参与的场景。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">客户列表维度</td><td>客户列表为 <span class="highlight">CRM 客户维度</span>，允许同一客户下同时存在标准账户与美分账户，页面通过复合展示承载多账户汇总结果。</td></tr>
+                <tr><td class="font-medium">返佣/交易维度</td><td>返佣记录、交易记录为 <span class="highlight">MT 账号 / 单笔记录维度</span>，因此保留 <span class="highlight">MT类型</span> 识别当前记录来源。</td></tr>
+                <tr><td class="font-medium">金额展示口径</td><td>客户列表中的 <span class="highlight">入金金额</span>、<span class="highlight">余额</span>，邀请记录中的 <span class="highlight">受邀人累计入金金额</span> 均采用复合展示：主值展示页面主值，辅助值纵向展示 <span class="highlight">USD</span> 与 <span class="highlight">USC</span>。</td></tr>
+                <tr><td class="font-medium">手数展示口径</td><td>客户列表中的 <span class="highlight">累计交易手数</span> 采用复合展示：主值展示汇总值，辅助值纵向展示 <span class="highlight">标准手</span> 与 <span class="highlight">美分手</span>。</td></tr>
+                <tr><td class="font-medium">精度规则</td><td><span class="highlight">USD / USC</span>、<span class="highlight">标准手 / 美分手</span> 的辅助展示统一保留 <span class="highlight">2 位小数</span>；主值精度沿用当前页面字段展示规则。</td></tr>
+                <tr><td class="font-medium">混合账户场景</td><td>当同一 CRM 客户同时存在标准账户与美分账户时，客户列表仍需展示统一汇总结果，不可遗漏任一账户类型的数据。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 客户列表中的累计交易手数、入金金额、余额是否均已改为复合展示。</td></tr>
+                <tr><td>2. 客户列表中的手数辅助值是否按纵向展示标准手和美分手，且统一保留 2 位小数。</td></tr>
+                <tr><td>3. 入金金额、余额、受邀人累计入金金额的辅助值是否按纵向展示 USD 和 USC。</td></tr>
+                <tr><td>4. 返佣记录与交易记录中是否已新增 MT类型，用于区分标准账户与美分账户来源。</td></tr>
+                <tr><td>5. 邀请记录中是否已新增受邀账户类型，并与受邀人累计入金金额的复合展示保持一致。</td></tr>
+                <tr><td>6. 等级配置、客户列表、返佣记录、交易记录、邀请记录在标准账户与美分账户混合场景下是否展示正常、无字段错位。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
