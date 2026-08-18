@@ -38,23 +38,91 @@
         .custom-table th {
             color: white;
             font-weight: 500;
-            padding: 12px 8px;
+            padding: 12px 20px;
             border-right: 1px solid rgba(255,255,255,0.2);
             white-space: nowrap;
-            text-align: center;
+            text-align: left;
         }
         .custom-table th:last-child { border-right: none; }
         .custom-table td {
-            padding: 12px 8px;
+            padding: 12px 20px;
             border-bottom: 1px solid #e5e7eb;
             border-right: 1px solid #e5e7eb;
             color: #374151;
-            text-align: center;
+            text-align: left;
             vertical-align: middle;
+            white-space: nowrap;
         }
         .custom-table td:last-child { border-right: none; }
         .custom-table tbody > tr:hover td { background-color: #f9fafb; }
-    </style>
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .status-pill.not-qualified { color: #DC2626; background: #FEF2F2; border: 1px solid #FECACA; }
+        .status-pill.awarded { color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; }
+        .status-pill.not-awarded { color: #475569; background: #F8FAFC; border: 1px solid #CBD5E1; }
+        .status-pill.pending { color: #92400E; background: #FFFBEB; border: 1px solid #FDE68A; }
+
+        .detail-row { background-color: #FAFBFC; }
+        .detail-row-inner { padding: 16px 24px 20px 56px; }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .detail-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid #F1F5F9;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            min-height: 44px;
+        }
+        .detail-item:nth-last-child(-n+2) { border-bottom: none; }
+        .detail-label {
+            width: 170px;
+            flex-shrink: 0;
+            color: #6B7280;
+            font-weight: 500;
+        }
+        .detail-value {
+            color: #111827;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        .detail-item.full { grid-column: 1 / -1; }
+
+        .type-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .type-pill.standard { color: #475569; background: #F1F5F9; border: 1px solid #CBD5E1; }
+        .type-pill.cent { color: #047857; background: #ECFDF5; border: 1px solid #A7F3D0; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.08); }
+        .change-highlight { color: #DC2626 !important; font-weight: 600; }
+        .value-sub { display: block; margin-top: 3px; font-size: 11px; color: #DC2626; line-height: 1.4; font-weight: 500; }
+        .red-note { color: #DC2626; }
+
+</style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
 
@@ -349,7 +417,7 @@
                         <input type="text" placeholder="请输入活动名称" class="px-3 py-1.5 text-sm outline-none w-32">
                     </div>
 
-                    <!-- 奖励状态 -->
+<!-- 奖励状态 -->
                     <div class="flex items-center bg-white border border-gray-200 rounded overflow-hidden">
                         <span class="bg-gray-50 text-gray-600 text-sm px-3 py-1.5 border-r border-gray-200">奖励状态:</span>
                         <select class="px-3 py-1.5 text-sm outline-none text-gray-500 bg-white w-32 cursor-pointer">
@@ -387,220 +455,22 @@
 
             <!-- 2. 数据表格区 -->
             <div class="flex-1 overflow-auto border border-gray-200 rounded">
-                <table class="w-full custom-table text-sm">
+                <table class="min-w-[1600px] custom-table text-sm">
                     <thead class="bg-tableHeader sticky top-0 z-10">
                         <tr>
-                            <th class="w-24">销售名称</th>
-                            <th class="w-32">销售邮箱</th>
-                            <th class="w-24">客户名称</th>
-                            <th class="w-32">客户邮箱</th>
-                            <th class="w-32">客户上个周期净入金</th>
-                            <th class="w-24">上个周期交易量</th>
-                            <th class="w-32">上个周期奖励状态</th>
-                            <th class="w-24">客户本期净入金</th>
-                            <th class="w-32">本期净入金奖励计算</th>
-                            <th class="w-32">是否计算上月净入金</th>
-                            <th class="w-24">周期内交易量</th>
-                            <th class="w-24">奖励周期</th>
-                            <th class="w-24">净入金奖励比例</th>
-                            <th class="w-24">奖励金额</th>
-                            <th class="w-32">奖励时间</th>
-                            <th class="w-32">入账时间</th>
-                            <th class="w-24">奖励状态</th>
-                            <th class="w-32">备注</th>
+                            <th class="w-14 text-left font-medium px-5 py-3 whitespace-nowrap pl-6 pr-0"></th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[140px]">销售名称</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[260px]">销售邮箱</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[140px]">MT返佣账号</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[220px]">客户名称</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[260px]">客户邮箱</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[120px]">统计周期</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[180px]">客户上个周期净入金</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[180px]">客户上个周期交易量</th>
+                            <th class="text-left font-medium px-5 py-3 whitespace-nowrap min-w-[180px]">客户上个周期奖励状态</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- 数据行 1 -->
-                        <tr>
-                            <td>张三</td>
-                            <td>XXXX@qq.com</td>
-                            <td>Joker</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>1.5</td>
-                            <td>未奖励</td>
-                            <td>500</td>
-                            <td>400</td>
-                            <td>是</td>
-                            <td>2</td>
-                            <td>每月最后一日</td>
-                            <td>0.1%</td>
-                            <td>0.4</td>
-                            <td></td>
-                            <td>-</td>
-                            <td>待计算</td>
-                            <td>-</td>
-                        </tr>
-                        <!-- 数据行 2 -->
-                        <tr>
-                            <td>张三</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>2.0</td>
-                            <td>已奖励</td>
-                            <td>400</td>
-                            <td>600</td>
-                            <td>是</td>
-                            <td>1.9</td>
-                            <td>每月最后一日</td>
-                            <td>1%</td>
-                            <td>6</td>
-                            <td>年月日时分秒</td>
-                            <td>-</td>
-                            <td>待入账</td>
-                            <td>-</td>
-                        </tr>
-                        <!-- 数据行 3 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>2.5</td>
-                            <td>未奖励</td>
-                            <td>100</td>
-                            <td>300</td>
-                            <td>是</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>30</td>
-                            <td>年月日时分秒</td>
-                            <td>年月日时分秒</td>
-                            <td>已入账</td>
-                            <td>-</td>
-                        </tr>
-                        <!-- 数据行 4 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>3.0</td>
-                            <td>已奖励</td>
-                            <td>100</td>
-                            <td>300</td>
-                            <td>是</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>30</td>
-                            <td></td>
-                            <td>-</td>
-                            <td>奖励失败</td>
-                            <td>无佣金账号</td>
-                        </tr>
-                        <!-- 数据行 5 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>3.5</td>
-                            <td>未奖励</td>
-                            <td>100</td>
-                            <td>300</td>
-                            <td>是</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>30</td>
-                            <td></td>
-                            <td>-</td>
-                            <td>奖励失败</td>
-                            <td>无佣金账号</td>
-                        </tr>
-                        <!-- 数据行 6 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>4.0</td>
-                            <td>已奖励</td>
-                            <td>100</td>
-                            <td>300</td>
-                            <td>是</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>30</td>
-                            <td></td>
-                            <td>-</td>
-                            <td>奖励失败</td>
-                            <td>无佣金账号</td>
-                        </tr>
-                        <!-- 数据行 7 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>4.5</td>
-                            <td>未奖励</td>
-                            <td>100</td>
-                            <td>300</td>
-                            <td>是</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>30</td>
-                            <td></td>
-                            <td>-</td>
-                            <td>奖励失败</td>
-                            <td>系统异常</td>
-                        </tr>
-                        <!-- 数据行 8 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>5.0</td>
-                            <td>已奖励</td>
-                            <td>100</td>
-                            <td>300</td>
-                            <td>是</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>30</td>
-                            <td></td>
-                            <td>-</td>
-                            <td>待入账</td>
-                            <td>-</td>
-                        </tr>
-                        <!-- 数据行 9 -->
-                        <tr>
-                            <td>刘浩</td>
-                            <td>XXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>计算规则</td>
-                            <td>5.5</td>
-                            <td>未奖励</td>
-                            <td>100</td>
-                            <td>100</td>
-                            <td>否</td>
-                            <td>0.3</td>
-                            <td>每月最后一日</td>
-                            <td>10%</td>
-                            <td>10</td>
-                            <td></td>
-                            <td>年月日时分秒</td>
-                            <td>已入账</td>
-                            <td>-</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="salesDepositTbody"></tbody>
                 </table>
             </div>
 
@@ -646,6 +516,187 @@
             }
         }
 
+        // 行展开
+        function toggleDepositRow(btn) {
+            const tr = btn.closest('tr');
+            const next = tr.nextElementSibling;
+            const icon = btn.querySelector('i');
+            if (next && next.classList.contains('detail-row')) {
+                if (next.style.display === 'none' || !next.style.display) {
+                    next.style.display = 'table-row';
+                    icon.classList.add('rotate-180');
+                } else {
+                    next.style.display = 'none';
+                    icon.classList.remove('rotate-180');
+                }
+            }
+        }
+
+        // 渲染列表
+        function renderSalesDeposit() {
+            const list = [
+                {
+                    salesName: '刘浩',
+                    salesMail: 'jeff678_xyz@163.com',
+                    mtAccount: '-',
+                    clientName: 'NGUYEN GIANG THANH',
+                    clientMail: 'lowanson230@gmail.com',
+                    period: '2026-07',
+                    prevNetDeposit: '0.00',
+                    prevVolume: '0',
+                    prevStatus: '<span class="status-pill not-awarded">未奖励</span>',
+                    expanded: true,
+                    detail: {
+                        currNetDeposit: '0.00',
+                        useHistoryDeposit: '是',
+                        useHistoryVolume: '是',
+                        currVolume: '0',
+                        awardCycle: '每月最后一日',
+                        depositCalc: '0.00',
+                        volumeCalc: '0',
+                        awardRatio: '3.00%',
+                        awardAmount: '0.00',
+                        awardTime: '2026-08-01 05:05:05',
+                        historyTotalDeposit: '13,317.80',
+                        currTotalDeposit: '-20,816.87',
+                        totalDepositCalc: '-7,499.07',
+                        historyTotalVolume: '112.97',
+                        currTotalVolume: '21.45',
+                        totalVolumeCalc: '134.42',
+                        depositCalcMode: '所有用户合计计算',
+                        volumeCalcMode: '所有用户合计计算',
+                        awardStatus: '<span class="status-pill not-qualified">净入金不满足条件</span>'
+                    }
+                },
+                {
+                    salesName: '张三',
+                    salesMail: 'XXXX@qq.com',
+                    mtAccount: '8300123',
+                    clientName: 'Joker',
+                    clientMail: '182930@qq.com',
+                    period: '2026-07',
+                    prevNetDeposit: '0.00',
+                    prevVolume: '1.50',
+                    prevStatus: '<span class="status-pill not-awarded">未奖励</span>',
+                    expanded: false,
+                    detail: {
+                        currNetDeposit: '500.00',
+                        useHistoryDeposit: '是',
+                        useHistoryVolume: '是',
+                        currVolume: '2.00',
+                        awardCycle: '每月最后一日',
+                        depositCalc: '400.00',
+                        volumeCalc: '2.00',
+                        awardRatio: '3.00%',
+                        awardAmount: '12.00',
+                        awardTime: '2026-08-01 05:05:00',
+                        historyTotalDeposit: '1,200.00',
+                        currTotalDeposit: '500.00',
+                        totalDepositCalc: '400.00',
+                        historyTotalVolume: '20.00',
+                        currTotalVolume: '2.00',
+                        totalVolumeCalc: '22.00',
+                        depositCalcMode: '所有用户合计计算',
+                        volumeCalcMode: '所有用户合计计算',
+                        awardStatus: '<span class="status-pill pending">待入账</span>'
+                    }
+                },
+                {
+                    salesName: '刘浩',
+                    salesMail: 'XXXX@qq.com',
+                    mtAccount: '-',
+                    clientName: 'ABNC',
+                    clientMail: '182930@qq.com',
+                    period: '2026-07',
+                    prevNetDeposit: '100.00',
+                    prevVolume: '2.50',
+                    prevStatus: '<span class="status-pill not-awarded">未奖励</span>',
+                    expanded: false,
+                    detail: {
+                        currNetDeposit: '100.00',
+                        useHistoryDeposit: '是',
+                        useHistoryVolume: '是',
+                        currVolume: '0.30',
+                        awardCycle: '每月最后一日',
+                        depositCalc: '300.00',
+                        volumeCalc: '0.30',
+                        awardRatio: '3.00%',
+                        awardAmount: '9.00',
+                        awardTime: '2026-08-01 05:05:01',
+                        historyTotalDeposit: '2,500.00',
+                        currTotalDeposit: '100.00',
+                        totalDepositCalc: '300.00',
+                        historyTotalVolume: '30.00',
+                        currTotalVolume: '0.30',
+                        totalVolumeCalc: '30.30',
+                        depositCalcMode: '所有用户合计计算',
+                        volumeCalcMode: '所有用户合计计算',
+                        awardStatus: '<span class="status-pill awarded">已入账</span>'
+                    }
+                }
+            ];
+
+            function detailCell(label, value, full=false) {
+                return `<div class="detail-item${full?' full':''}"><div class="detail-label">${label}</div><div class="detail-value">${value}</div></div>`;
+            }
+
+            const html = list.map((row, idx) => {
+                const d = row.detail;
+                const cells = [
+                    `<button onclick="toggleDepositRow(this)" class="w-6 h-6 inline-flex items-center justify-center rounded hover:bg-gray-100 text-gray-500">
+                       <i class="fa-solid fa-chevron-down text-xs transition-transform ${row.expanded?'rotate-180':''}"></i>
+                    </button>`,
+                    row.salesName,
+                    row.salesMail,
+                    row.mtAccount,
+                    row.clientName,
+                    row.clientMail,
+                    row.period,
+                    row.prevNetDeposit,
+                    row.prevVolume,
+                    row.prevStatus
+                ];
+                const mainCells = cells.map((c, i) => {
+                    return `<td class="px-0 py-4 whitespace-nowrap align-middle">${c}</td>`;
+                }).join('');
+
+                const detailHtml = `
+                    <div class="detail-row-inner">
+                        <div class="detail-grid">
+                            ${detailCell('客户本期净入金', d.currNetDeposit)}
+                            ${detailCell('是否计算历史净入金', d.useHistoryDeposit)}
+                            ${detailCell('是否计算历史交易量', d.useHistoryVolume)}
+                            ${detailCell('周期内交易量', d.currVolume)}
+                            ${detailCell('奖励周期', d.awardCycle)}
+                            ${detailCell('本期净入金奖励计算', d.depositCalc)}
+                            ${detailCell('本期交易量计算', d.volumeCalc)}
+                            ${detailCell('奖励比例', d.awardRatio)}
+                            ${detailCell('奖励金额', d.awardAmount)}
+                            ${detailCell('奖励时间(bj)', d.awardTime)}
+                            ${detailCell('历史汇总净入金', d.historyTotalDeposit)}
+                            ${detailCell('本期汇总净入金', d.currTotalDeposit)}
+                            ${detailCell('汇总净入金计算', d.totalDepositCalc)}
+                            ${detailCell('历史汇总交易量', d.historyTotalVolume)}
+                            ${detailCell('本期汇总交易量', d.currTotalVolume)}
+                            ${detailCell('汇总交易量计算', d.totalVolumeCalc)}
+                            ${detailCell('净入金奖励计算方式', d.depositCalcMode, true)}
+                            ${detailCell('交易量规则计算方式', d.volumeCalcMode, true)}
+                            ${detailCell('奖励状态', d.awardStatus, true)}
+                        </div>
+                    </div>
+                `;
+
+                return `<tr>
+                    ${mainCells}
+                </tr>
+                <tr class="detail-row" style="display:${row.expanded?'table-row':'none'}">
+                    <td colspan="10" class="px-0 py-0">${detailHtml}</td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('salesDepositTbody').innerHTML = html;
+        }
+
         // PRD 弹窗逻辑
         function openPrdModal() {
             document.getElementById('prdModal').classList.remove('hidden');
@@ -660,6 +711,8 @@
                 document.getElementById('prdModal').classList.add('hidden');
             }, 300);
         }
+
+        document.addEventListener('DOMContentLoaded', renderSalesDeposit);
     </script>
 
     <!-- PRD 弹窗 -->

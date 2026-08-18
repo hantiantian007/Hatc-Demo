@@ -76,19 +76,19 @@
         }
         .custom-input:focus, .custom-select:focus { border-color: #d1a84f; }
         .custom-table th {
-            color: #6b7280;
+            color: #374151;
             font-weight: 600;
-            padding: 14px 10px;
+            padding: 14px 12px;
             font-size: 12px;
-            text-align: center;
+            text-align: left;
             border-bottom: 1px solid #e5e7eb;
             white-space: nowrap;
         }
         .custom-table td {
-            padding: 14px 10px;
+            padding: 14px 12px;
             font-size: 12px;
             color: #4b5563;
-            text-align: center;
+            text-align: left;
             border-bottom: 1px solid #f1f5f9;
             vertical-align: middle;
             white-space: nowrap;
@@ -117,7 +117,7 @@
         }
         .detail-row-item:last-child { border-bottom: none; }
         .detail-label {
-            width: 130px;
+            width: 160px;
             flex-shrink: 0;
             color: #6b7280;
             font-weight: 600;
@@ -127,6 +127,64 @@
             color: #374151;
             text-align: left;
             word-break: break-word;
+        }
+        .detail-value.red { color: #DC2626; font-weight: 600; }
+        .detail-value.green { color: #065F46; font-weight: 600; }
+        .detail-value.blue { color: #1D4ED8; font-weight: 600; }
+        .tab-btn {
+            padding: 7px 14px;
+            font-size: 13px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .tab-btn.active { background-color: #2563EB; color: white; }
+        .tab-btn:not(.active) { background-color: #F3F4F6; color: #4B5563; }
+        .tab-btn:not(.active):hover { background-color: #E5E7EB; }
+        .pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .pill-gray { background-color: #F3F4F6; color: #374151; }
+        .pill-green { background-color: #D1FAE5; color: #065F46; }
+        .pill-red { background-color: #FEE2E2; color: #991B1B; }
+        .pill-blue { background-color: #DBEAFE; color: #1E40AF; }
+        .pill-orange { background-color: #FFEDD5; color: #9A3412; }
+        .pill-violet { background-color: #EDE9FE; color: #5B21B6; }
+        .stat-num-lg {
+            font-size: 20px;
+            font-weight: 800;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+        .chain-seg {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            min-width: 220px;
+        }
+        .chain-seg.current {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            box-shadow: 0 1px 3px rgba(37,99,235,0.12);
+        }
+        .chain-arrow {
+            color: #d1a84f;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #6B7280;
         }
     </style>
 </head>
@@ -305,16 +363,16 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <div class="flex items-center justify-between mb-5">
                     <h3 class="font-bold text-gray-800 text-[15px]">搜索</h3>
-                    <button onclick="toggleSearchPanel()" class="flex items-center gap-2 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors">
-                        <span id="searchPanelText">收起搜索条件</span>
-                        <i id="searchPanelIcon" class="fas fa-chevron-up transition-transform"></i>
+                    <button class="flex items-center gap-2 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors">
+                        <span>收起搜索条件</span>
+                        <i class="fas fa-chevron-up transition-transform"></i>
                     </button>
                 </div>
 
-                <div class="grid grid-cols-4 gap-4 mb-5">
+                <div class="grid grid-cols-4 gap-4 mb-4">
                     <div class="flex items-center">
                         <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">MT交易账号:</label>
                         <input type="text" class="custom-input" placeholder="请输入">
@@ -333,289 +391,144 @@
                     </div>
                 </div>
 
-                <div id="advancedSearchPanel">
-                    <div class="grid grid-cols-4 gap-4 mb-4">
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-20 shrink-0 text-right mr-3">查询范围:</label>
-                            <select class="custom-select">
-                                <option>全部</option>
-                                <option>直属返佣</option>
-                                <option>代理返佣</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">平台信息:</label>
-                            <input type="text" class="custom-input" placeholder="请输入">
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">交易品种:</label>
-                            <select class="custom-select">
-                                <option>请输入</option>
-                                <option>XAUUSD</option>
-                                <option>EURUSD</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">MT返佣账号:</label>
-                            <input type="text" class="custom-input" placeholder="请输入">
-                        </div>
+                <div class="grid grid-cols-4 gap-4 mb-4">
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">查询范围:</label>
+                        <select class="custom-select">
+                            <option>全部</option>
+                            <option>直属返佣</option>
+                            <option>代理返佣</option>
+                        </select>
                     </div>
-
-                    <div class="grid grid-cols-4 gap-4 mb-4">
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣客户姓名:</label>
-                            <input type="text" class="custom-input" placeholder="请输入">
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣客户邮箱:</label>
-                            <input type="text" class="custom-input" placeholder="请输入">
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">开仓单号:</label>
-                            <input type="text" class="custom-input" placeholder="请输入">
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣状态:</label>
-                            <select class="custom-select text-gray-400">
-                                <option>请选择</option>
-                                <option>已结算</option>
-                                <option>待结算</option>
-                            </select>
-                        </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">平台信息:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
                     </div>
-
-                    <div class="grid grid-cols-4 gap-4 mb-4">
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">关系树查询:</label>
-                            <select class="custom-select text-gray-400">
-                                <option>请选择</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3 change-highlight">账户类型:</label>
-                            <select class="custom-select change-highlight">
-                                <option>全部</option>
-                                <option>标准账户</option>
-                                <option>美分账户</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣状态:</label>
-                            <select class="custom-select text-gray-400">
-                                <option>请选择</option>
-                                <option>已结算</option>
-                                <option>待结转</option>
-                            </select>
-                        </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">交易品种:</label>
+                        <select class="custom-select">
+                            <option>请选择</option>
+                            <option>XAUUSD</option>
+                            <option>EURUSD</option>
+                            <option>USDJPY</option>
+                            <option>BTCUSD</option>
+                        </select>
                     </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">MT返佣账号:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
+                    </div>
+                </div>
 
-                    <div class="grid grid-cols-4 gap-4 mb-4">
-                        <div class="flex items-center col-span-2">
-                            <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣日期:</label>
-                            <div class="flex items-center w-full">
-                                <select class="custom-select rounded-r-none border-r-0 max-w-[110px]">
-                                    <option>系统时间</option>
-                                </select>
-                                <input type="text" class="custom-input rounded-none border-r-0 text-center" placeholder="开始日期">
-                                <span class="px-3 py-[8px] bg-gray-50 border-y border-gray-200 text-[13px] text-gray-400">到</span>
-                                <input type="text" class="custom-input rounded-l-none border-l-0 text-center" placeholder="结束日期">
-                            </div>
+                <div class="grid grid-cols-4 gap-4 mb-4">
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣客户姓名:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣客户邮箱:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">开仓单号:</label>
+                        <input type="text" class="custom-input" placeholder="请输入">
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣状态:</label>
+                        <select class="custom-select text-gray-400">
+                            <option>请选择</option>
+                            <option>已结算</option>
+                            <option>待结算</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-4 mb-4">
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">关系树查询:</label>
+                        <select class="custom-select text-gray-400">
+                            <option>请选择</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-red-600 w-24 shrink-0 text-right mr-3 font-semibold">账户类型:</label>
+                        <select class="custom-select text-red-600 border-red-300">
+                            <option>全部</option>
+                            <option>标准账户</option>
+                            <option>美分账户</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣状态:</label>
+                        <select class="custom-select text-gray-400">
+                            <option>请选择</option>
+                            <option>已结算</option>
+                            <option>待结转</option>
+                        </select>
+                    </div>
+                    <div></div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="flex items-center col-span-2">
+                        <label class="text-[13px] text-gray-600 w-24 shrink-0 text-right mr-3">返佣日期:</label>
+                        <div class="flex items-center w-full">
+                            <select class="custom-select rounded-r-none border-r-0 max-w-[110px]">
+                                <option>系统时间</option>
+                            </select>
+                            <input type="text" class="custom-input rounded-none border-r-0 text-center" placeholder="开始日期">
+                            <span class="px-3 py-[8px] bg-gray-50 border-y border-gray-200 text-[13px] text-gray-400">到</span>
+                            <input type="text" class="custom-input rounded-l-none border-l-0 text-center" placeholder="结束日期">
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col flex-1">
-                <div class="p-5 flex justify-between items-center border-b border-gray-100">
-                    <div class="flex items-center gap-6 text-[13px] flex-wrap">
-                        <div class="font-bold text-gray-800 text-[15px] mr-2">汇总统计</div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>返佣金额(USD):</span><span class="font-bold text-lg change-highlight">61,637.37</span></div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>标准账户返佣手数:</span><span class="text-primaryBtn font-bold text-lg change-highlight">7,481.20</span></div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>美分账户返佣手数:</span><span class="text-primaryBtn font-bold text-lg change-highlight">8.16</span></div>
+                <div class="p-5 border-b border-gray-100">
+                    <div class="flex justify-between items-center flex-wrap gap-3">
+                        <div class="flex items-center gap-6 text-[13px] flex-wrap">
+                            <div class="font-bold text-gray-800 text-[15px] mr-2">汇总统计</div>
+                            <div class="text-red-600 summary-stat"><span class="font-semibold">返佣金额(USD):</span><span class="font-bold text-lg">61,637.37</span></div>
+                            <div class="text-red-600 summary-stat"><span class="font-semibold">标准账户返佣手数:</span><span class="font-bold text-lg">7,481.20</span></div>
+                            <div class="text-red-600 summary-stat"><span class="font-semibold">美分账户返佣手数:</span><span class="font-bold text-lg">8.16</span></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-5 py-2 rounded text-[13px] transition-colors shadow-sm">
+                                报表导出
+                            </button>
+                        </div>
                     </div>
-                    <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-5 py-2 rounded text-[13px] transition-colors shadow-sm">
-                        报表导出
-                    </button>
                 </div>
 
                 <div class="overflow-x-auto flex-1">
-                    <table class="w-full custom-table">
+                    <table class="min-w-[1800px] custom-table">
                         <thead class="bg-tableHeader">
                             <tr>
-                                <th class="w-8"></th>
-                                <th>开仓单号</th>
-                                <th>开仓订单编号</th>
-                                <th>平台编号</th>
-                                <th>平台订单编号</th>
-                                <th>MT交易账号</th>
-                                <th class="change-highlight">账户类型</th>
-                                <th>账户名称</th>
-                                <th>账户邮箱</th>
-                                <th>MT返佣账号</th>
-                                <th>返佣客户姓名</th>
-                                <th>返佣客户邮箱</th>
-                                <th class="change-highlight">手数</th>
-                                <th>平台手数</th>
-                                <th>交易品种</th>
-                                <th class="change-highlight">返佣金额(USD)</th>
+                                <th class="w-8 text-left"></th>
+                                <th class="text-left">开仓单号</th>
+                                <th class="text-left">开仓订单编号</th>
+                                <th class="text-left">平台编号</th>
+                                <th class="text-left">平台订单编号</th>
+                                <th class="text-left">MT交易账号</th>
+                                <th class="text-left">账户类型</th>
+                                <th class="text-left">账户名称</th>
+                                <th class="text-left">账户邮箱</th>
+                                <th class="text-left">MT返佣账号</th>
+                                <th class="text-left">返佣客户姓名</th>
+                                <th class="text-left">返佣客户邮箱</th>
+                                <th class="text-left">手数</th>
+                                <th class="text-left">平台手数</th>
+                                <th class="text-left">交易品种</th>
+                                <th class="text-left">返佣金额(USD)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><button onclick="toggleDetailRow('commissionDetail1', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
-                                <td>515401</td>
-                                <td>293549</td>
-                                <td>515444</td>
-                                <td>293581</td>
-                                <td>810238</td>
-                                <td class="change-highlight">标准账户</td>
-                                <td>客户-D01</td>
-                                <td>demo.d01@example.com</td>
-                                <td>8310101</td>
-                                <td>代理-R01</td>
-                                <td>rebate.r01@example.com</td>
-                                <td class="change-highlight">标准手</td>
-                                <td>0.01</td>
-                                <td>XAUUSD</td>
-                                <td class="change-highlight">0.1400</td>
-                            </tr>
-                            <tr id="commissionDetail1" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="15" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">平仓时间(mt)</span>
-                                            <span class="detail-value">2026-03-16 04:40:35</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣时间(mt)</span>
-                                            <span class="detail-value">2026-03-16 04:40:52</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣状态</span>
-                                            <span class="detail-value">已结算</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣单号</span>
-                                            <span class="detail-value">FY0000186784</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣手数</span>
-                                            <span class="detail-value">0.01 标准手</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣标准</span>
-                                            <span class="detail-value">14.0000 USD/手</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><button onclick="toggleDetailRow('commissionDetail2', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
-                                <td>515403</td>
-                                <td>293551</td>
-                                <td>515446</td>
-                                <td>293583</td>
-                                <td>810239</td>
-                                <td class="change-highlight">标准账户</td>
-                                <td>客户-D02</td>
-                                <td>demo.d02@example.com</td>
-                                <td>8310103</td>
-                                <td>代理-R02</td>
-                                <td>rebate.r02@example.com</td>
-                                <td class="change-highlight">标准手</td>
-                                <td>0.10</td>
-                                <td>XAUUSD</td>
-                                <td class="change-highlight">1.4000</td>
-                            </tr>
-                            <tr id="commissionDetail2" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="15" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">平仓时间(mt)</span>
-                                            <span class="detail-value">2026-03-16 04:41:02</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣时间(mt)</span>
-                                            <span class="detail-value">2026-03-16 04:41:26</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣状态</span>
-                                            <span class="detail-value">已结算</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣单号</span>
-                                            <span class="detail-value">FY0000186789</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣手数</span>
-                                            <span class="detail-value">0.10 标准手</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">返佣标准</span>
-                                            <span class="detail-value">14.0000 USD/手</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><button onclick="toggleDetailRow('commissionDetail3', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
-                                <td class="change-highlight">615902</td>
-                                <td>394102</td>
-                                <td>615988</td>
-                                <td>394188</td>
-                                <td class="change-highlight">9903001</td>
-                                <td class="change-highlight">美分账户</td>
-                                <td class="change-highlight">客户-CENT01</td>
-                                <td>cent.demo01@example.com</td>
-                                <td>9320201</td>
-                                <td>代理-C01</td>
-                                <td>rebate.c01@example.com</td>
-                                <td class="change-highlight">美分手</td>
-                                <td>0.01</td>
-                                <td>EURUSD</td>
-                                <td class="change-highlight">0.0014</td>
-                            </tr>
-                            <tr id="commissionDetail3" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="15" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">平仓时间(mt)</span>
-                                            <span class="detail-value change-highlight">2026-07-31 12:21:06</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">返佣时间(mt)</span>
-                                            <span class="detail-value change-highlight">2026-07-31 12:21:25</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">返佣状态</span>
-                                            <span class="detail-value change-highlight">已结算</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">返佣单号</span>
-                                            <span class="detail-value change-highlight">FY0000286102</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">返佣手数</span>
-                                            <span class="detail-value change-highlight">0.01 美分手</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">返佣标准</span>
-                                            <span class="detail-value change-highlight">0.1400 USD/手</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="rebateTbody"></tbody>
                     </table>
                 </div>
 
                 <div class="px-5 py-4 flex items-center justify-between text-xs text-gray-500 border-t border-gray-100">
-                    <div>15条 / 页　共 3 记录，第1/1页</div>
+                    <div>15条 / 页　共 <span id="totalRows">0</span> 记录，第1/1页</div>
                     <div class="flex items-center gap-2">
                         <button class="w-7 h-7 rounded border border-gray-200 bg-white text-gray-400">&lt;</button>
                         <button class="w-7 h-7 rounded bg-primaryBtn text-white">1</button>
@@ -623,7 +536,131 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
     </main>
+            <script>
+    function pillHtml(kind, text) {
+        const map = { gray:'pill-gray', green:'pill-green', red:'pill-red', blue:'pill-blue', orange:'pill-orange', violet:'pill-violet' };
+        return '<span class="pill ' + (map[kind]||'pill-gray') + '">' + text + '</span>';
+    }
+
+    const ROWS = [
+        // 1. 标准账户 D01 - 0.01 标准手 XAUUSD
+        {
+            expand: 'D01',
+            openTicket: '515401', openOrderNo: '293549',
+            platformId: '515444', platformOrderNo: '293581',
+            mtTrade: '810238', accountType: '标准账户',
+            accountName: '客户-D01', accountEmail: 'demo.d01@example.com',
+            mtRebate: '8310101', rebateName: '代理-R01', rebateEmail: 'rebate.r01@example.com',
+            lotKind: '标准手', lots: '0.01', platLots: '0.01', symbol: 'XAUUSD',
+            rebateAmt: '0.1400', centRow: false,
+            detail: [
+                ['平仓时间 (MT)', '2026-08-12 14:05:12'],
+                ['返佣时间 (MT)', '2026-08-13 05:03:00'],
+                ['返佣单号 / 状态', 'FY20260813-A01 · 已结算'],
+                ['手数 / 手数类型', '0.01 标准手 · 标准账户体系独立统计'],
+                ['返佣手数', '0.01 标准手（不跨体系折算）'],
+                ['返佣标准', '14.0000 USD / 标准手 × 0.01'],
+                ['返佣口径', '代理-R01 = 交易发生层（B级 level2）：(顶值14 - 上交给顶级5) × 手数0.01 = 9 × 0.01 ≈ 0.09 USD / 顶级华安：上交ub=5 × 0.01 = 0.05 USD / 合计 0.1400 USD']
+            ]
+        },
+        // 2. 标准账户 D02 - 0.10 标准手 XAUUSD
+        {
+            expand: 'D02',
+            openTicket: '515403', openOrderNo: '293551',
+            platformId: '515446', platformOrderNo: '293583',
+            mtTrade: '810239', accountType: '标准账户',
+            accountName: '客户-D02', accountEmail: 'demo.d02@example.com',
+            mtRebate: '8310103', rebateName: '代理-R02', rebateEmail: 'rebate.r02@example.com',
+            lotKind: '标准手', lots: '0.10', platLots: '0.10', symbol: 'XAUUSD',
+            rebateAmt: '1.4000', centRow: false,
+            detail: [
+                ['平仓时间 (MT)', '2026-08-12 15:22:03'],
+                ['返佣时间 (MT)', '2026-08-13 05:03:00'],
+                ['返佣单号 / 状态', 'FY20260813-A02 · 已结算'],
+                ['手数 / 手数类型', '0.10 标准手 · 标准账户体系独立统计'],
+                ['返佣手数', '0.10 标准手（不跨体系折算）'],
+                ['返佣标准', '14.0000 USD / 标准手 × 0.10'],
+                ['返佣口径', '代理-R02 = 交易发生层（B级 level2）：(顶值14 - 上交给顶级5) × 手数0.10 = 9 × 0.10 ≈ 0.90 USD / 顶级华安：上交ub=5 × 0.10 = 0.50 USD / 合计 1.4000 USD']
+            ]
+        },
+        // 3. 美分账户 CENT01 - 0.01 美分手 EURUSD → 0.0014 USD（重点验证 4 位小数）
+        {
+            expand: 'C01',
+            openTicket: '615902', openOrderNo: '394102',
+            platformId: '615988', platformOrderNo: '394188',
+            mtTrade: '9903001', accountType: '美分账户',
+            accountName: '客户-CENT01', accountEmail: 'cent.demo01@example.com',
+            mtRebate: '9320201', rebateName: '代理-C01', rebateEmail: 'rebate.c01@example.com',
+            lotKind: '美分手', lots: '0.01', platLots: '0.01', symbol: 'EURUSD',
+            rebateAmt: '0.0014', centRow: true,
+            detail: [
+                ['平仓时间 (MT)', '2026-08-13 05:02:41'],
+                ['返佣时间 (MT)', '2026-08-13 05:03:00'],
+                ['返佣单号 / 状态', 'FY20260813-C01 · 已结算'],
+                ['手数 / 手数类型', '0.01 美分手 · 美分手体系独立统计，不折算为标准手'],
+                ['返佣手数', '0.01 美分手（仅美分体系内统计，不融合）'],
+                ['返佣标准', '0.1400 USD / 美分手 × 0.01'],
+                ['返佣口径', '代理-C01 = 交易发生层（C级 level3）：(顶值0.14 - 上交B层0.05 - 上交顶级0.01) × 手数0.01 = 0.08 × 0.01 ≈ 0.0008 USD / B层：上交ub=0.05 × 0.01 = 0.0005 USD / 顶级：上交uc=0.01 × 0.01 = 0.0001 USD / 合计 0.0014 USD']
+            ]
+        }
+    ];
+
+    function render() {
+        document.getElementById('totalRows').textContent = ROWS.length;
+        const html = ROWS.map((r, i) => {
+            const rid = 'RE' + i;
+            const typePill = r.centRow
+                ? pillHtml('orange', r.accountType)
+                : pillHtml('blue', r.accountType);
+            const lotHtml = r.centRow
+                ? '<span class="text-red-600 font-semibold">' + r.lotKind + '</span>'
+                : '<span class="text-red-600 font-semibold">' + r.lotKind + '</span>';
+            const amtHtml = r.centRow
+                ? '<span class="font-mono font-bold text-red-600 text-right block">' + r.rebateAmt + '</span>'
+                : '<span class="font-mono font-semibold text-red-600 text-right block">' + r.rebateAmt + '</span>';
+            const tradeMtClass = r.centRow ? 'class="font-mono text-red-600 font-semibold"' : 'class="font-mono"';
+            const lotNumHtml = r.centRow ? '<span class="font-mono text-red-600 font-semibold">' + r.lots + '</span>' : '<span class="font-mono text-red-600 font-semibold">' + r.lots + '</span>';
+            const rowsHtml = `
+            <tr>
+                <td class="text-left pl-4"><button onclick="toggleDetailRow('${rid}', this)" class="text-primaryBtn"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
+                <td class="text-left font-mono">${r.openTicket}</td>
+                <td class="text-left font-mono">${r.openOrderNo}</td>
+                <td class="text-left font-mono">${r.platformId}</td>
+                <td class="text-left font-mono">${r.platformOrderNo}</td>
+                <td class="text-left"><span ${tradeMtClass}>${r.mtTrade}</span></td>
+                <td class="text-left">${typePill}</td>
+                <td class="text-left">${r.accountName}</td>
+                <td class="text-left text-[11px] text-gray-500">${r.accountEmail}</td>
+                <td class="text-left font-mono">${r.mtRebate}</td>
+                <td class="text-left">${r.rebateName}</td>
+                <td class="text-left text-[11px] text-gray-500">${r.rebateEmail}</td>
+                <td class="text-left">${lotNumHtml} <span class="ml-1">${lotHtml}</span></td>
+                <td class="text-left font-mono">${r.platLots}</td>
+                <td class="text-left font-bold">${r.symbol}</td>
+                <td class="text-left">${amtHtml}</td>
+            </tr>
+            <tr id="${rid}" class="hidden bg-amber-50/40">
+                <td></td>
+                <td colspan="15" class="text-left">
+                    <div class="detail-list">
+                        ${r.detail.map(item => `
+                        <div class="detail-row-item"><span class="detail-label">${item[0]}</span><span class="detail-value">${item[1]}</span></div>
+                        `).join('')}
+                    </div>
+                </td>
+            </tr>`;
+            return rowsHtml;
+        }).join('');
+        document.getElementById('rebateTbody').innerHTML = html;
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+    </script>
+
+
 </body>
 </html>

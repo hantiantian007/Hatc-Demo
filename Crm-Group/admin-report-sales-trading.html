@@ -54,7 +54,25 @@
         }
         .custom-table td:last-child { border-right: none; }
         .custom-table tbody > tr:hover td { background-color: #f9fafb; }
-    </style>
+    
+        .type-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        .type-pill.standard { color: #475569; background: #F1F5F9; border: 1px solid #CBD5E1; }
+        .type-pill.cent { color: #047857; background: #ECFDF5; border: 1px solid #A7F3D0; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.08); }
+        .change-highlight { color: #DC2626 !important; font-weight: 600; }
+        .value-sub { display: block; margin-top: 3px; font-size: 11px; color: #DC2626; line-height: 1.4; font-weight: 500; }
+        .red-note { color: #DC2626; }
+
+</style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
 
@@ -399,7 +417,17 @@
                         <input type="text" placeholder="开始日期 - 结束日期" class="px-3 py-1.5 text-sm outline-none w-48 text-gray-400">
                     </div>
 
-                    <!-- 奖励状态 -->
+                    <!-- MT类型（美分逻辑） -->
+                    <div class="flex items-center bg-white border border-gray-200 rounded overflow-hidden">
+                        <span class="bg-gray-50 text-sm px-3 py-1.5 border-r border-gray-200 change-highlight">MT类型:</span>
+                        <select class="px-3 py-1.5 text-sm outline-none text-gray-500 bg-white w-32 cursor-pointer">
+                            <option value="">全部</option>
+                            <option>标准账户</option>
+                            <option>美分账户</option>
+                        </select>
+                    </div>
+
+<!-- 奖励状态 -->
                     <div class="flex items-center bg-white border border-gray-200 rounded overflow-hidden">
                         <span class="bg-gray-50 text-gray-600 text-sm px-3 py-1.5 border-r border-gray-200">奖励状态:</span>
                         <select class="px-3 py-1.5 text-sm outline-none text-gray-500 bg-white w-32 cursor-pointer">
@@ -426,169 +454,170 @@
                             <th class="w-32">销售邮箱</th>
                             <th class="w-24">客户名称</th>
                             <th class="w-32">客户邮箱</th>
-                            <th class="w-24">平仓手数</th>
+                            <th class="w-28 change-highlight">MT类型</th>
+                            <th class="w-28 change-highlight">交易手数（标准手）</th>
                             <th class="w-24">交易品种</th>
                             <th class="w-24">平仓编号</th>
                             <th class="w-32">平仓时间</th>
                             <th class="w-32">奖励周期</th>
-                            <th class="w-24">奖励金额</th>
+                            <th class="w-28 change-highlight">奖励金额(USD)</th>
                             <th class="w-32">奖励时间</th>
                             <th class="w-32">入账时间</th>
                             <th class="w-24">奖励状态</th>
                             <th class="w-32">备注</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- 数据行 1 -->
-                        <tr>
+<tbody>
+<tr>
                             <td>张三</td>
                             <td>XXXXX@qq.com</td>
                             <td>Joker</td>
                             <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td><span class="type-pill standard"><i class="fa-solid fa-layer-group"></i>标准</span></td>
+                            <td><div class="text-gray-800">1.00-标准手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 22:10:11</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>年月日时分秒</td>
+                            <td class="">0.0300</td>
+                            <td></td>
                             <td>-</td>
                             <td>待计算</td>
                             <td>-</td>
                         </tr>
-                        <!-- 数据行 2 -->
-                        <tr>
+<tr>
                             <td>张三</td>
                             <td>XXXXX@qq.com</td>
                             <td>ABNC</td>
                             <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td><span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span></td>
+                            <td><div class="text-gray-800 change-highlight font-medium">1.00-美分手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 22:11:33</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>年月日时分秒</td>
+                            <td class="change-highlight font-medium">0.0014</td>
+                            <td></td>
                             <td>-</td>
                             <td>待入账</td>
-                            <td>-</td>
+                            <td><span class='change-highlight'>美分折算系数 0.01</span></td>
                         </tr>
-                        <!-- 数据行 3 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
                             <td>ABNC</td>
                             <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td><span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span></td>
+                            <td><div class="text-gray-800 change-highlight font-medium">2.00-美分手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 22:20:01</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>年月日时分秒</td>
-                            <td>年月日时分秒</td>
+                            <td class="change-highlight font-medium">0.0050</td>
+                            <td>2026-08-01 00:12:00</td>
+                            <td>2026-08-01 09:00:00</td>
                             <td>已入账</td>
-                            <td>-</td>
+                            <td><span class='change-highlight'>发放: 上级美元佣金账户</span></td>
                         </tr>
-                        <!-- 数据行 4 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>0.01</td>
-                            <td>XAUUSD</td>
+                            <td>Cent-A</td>
+                            <td>cent-a@qq.com</td>
+                            <td><span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span></td>
+                            <td><div class="text-gray-800 change-highlight font-medium">1.00-美分手</div></td>
+                            <td>EURUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 21:00:12</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>-</td>
+                            <td class="change-highlight font-medium">0.0008</td>
+                            <td></td>
                             <td>-</td>
                             <td>奖励失败</td>
                             <td>无佣金账号</td>
                         </tr>
-                        <!-- 数据行 5 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td>Std-B</td>
+                            <td>std-b@qq.com</td>
+                            <td><span class="type-pill standard"><i class="fa-solid fa-layer-group"></i>标准</span></td>
+                            <td><div class="text-gray-800">0.10-标准手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 20:55:10</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>-</td>
+                            <td class="">0.0600</td>
+                            <td></td>
                             <td>-</td>
                             <td>奖励失败</td>
                             <td>持仓时间不足</td>
                         </tr>
-                        <!-- 数据行 6 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td>Cent-C</td>
+                            <td>cent-c@qq.com</td>
+                            <td><span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span></td>
+                            <td><div class="text-gray-800 change-highlight font-medium">1.00-美分手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 20:30:01</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>-</td>
+                            <td class="change-highlight font-medium">0.0000</td>
+                            <td></td>
                             <td>-</td>
                             <td>奖励失败</td>
-                            <td>赠金交易</td>
+                            <td><span class='change-highlight'>赠金交易(美分)</span></td>
                         </tr>
-                        <!-- 数据行 7 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>0.01</td>
-                            <td>XAUUSD</td>
+                            <td>Cent-D</td>
+                            <td>cent-d@qq.com</td>
+                            <td><span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span></td>
+                            <td><div class="text-gray-800 change-highlight font-medium">5.00-美分手</div></td>
+                            <td>GBPUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 20:02:30</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>-</td>
+                            <td class="change-highlight font-medium">0.0022</td>
+                            <td></td>
                             <td>-</td>
                             <td>奖励失败</td>
                             <td>系统异常</td>
                         </tr>
-                        <!-- 数据行 8 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td>Cent-E</td>
+                            <td>cent-e@qq.com</td>
+                            <td><span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span></td>
+                            <td><div class="text-gray-800 change-highlight font-medium">3.00-美分手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 19:22:21</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>年月日时分秒</td>
+                            <td class="change-highlight font-medium">0.0018</td>
+                            <td>2026-08-01 00:10:00</td>
                             <td>-</td>
                             <td>待入账</td>
                             <td>-</td>
                         </tr>
-                        <!-- 数据行 9 -->
-                        <tr>
+<tr>
                             <td>刘浩</td>
                             <td>XXXXX@qq.com</td>
-                            <td>ABNC</td>
-                            <td>182930@qq.com</td>
-                            <td>0.01</td>
+                            <td>Std-F</td>
+                            <td>std-f@qq.com</td>
+                            <td><span class="type-pill standard"><i class="fa-solid fa-layer-group"></i>标准</span></td>
+                            <td><div class="text-gray-800">0.20-标准手</div></td>
                             <td>XAUUSD</td>
                             <td></td>
-                            <td>年月日时分秒</td>
+                            <td>2026-07-31 18:45:01</td>
                             <td>每月最后一日</td>
-                            <td>0.03</td>
-                            <td>-</td>
-                            <td>年月日时分秒</td>
+                            <td class="">0.1200</td>
+                            <td></td>
+                            <td>2026-08-01 09:00:00</td>
                             <td>已入账</td>
                             <td>-</td>
                         </tr>

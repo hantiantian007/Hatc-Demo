@@ -84,6 +84,13 @@
             border: 1px solid #A7F3D0;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.08);
         }
+        .value-sub {
+            display: block;
+            margin-top: 3px;
+            font-size: 11px;
+            color: #DC2626;
+            line-height: 1.4;
+        }
         .change-highlight { color: #DC2626 !important; }
         .detail-grid {
             display: grid;
@@ -308,8 +315,9 @@
                                 <thead class="bg-gray-50 text-gray-500">
                                     <tr class="border-b border-gray-100">
                                         <th class="text-left font-medium px-5 py-3 whitespace-nowrap">订单号</th>
+                                        <th class="text-left font-medium px-5 py-3 whitespace-nowrap change-highlight">MT类型</th>
                                         <th class="text-left font-medium px-5 py-3 whitespace-nowrap">MT账号</th>
-                                        <th class="text-left font-medium px-5 py-3 whitespace-nowrap">金额</th>
+                                        <th class="text-left font-medium px-5 py-3 whitespace-nowrap change-highlight">金额</th>
                                         <th class="text-left font-medium px-5 py-3 whitespace-nowrap">支付方式</th>
                                         <th class="text-left font-medium px-5 py-3 whitespace-nowrap">审核状态</th>
                                         <th class="text-left font-medium px-5 py-3 whitespace-nowrap">支付状态</th>
@@ -403,17 +411,17 @@
                     { label: '账户余额', value: '0.98' },
                     { label: '可用保证金', value: '0.98' }
                 ],
-                records: [
-                    { orderNo: 'IN_924205165425197701', mt: '8100336', amount: '$44.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-08-01 15:49:30', done: '2026-08-01 15:49:30' },
-                    { orderNo: 'IN_923763090661572879', mt: '8100336', amount: '$59.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-31 10:32:51', done: '2026-07-31 10:32:51' },
-                    { orderNo: 'IN_92246368451971192', mt: '8100336', amount: '$95.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-27 20:29:29', done: '2026-07-27 20:29:29' },
-                    { orderNo: 'IN_918747447453288686', mt: '8100403', amount: '$500.00', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:22:28', done: '-' },
-                    { orderNo: 'IN_918747295221025052', mt: '8100337', amount: '$300.00', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:21:52', done: '-' },
-                    { orderNo: 'IN_911893429175190108', mt: '8100337', amount: '$78.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-28 16:27:03', done: '2026-06-28 16:27:03' },
-                    { orderNo: '909893649787971432', mt: '8310215', amount: '$28.88', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-20 15:44:38', done: '2026-06-20 15:44:39' },
-                    { orderNo: 'IN_897007848217641380', mt: '8100337', amount: '$4.80', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-18 14:37:04', done: '2026-05-18 14:37:04' },
-                    { orderNo: 'IN_892967734579561985', mt: '8100337', amount: '$14.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-07 11:03:06', done: '2026-05-07 11:03:06' },
-                    { orderNo: 'IN_892295131682574044', mt: '8100337', amount: '$5.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-05 14:30:25', done: '2026-05-05 14:30:25' }
+                                records: [
+                    { orderNo: 'IN_924205165425197701', mtType: 'standard', mt: '8100336', amount: '44.00 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-08-01 15:49:30', done: '2026-08-01 15:49:30' },
+                    { orderNo: 'IN_923763090661572879', mtType: 'standard', mt: '8100336', amount: '59.00 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-31 10:32:51', done: '2026-07-31 10:32:51' },
+                    { orderNo: 'IN_92246368451971192', mtType: 'standard', mt: '8100336', amount: '95.00 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-27 20:29:29', done: '2026-07-27 20:29:29' },
+                    { orderNo: 'IN_918747447453288686', mtType: 'standard', mt: '8100403', amount: '500.00 USD', amountSub: '', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:22:28', done: '-' },
+                    { orderNo: 'IN_918747295221025052', mtType: 'standard', mt: '8100337', amount: '300.00 USD', amountSub: '', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:21:52', done: '-' },
+                    { orderNo: 'IN_911893429175190108', mtType: 'standard', mt: '8100337', amount: '78.00 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-28 16:27:03', done: '2026-06-28 16:27:03' },
+                    { orderNo: '909893649787971432', mtType: 'standard', mt: '8310215', amount: '28.88 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-20 15:44:38', done: '2026-06-20 15:44:39' },
+                    { orderNo: 'IN_897007848217641380', mtType: 'standard', mt: '8100337', amount: '4.80 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-18 14:37:04', done: '2026-05-18 14:37:04' },
+                    { orderNo: 'IN_892967734579561985', mtType: 'standard', mt: '8100337', amount: '14.00 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-07 11:03:06', done: '2026-05-07 11:03:06' },
+                    { orderNo: 'IN_892295131682574044', mtType: 'standard', mt: '8100337', amount: '5.00 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-05 14:30:25', done: '2026-05-05 14:30:25' }
                 ],
                 payments: [
                     { method: 'maxpay-usdt', no: 'OUT_924205978591691565', time: 'Invalid Date', status: '支付成功', actual: '151.00', amount: '151.00', operator: 'Finance-04', reason: '-', action: '-' }
@@ -451,17 +459,17 @@
                     { label: '账户余额', value: '52,450.00 美分/USC', highlight: true },
                     { label: '可用保证金', value: '12,000.00 美分/USC', highlight: true }
                 ],
-                records: [
-                    { orderNo: 'IN_924205165425197701', mt: '8100336', amount: '$44.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-08-01 15:49:30', done: '2026-08-01 15:49:30' },
-                    { orderNo: 'IN_923763090661572879', mt: '8100336', amount: '$59.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-31 10:32:51', done: '2026-07-31 10:32:51' },
-                    { orderNo: 'IN_92246368451971192', mt: '8100336', amount: '$95.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-27 20:29:29', done: '2026-07-27 20:29:29' },
-                    { orderNo: 'IN_918747447453288686', mt: '8100403', amount: '$500.00', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:22:28', done: '-' },
-                    { orderNo: 'IN_918747295221025052', mt: '8100337', amount: '$300.00', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:21:52', done: '-' },
-                    { orderNo: 'IN_911893429175190108', mt: '8100337', amount: '$78.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-28 16:27:03', done: '2026-06-28 16:27:03' },
-                    { orderNo: '909893649787971432', mt: '8310215', amount: '$28.88', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-20 15:44:38', done: '2026-06-20 15:44:39' },
-                    { orderNo: 'IN_897007848217641380', mt: '8100337', amount: '$4.80', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-18 14:37:04', done: '2026-05-18 14:37:04' },
-                    { orderNo: 'IN_892967734579561985', mt: '8100337', amount: '$14.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-07 11:03:06', done: '2026-05-07 11:03:06' },
-                    { orderNo: 'IN_892295131682574044', mt: '8100337', amount: '$5.00', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-05 14:30:25', done: '2026-05-05 14:30:25' }
+                                records: [
+                    { orderNo: 'IN_924205165425197701', mtType: 'cent', mt: '9900456', amount: '4,400.00 USC', amountSub: '44.00 USD', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-08-01 15:49:30', done: '2026-08-01 15:49:30', highlight: true },
+                    { orderNo: 'IN_923763090661572879', mtType: 'cent', mt: '9900456', amount: '5,900.00 USC', amountSub: '59.00 USD', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-31 10:32:51', done: '2026-07-31 10:32:51', highlight: true },
+                    { orderNo: 'IN_92246368451971192', mtType: 'cent', mt: '9900456', amount: '9,500.00 USC', amountSub: '95.00 USD', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-07-27 20:29:29', done: '2026-07-27 20:29:29', highlight: true },
+                    { orderNo: 'IN_918747447453288686', mtType: 'standard', mt: '8100403', amount: '500.00 USD', amountSub: '', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:22:28', done: '-' },
+                    { orderNo: 'IN_918747295221025052', mtType: 'standard', mt: '8100337', amount: '300.00 USD', amountSub: '', method: 'QuickPay-CNY', audit: '待审核', pay: '支付取消', apply: '2026-07-17 14:21:52', done: '-' },
+                    { orderNo: 'IN_911893429175190108', mtType: 'cent', mt: '9900456', amount: '7,800.00 USC', amountSub: '78.00 USD', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-28 16:27:03', done: '2026-06-28 16:27:03', highlight: true },
+                    { orderNo: '909893649787971432', mtType: 'standard', mt: '8310215', amount: '28.88 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-06-20 15:44:38', done: '2026-06-20 15:44:39' },
+                    { orderNo: 'IN_897007848217641380', mtType: 'standard', mt: '8100337', amount: '4.80 USD', amountSub: '', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-18 14:37:04', done: '2026-05-18 14:37:04' },
+                    { orderNo: 'IN_892967734579561985', mtType: 'cent', mt: '9900456', amount: '1,400.00 USC', amountSub: '14.00 USD', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-07 11:03:06', done: '2026-05-07 11:03:06', highlight: true },
+                    { orderNo: 'IN_892295131682574044', mtType: 'cent', mt: '9900456', amount: '500.00 USC', amountSub: '5.00 USD', method: 'crm', audit: '已审核', pay: '支付成功', apply: '2026-05-05 14:30:25', done: '2026-05-05 14:30:25', highlight: true }
                 ],
                 payments: [
                     { method: 'AIPAY', no: 'OUT_924205978591691565', time: '2026-08-02 09:21:34', status: '支付成功', actual: '￥861.60', amount: '$120.00', operator: 'Finance-04', reason: '-', action: '-', highlight: true }
@@ -508,18 +516,26 @@
 
         function renderRecords(data) {
             const tbody = document.getElementById('recordBody');
-            tbody.innerHTML = data.records.map((row) => `
+            tbody.innerHTML = data.records.map((row) => {
+                const pill = row.mtType === 'cent'
+                    ? '<span class="type-pill cent"><i class="fa-solid fa-coins"></i>美分</span>'
+                    : '<span class="type-pill standard"><i class="fa-solid fa-layer-group"></i>标准</span>';
+                const amountHtml = row.amountSub
+                    ? `<div class="${row.highlight ? 'change-highlight font-medium' : 'text-gray-700'}">${row.amount}</div>`
+                    : `<div class="${row.highlight ? 'change-highlight font-medium' : 'text-gray-700'}">${row.amount}</div>`;
+                return `
                 <tr class="hover:bg-gray-50/60">
                     <td class="px-5 py-4 whitespace-nowrap text-gray-600">${row.orderNo}</td>
+                    <td class="px-5 py-4 whitespace-nowrap">${pill}</td>
                     <td class="px-5 py-4 whitespace-nowrap text-gray-700">${row.mt}</td>
-                    <td class="px-5 py-4 whitespace-nowrap ${row.highlight ? 'change-highlight font-medium' : 'text-gray-700'}">${row.amount}</td>
+                    <td class="px-5 py-4 whitespace-nowrap">${amountHtml}</td>
                     <td class="px-5 py-4 whitespace-nowrap text-gray-500">${row.method}</td>
                     <td class="px-5 py-4 whitespace-nowrap text-gray-500">${row.audit}</td>
                     <td class="px-5 py-4 whitespace-nowrap text-gray-500">${row.pay}</td>
                     <td class="px-5 py-4 whitespace-nowrap text-gray-500">${row.apply}</td>
                     <td class="px-5 py-4 whitespace-nowrap text-gray-500">${row.done}</td>
                 </tr>
-            `).join('');
+            `}).join('');
         }
 
         function renderPayments(data) {
