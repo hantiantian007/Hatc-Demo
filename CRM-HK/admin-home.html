@@ -292,8 +292,165 @@
         <div class="flex-1 overflow-y-auto bg-gray-50 p-6 flex gap-6">
             
             <!-- 左侧主内容区 (占据较大比例) -->
-            <div class="flex-1 flex flex-col gap-6">
-                <!-- Row 1: 三个统计卡片 -->
+            <div class="flex-1 flex flex-col gap-6" style="display:flex; flex-direction:column; gap:24px; flex:1; min-width:0;">
+
+                <!-- ⚡ 活動卡片 (多活動切換) -->
+                <div style="flex-shrink:0; display:flex; flex-direction:column; background:#fff; border:1px solid #f3f4f6; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.03);">
+                    <!-- Tab 欄 -->
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid #f3f4f6; background:#fafafa;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <button onclick="switchActivity(0)" id="tab0" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; background:#fff; border:1px solid #e5e7eb; color:#ea580c; box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+                                <i class="fa-solid fa-credit-card" style="font-size:11px;"></i> Pcard 銀行卡
+                            </button>
+                            <button onclick="switchActivity(1)" id="tab1" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:500; background:transparent; border:1px solid transparent; color:#6b7280;">
+                                <i class="fa-solid fa-gift" style="font-size:11px;"></i> 入金贈金
+                                <span style="display:inline-block; width:8px; height:8px; border-radius:9999px; background:#ef4444; margin-left:2px; animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;"></span>
+                            </button>
+                            <button onclick="switchActivity(2)" id="tab2" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:500; background:transparent; border:1px solid transparent; color:#6b7280;">
+                                <i class="fa-solid fa-chart-pie" style="font-size:11px;"></i> 返佣加碼
+                            </button>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <button onclick="switchActivity(0)" id="dot0" style="width:16px; height:6px; border-radius:9999px; background:#f97316; border:none; cursor:pointer; transition:all 0.3s;"></button>
+                            <button onclick="switchActivity(1)" id="dot1" style="width:6px; height:6px; border-radius:9999px; background:#d1d5db; border:none; cursor:pointer; transition:all 0.3s;"></button>
+                            <button onclick="switchActivity(2)" id="dot2" style="width:6px; height:6px; border-radius:9999px; background:#d1d5db; border:none; cursor:pointer; transition:all 0.3s;"></button>
+                        </div>
+                    </div>
+
+                    <!-- 活動 0 -->
+                    <div id="panel0" style="min-height:120px; padding:16px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:20px;">
+                        <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#fbbf24,#f97316); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+                                <i class="fa-solid fa-credit-card" style="font-size:18px;"></i>
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <h3 style="font-size:14px; font-weight:700; color:#1f2937; margin:0;">Pcard 銀行卡免費辦理活動</h3>
+                                    <span style="display:inline-flex; padding:2px 8px; border-radius:9999px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa; font-size:10px; font-weight:700;">🔥 限時</span>
+                                </div>
+                                <p style="font-size:11px; color:#6b7280; margin:2px 0 0 0;">淨入金 $1,000 · 交易 5 手 · 雙條件達標即可免費辦理</p>
+                            </div>
+                        </div>
+                        <div style="flex:1; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
+                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-dollar-sign" style="font-size:10px; color:#10b981;"></i> 淨入金
+                                    </span>
+                                    <span style="font-weight:700; color:#374151;">
+                                        $1,013.00 <span style="color:#9ca3af; font-weight:400;">/ $1,000</span>
+                                        <span style="color:#059669; margin-left:6px; font-weight:500;">✅ 已達標</span>
+                                    </span>
+                                </div>
+                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
+                                    <div style="height:100%; width:100%; background:linear-gradient(90deg,#34d399,#2dd4bf); border-radius:9999px;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
+                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-chart-line" style="font-size:10px; color:#3b82f6;"></i> 交易手數
+                                    </span>
+                                    <span style="font-weight:700; color:#374151;">
+                                        5.0 <span style="color:#9ca3af; font-weight:400;">/ 5 Lot</span>
+                                        <span style="color:#059669; margin-left:6px; font-weight:500;">✅ 已達標</span>
+                                    </span>
+                                </div>
+                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
+                                    <div style="height:100%; width:100%; background:linear-gradient(90deg,#60a5fa,#818cf8); border-radius:9999px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 达标后的底部提示 -->
+                        <div style="width:100%; padding:10px 14px; margin-top:4px; border-radius:6px; background:#f0fdf4; border:1px solid #bbf7d0; color:#059669; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-circle-check"></i> 恭喜！您已達成全部條件，請聯繫客服免費辦理 Pcard 銀行卡。
+                        </div>
+                    </div>
+
+                    <!-- 活動 1 -->
+                    <div id="panel1" style="min-height:120px; padding:16px 24px; display:none; flex-wrap:wrap; align-items:center; gap:20px;">
+                        <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#fb7185,#ec4899); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+                                <i class="fa-solid fa-gift" style="font-size:18px;"></i>
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <h3 style="font-size:14px; font-weight:700; color:#1f2937; margin:0;">首充 200% 贈金活動</h3>
+                                    <span style="display:inline-flex; padding:2px 8px; border-radius:9999px; background:#fff1f2; color:#e11d48; border:1px solid #fecdd3; font-size:10px; font-weight:700; animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;">🆕 新活動</span>
+                                </div>
+                                <p style="font-size:11px; color:#6b7280; margin:2px 0 0 0;">入金 $500 起可享贈金，最高贈 $3,000 · 可提現</p>
+                            </div>
+                        </div>
+                        <div style="flex:1; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
+                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-dollar-sign" style="font-size:10px; color:#f43f5e;"></i> 累計入金
+                                    </span>
+                                    <span style="font-weight:700; color:#374151;">$2,500 <span style="color:#9ca3af; font-weight:400;">/ $3,000 (上限)</span></span>
+                                </div>
+                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
+                                    <div style="height:100%; width:83%; background:linear-gradient(90deg,#fb7185,#ec4899); border-radius:9999px;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
+                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-percent" style="font-size:10px; color:#a855f7;"></i> 贈金比例
+                                    </span>
+                                    <span style="font-weight:700; color:#374151;">當前 <span style="color:#9333ea;">200%</span> · 已獲得 <span style="color:#e11d48;">$5,000</span> 贈金</span>
+                                </div>
+                                <p style="font-size:11px; margin:4px 0 0 0; color:#e11d48; font-weight:500;">⚠️ 再入金 <b>$500</b> 可解鎖贈金上限 $3,000 → $6,000</p>
+                            </div>
+                        </div>
+                        <button style="flex-shrink:0; height:40px; padding:0 20px; border-radius:8px; background:linear-gradient(90deg,#f43f5e,#ec4899); color:#fff; font-weight:700; font-size:12px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 1px 2px rgba(0,0,0,0.08);">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> 立即入金
+                        </button>
+                    </div>
+
+                    <!-- 活動 2 -->
+                    <div id="panel2" style="min-height:120px; padding:16px 24px; display:none; flex-wrap:wrap; align-items:center; gap:20px;">
+                        <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#2dd4bf,#10b981); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+                                <i class="fa-solid fa-chart-pie" style="font-size:18px;"></i>
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <h3 style="font-size:14px; font-weight:700; color:#1f2937; margin:0;">月度返佣加碼活動</h3>
+                                    <span style="display:inline-flex; padding:2px 8px; border-radius:9999px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; font-size:10px; font-weight:700;">🔥 進行中</span>
+                                </div>
+                                <p style="font-size:11px; color:#6b7280; margin:2px 0 0 0;">當月交易 ≥ 500 Lot 返佣比例 +2% · 最高 12%</p>
+                            </div>
+                        </div>
+                        <div style="flex:1; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
+                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-chart-line" style="font-size:10px; color:#14b8a6;"></i> 本月交易手數
+                                    </span>
+                                    <span style="font-weight:700; color:#374151;">326.8 <span style="color:#9ca3af; font-weight:400;">/ 500 Lot</span></span>
+                                </div>
+                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
+                                    <div style="height:100%; width:65%; background:linear-gradient(90deg,#2dd4bf,#10b981); border-radius:9999px;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
+                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
+                                        <i class="fa-solid fa-percent" style="font-size:10px; color:#f59e0b;"></i> 返佣比例
+                                    </span>
+                                    <span style="font-weight:700; color:#374151;">當前 <span style="color:#059669;">10%</span> · 目標 <span style="color:#d97706;">12%</span></span>
+                                </div>
+                                <p style="font-size:11px; margin:4px 0 0 0; color:#d97706; font-weight:500;">⚠️ 再交易 <b>173.2 Lot</b> 返佣直接提升 2%，預計多賺 $2,360</p>
+                            </div>
+                        </div>
+                        <button style="flex-shrink:0; height:40px; padding:0 20px; border-radius:8px; background:linear-gradient(90deg,#14b8a6,#10b981); color:#fff; font-weight:700; font-size:12px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 1px 2px rgba(0,0,0,0.08);">
+                            <i class="fa-solid fa-eye"></i> 查看詳情
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Row 1: 三個統計卡片 -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- MT余额 -->
                     <div class="bg-white rounded-xl card-shadow border border-gray-100 p-6 flex justify-between items-start">
@@ -386,27 +543,6 @@
 
             <!-- 右侧边栏 -->
             <div class="w-[320px] xl:w-[360px] flex flex-col gap-6 flex-shrink-0">
-                
-                <!-- 活动信息 -->
-                <div class="bg-white rounded-xl card-shadow border border-gray-100 p-6">
-                    <p class="text-sm text-gray-500 font-medium mb-4">活动信息</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-700">先锋体验活动</span>
-                        <button class="bg-red-500 hover:bg-red-600 text-white text-[10px] px-3 py-1 rounded transition-colors">立即参与</button>
-                    </div>
-                </div>
-
-                <!-- 盈利金额/奖励 -->
-                <div class="bg-white rounded-xl card-shadow border border-gray-100 p-6 flex flex-col gap-3">
-                    <div class="flex items-center text-sm">
-                        <span class="text-gray-500 w-24">先锋盈利金额 :</span>
-                        <span class="text-gray-800">-</span>
-                    </div>
-                    <div class="flex items-center text-sm">
-                        <span class="text-gray-500 w-24">先锋活动奖励 :</span>
-                        <span class="text-gray-800">-</span>
-                    </div>
-                </div>
 
                 <!-- 通知公告 -->
                 <div class="bg-white rounded-xl card-shadow border border-gray-100 p-6 flex-1 min-h-[200px]">
@@ -525,9 +661,40 @@
                 }
             });
         };
+
+        // ========== 活動卡片切換 (超簡單版，按 ID 操作) ==========
+        function switchActivity(idx) {
+            var p0 = document.getElementById('panel0');
+            var p1 = document.getElementById('panel1');
+            var p2 = document.getElementById('panel2');
+            if (p0) p0.style.display = idx === 0 ? 'flex' : 'none';
+            if (p1) p1.style.display = idx === 1 ? 'flex' : 'none';
+            if (p2) p2.style.display = idx === 2 ? 'flex' : 'none';
+
+            var ACTIVE_STYLE = 'display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; background:#fff; border:1px solid #e5e7eb; box-shadow:0 1px 2px rgba(0,0,0,0.04);';
+            var IDLE_STYLE   = 'display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:500; background:transparent; border:1px solid transparent; color:#6b7280;';
+            var COLORS = ['#ea580c', '#e11d48', '#0f766e'];
+            for (var i = 0; i < 3; i++) {
+                var tab = document.getElementById('tab' + i);
+                if (tab) {
+                    tab.style.cssText = i === idx ? (ACTIVE_STYLE + ' color:' + COLORS[i] + ';') : IDLE_STYLE;
+                }
+            }
+
+            var DOT_COLORS = ['#f97316', '#f43f5e', '#14b8a6'];
+            for (var j = 0; j < 3; j++) {
+                var dot = document.getElementById('dot' + j);
+                if (dot) {
+                    if (j === idx) {
+                        dot.style.cssText = 'width:16px; height:6px; border-radius:9999px; background:' + DOT_COLORS[j] + '; border:none; cursor:pointer; transition:all 0.3s;';
+                    } else {
+                        dot.style.cssText = 'width:6px; height:6px; border-radius:9999px; background:#d1d5db; border:none; cursor:pointer; transition:all 0.3s;';
+                    }
+                }
+            }
+        }
+        // (已關閉自動輪播，用戶手動點擊 Tab/小圓點切換即可)
     </script>
-</body>
-</html>
 
     <!-- PRD 弹窗 -->
     <div id="prdModal" class="fixed inset-0 z-[100] hidden">
@@ -559,3 +726,6 @@
             </div>
         </div>
     </div>
+
+</body>
+</html>
