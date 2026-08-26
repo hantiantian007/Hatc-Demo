@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佣金管理 PRD - 佣金每日对账</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#C19B5E', secondary: '#A07D45' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- 头部信息 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-primary">
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">佣金管理 PRD (佣金每日对账)</h1>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div><span class="text-gray-500">业务模块：</span><span class="font-medium">佣金管理 / 每日对账</span></div>
+                <div><span class="text-gray-500">目标用户：</span><span class="font-medium">财务、运营人员</span></div>
+                <div><span class="text-gray-500">更新日期：</span><span class="font-medium">2026-08-26</span></div>
+                <div><span class="text-gray-500">状态：</span><span class="font-medium text-green-600">已评审</span></div>
+            </div>
+            <div class="mt-4 p-4 bg-yellow-50 text-yellow-800 rounded-md text-sm border border-yellow-200">
+                <i class="fas fa-exclamation-triangle mr-2"></i> <strong>设计原则红线：</strong>
+                极致简约，纯提醒/只读型工具设计。页面仅提供对账结果的宏观与微观对比，任何异常平账必须由人工线下处理。详情信息强制使用居中弹窗 (Modal) 展示。
+            </div>
+        </div>
+
+        <!-- 研发架构与对账逻辑要求 (独立模块) -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-red-500">
+            <h2 class="text-lg font-bold text-gray-900 border-b pb-3 mb-4"><i class="fas fa-code-branch text-red-500 mr-2"></i>核心研发红线：对账计算逻辑</h2>
+            <div class="bg-red-50 rounded-md p-5 border border-red-100">
+                <p class="text-sm text-gray-800 leading-relaxed mb-4 font-medium">
+                    对账的核心本质是<strong class="text-red-700">独立交叉验证</strong>。如果对比双方底层调用同一套逻辑或读取同一份现成数据，对账将毫无意义。因此，对“理论 vs 实际”的底层开发提出以下强制性要求：
+                </p>
+                <ul class="list-disc pl-5 space-y-3 text-sm text-gray-700">
+                    <li><strong class="text-red-700">理论值（应发）：必须是全新的旁路计算。</strong>研发必须脱离现有系统，写一套完全独立的重算逻辑。该逻辑直接读取 MT5 原始平仓单（手数、品种）及佣金规则配置进行从头计算，<strong class="text-red-700">严禁复用或调用现有系统的任何结算代码</strong>。</li>
+                    <li><strong class="text-gray-900">实际值（实发）：</strong>读取现有老系统实际跑出的结算结果（即数据库中已落库、准备发给代理的佣金记录）。</li>
+                </ul>
+                <p class="text-sm text-gray-600 mt-4 bg-white p-3 rounded border border-red-100">
+                    <i class="fas fa-info-circle text-red-400 mr-1"></i> <strong>设计初衷：</strong>只有一新一老两套独立逻辑背靠背计算，才能有效排查出老系统中的历史 Bug、并发导致的数据丢失或边缘场景（如代理越级、特殊品种）配置错误等隐患。
+                </p>
+            </div>
+        </div>
+
+        <!-- 全局交互规范 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 border-b pb-3 mb-6"><i class="fas fa-layer-group text-primary mr-2"></i>全局交互与数据规范</h2>
+            
+            <div class="space-y-6">
+                <!-- 1. 二元对比法 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-balance-scale text-gray-400 mr-2"></i>1. “理论 vs 实际”（应/实）二元对比法</h3>
+                    <p class="text-sm text-gray-600">从宏观 KPI 卡片到微观订单列表，全面采用“应返金额（理论重算） vs 实际返金额”的对比逻辑。通过将对比项合并在同一单元格内显示（如「2 人 / <span class="text-red-600">3 人</span>」），并以红色高亮实际异常值，确保用户一眼识别问题。</p>
+                </div>
+
+                <!-- 2. 下钻交互 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-window-maximize text-gray-400 mr-2"></i>2. 居中弹窗 (Modal) 详情呈现</h3>
+                    <p class="text-sm text-gray-600 mb-3">为避免页面跳转丢失对账上下文，单笔订单的【逐代理返佣对比】详情强制采用居中弹窗 (Modal) 呈现，并叠加半透明遮罩。</p>
+                </div>
+
+                <!-- 3. 数据防线 -->
+                <div class="bg-red-50 rounded-md p-4 border border-red-100">
+                    <h3 class="font-bold text-red-800 mb-3 flex items-center"><i class="fas fa-shield-alt text-red-500 mr-2"></i>3. 数据格式化与只读规范 (核心红线)</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong>千位符格式化</strong>：页面内所有金额大数值必须使用千位符格式化展示（如 <code>12,345.67</code>），且保留 2 位小数。</li>
+                        <li><strong>只读约束</strong>：页面仅提供只读视图与离线标记（如“标记：已线下处理”、“备注说明”），严禁提供修改业务数据或自动平账的系统功能按钮。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面详细说明 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-6">
+                <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-list-alt text-primary mr-2"></i>佣金每日对账页面</h2>
+                <a href="admin-commission-daily-audit.html" target="_blank" class="text-primary hover:text-secondary text-sm font-medium">查看原型 <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-6 bg-gray-50 p-4 rounded-md border border-gray-100">
+                <strong>业务目标：</strong>提供单日视角的佣金精细化核对。通过宏观 KPI 卡片掌握全局偏差，通过明细列表定位异常平仓单，最后通过弹窗深入至每个代理的应/实发差额。
+            </p>
+
+            <div class="space-y-8">
+                <!-- 1. 宏观对账卡片 -->
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center text-md border-l-4 border-primary pl-2">1. 宏观对账卡片</h3>
+                    <p class="text-sm text-gray-600 mb-4">页面顶部提供两组 KPI 对照卡片，分别核对“返佣订单数”与“返佣总金额”，并在卡片底部提供按账户类型（USD / USC）和结果（正常 / 异常）的细分标签。</p>
+                </div>
+
+                <!-- 2. 对账明细列表 -->
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center text-md border-l-4 border-primary pl-2">2. 对账明细列表</h3>
+                    <p class="text-sm text-gray-600 mb-4">按平仓订单（Close Ticket）维度展示当日对账明细，默认将异常订单置顶显示。</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border border-gray-200">
+                            <thead class="bg-gray-50 text-gray-600">
+                                <tr>
+                                    <th class="border-b py-2 px-3 w-48">UI 呈现表头</th>
+                                    <th class="border-b py-2 px-3">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 divide-y divide-gray-100">
+                                <tr>
+                                    <td class="py-2 px-3 font-medium">平仓单号</td>
+                                    <td class="py-2 px-3">底层 MT5 的平仓订单 Ticket。</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-medium">账户类型</td>
+                                    <td class="py-2 px-3">客户账户类型：标准账户（蓝胶囊） / 美分账户（橙胶囊）。</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-medium">应/实返佣人数</td>
+                                    <td class="py-2 px-3">二元对比格式（如 <code>2 人 / <span class="text-red-600 font-bold">3 人</span></code>）。若人数不一致，实际人数红色高亮。</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-medium">应/实返佣金额</td>
+                                    <td class="py-2 px-3">理论重算金额与系统实际入账金额的二元对比。差额部分红色高亮。</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-medium">对账结果</td>
+                                    <td class="py-2 px-3">系统判定：<span class="text-green-600 font-bold">正常</span> 或 <span class="text-red-600 font-bold">异常</span>。</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-medium text-red-600">金额差额</td>
+                                    <td class="py-2 px-3"><code>实际返佣金额 - 应返佣金额</code>，带符号显示。</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-medium text-red-600">返佣条数差</td>
+                                    <td class="py-2 px-3"><code>实际返佣人数 - 应返佣人数</code>，用于快速定位链路外多发或漏发问题。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. 逐代理返佣对比详情 (Modal) -->
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center text-md border-l-4 border-primary pl-2">3. 逐代理返佣对比详情 (居中弹窗)</h3>
+                    <p class="text-sm text-gray-600 mb-4">点击列表“查看详情”后居中弹出，提供单笔平仓单在整条返佣链路上的极细颗粒度对比。</p>
+                    
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong>基础信息与汇总</strong>：弹窗顶部展示平仓单基本信息（包含客户、产品、时间及归属链路）以及宏观的汇总对比。</li>
+                        <li><strong>代理明细穿透表</strong>：拆解到每个应发或实发代理。
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li>蓝色列展示<strong>应返金额</strong>（含计算公式拆解：单价 × 手数）。</li>
+                                <li>绿色列展示<strong>实返金额</strong>。</li>
+                                <li>红底行展示<strong>链路外错误发放</strong>的代理记录。</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

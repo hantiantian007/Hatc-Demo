@@ -116,7 +116,7 @@
                                                     <i class="fas fa-desktop"></i> 原型（复用净值报表）
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors" href="Crm-Group/prd-report-equity.html" target="_blank">
-                                                    <i class="fas fa-file-lines"></i> PRD
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
@@ -133,7 +133,7 @@
                                                     <i class="fas fa-desktop"></i> 原型
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors" href="Crm-Group/prd-report-real-position.html" target="_blank">
-                                                    <i class="fas fa-file-lines"></i> PRD
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
@@ -239,7 +239,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-leads-list.html" target="_blank">
-                                                    <i class="fas fa-book-open"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
@@ -304,7 +304,7 @@
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="table-row-hover">
                                         <td class="px-6 py-4 font-bold text-gray-800">佣金每日对账</td>
-                                        <td class="px-6 py-4 text-gray-500">纯提醒型对账工具：基于「平仓订单」逐单独立重算理论返佣（仅供核对参考，不调整任何金额），与系统实际佣金记录做双向对照：① 订单数（平仓/有返佣资格 vs 系统已返佣，按 USD/USC 分账户类型拆分）② 金额理论 vs 实返（分币种独立展示差额&问题笔数）。核心宽表按平仓单 #CL 平铺：账户类型胶囊、USC 美分手数 MT原始÷折算路径展示、理论/实际金额与人数对比、差额≠0 全红字+问题类型胶囊；右侧抽屉仅展示「逐代理对比表 + 系统提醒（请线下核查处理）」，底部仅保留「标记：已线下处理 / 备注说明」两个留痕操作，完全移除冲正/调账/重算后自动改金额等任何自动处理功能。顶部「今日问题提醒汇总」5 卡均以「提醒运营/财务线下处理」为语义展示。</td>
+                                        <td class="px-6 py-4 text-gray-500">纯提醒型对账工具：基于「平仓订单」独立重算理论返佣（不改动任何系统金额），与系统实际返佣记录进行“订单数”和“总金额”的双向对比。列表按订单平铺展示应/实发金额差额，点击可下钻查看逐代理对比明细。该页面纯只读，无任何系统平账操作。</td>
                                         <td class="px-6 py-4">
                                             <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
                                         </td>
@@ -317,8 +317,8 @@
                                         </td>
                                     </tr>
                                     <tr class="table-row-hover bg-blue-50/30">
-                                        <td class="px-6 py-4 font-bold text-gray-800">📌 对账记录</td>
-                                        <td class="px-6 py-4 text-gray-500">纯留痕型对账批次记录库（无任何线上处理功能）：按对账日期归档批次。每个批次展示：状态胶囊（待线下处理 / 已核对完成 / 问题待跟进）、三项订单数对照（平仓数×有返佣×系统实返）、三项金额快照（理论应返×系统实返×差额）、问题拆分统计（USC折算异常/重复返佣等子项）。行级「明细/日志」右侧抽屉：批次快照 4 卡（点击跳转对账明细）+ 「处理 & 查看留痕」时间线（对账任务创建 → 独立计算完成（仅核对不改数据）→ 系统问题提醒 7 笔 → 运营批量标记线下重点 → 运营通知财务线下扣回 → 全部标记已线下处理 全链路留痕）。顶部 KPI：已核对完成 / 待线下处理 / 问题待跟进 / 通知触达率。所有语义与按钮完全移除「锁入账 / 冲正 / 自动调账 / 入账」等线上处理动作，仅做提醒与人工处理留痕。</td>
+                                        <td class="px-6 py-4 font-bold text-gray-800">对账记录</td>
+                                        <td class="px-6 py-4 text-gray-500">纯留痕型对账批次记录库：按对账日期归档生成的批次列表。宏观展示各批次的对账状态、订单数/金额快照及差额统计。点击可下钻查看对账处理的时间线日志。页面完全移除所有自动调账功能，仅作对账状态的查询与人工处理留痕。</td>
                                         <td class="px-6 py-4">
                                             <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
                                         </td>
@@ -388,7 +388,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-leads-message-reminder.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
@@ -448,7 +448,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-account-management.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 原型
@@ -465,7 +465,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-rule-config.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 规则原型
@@ -482,7 +482,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-trust-account-visibility.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-trust-group-config.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 分组原型
@@ -545,7 +545,7 @@
                                         <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-product-list.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> 列表 PRD</a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-product-list.html" target="_blank">列表 PRD</a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-product-list.html" target="_blank"><i class="fas fa-desktop"></i> 列表原型</a>
                                             </div>
                                         </td>
@@ -556,7 +556,7 @@
                                         <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-product-detail.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> 详情 PRD</a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-product-detail.html" target="_blank">详情 PRD</a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/product-detail.html" target="_blank"><i class="fas fa-desktop"></i> 详情原型</a>
                                             </div>
                                         </td>
@@ -567,7 +567,7 @@
                                         <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-management.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-management.html" target="_blank">PRD</a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-product-management.html" target="_blank"><i class="fas fa-desktop"></i> 原型</a>
                                             </div>
                                         </td>
@@ -578,7 +578,7 @@
                                         <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-edit.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-edit.html" target="_blank">PRD</a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-product-edit.html" target="_blank"><i class="fas fa-desktop"></i> 原型</a>
                                             </div>
                                         </td>
@@ -589,7 +589,7 @@
                                         <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-client-my-orders.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-client-my-orders.html" target="_blank">PRD</a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/client-my-orders.html" target="_blank"><i class="fas fa-desktop"></i> 客户端订单原型</a>
                                             </div>
                                         </td>
@@ -600,7 +600,7 @@
                                         <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-orders.html" target="_blank"><i class="fas fa-project-diagram text-gray-400"></i> PRD</a>
+                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-admin-product-orders.html" target="_blank">PRD</a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-product-orders.html" target="_blank"><i class="fas fa-desktop"></i> 后台订单原型</a>
                                             </div>
                                         </td>
@@ -611,99 +611,6 @@
                     </div>
                 </div>
                 
-                <!-- 规划需求卡片 2：统计需求 (新增) -->
-                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">统计需求</span>
-                                <h3 class="text-lg font-bold text-gray-800">风控与运营报表</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">包含盈亏、净值、持仓等核心风控数据统计与快照功能。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 6 个页面</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-gray-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[200px]">页面名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[200px]">页面概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 font-medium text-gray-800">盈亏报表-1</td>
-                                        <td class="py-3 px-4 text-gray-600">展示各代理/直客净入金、平仓与浮动盈亏、平台净客损 (版本 1)</td>
-                                        <td class="py-3 px-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
-                                        <td class="py-3 px-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-pnl-1.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-pnl-1.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 font-medium text-gray-800">盈亏报表-2</td>
-                                        <td class="py-3 px-4 text-gray-600">展示各代理/直客净入金、平仓与浮动盈亏、平台净客损 (版本 2)</td>
-                                        <td class="py-3 px-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
-                                        <td class="py-3 px-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-pnl-2.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-pnl-2.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 font-medium text-gray-800">净值报表</td>
-                                        <td class="py-3 px-4 text-gray-600">核心风控页面，高亮预付款比例 < 150% 的高风险客户</td>
-                                        <td class="py-3 px-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
-                                        <td class="py-3 px-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-equity.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-equity.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="py-3 px-4 font-medium text-gray-800">持仓报表</td>
-                                        <td class="py-3 px-4 text-gray-600">监控各交易品种的多空净敞口方向，防范单边风险</td>
-                                        <td class="py-3 px-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
-                                        <td class="py-3 px-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-position.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-position.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- 集团动态二期 -->
                 <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
                     <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
@@ -740,7 +647,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-group-news-backend-phase2.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-group-news-create-optimized.html" target="_blank">
                                                     <i class="fas fa-desktop"></i> 后台原型
@@ -757,7 +664,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-group-news-list-management-phase2.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-group-news-list.html" target="_blank">
                                                     <i class="fas fa-table-list"></i> 列表原型
@@ -774,7 +681,7 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-group-news-frontend-phase2.html" target="_blank">
-                                                    <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                                    PRD
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/group-news-display-modes.html" target="_blank">
                                                     <i class="fas fa-globe"></i> 前端原型
@@ -819,6 +726,87 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 divide-y divide-gray-100" id="completed-tbody">
+
+                        <!-- 已完成: 盈亏报表-1 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">风控与运营报表</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">盈亏报表-1</td>
+                            <td class="px-5 py-4 text-gray-500">展示各代理/直客净入金、平仓与浮动盈亏、平台净客损 (版本 1)</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-26</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-pnl-1.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-pnl-1.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 盈亏报表-2 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">风控与运营报表</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">盈亏报表-2</td>
+                            <td class="px-5 py-4 text-gray-500">展示各代理/直客净入金、平仓与浮动盈亏、平台净客损 (版本 2)</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-26</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-pnl-2.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-pnl-2.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 净值报表 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">风控与运营报表</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">净值报表</td>
+                            <td class="px-5 py-4 text-gray-500">核心风控页面，高亮预付款比例 &lt; 150% 的高风险客户</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-26</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-equity.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-equity.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 持仓报表 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">风控与运营报表</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">持仓报表</td>
+                            <td class="px-5 py-4 text-gray-500">监控各交易品种的多空净敞口方向，防范单边风险</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-26</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-position.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-position.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                         <!-- 已完成: 同名账户开通 -->
                         <tr class="table-row-hover bg-white">
                             <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">账户管理</td>
@@ -870,7 +858,7 @@
                                         <i class="fas fa-laptop-code text-gray-400"></i> 支付管理原型
                                     </a>
                                     <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-payment-management.html" target="_blank">
-                                        <i class="fas fa-book-open"></i> 页面PRD
+                                        页面PRD
                                     </a>
                                 </div>
                             </td>
@@ -941,13 +929,13 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 items-center">
                                         <a class="px-2.5 py-1 text-[11px] font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-register.html" target="_blank">
-                                            <i class="fas fa-book-open text-[10px]"></i> 注册页 PRD
+                                            注册页 PRD
                                         </a>
                                         <a class="px-2.5 py-1 text-[11px] font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-deposit.html" target="_blank">
-                                            <i class="fas fa-book-open text-[10px]"></i> 入金 PRD
+                                            入金 PRD
                                         </a>
                                         <a class="px-2.5 py-1 text-[11px] font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-cent-account-page-withdraw-apply.html" target="_blank">
-                                            <i class="fas fa-book-open text-[10px]"></i> 出金申请 PRD
+                                            出金申请 PRD
                                         </a>
                                         <span class="px-2 py-0.5 text-[10px] rounded-full bg-gray-100 text-gray-500 border border-gray-200">共 20 个任务</span>
                                     </div>
@@ -1016,7 +1004,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-risk-login-alert.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-risk-login-alert.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 预警列表原型
@@ -1042,7 +1030,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-approval-reminder.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-audit-list.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1065,7 +1053,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-home.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-home.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1104,7 +1092,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="CRM-HK/prd-account-registration.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                     </div>
                                 </div>
@@ -1124,7 +1112,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-overseas-id-check.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/profile-fill.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 资料填写原型
@@ -1147,13 +1135,13 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-list.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> 留资列表PRD
+                                            留资列表PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-detail.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> 留资详情PRD
+                                            留资详情PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-client-detail.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> 客户详情PRD
+                                            客户详情PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 列表原型
@@ -1185,7 +1173,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-timezone-standard.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                     </div>
                                 </div>
@@ -1205,7 +1193,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-commission-calculation.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                     </div>
                                 </div>
@@ -1242,7 +1230,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="CRM-HK/prd-audit.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="CRM-HK/admin-audit.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1265,7 +1253,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-register.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="CRM-HK/login.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> CRM-HK原型
@@ -1306,7 +1294,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Group-Gw/prd-contact.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Group-Gw/index.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> Group-Gw原型
@@ -1331,7 +1319,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-list.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1355,7 +1343,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Hk-Gw/prd-contact.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Hk-Gw/index.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> Hk-Gw原型
@@ -1379,7 +1367,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-register.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/register.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> Crm-Group原型
@@ -1403,7 +1391,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-close-position.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors border theme-border" href="Crm-Group/admin-report-close-position.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1426,7 +1414,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-report-sales-deposit.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="px-3 py-1.5 text-xs font-medium text-brandGreen bg-green-50 hover:bg-green-100 rounded transition-colors flex items-center gap-1 border border-green-200" href="Crm-Group/admin-report-sales-deposit.html" target="_blank">
                                             <i class="fas fa-desktop"></i> 原型
@@ -1449,7 +1437,7 @@
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-2">
                                     <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Crm-Group/prd-sales-add.html" target="_blank">
-                                        <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                        PRD
                                     </a>
                                     <a class="px-3 py-1.5 text-xs font-medium text-brandGreen bg-green-50 hover:bg-green-100 rounded transition-colors flex items-center gap-1 border border-green-200" href="Crm-Group/admin-sales-add.html" target="_blank">
                                         <i class="fas fa-desktop"></i> 原型
@@ -1487,7 +1475,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-bankcard-add.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-bankcard-add.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1511,7 +1499,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-sales-list.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-sales-list.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1535,7 +1523,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-sales-add.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-sales-add.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1559,7 +1547,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-sales-trading.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-sales-trading.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1583,7 +1571,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-sales-deposit.html" target="_blank">
-                                            <i class="fas fa-project-diagram text-gray-400"></i> PRD
+                                            PRD
                                         </a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-sales-deposit.html" target="_blank">
                                             <i class="fas fa-laptop-code"></i> 原型
@@ -1607,7 +1595,7 @@
                             <td class="px-5 py-4">
                                 <div class="flex flex-wrap gap-2 items-center">
                                     <a class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 border border-gray-200" href="Group-Gw/prd-market-quotes-backend.html" target="_blank">
-                                        <i class="fas fa-project-diagram text-gray-400"></i> 交付文档
+                                        交付文档
                                     </a>
                                 </div>
                             </td>
