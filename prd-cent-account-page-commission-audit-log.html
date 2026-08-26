@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佣金管理 PRD - 对账记录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#C19B5E', secondary: '#A07D45' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- 头部信息 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-primary">
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">佣金管理 PRD (对账记录)</h1>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div><span class="text-gray-500">业务模块：</span><span class="font-medium">佣金管理 / 每日对账</span></div>
+                <div><span class="text-gray-500">目标用户：</span><span class="font-medium">财务、运营人员</span></div>
+                <div><span class="text-gray-500">更新日期：</span><span class="font-medium">2026-08-26</span></div>
+                <div><span class="text-gray-500">状态：</span><span class="font-medium text-green-600">已评审</span></div>
+            </div>
+            <div class="mt-4 p-4 bg-yellow-50 text-yellow-800 rounded-md text-sm border border-yellow-200">
+                <i class="fas fa-exclamation-triangle mr-2"></i> <strong>设计原则红线：</strong>
+                极致简约，纯提醒/只读型工具设计。系统不提供自动平账功能，所有异常必须由人工介入并进行线下处理（红字冲回或补账）。
+            </div>
+        </div>
+
+        <!-- 全局交互规范 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 border-b pb-3 mb-6"><i class="fas fa-layer-group text-primary mr-2"></i>全局交互与数据规范</h2>
+            
+            <div class="space-y-6">
+                <!-- 1. 二元对比法 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-balance-scale text-gray-400 mr-2"></i>1. “理论 vs 实际”（应/实）对比法</h3>
+                    <p class="text-sm text-gray-600">系统基于底层业务规则自动计算【应返佣金额】，并与结算流水中的【实际返佣金额】进行严格核对。任何差额（正负）均直接判定为异常，并高亮预警。</p>
+                </div>
+
+                <!-- 2. 筛选与布局 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-filter text-gray-400 mr-2"></i>2. 极简筛选与同级操作</h3>
+                    <p class="text-sm text-gray-600 mb-3">筛选条件与操作按钮置于同一行，避免空间浪费：</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong>对账日期范围</strong>：日期选择器，支持起始和结束时间。</li>
+                        <li><strong>对账状态</strong>：下拉框（全部、正常、异常）。</li>
+                    </ul>
+                </div>
+
+                <!-- 3. 数据防线 -->
+                <div class="bg-red-50 rounded-md p-4 border border-red-100">
+                    <h3 class="font-bold text-red-800 mb-3 flex items-center"><i class="fas fa-shield-alt text-red-500 mr-2"></i>3. 数据格式化与只读规范 (核心红线)</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong>千位符格式化</strong>：页面内所有金额大数值必须使用千位符格式化展示（如 <code>12,345.67</code>），且保留 2 位小数。</li>
+                        <li><strong>只读约束</strong>：本页面及下钻明细页严禁提供任何修改业务数据的按钮，仅提供异常明细查询，倒逼财务/运营通过标准凭证进行平账。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面详细说明 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-6">
+                <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-list-alt text-primary mr-2"></i>对账记录列表</h2>
+                <a href="admin-commission-audit-log.html" target="_blank" class="text-primary hover:text-secondary text-sm font-medium">查看原型 <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-6 bg-gray-50 p-4 rounded-md border border-gray-100">
+                <strong>业务目标：</strong>每日自动汇总 T-1 甚至当日的佣金结算批次，宏观展示单日佣金应发与实发的对账结果。针对异常批次，引导用户下钻至明细页处理。
+            </p>
+
+            <div class="space-y-6">
+                <h3 class="font-bold text-gray-800 mb-3 flex items-center text-md border-l-4 border-primary pl-2">核心字段说明</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border border-gray-200">
+                        <thead class="bg-gray-50 text-gray-600">
+                            <tr>
+                                <th class="border-b py-2 px-3 w-48">UI 呈现表头</th>
+                                <th class="border-b py-2 px-3">定义与公式</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700 divide-y divide-gray-100">
+                            <tr>
+                                <td class="py-2 px-3 font-medium">对账日期</td>
+                                <td class="py-2 px-3">该批次佣金发生的自然日期（YYYY-MM-DD）。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium">平仓订单数</td>
+                                <td class="py-2 px-3">当日产生的参与佣金计算的平仓订单总笔数。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium">应返佣金额</td>
+                                <td class="py-2 px-3">基于 CRM 佣金规则及代理配置计算出的<strong>理论应发佣金总额</strong>。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium">实际返佣金额</td>
+                                <td class="py-2 px-3">系统实际入账至代理佣金钱包的佣金总额（含错误多发的重复入账等）。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium text-red-600">对账状态</td>
+                                <td class="py-2 px-3">系统自动判断：若<code>应返佣 = 实际返佣</code>且底层无拦截挂单，则为<span class="text-green-600 font-bold">✅ 正常</span>；否则为<span class="text-red-600 font-bold">🔴 异常</span>（带浅红色行高亮）。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium">异常笔数</td>
+                                <td class="py-2 px-3">该日批次中，触发规则拦截（如重复返佣、配置倒挂、总盘不符）的订单笔数。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium text-red-600">金额差额</td>
+                                <td class="py-2 px-3"><code>实际返佣金额 - 应返佣金额</code>。正数代表多发（漏财），负数代表少发。非零值自动红色高亮。</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-medium text-blue-600">操作 (查看详情)</td>
+                                <td class="py-2 px-3">点击后跳转至【佣金每日对账】页，自动带入当日日期，展示具体是哪些单笔订单出现了金额差或规则异常。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -28,15 +28,7 @@
             本文档仅描述 <span class="highlight">待审核入金页面</span> 因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在后台待审核入金页面中补齐美分账户审核识别能力，便于审核员在入金审核阶段明确区分 <span class="highlight">标准账户</span> 与 <span class="highlight">美分账户</span>，同时查看对应原始入金金额与账户余额口径。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-deposit-pending-review.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
@@ -44,33 +36,28 @@
             <tbody>
                 <tr><td class="font-medium">搜索区新增 MT类型</td><td>搜索区需新增 <span class="highlight">MT类型</span> 筛选，支持按 <span class="highlight">标准账户</span>、<span class="highlight">美分账户</span> 查询待审核入金记录。</td></tr>
                 <tr><td class="font-medium">列表新增 MT类型识别</td><td>列表中需单独展示 <span class="highlight">MT类型</span> 字段，通过胶囊样式醒目标记 <span class="highlight">标准账户</span> 与 <span class="highlight">美分账户</span>。</td></tr>
-                <tr><td class="font-medium">金额改为复合展示</td><td>列表中的 <span class="highlight">金额</span> 列采用复合展示：第一行展示 <span class="highlight">入金金额</span>，标准账户按 <span class="highlight">USD</span> 展示，美分账户按 <span class="highlight">USC/美分</span> 展示；第二行展示 <span class="highlight">支付金额</span>，标准账户可直接展示 <span class="highlight">USD</span>，人民币通道展示 <span class="highlight">CNY</span>。</td></tr>
-                <tr><td class="font-medium">明细展示金额拆分</td><td>展开详情中需拆开展示 <span class="highlight">入金金额</span>、<span class="highlight">原始入金金额</span>、<span class="highlight">汇率</span>、<span class="highlight">支付金额</span>、<span class="highlight">账户余额</span>、<span class="highlight">账户净值</span>、<span class="highlight">可用保证金</span> 等字段；美分账户的 <span class="highlight">入金金额</span> 与 <span class="highlight">原始入金金额</span> 使用 <span class="highlight">USC/美分</span> 展示。</td></tr>
-                <tr><td class="font-medium">展开明细样式</td><td>展开详情需采用<span class="highlight">垂直列表</span>样式：左侧为字段名，右侧为值，行间保留分隔线，操作按钮放在末行，避免块状卡片导致信息分散。</td></tr>
-                <tr><td class="font-medium">汇总增加美分辅助口径</td><td>页头汇总除展示统一 USD 金额外，可额外展示 <span class="highlight">美分原始金额(USC)</span> 辅助值，用于帮助后台快速了解当前美分审核规模。</td></tr>
-                <tr><td class="font-medium">审核状态保持原样</td><td>本次改造不调整现有 <span class="highlight">审核状态</span> 列的文案、位置或展示逻辑，仅补充美分账户相关识别与金额信息。</td></tr>
-                <tr><td class="font-medium">布局兼容性</td><td>因列表字段较多，页面需采用<span class="highlight">横向滚动</span>方案承载内容，避免固定列宽导致文案挤压错位。</td></tr>
+                <tr><td class="font-medium">金额改为复合展示</td><td>列表中的 <span class="highlight">金额</span> 列采用复合展示：第一行展示 <span class="highlight">入金金额</span>，标准账户按 <span class="highlight">USD</span> 展示，美分账户按 <span class="highlight">USC/美分</span> 展示；第二行展示 <span class="highlight">支付金额</span>。</td></tr>
+                <tr><td class="font-medium">汇总展示结构调整</td><td>页头汇总调整为展示 <span class="highlight">统计笔数</span> 与 <span class="highlight">入金金额</span>；其中 <span class="highlight">入金金额</span> 需采用 <span class="highlight">合计$ + 括号内拆分展示 USD 与 USC</span> 的组合展示方式，例如 <span class="highlight">合计$：200.00（USD：100.00、USC：10000.00）</span>；其中括号内用于分别说明 <span class="highlight">USD</span> 账户入金金额与 <span class="highlight">USC</span> 账户入金金额。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 数据口径</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">单位规则</td><td><span class="highlight">入金金额</span> 需跟随账户类型展示，标准账户显示 <span class="highlight">USD</span>，美分账户显示 <span class="highlight">USC/美分</span>；人民币通道需补充 <span class="highlight">CNY</span> 支付金额及汇率。</td></tr>
+                <tr><td width="22%" class="font-medium">单位规则</td><td><span class="highlight">列表中的入金金额</span> 需跟随账户类型展示：标准账户显示 <span class="highlight">USD</span>，美分账户显示 <span class="highlight">USC/美分</span>。</td></tr>
                 <tr><td class="font-medium">展示原则</td><td>后台审核页面需优先保证审核员识别效率，因此美分账户记录必须可被一眼区分，避免与标准账户混淆。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">4. 测试重点</div>
+        <div class="module-title">3. 测试重点</div>
         <table>
             <tbody>
                 <tr><td>1. MT类型筛选是否支持标准账户 / 美分账户。</td></tr>
-                <tr><td>2. 列表中是否能正确区分标准账户与美分账户。</td></tr>
-                <tr><td>3. 列表金额列是否已改为复合展示，且不再展示“实际支付金额”。</td></tr>
-                <tr><td>4. 美分账户记录是否展示原始入金金额(USC)，人民币通道是否展示支付金额与汇率。</td></tr>
-                <tr><td>5. 展开详情是否已改为垂直列表样式，且金额字段已拆分展示。</td></tr>
-                <tr><td>6. 审核状态列是否保持原样，未被本次改造影响。</td></tr>
-                <tr><td>7. 字段较多时页面是否可通过横向滚动正常浏览。</td></tr>
+                <tr><td>2. 列表中是否已新增 MT类型字段，并通过胶囊样式正确区分标准账户与美分账户。</td></tr>
+                <tr><td>3. 列表金额列是否已改为复合展示，第一行展示入金金额，第二行展示支付金额。</td></tr>
+                <tr><td>4. 页头汇总是否已调整为仅展示统计笔数与入金金额，且入金金额文案符合“合计$ + 括号内拆分 USD / USC”的结构。</td></tr>
+                <tr><td>5. 列表中的入金金额是否跟随账户类型展示单位，标准账户显示 USD，美分账户显示 USC/美分。</td></tr>
+                <tr><td>6. 页面内美分账户记录是否能够被一眼识别，避免与标准账户混淆。</td></tr>
             </tbody>
         </table>
     </div>

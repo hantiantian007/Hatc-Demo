@@ -28,15 +28,7 @@
             本文档仅描述<span class="highlight">账户审核列表页面</span>因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在开户待审核列表中识别美分账户申请，并让审核人员能快速区分不同账户类型与申请分组。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-audit-list.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
@@ -44,25 +36,16 @@
             <tbody>
                 <tr><td class="font-medium">新增账户类型筛选</td><td>搜索区新增 <span class="highlight">账户类型</span> 筛选，支持按美分账户筛选待审核申请。</td></tr>
                 <tr><td class="font-medium">新增账户类型列</td><td>列表中新增账户类型列，明确识别标准账户申请和美分账户申请。</td></tr>
-                <tr><td class="font-medium">新增美分待审核数据</td><td>列表中新增一条美分账户申请示例数据，申请分组展示为 <span class="highlight">real\\HATC\\Cent\\Real-02</span>。</td></tr>
                 <tr><td class="font-medium">保持现有审核流程</td><td>审核动作和现有流程保持一致，本次仅补充识别和展示信息。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 测试重点</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">展示维度</td><td>本页为开户申请单维度，不涉及入金、出金、余额等资金汇总。</td></tr>
-                <tr><td class="font-medium">关键字段</td><td>账号、账户类型、申请分组、审核状态需共同展示，确保审核员可直接判断开户目标。</td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">4. 测试重点</div>
-        <table>
-            <tbody>
-                <tr><td>1. 账户类型筛选能否正确筛出美分账户申请。</td></tr>
-                <tr><td>2. 美分账户申请的分组是否正确展示。</td></tr>
-                <tr><td>3. 点击审核是否能正常进入详情页。</td></tr>
+                <tr><td>1. 搜索区是否已新增账户类型筛选，且可按账户类型正确筛选待审核申请。</td></tr>
+                <tr><td>2. 列表中是否已新增账户类型列，并能明确区分标准账户申请和美分账户申请。</td></tr>
+                <tr><td>3. 审核动作和现有流程是否保持一致，点击审核是否可正常进入详情页。</td></tr>
             </tbody>
         </table>
     </div>

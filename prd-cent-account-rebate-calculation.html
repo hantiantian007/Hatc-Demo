@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返佣与返佣计算 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【需求 PRD】返佣与返佣计算</h1>
+            <div class="flex gap-3">
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档用于描述<span class="highlight">美分业务</span>下与<span class="highlight">返佣及返佣计算</span>相关的统一规则，本次仅输出需求文档，不提供页面原型。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">返佣按账户类型独立计算</td><td><span class="highlight">标准账户</span>与<span class="highlight">美分账户</span>的返佣计算需拆开处理，不允许将两类账户的手数直接合并后统一计算返佣。</td></tr>
+                <tr><td class="font-medium">返佣配置沿用当前产品配置</td><td>本期<span class="highlight">不新增</span>美分账户独立返佣配置，仍沿用当前按<span class="highlight">产品维度</span>配置的 <span class="highlight">USD/标准手</span> 返佣规则。</td></tr>
+                <tr><td class="font-medium">返佣金额统一按 USD 计算</td><td>无论来源于标准账户还是美分账户，<span class="highlight">返佣金额</span>统一按 <span class="highlight">USD</span> 计算与输出，便于后续报表、统计和对账保持一致。</td></tr>
+                <tr><td class="font-medium">手数口径统一为手数</td><td>相关页面和文档中统一使用<span class="highlight">手数</span>命名；其中标准账户对应<span class="highlight">标准手</span>，美分账户对应<span class="highlight">美分手</span>，仅在各自账户类型内统计。</td></tr>
+                <tr><td class="font-medium">美分手先换算再计算返佣</td><td>美分账户计算返佣时，需先将<span class="highlight">美分手</span>换算为<span class="highlight">标准手等值</span>，再按当前产品返佣配置计算返佣金额。</td></tr>
+                <tr><td class="font-medium">返佣直接入上级佣金账户</td><td>所有返佣均直接发放至<span class="highlight">上级佣金账户</span>，佣金账户为<span class="highlight">USD</span>单位，不做结转处理。</td></tr>
+                <tr><td class="font-medium">页面展示精度统一</td><td>所有相关页面中的金额展示精度统一为：<span class="highlight">美分账户保留 2 位小数</span>、<span class="highlight">佣金账户保留 4 位小数</span>、<span class="highlight">标准账户保留 2 位小数</span>。</td></tr>
+                <tr><td class="font-medium">小额返佣保留 4 位小数</td><td>美分账户存在小额返佣场景，返佣计算、返佣流水、佣金账户入账及相关展示需统一保留<span class="highlight">4 位小数</span>，不能将 <span class="highlight">0.0014 USD</span> 这类金额直接处理为 <span class="highlight">0.00</span>。</td></tr>
+                <tr><td class="font-medium">返佣明细需可追溯</td><td>返佣相关明细需能反查到<span class="highlight">产品、账户类型、手数、返佣配置、返佣金额</span>，便于运营、财务和研发核对返佣结果。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">返佣公式</td><td><span class="highlight">返佣金额(USD) = 交易手数 × 账户类型换算系数 × 当前产品返佣配置(USD/标准手)</span>。</td></tr>
+                <tr><td class="font-medium">配置口径</td><td>返佣配置仍按<span class="highlight">产品</span>维护，配置单位为<span class="highlight">USD/标准手</span>；本期不新增美分账户独立配置。</td></tr>
+                <tr><td class="font-medium">换算系数</td><td><span class="highlight">标准账户换算系数 = 1</span>；<span class="highlight">美分账户换算系数 = 0.01</span>，即 <span class="highlight">1 美分手 = 0.01 标准手</span>。</td></tr>
+                <tr><td class="font-medium">示例说明</td><td>如某产品返佣配置为 <span class="highlight">14 USD/标准手</span>，则 <span class="highlight">1 美分手返佣 = 0.14 USD</span>，<span class="highlight">0.01 美分手返佣 = 0.0014 USD</span>。</td></tr>
+                <tr><td class="font-medium">手数口径</td><td><span class="highlight">标准手</span>与<span class="highlight">美分手</span>分开统计，不折算、不合并为单一总手数；仅在返佣计算时按换算系数折算为标准手等值。</td></tr>
+                <tr><td class="font-medium">金额口径</td><td>返佣金额统一按 <span class="highlight">USD</span> 作为主口径，并直接入账至<span class="highlight">上级佣金账户</span>。</td></tr>
+                <tr><td class="font-medium">展示精度</td><td>所有相关页面中的金额展示精度统一为：<span class="highlight">美分账户 2 位小数</span>、<span class="highlight">佣金账户 4 位小数</span>、<span class="highlight">标准账户 2 位小数</span>。</td></tr>
+                <tr><td class="font-medium">精度要求</td><td>佣金账户、返佣流水、返佣报表及相关明细中的返佣金额均需保留<span class="highlight">4 位小数</span>。</td></tr>
+                <tr><td class="font-medium">汇总原则</td><td>返佣金额可按 <span class="highlight">USD</span> 汇总；手数不可跨账户类型直接汇总为单一总手数。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 返佣配置是否仍按产品维度维护，且配置单位为 USD/标准手，未新增美分账户独立返佣配置。</td></tr>
+                <tr><td>2. 标准账户与美分账户的返佣是否按各自账户类型独立计算，未出现混算。</td></tr>
+                <tr><td>3. 美分账户返佣计算时，是否先按 1 美分手 = 0.01 标准手完成换算，再按当前产品返佣配置计算返佣金额。</td></tr>
+                <tr><td>4. 如某产品返佣配置为 14 USD/标准手，1 美分手是否返回 0.14 USD，0.01 美分手是否返回 0.0014 USD。</td></tr>
+                <tr><td>5. 返佣金额是否统一按 USD 输出，并直接进入上级佣金账户。</td></tr>
+                <tr><td>6. 佣金账户、返佣流水、返佣报表中的返佣金额是否统一保留 4 位小数。</td></tr>
+                <tr><td>7. 所有相关页面中的金额展示精度是否已统一为：美分账户 2 位小数、佣金账户 4 位小数、标准账户 2 位小数。</td></tr>
+                <tr><td>8. 手数字段是否统一命名为手数，且标准手与美分手未被合并统计。</td></tr>
+                <tr><td>9. 返佣明细中是否可核对产品、账户类型、手数、返佣配置、返佣金额。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

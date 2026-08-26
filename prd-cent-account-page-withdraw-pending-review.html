@@ -28,51 +28,23 @@
             本文档仅描述<span class="highlight">待审核出金页面</span>因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在后台待审核出金页面中补齐标准账户 / 美分账户的统一审核视图，支持运营人员按 MT类型、出金方式、审核状态快速筛选待处理记录，并识别美分账户原始出金金额。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-withdraw-pending-review.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
             </thead>
             <tbody>
-                <tr><td class="font-medium">左侧菜单入口</td><td>在“出入金”菜单下新增<span class="highlight">待审核出金</span>入口，并与页面形成可跳转关系。</td></tr>
-                <tr><td class="font-medium">筛选条件</td><td>页面需提供用户类型、操作人、订单号、MT账号、<span class="highlight">MT类型</span>、出金方式、审核状态、申请时间、支付状态等筛选项。</td></tr>
-                <tr><td class="font-medium">列表字段</td><td>列表需展示 MT账号、<span class="highlight">MT类型</span>、订单号、上级信息、联系方式、<span class="highlight">出金金额 / 到账金额</span>、审核状态、操作人、操作时间、支付状态；MT账号列下方仅保留 <span class="highlight">MT分组</span>，不重复展示类型文案。</td></tr>
-                <tr><td class="font-medium">金额展示结构</td><td>列表中的金额字段采用<span class="highlight">同一单元格分行展示</span>：第一行显示出金金额，第二行显示到账金额；美分账户额外补充第三行展示<span class="highlight">原始出金金额（USC）</span>。</td></tr>
-                <tr><td class="font-medium">美分账户识别</td><td>美分账户需通过醒目的胶囊样式展示，并在金额区域同步展示<span class="highlight">原始出金金额（USC）</span>。</td></tr>
-                <tr><td class="font-medium">汇总信息</td><td>顶部汇总栏展示总笔数、总出金金额，并额外展示<span class="highlight">美分原始金额</span>，方便审核人员判断处理规模。</td></tr>
-                <tr><td class="font-medium">展开详情</td><td>支持展开查看支付方式、时间、账户余额、账户净值及操作按钮；展开区需删除 <span class="highlight">MT类型、可用余额、出金金额、原始出金金额、到账金额</span> 等重复字段，只保留必要审核信息。</td></tr>
-                <tr><td class="font-medium">到账金额口径</td><td>AIPAY 等人民币支付方式需直接展示人民币到账金额；其他方式按对应到账币种展示。</td></tr>
-                <tr><td class="font-medium">详情页入口</td><td>展开区中的 <span class="highlight">审核 / 查看</span> 按钮需可跳转至 <span class="highlight">出金审核详情页</span>，形成完整审核链路。</td></tr>
+                <tr><td class="font-medium">筛选条件</td><td>添加<span class="highlight">MT类型</span>筛选。</td></tr>
+                <tr><td class="font-medium">列表字段</td><td>增加<span class="highlight">MT类型</span>字段。</td></tr>
+                <tr><td class="font-medium">汇总信息</td><td>顶部汇总栏展示总笔数与<span class="highlight">出金金额：合计$：200.00（USD：100.00、USC：10000.00）</span>；其中括号内用于分别说明 <span class="highlight">USD</span> 账户出金金额与 <span class="highlight">USC</span> 账户出金金额。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 测试重点</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">金额展示</td><td>列表按<span class="highlight">出金金额 / 到账金额</span>复合结构展示；美分账户同时展示原始 USC/美分 数值。</td></tr>
-                <tr><td class="font-medium">单位规则</td><td>标准账户使用 <span class="highlight">USD/美元</span>；美分账户使用 <span class="highlight">USC/美分</span> 原始单位，审核时按 <span class="highlight">1 USD = 100 USC</span> 理解换算关系。</td></tr>
-                <tr><td class="font-medium">支付方式</td><td><span class="highlight">AIPAY</span> 对应人民币到账口径，需展示人民币金额。</td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">4. 测试重点</div>
-        <table>
-            <tbody>
-                <tr><td>1. 左侧“待审核出金”菜单是否可正常跳转到页面。</td></tr>
-                <tr><td>2. MT类型筛选是否支持标准账户 / 美分账户区分。</td></tr>
-                <tr><td>3. 美分账户记录是否同时展示 USD 审核金额与 USC 原始金额。</td></tr>
-                <tr><td>4. MT账号列是否仅保留账号与 MT分组，未重复展示账户类型。</td></tr>
-                <tr><td>5. 展开详情后是否仅保留支付方式、时间、账户余额、账户净值与操作按钮。</td></tr>
-                <tr><td>6. AIPAY 场景是否按人民币展示到账金额。</td></tr>
-                <tr><td>7. 展开区中的审核 / 查看按钮是否可跳转到出金审核详情页。</td></tr>
+                <tr><td>1. MT类型筛选是否支持标准账户 / 美分账户区分。</td></tr>
+                <tr><td>2. MT账号列是否仅保留账号与 MT分组，未重复展示账户类型。</td></tr>
             </tbody>
         </table>
     </div>

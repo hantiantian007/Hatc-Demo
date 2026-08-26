@@ -28,68 +28,43 @@
             本文档仅描述<span class="highlight">佣金报表页面</span>因接入美分账户而新增或调整的需求，不重复描述原有标准账户佣金报表能力。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在佣金报表中支持标准账户与美分账户混合查询，确保筛选、汇总统计、列表明细与导出口径一致，同时解决搜索条件过多导致页面冗长的问题。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-report-commission-cent-account.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
             </thead>
             <tbody>
                 <tr><td class="font-medium">新增账户类型筛选</td><td>搜索区新增 <span class="highlight">账户类型</span>，支持全部、标准账户、美分账户筛选。</td></tr>
-                <tr><td class="font-medium">新增手数口径筛选</td><td>搜索区新增 <span class="highlight">手数口径</span> 筛选，支持全部、标准手、美分手，用于按手数体系单独筛选返佣记录。</td></tr>
-                <tr><td class="font-medium">搜索区支持折叠</td><td>因搜索条件较多，搜索模块右上角增加 <span class="highlight">展开/收起搜索条件</span> 按钮，默认展开；收起后仍需保留 <span class="highlight">MT交易账号、平台客户姓名、平台客户邮箱</span> 这 3 个常用查询条件及查询/重置按钮。</td></tr>
                 <tr><td class="font-medium">新增账户类型列</td><td>列表中新增 <span class="highlight">账户类型</span> 列，明确当前返佣记录属于标准账户还是美分账户。</td></tr>
                 <tr><td class="font-medium">返佣金额统一按 USD</td><td>汇总区和列表主展示中的 <span class="highlight">返佣金额</span> 统一按 <span class="highlight">USD</span> 口径展示，金额允许混合统计。</td></tr>
                 <tr><td class="font-medium">手数按账户类型分开统计</td><td><span class="highlight">标准账户手数</span> 与 <span class="highlight">美分账户手数</span> 不允许融合统计，不折算、不合并为单一总手数。汇总区需拆分展示 <span class="highlight">标准账户返佣手数</span> 与 <span class="highlight">美分账户返佣手数</span>。</td></tr>
-                <tr><td class="font-medium">新增手数口径字段</td><td>列表中新增 <span class="highlight">手数口径</span>，明确当前记录属于 <span class="highlight">标准手</span> 还是 <span class="highlight">美分手</span>；返佣手数仅在各自账户类型内独立统计。</td></tr>
-                <tr><td class="font-medium">展开明细补返佣口径</td><td>展开行补充 <span class="highlight">手数口径、返佣手数、返佣单价、返佣口径</span>，明确标准账户与美分账户分别按各自手数体系计算返佣。</td></tr>
-                <tr><td class="font-medium">小额返佣累计结转</td><td>当单笔返佣小于佣金账户常规展示精度时，不允许直接抹为 0.00；需按高精度记录，并通过 <span class="highlight">待结转返佣</span> 逻辑累计后再入账。</td></tr>
-                <tr><td class="font-medium">页面 PRD 抽屉化</td><td>页面内的 <span class="highlight">查看页面PRD</span> 按钮需沿用当前右侧抽屉形式打开，不再跳转新页面。</td></tr>
+                <tr><td class="font-medium">新增手数字段</td><td>列表中新增 <span class="highlight">手数</span>，明确当前记录属于 <span class="highlight">标准手</span> 还是 <span class="highlight">美分手</span>；返佣手数仅在各自账户类型内独立统计。</td></tr>
+                <tr><td class="font-medium">展开明细补返佣口径</td><td>展开行补充 <span class="highlight">手数、返佣手数、返佣标准、返佣口径</span>，明确标准账户与美分账户分别按各自手数体系计算返佣。</td></tr>
+                <tr><td class="font-medium">小额返佣累计结转</td><td>当单笔返佣小于佣金账户常规展示精度时，不允许直接抹为 0.00；需按高精度记录。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 数据口径</div>
         <table>
             <tbody>
                 <tr><td width="22%" class="font-medium">列表维度</td><td>本页按单笔返佣记录展示，允许标准账户与美分账户混排。</td></tr>
-                <tr><td class="font-medium">汇总口径</td><td>返佣金额在汇总区统一按 <span class="highlight">USD</span> 展示；返佣手数必须拆分为 <span class="highlight">标准账户返佣手数</span> 与 <span class="highlight">美分账户返佣手数</span>，两者不可相加展示为单一总手数。</td></tr>
-                <tr><td class="font-medium">列表口径</td><td>列表中主展示字段为 <span class="highlight">账户类型、手数口径、平台手数、返佣手数、返佣金额(USD)</span>；美分账户不单独展示 USC 返佣金额，但需明确其手数属于 <span class="highlight">美分手</span> 体系。</td></tr>
-                <tr><td class="font-medium">价格字段</td><td>本页核心围绕返佣记录展示，不新增交易价格字段区分逻辑。</td></tr>
-                <tr><td class="font-medium">返佣公式</td><td><span class="highlight">返佣金额(USD) = 对应账户类型下的返佣手数 × 返佣单价</span>。当前规则下：<span class="highlight">标准账户 1 标准手返佣 14 USD</span>，<span class="highlight">美分账户 1 美分手返佣 0.14 USD</span>；两套手数体系分开计算。</td></tr>
+                <tr><td class="font-medium">列表口径</td><td>列表中主展示字段为 <span class="highlight">账户类型、手数、平台手数、返佣金额(USD)</span>；<span class="highlight">返佣手数</span> 不在主列表中展示，仅在展开详情中查看；美分账户不单独展示 USC 返佣金额，但需明确其手数属于 <span class="highlight">美分手</span> 体系。</td></tr>
+                <tr><td class="font-medium">返佣公式</td><td><span class="highlight">返佣金额(USD) = 对应账户类型下的返佣手数 × 返佣标准</span>。当前规则下：<span class="highlight">标准账户 1 标准手返佣 14 USD</span>，<span class="highlight">美分账户 1 美分手返佣 0.14 USD</span>；两套手数体系分开计算。</td></tr>
                 <tr><td class="font-medium">精度要求</td><td>因美分账户存在 <span class="highlight">0.01 手 = 0.0014 USD</span> 的返佣场景，佣金报表中的返佣金额字段需支持至少 <span class="highlight">4 位小数</span> 展示，避免直接显示为 0.00。</td></tr>
-                <tr><td class="font-medium">入账口径</td><td>代理佣金账户虽按 USD 展示，但 <span class="highlight">不能按单笔 2 位小数直接截断入账</span>。单笔返佣需先按高精度记录，累计满 <span class="highlight">0.01 USD</span> 后再结转入账；不足 0.01 USD 的部分保留在 <span class="highlight">待结转返佣</span> 中继续累计。</td></tr>
-                <tr><td class="font-medium">分层展示</td><td><span class="highlight">返佣报表明细</span> 展示高精度返佣金额（至少 4 位小数）；<span class="highlight">代理佣金账户余额</span> 可继续按 2 位小数展示；如存在未满 0.01 USD 的累计值，需补充展示 <span class="highlight">待结转返佣</span> 金额。</td></tr>
+                <tr><td class="font-medium">入账口径</td><td>代理佣金账户虽按 USD 展示，但 <span class="highlight">不能按单笔 2 位小数直接截断入账</span>。单笔返佣需先按高精度记录。</td></tr>
+                <tr><td class="font-medium">分层展示</td><td><span class="highlight">返佣报表明细</span> 展示高精度返佣金额（至少 4 位小数）。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">4. 交互规则</div>
+        <div class="module-title">3. 测试重点</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">筛选联动</td><td>选择账户类型后，列表、汇总统计和导出结果均需同步刷新。</td></tr>
-                <tr><td class="font-medium">搜索区折叠</td><td>点击搜索区右上角按钮，可折叠或展开搜索条件；折叠后保留 <span class="highlight">MT交易账号、平台客户姓名、平台客户邮箱</span> 3 个常用查询条件以及查询/重置按钮，不影响已选筛选值。</td></tr>
-                <tr><td class="font-medium">展开行</td><td>点击列表前置箭头后，在下方按字段逐行展开平仓时间、返佣时间、返佣状态、返佣单号、返佣手数、返佣单价和返佣口径。</td></tr>
-                <tr><td class="font-medium">小额返佣处理</td><td>对于 <span class="highlight">0.0014 USD</span> 这类小额返佣，页面明细需正常展示高精度值；若未达到佣金账户入账阈值，则状态上归入 <span class="highlight">待结转返佣</span>，而不是显示为 0.00 或直接丢弃。</td></tr>
-                <tr><td class="font-medium">页面精简</td><td>不新增独立说明模块，仅在搜索、汇总、列表和展开明细中补充必要的美分识别信息。</td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">5. 测试重点</div>
-        <table>
-            <tbody>
-                <tr><td>1. 搜索区折叠后页面布局是否稳定，展开后筛选值是否保留。</td></tr>
-                <tr><td>2. 账户类型、手数口径筛选是否可正确筛出目标返佣记录。</td></tr>
+                <tr><td>1. 账户类型筛选是否可正确筛出目标返佣记录。</td></tr>
+                <tr><td>2. 列表中是否已新增账户类型与手数字段，且手数字段名称统一为手数。</td></tr>
                 <tr><td>3. 汇总区和列表中的返佣金额是否统一按 USD 展示。</td></tr>
-                <tr><td>4. 标准账户和美分账户记录是否都能正确展示各自手数口径，且两类手数未被合并统计。</td></tr>
-                <tr><td>5. 美分账户 0.01 手时，返佣金额是否能正确显示为 0.0014，而不是被截断成 0.00。</td></tr>
-                <tr><td>6. 小于 0.01 USD 的返佣是否进入待结转逻辑，而不是直接丢失。</td></tr>
-                <tr><td>7. 导出结果字段是否与页面口径一致。</td></tr>
+                <tr><td>4. 标准账户和美分账户记录是否都能正确展示各自手数，且两类手数未被合并统计。</td></tr>
+                <tr><td>5. 展开明细中是否包含手数、返佣手数、返佣标准、返佣口径等字段。</td></tr>
+                <tr><td>6. 美分账户 0.01 手时，返佣金额是否能正确显示为 0.0014，而不是被截断成 0.00。</td></tr>
             </tbody>
         </table>
     </div>

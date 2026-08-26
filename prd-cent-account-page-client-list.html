@@ -28,15 +28,7 @@
             本文档仅描述<span class="highlight">客户列表页面</span>因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在客户维度支持识别标准账户、美分账户及混合账户，并统一客户级金额汇总口径。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">admin-client-list.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
@@ -44,27 +36,26 @@
             <tbody>
                 <tr><td class="font-medium">新增账户类型筛选</td><td>支持 <span class="highlight">全部 / 仅标准账户 / 仅美分账户 / 标准+美分</span> 筛选。</td></tr>
                 <tr><td class="font-medium">MT账号数量展示构成</td><td>MT账号数量除总数外，还需展示构成，例如：<span class="highlight">标准 1 / 美分 1</span>。</td></tr>
-                <tr><td class="font-medium">金额列文案调整</td><td>列表金额列统一调整为 <span class="highlight">未提现(USD) / 入金金额(USD) / 出金金额(USD)</span>。</td></tr>
-                <tr><td class="font-medium">补充美分金额辅助展示</td><td>当客户存在美分账户时，列表中的 <span class="highlight">入金金额 / 出金金额</span> 在保留 USD 主值的同时，可补充一行红色辅助值，展示对应的 <span class="highlight">USC/美分</span> 金额；展开详情中也需保留 <span class="highlight">入金金额(USC)</span>、<span class="highlight">出金金额(USC)</span> 字段。</td></tr>
-                <tr><td class="font-medium">去除重复信息</td><td>删除详情展开中的“账户结构”“资产口径”等重复信息。</td></tr>
+                <tr><td class="font-medium">金额列文案调整</td><td>列表金额列统一调整为 <span class="highlight">未提现(USD) / 入金金额 / 出金金额</span>；由于出金申请仅支持输入 <span class="highlight">USD</span>，页面内的<span class="highlight">出金金额</span>相关展示统一使用 <span class="highlight">USD</span> 口径，不再出现 <span class="highlight">USC/美分</span> 单位。</td></tr>
+                <tr><td class="font-medium">入金金额展示结构调整</td><td>列表中的 <span class="highlight">入金金额</span> 需作为 <span class="highlight">汇总入金金额</span> 展示，主值保留客户级 <span class="highlight">USD</span> 汇总金额；主值下方需拆分展示 <span class="highlight">USD：xx.xxxx</span> 与 <span class="highlight">USC：xx.xx</span> 两行，用于说明该汇总金额的构成；其中 <span class="highlight">USD</span> 行保留 <span class="highlight">4 位小数</span>，<span class="highlight">USC</span> 行保留 <span class="highlight">2 位小数</span>。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 数据口径</div>
         <table>
             <tbody>
-                <tr><td width="22%" class="font-medium">汇总口径</td><td>客户级金额统一按 USD 汇总展示；标准账户金额按原始 USD 汇总，美分账户金额需先按 <span class="highlight">1:100</span> 折算为 USD 后再汇总。</td></tr>
-                <tr><td class="font-medium">展示精度</td><td>列表页汇总金额统一保留 <span class="highlight">2 位小数</span>；底层计算需保留高精度。</td></tr>
-                <tr><td class="font-medium">展示边界</td><td>列表主值继续展示客户级 USD 汇总结果；若客户包含美分账户，可在主值下方或展开详情中补充 USC/美分辅助展示，用于核对原始金额。</td></tr>
+                <tr><td class="font-medium">展示边界</td><td>列表主值展示客户级 USD 汇总结果；<span class="highlight">入金金额</span> 下方固定补充 <span class="highlight">美元入金</span> 与 <span class="highlight">美分入金</span> 两行辅助说明，用于核对汇总构成。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">4. 测试重点</div>
+        <div class="module-title">3. 测试重点</div>
         <table>
             <tbody>
                 <tr><td>1. 仅标准、仅美分、混合账户三类客户的筛选结果是否正确。</td></tr>
                 <tr><td>2. MT账号数量是否能正确展示标准/美分构成。</td></tr>
-                <tr><td>3. 未提现、入金金额、出金金额的 USD 汇总口径是否正确。</td></tr>
+                <tr><td>3. 列表金额列文案是否已调整为“未提现(USD) / 入金金额 / 出金金额”。</td></tr>
+                <tr><td>4. 出金金额相关展示是否统一使用 USD 口径，页面内不再出现 USC/美分 单位。</td></tr>
+                <tr><td>5. 入金金额是否按汇总入金金额展示，且下方已补充 USD 与 USC 两行辅助说明；其中 USD 保留 4 位小数、USC 保留 2 位小数。</td></tr>
             </tbody>
         </table>
     </div>

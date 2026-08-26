@@ -28,15 +28,7 @@
             本文档仅描述<span class="highlight">出金管理页面</span>因接入美分账户而新增或调整的需求。
         </div>
 
-        <div class="module-title">1. 页面目标</div>
-        <table>
-            <tbody>
-                <tr><td width="22%" class="font-medium">目标</td><td>在统一账号列表中展示标准账户、佣金账户、美分账户，并作为进入出金申请页的前置选择页。</td></tr>
-                <tr><td class="font-medium">涉及页面</td><td><span class="highlight">client-withdraw-cent-account.html</span></td></tr>
-            </tbody>
-        </table>
-
-        <div class="module-title">2. 新增/调整需求</div>
+        <div class="module-title">1. 新增/调整需求</div>
         <table>
             <thead>
                 <tr><th width="24%">需求项</th><th>说明</th></tr>
@@ -44,28 +36,25 @@
             <tbody>
                 <tr><td class="font-medium">新增账户类型展示</td><td>列表中需明确区分 <span class="highlight">标准账户 / 佣金账户 / 美分账户</span>。</td></tr>
                 <tr><td class="font-medium">账户类型列承载单位</td><td><span class="highlight">账户类型</span> 列需同时体现账号属性与单位，例如 <span class="highlight">标准账户 / USD/美元</span>、<span class="highlight">美分账户 / USC/美分</span>；MT账号列仅保留纯账号。</td></tr>
-                <tr><td class="font-medium">金额列增加单位</td><td>余额、净值、保证金、可用预付款均需带单位；标准账户和佣金账户按 <span class="highlight">USD/美元</span>，美分账户按 <span class="highlight">USC/美分</span> 主展示。</td></tr>
-                <tr><td class="font-medium">美分辅助口径</td><td>美分账户在余额、可用预付款等关键金额字段下方可补充 <span class="highlight">等值 USD/美元</span> 辅助值，帮助用户在进入出金申请前快速判断可操作金额。</td></tr>
-                <tr><td class="font-medium">账号类型与属性同时展示</td><td>列表中需同时体现账号是交易账号还是佣金账号，以及该账号属于哪种账户类型；本次调整内容在原型中以红色字体标识。</td></tr>
-                <tr><td class="font-medium">跳转出金申请</td><td>点击账号行内的 <span class="highlight">出金</span> 按钮，跳转至出金申请页，并带出当前账号参数。</td></tr>
+                <tr><td class="font-medium">金额列增加单位</td><td>余额、净值、保证金、可用预付款均需带单位；<span class="highlight">标准账户</span> 按 <span class="highlight">USD/美元</span> 且当前演示数据统一为 <span class="highlight">0.00</span>，并保留 <span class="highlight">2 位小数</span>；<span class="highlight">佣金账户</span> 按 <span class="highlight">USD/美元</span> 且保留 <span class="highlight">4 位小数</span>；<span class="highlight">美分账户</span> 按 <span class="highlight">USC/美分</span> 主展示并保留 <span class="highlight">2 位小数</span>。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">3. 数据口径</div>
+        <div class="module-title">2. 数据口径</div>
         <table>
             <tbody>
                 <tr><td width="22%" class="font-medium">展示维度</td><td>本页是单 MT 账号维度展示，不做跨账号金额汇总。</td></tr>
-                <tr><td class="font-medium">单位规则</td><td>账户类型字段负责统一展示单位；美分账户金额主值按 <span class="highlight">USC/美分</span> 展示，辅助值可按 <span class="highlight">USD/美元</span> 展示。</td></tr>
+                <tr><td class="font-medium">单位规则</td><td>账户类型字段负责统一展示单位；美分账户金额主值按 <span class="highlight">USC/美分</span> 展示。</td></tr>
+                <tr><td class="font-medium">精度规则</td><td><span class="highlight">标准账户</span> 的余额、净值、保证金、可用预付款保留 <span class="highlight">2 位小数</span>；<span class="highlight">佣金账户</span> 的余额、净值、保证金、可用预付款保留 <span class="highlight">4 位小数</span>；<span class="highlight">美分账户</span> 的余额、净值、保证金、可用预付款保留 <span class="highlight">2 位小数</span>。</td></tr>
             </tbody>
         </table>
 
-        <div class="module-title">4. 测试重点</div>
+        <div class="module-title">3. 测试重点</div>
         <table>
             <tbody>
                 <tr><td>1. 标准账户、佣金账户、美分账户三类账号是否都能清晰识别。</td></tr>
-                <tr><td>2. MT账号列是否仅保留账号，单位是否已收敛到账户类型列。</td></tr>
-                <tr><td>3. 美分账户金额主值与等值美元辅助值是否展示正确。</td></tr>
-                <tr><td>4. 点击出金后，是否能正确带账号参数跳转到出金申请页。</td></tr>
+                <tr><td>2. 佣金账户的余额、净值、保证金、可用预付款是否已按 4 位小数展示。</td></tr>
+                <tr><td>3. 美分账户的余额、净值、保证金、可用预付款是否已按 2 位小数展示。</td></tr>
             </tbody>
         </table>
     </div>
