@@ -304,20 +304,6 @@
                             <option value="">全部</option>
                         </select>
                     </div>
-                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
-                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">MT 账号</span>
-                        <input type="text" placeholder="请输入MT账号" class="px-3 py-1.5 text-sm outline-none w-[140px] h-full">
-                    </div>
-                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
-                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">客户姓名</span>
-                        <input type="text" placeholder="请输入客户姓名" class="px-3 py-1.5 text-sm outline-none w-[140px] h-full">
-                    </div>
-                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
-                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">关系树</span>
-                        <select class="px-3 py-1.5 text-sm outline-none text-gray-500 bg-white w-[140px] h-full cursor-pointer">
-                            <option value="">请选择</option>
-                        </select>
-                    </div>
                     <div class="ml-auto flex items-center gap-3 h-9">
                         <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-7 h-full rounded-md text-sm transition-colors shadow-sm font-medium">查询</button>
                         <button class="bg-[#41B8AF] hover:bg-[#359f97] text-white px-7 h-full rounded-md text-sm transition-colors shadow-sm font-medium">导出</button>
@@ -380,17 +366,31 @@
         }
 
         function fmtProfit(v) {
-            const num = Number(v);
-            if (num > 0) return `<span class="profit-positive">${v}</span>`;
-            if (num < 0) return `<span class="profit-negative">${v}</span>`;
-            return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            const formatted = num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            if (num > 0) return `<span class="profit-positive">${formatted}</span>`;
+            if (num < 0) return `<span class="profit-negative">${formatted}</span>`;
+            return formatted;
         }
 
         function fmtNet(v) {
-            const n = Number(v.replace(/[^\d.\-]/g, ''));
-            if (n > 0) return `<span class="profit-positive">${v}</span>`;
-            if (n < 0) return `<span class="profit-negative">${v}</span>`;
-            return `<span class="text-gray-600 font-medium">${v}</span>`;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            const formatted = num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            if (num > 0) return `<span class="profit-positive">${formatted}</span>`;
+            if (num < 0) return `<span class="profit-negative">${formatted}</span>`;
+            return `<span class="text-gray-600 font-medium">${formatted}</span>`;
+        }
+
+        function formatMoney(v) {
+            if (v === '-' || v === '') return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+        
+        function formatVolume(v) {
+            if (v === '-' || v === '') return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 5});
         }
 
         function renderList() {
@@ -428,14 +428,14 @@
                     ? `<td><span class="font-bold text-[#2563EB]">BUY ${r.cnt[0]}</span><span class="text-gray-400 mx-1">/</span><span class="font-bold text-[#DC2626]">SELL ${r.cnt[1]}</span></td>`
                     : `<td><span class="text-[#2563EB] font-semibold">BUY ${r.cnt[0]}</span><span class="text-gray-400 mx-1">/</span><span class="text-[#DC2626] font-semibold">SELL ${r.cnt[1]}</span></td>`;
                 const buyCell = isSummary
-                    ? `<td><span class="font-bold">${r.b[0]}</span><span class="vol-sub block mt-1 opacity-70">均价 ${r.b[1]}</span></td>`
-                    : `<td><span class="vol-main">${r.b[0]} 手</span><span class="vol-sub block mt-1">均价 ${r.b[1]}</span></td>`;
+                    ? `<td><span class="font-bold">${formatVolume(r.b[0])}</span><span class="vol-sub block mt-1 opacity-70">均价 ${r.b[1] === '-' ? '-' : formatVolume(r.b[1])}</span></td>`
+                    : `<td><span class="vol-main">${formatVolume(r.b[0])} 手</span><span class="vol-sub block mt-1">均价 ${formatVolume(r.b[1])}</span></td>`;
                 const sellCell = isSummary
-                    ? `<td><span class="font-bold">${r.s[0]}</span><span class="vol-sub block mt-1 opacity-70">均价 ${r.s[1]}</span></td>`
-                    : `<td><span class="vol-main">${r.s[0]} 手</span><span class="vol-sub block mt-1">均价 ${r.s[1]}</span></td>`;
+                    ? `<td><span class="font-bold">${formatVolume(r.s[0])}</span><span class="vol-sub block mt-1 opacity-70">均价 ${r.s[1] === '-' ? '-' : formatVolume(r.s[1])}</span></td>`
+                    : `<td><span class="vol-main">${formatVolume(r.s[0])} 手</span><span class="vol-sub block mt-1">均价 ${formatVolume(r.s[1])}</span></td>`;
                 return `<tr class="${cls}">
                     ${symCell}
-                    <td>${isSummary ? `<span class="font-bold">${r.nv}</span>` : fmtNet(r.nv)}</td>
+                    <td>${isSummary ? `<span class="font-bold">${formatVolume(r.nv)}</span>` : fmtNet(r.nv)}</td>
                     <td>${isSummary ? `<span class="font-bold">${fmtProfit(r.fp)}</span>` : fmtProfit(r.fp)}</td>
                     ${countCell}
                     ${buyCell}
@@ -449,11 +449,11 @@
         function openPrdModal() {
             document.getElementById('prdModal').classList.remove('hidden');
             setTimeout(() => {
-                document.getElementById('prdModalContent').classList.remove('scale-95', 'opacity-0');
+                document.getElementById('prdModalContent').classList.remove('translate-x-full');
             }, 10);
         }
         function closePrdModal() {
-            document.getElementById('prdModalContent').classList.add('scale-95', 'opacity-0');
+            document.getElementById('prdModalContent').classList.add('translate-x-full');
             setTimeout(() => {
                 document.getElementById('prdModal').classList.add('hidden');
             }, 300);
@@ -462,24 +462,20 @@
         document.addEventListener('DOMContentLoaded', renderList);
     </script>
 
-    <div id="prdModal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closePrdModal()"></div>
-        <div class="absolute inset-4 md:inset-10 z-10 flex items-center justify-center pointer-events-none">
-            <div id="prdModalContent" class="bg-white w-full h-full rounded-xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 scale-95 opacity-0 pointer-events-auto relative">
-                <div class="h-12 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-4 shrink-0">
-                    <div class="flex items-center text-gray-500 text-sm font-medium">
-                        <i class="fa-solid fa-file-lines mr-2 text-[#55B9B9]"></i> 产品需求文档 (PRD) - 现实持仓报表
-                    </div>
-                    <button onclick="closePrdModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
-                        <i class="fa-solid fa-xmark text-lg"></i>
-                    </button>
+    <!-- 详情侧边抽屉弹窗 (PRD) -->
+    <div id="prdModal" class="fixed inset-0 z-[200] hidden">
+        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closePrdModal()"></div>
+        <div id="prdModalContent" class="absolute right-0 top-0 bottom-0 w-[1000px] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+            <div class="h-12 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-4 shrink-0">
+                <div class="flex items-center text-gray-500 text-sm font-medium">
+                    <i class="fa-solid fa-file-lines mr-2 text-[#55B9B9]"></i> 产品需求文档 (PRD) - 现实持仓报表
                 </div>
-                <div class="flex-1 w-full bg-gray-100">
-                    <div class="w-full h-full flex flex-col items-center justify-center text-gray-400 text-sm">
-                        <i class="fa-solid fa-file-lines text-4xl mb-3 text-gray-300"></i>
-                        PRD 待补充
-                    </div>
-                </div>
+                <button onclick="closePrdModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="flex-1 w-full bg-gray-100 overflow-hidden">
+                <iframe src="prd-report-real-position.html" class="w-full h-full border-0"></iframe>
             </div>
         </div>
     </div>
