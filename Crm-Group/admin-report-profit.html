@@ -434,6 +434,13 @@
                 <div class="bg-white border border-gray-200 rounded p-4 shadow-sm shrink-0 flex items-center justify-between">
                     <div class="flex items-center gap-6">
                         <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium text-gray-700">数据模式:</span>
+                            <div class="bg-gray-100 p-1 rounded-md flex text-sm">
+                                <button id="mode-realtime" onclick="toggleDataMode('realtime')" class="px-4 py-1.5 rounded bg-white text-primary shadow-sm font-medium transition-all">实时数据</button>
+                                <button id="mode-snapshot" onclick="toggleDataMode('snapshot')" class="px-4 py-1.5 rounded text-gray-500 hover:text-gray-700 font-medium transition-all">历史快照</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2" id="time-filter-wrap" style="display: none;">
                             <span class="text-sm font-medium text-gray-700">时间:</span>
                             <div class="flex items-center gap-2">
                                 <input type="date" value="2026-08-01" class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-[150px] h-9 bg-white focus:border-primary focus:ring-1 focus:ring-primary/30 transition-colors">
@@ -486,7 +493,7 @@
                                     <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">結餘</th>
                                     <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[130px]">浮动盈亏</th>
                                     <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">信用</th>
-                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">平台佣金</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">手续费</th>
                                     <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">返佣</th>
                                     <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[130px]">过夜利息</th>
                                 </tr>
@@ -572,6 +579,22 @@
     </main>
 
     <script>
+        function toggleDataMode(mode) {
+            const btnRealtime = document.getElementById('mode-realtime');
+            const btnSnapshot = document.getElementById('mode-snapshot');
+            const timeWrap = document.getElementById('time-filter-wrap');
+
+            if (mode === 'realtime') {
+                btnRealtime.className = 'px-4 py-1.5 rounded bg-white text-primary shadow-sm font-medium transition-all';
+                btnSnapshot.className = 'px-4 py-1.5 rounded text-gray-500 hover:text-gray-700 font-medium transition-all';
+                timeWrap.style.display = 'none';
+            } else {
+                btnSnapshot.className = 'px-4 py-1.5 rounded bg-white text-primary shadow-sm font-medium transition-all';
+                btnRealtime.className = 'px-4 py-1.5 rounded text-gray-500 hover:text-gray-700 font-medium transition-all';
+                timeWrap.style.display = 'flex';
+            }
+        }
+
         const TREE_DATA = {
             '285': {
                 label: '285-华安',

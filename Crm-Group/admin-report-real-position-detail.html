@@ -358,10 +358,10 @@
             <div class="flex items-center justify-between mt-4 text-sm text-gray-500">
                 <div class="ml-2 bg-[#F0FDFA] border border-[#5EEAD4] rounded px-4 py-2 text-[#0F766E] text-xs flex items-center gap-6">
                     <div><span class="opacity-80">持仓账号数：</span><span class="font-bold">27</span></div>
-                    <div><span class="opacity-80">BUY 手数汇总：</span><span class="font-bold">70</span></div>
-                    <div><span class="opacity-80">SELL 手数汇总：</span><span class="font-bold">71.5</span></div>
-                    <div><span class="opacity-80">净头寸汇总(手)：</span><span class="font-bold">0.45</span></div>
-                    <div><span class="opacity-80">浮动盈亏汇总(USD)：</span><span class="font-bold text-[#DC2626]">-13 979.28</span></div>
+                    <div><span class="opacity-80">BUY 手数汇总：</span><span class="font-bold">70.00</span></div>
+                    <div><span class="opacity-80">SELL 手数汇总：</span><span class="font-bold">71.50</span></div>
+                    <div><span class="opacity-80">净头寸汇总(手)：</span><span class="font-bold">-1.50</span></div>
+                    <div><span class="opacity-80">浮动盈亏汇总(USD)：</span><span class="font-bold text-[#DC2626]">-13,979.28</span></div>
                 </div>
                 <div class="flex items-center">
                     <span class="mr-4">共 28 条</span>
@@ -405,10 +405,23 @@
         }
 
         function fmtProfit(v) {
-            const num = Number(String(v).replace(/\s/g, ''));
-            if (num > 0) return `<span class="profit-positive">${v}</span>`;
-            if (num < 0) return `<span class="profit-negative">${v}</span>`;
-            return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            const formatted = num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            if (num > 0) return `<span class="profit-positive">${formatted}</span>`;
+            if (num < 0) return `<span class="profit-negative">${formatted}</span>`;
+            return formatted;
+        }
+
+        function formatMoney(v) {
+            if (v === '-' || v === '') return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+        
+        function formatVolume(v) {
+            if (v === '-' || v === '') return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 5});
         }
 
         function renderList() {
@@ -462,10 +475,10 @@
                     <td><a href="#" class="text-[#14B8A6] hover:underline font-medium">${r.mt}</a></td>
                     <td class="font-medium">${r.name}</td>
                     ${typeBadge(r.acctType)}
-                    <td class="font-semibold text-gray-800 text-right">${r.equity}</td>
+                    <td class="font-semibold text-gray-800 text-right">${formatMoney(r.equity)}</td>
                     ${dirCell}
-                    <td>${r.vol}</td>
-                    <td>${r.price}</td>
+                    <td>${formatVolume(r.vol)}</td>
+                    <td>${formatVolume(r.price)}</td>
                     <td>${fmtProfit(r.pf)}</td>
                     <td class="text-gray-500">${r.time}</td>
                 </tr>`;

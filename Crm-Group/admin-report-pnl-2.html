@@ -440,24 +440,18 @@
                                 <button id="mode-snapshot" onclick="toggleDataMode('snapshot')" class="px-4 py-1.5 rounded text-gray-500 hover:text-gray-700 font-medium transition-all">历史快照</button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2" id="time-filter-wrap" style="display: none;">
                             <span class="text-sm font-medium text-gray-700">时间:</span>
-                            <div class="flex items-center border border-gray-200 rounded overflow-hidden relative group" id="time-selector-container">
-                                <button id="btn-today" class="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 border-r border-gray-200 cursor-not-allowed transition-colors">今日</button>
-                                <button id="btn-month" class="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 font-medium border-r border-gray-200 cursor-not-allowed transition-colors">本月</button>
-                                <div id="btn-custom" class="px-3 py-1.5 text-sm text-gray-400 bg-gray-50 flex items-center gap-2 cursor-not-allowed transition-colors">
-                                    <span id="time-text">实时统计 (本月1日至当前)</span>
-                                    <i class="fa-regular fa-calendar text-gray-300" id="time-icon"></i>
-                                </div>
+                            <div class="flex items-center gap-2">
+                                <input type="date" value="2026-08-01" class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-[150px] h-9 bg-white focus:border-primary focus:ring-1 focus:ring-primary/30 transition-colors">
+                                <span class="text-gray-400 text-sm">至</span>
+                                <input type="date" value="2026-08-19" class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-[150px] h-9 bg-white focus:border-primary focus:ring-1 focus:ring-primary/30 transition-colors">
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
                         <button class="bg-white border border-gray-200 text-gray-600 hover:text-primary hover:border-primary px-4 py-2 rounded text-sm font-medium transition-colors flex items-center gap-2 shadow-sm" onclick="location.reload()">
                             <i class="fa-solid fa-rotate-right"></i> 刷新数据
-                        </button>
-                        <button class="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
-                            <i class="fa-solid fa-download"></i> 导出报表
                         </button>
                     </div>
                 </div>
@@ -625,38 +619,19 @@
     </main>
 
     <script>
-        // 快照/实时模式切换逻辑
         function toggleDataMode(mode) {
             const btnRealtime = document.getElementById('mode-realtime');
             const btnSnapshot = document.getElementById('mode-snapshot');
-            const btnToday = document.getElementById('btn-today');
-            const btnMonth = document.getElementById('btn-month');
-            const btnCustom = document.getElementById('btn-custom');
-            const textCustom = document.getElementById('time-text');
-            const iconCustom = document.getElementById('time-icon');
-            
+            const timeWrap = document.getElementById('time-filter-wrap');
+
             if (mode === 'realtime') {
-                // 激活实时按钮
                 btnRealtime.className = 'px-4 py-1.5 rounded bg-white text-primary shadow-sm font-medium transition-all';
                 btnSnapshot.className = 'px-4 py-1.5 rounded text-gray-500 hover:text-gray-700 font-medium transition-all';
-                
-                // 禁用时间选择器
-                btnToday.className = 'px-3 py-1.5 text-sm bg-gray-50 text-gray-400 border-r border-gray-200 cursor-not-allowed transition-colors';
-                btnMonth.className = 'px-3 py-1.5 text-sm bg-gray-50 text-gray-400 font-medium border-r border-gray-200 cursor-not-allowed transition-colors';
-                btnCustom.className = 'px-3 py-1.5 text-sm text-gray-400 bg-gray-50 flex items-center gap-2 cursor-not-allowed transition-colors';
-                textCustom.innerText = '实时统计 (本月1日至当前)';
-                iconCustom.className = 'fa-regular fa-calendar text-gray-300';
+                timeWrap.style.display = 'none';
             } else {
-                // 激活快照按钮
                 btnSnapshot.className = 'px-4 py-1.5 rounded bg-white text-primary shadow-sm font-medium transition-all';
                 btnRealtime.className = 'px-4 py-1.5 rounded text-gray-500 hover:text-gray-700 font-medium transition-all';
-                
-                // 启用时间选择器 (模拟选中'本月')
-                btnToday.className = 'px-3 py-1.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 border-r border-gray-200 cursor-pointer transition-colors';
-                btnMonth.className = 'px-3 py-1.5 text-sm bg-primary text-white font-medium border-r border-primary cursor-pointer transition-colors';
-                btnCustom.className = 'px-3 py-1.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 flex items-center gap-2 cursor-pointer transition-colors';
-                textCustom.innerText = '2026-06-01 至 2026-06-30';
-                iconCustom.className = 'fa-regular fa-calendar text-gray-500';
+                timeWrap.style.display = 'flex';
             }
         }
 
@@ -765,7 +740,7 @@
                                 <th class="py-3 px-2 font-medium border-r border-[#ebd9c1] text-center">结余</th>
                                 <th class="py-3 px-2 font-medium border-r border-[#ebd9c1] text-center">浮动盈亏</th>
                                 <th class="py-3 px-2 font-medium border-r border-[#ebd9c1] text-center">信用</th>
-                                <th class="py-3 px-2 font-medium border-r border-[#ebd9c1] text-center">平台佣金</th>
+                                <th class="py-3 px-2 font-medium border-r border-[#ebd9c1] text-center">手续费</th>
                                 <th class="py-3 px-2 font-medium border-r border-[#ebd9c1] text-center">返佣</th>
                                 <th class="py-3 px-2 font-medium text-center">过夜利息</th>
                             </tr>
