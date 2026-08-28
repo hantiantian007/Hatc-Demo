@@ -199,34 +199,50 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">
-                                            <div class="flex items-center gap-1.5">
-                                                <i class="fa-regular fa-credit-card text-amber-500"></i>
-                                                Pcard 银行卡免费办理活动
-                                            </div>
-                                        </td>
+                                        <td class="px-6 py-4 font-bold text-gray-800">Pcard活动 - 首页进度</td>
                                         <td class="px-6 py-4 text-gray-500">
-                                            活动规则：净入金 ≥ $1,000 且 交易 ≥ 5 Lot，平台全量用户可免费获赠 Pcard 银行卡办理资格。
-                                            <br/>① CRM 首页（代理/直客）右侧边栏新增活动进度卡，双进度条展示净入金与交易手数完成度，未达标显示"还差 X 即可领取"，达标后解锁领取按钮。
-                                            <br/>② 后台新增活动详情页，Tab 分层（全部/已达标/即将达标/参与中），支持按入金区间与手数区间筛选；单用户提供「一键提醒」，顶部汇总统计（参与总数/达标/即将达标/参与中）支持"批量营销"弹窗发送站内信+邮件，主动触达接近达标用户。
+                                            右侧边栏新增进度卡，双进度条展示净入金与手数完成度。
                                         </td>
                                         <td class="px-6 py-4">
                                             <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="flex flex-col gap-2">
-                                                <div class="flex flex-wrap gap-2 items-center">
-                                                    <span class="text-[10px] text-gray-400 shrink-0">共用原型:</span>
-                                                    <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-2.5 py-1 rounded text-[11px] transition-colors theme-border border" href="Crm-Group/admin-home.html" target="_blank">
-                                                        <i class="fas fa-desktop"></i> 首页活动进度
-                                                    </a>
-                                                    <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-2.5 py-1 rounded text-[11px] transition-colors theme-border border" href="Crm-Group/admin-activity-list.html" target="_blank">
-                                                        <i class="fas fa-list"></i> 活动列表
-                                                    </a>
-                                                    <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-2.5 py-1 rounded text-[11px] transition-colors theme-border border" href="Crm-Group/admin-activity-pcard-detail.html" target="_blank">
-                                                        <i class="fas fa-chart-line"></i> 活动详情（达标/营销）
-                                                    </a>
-                                                </div>
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-home.html" target="_blank">
+                                                    原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">Pcard活动 - 活动列表</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            活动列表中新增活动入口，展示当前状态与参与人数。
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-list.html" target="_blank">
+                                                    原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">Pcard活动 - 详情与营销</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            Tab分层展示客户达标状态，支持单用户“一键提醒”及顶部“批量营销”催单。
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-pcard-detail.html" target="_blank">
+                                                    原型
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -286,7 +302,7 @@
                             <p class="text-sm text-gray-500 mt-1">纯提醒型对账工具：基于平仓订单独立重算一版理论值，与系统实际佣金记录的订单数、覆盖人数、金额、手数（区分USD/USC折算）逐项对比，问题自动高亮，**仅提醒运营/财务线下处理，系统无任何冲正/调账/锁入账/自动改金额的功能**。避免重复返、漏返、美分手折算错、平行链路互分等问题通过人工线下闭环。</p>
                         </div>
                         <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个任务</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 3 个任务</span>
                             <i class="fas fa-chevron-down accordion-icon"></i>
                         </div>
                     </div>
@@ -352,6 +368,81 @@
 
             <!-- 需求列表容器 -->
             <div class="p-6 flex flex-col gap-4 bg-gray-50/50">
+
+                <!-- 活动管理 (父级需求) -->
+                <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">活动管理</span>
+                                <h3 class="text-lg font-bold text-gray-800">美分活动</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">美分活动相关需求规划。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个任务</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-gray-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[200px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[200px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">活动规则逻辑 PRD</td>
+                                        <td class="px-6 py-4 text-gray-500">美分活动完整闭环、数据库底层配置参数及核心防重防刷异常流程说明。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors" href="Crm-Group/prd-activity-cent-account.html" target="_blank">
+                                                    PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">活动配置与监控报表</td>
+                                        <td class="px-6 py-4 text-gray-500">顶部展示底层配置参数（只读），底部通过 Tab 整合客户列表、交易记录等监控数据。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-cent-detail.html" target="_blank">
+                                                    原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">关联页面微调 (财务/客户)</td>
+                                        <td class="px-6 py-4 text-gray-500">财务流水页新增“美分活动奖励”类型；客户详情页新增活动专属标签与绑定账号展示。</td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-client-detail.html" target="_blank">
+                                                    原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-purple-200 overflow-hidden accordion-item">
                     <div class="px-6 py-4 cursor-pointer hover:bg-purple-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">

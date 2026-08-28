@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 美分活动配置展示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#D1A84F',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        mainBg: '#F3F4F6',
+                        primary: '#C19B5E',
+                        primaryHover: '#A8854D'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .card-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .golden-accent { color: #C19B5E; }
+        
+        /* 参考图风格的输入框与按钮 */
+        .filter-input, .filter-select {
+            height: 36px;
+            border: 1px solid #E5E7EB;
+            border-radius: 4px;
+            background: #fff;
+            color: #6B7280;
+            font-size: 13px;
+            padding: 0 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .filter-input:focus, .filter-select:focus { border-color: #C19B5E; }
+        
+        .btn-golden {
+            background-color: #C19B5E;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        .btn-golden:hover { background-color: #A8854D; }
+        
+        .btn-outline {
+            border: 1px solid #E5E7EB;
+            color: #4B5563;
+            background: white;
+            transition: all 0.2s;
+        }
+        .btn-outline:hover { background: #F9FAFB; border-color: #D1D5DB; }
+
+        /* 参考图风格的 Tab 样式 */
+        .tab-item {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6B7280;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-item:hover { color: #374151; }
+        .tab-item.active {
+            color: #C19B5E;
+            border-bottom-color: #C19B5E;
+        }
+        
+        /* 布局微调 */
+        .info-label { font-size: 13px; color: #4B5563; margin-bottom: 8px; font-weight: 500; }
+        .info-value { font-size: 13px; color: #111827; }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+    <!-- Sidebar Placeholder (To keep visual consistency) -->
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <!-- Simplified sidebar for prototype -->
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                <span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+            <div class="menu-group">
+                <button class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg text-menuActive transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] transform rotate-90"></i>
+                </button>
+                <div class="pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-activity-list.html" class="block py-2 text-sm text-menuActive transition-colors">活动列表</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0">
+        <!-- Header -->
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                <a href="admin-activity-list.html" class="hover:text-gray-800 cursor-pointer">活动管理</a>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <a href="admin-activity-list.html" class="hover:text-gray-800 cursor-pointer">活动列表</a>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-menuActive font-medium mr-4">美分活动配置 (只读)</span>
+                <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
+                    返回需求看板
+                </a>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <div class="w-full space-y-6">
+                <!-- 计划详情区块 -->
+                <div class="bg-white rounded-lg card-shadow">
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="text-[15px] font-bold text-gray-800">计划详情</h3>
+                        <span class="px-3 py-1 bg-green-50 text-green-600 text-xs font-medium rounded border border-green-100">进行中</span>
+                    </div>
+                    <div class="p-6 grid grid-cols-2 md:grid-cols-5 gap-8">
+                        <div>
+                            <p class="info-label">计划名称</p>
+                            <p class="info-value">先锋一号+美分联名计划</p>
+                        </div>
+                        <div>
+                            <p class="info-label">活动有效期</p>
+                            <p class="info-value">长期有效</p>
+                        </div>
+                        <div>
+                            <p class="info-label">全局限制</p>
+                            <p class="info-value">5次/日，单日上限 1,000.00 USDC</p>
+                        </div>
+                        <div>
+                            <p class="info-label">创建人</p>
+                            <p class="info-value">史密斯</p>
+                        </div>
+                        <div>
+                            <p class="info-label">更新时间</p>
+                            <p class="info-value">2026-02-03 12:16:27</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 等级配置/阶梯表格 -->
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h3 class="text-[15px] font-bold text-gray-800">奖励阶梯配置 (底层参数只读)</h3>
+                    </div>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table class="w-full text-[13px] text-center">
+                            <thead>
+                                <tr class="bg-gray-50/50 border-b border-gray-200">
+                                    <th class="px-6 py-4 font-medium text-gray-500">入金门槛 (USD)</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">对应美分账户额度 / 标准账户同等购买力</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">触发奖励单量要求 (Lot)</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">单笔奖励金额 (USDC)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">1,000.00</td><td class="px-6 py-4 text-gray-700">100,000</td><td class="px-6 py-4 text-gray-700">0.10</td><td class="px-6 py-4 text-gray-700">20.00</td></tr>
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">2,000.00</td><td class="px-6 py-4 text-gray-700">200,000</td><td class="px-6 py-4 text-gray-700">0.20</td><td class="px-6 py-4 text-gray-700">40.00</td></tr>
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">3,000.00</td><td class="px-6 py-4 text-gray-700">300,000</td><td class="px-6 py-4 text-gray-700">0.30</td><td class="px-6 py-4 text-gray-700">60.00</td></tr>
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">4,000.00</td><td class="px-6 py-4 text-gray-700">400,000</td><td class="px-6 py-4 text-gray-700">0.40</td><td class="px-6 py-4 text-gray-700">80.00</td></tr>
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">5,000.00</td><td class="px-6 py-4 text-gray-700">500,000</td><td class="px-6 py-4 text-gray-700">0.50</td><td class="px-6 py-4 text-gray-700">100.00</td></tr>
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">10,000.00</td><td class="px-6 py-4 text-gray-700">1,000,000</td><td class="px-6 py-4 text-gray-700">1.00</td><td class="px-6 py-4 text-gray-700">200.00</td></tr>
+                                <tr class="hover:bg-gray-50 transition-colors"><td class="px-6 py-4 text-gray-700">20,000.00</td><td class="px-6 py-4 text-gray-700">2,000,000</td><td class="px-6 py-4 text-gray-700">1.00</td><td class="px-6 py-4 text-gray-700">200.00</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 底部数据模块 (整合原监控报表) -->
+                <div class="bg-white rounded-lg card-shadow mt-6">
+                    <!-- Tabs -->
+                    <div class="flex items-center px-4 border-b border-gray-100">
+                        <div class="tab-item active">客户列表</div>
+                        <div class="tab-item">交易记录</div>
+                        <div class="tab-item">历史统计</div>
+                    </div>
+                    
+                    <!-- 筛选区域 -->
+                    <div class="p-5 border-b border-gray-50 bg-[#FAFAFA]">
+                        <div class="flex flex-wrap items-center gap-6">
+                            <div class="flex items-center gap-3">
+                                <span class="text-[13px] font-medium text-gray-700 w-16">客户邮箱:</span>
+                                <input type="text" placeholder="请输入客户邮箱" class="filter-input w-64">
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-[13px] font-medium text-gray-700 w-16">MT 账号:</span>
+                                <input type="text" placeholder="输入绑定账号" class="filter-input w-48">
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-[13px] font-medium text-gray-700 w-16">监控状态:</span>
+                                <select class="filter-select w-40">
+                                    <option>请选择</option>
+                                    <option>正常 (达标)</option>
+                                    <option>未达标</option>
+                                    <option>异常违规</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex gap-3">
+                            <button class="btn-golden px-6 py-2 rounded font-medium text-[13px]">搜索</button>
+                            <button class="btn-outline px-6 py-2 rounded font-medium text-[13px]">重置</button>
+                        </div>
+                    </div>
+
+                    <!-- 数据列表 -->
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table class="w-full text-[13px] text-center">
+                            <thead>
+                                <tr class="bg-white border-b border-gray-100">
+                                    <th class="px-6 py-4 font-medium text-gray-500">CRM 客户邮箱</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">唯一绑定 MT 账号</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">首笔入金 (USD)</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">累计达标订单</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">今日派发次数</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">累计派发 (USDC)</th>
+                                    <th class="px-6 py-4 font-medium text-gray-500">监控状态</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-gray-700">user1@example.com</td>
+                                    <td class="px-6 py-4 font-mono text-gray-600">8001234</td>
+                                    <td class="px-6 py-4 text-gray-700">1,500.00</td>
+                                    <td class="px-6 py-4 text-gray-700">12</td>
+                                    <td class="px-6 py-4 text-gray-500">2 / 5</td>
+                                    <td class="px-6 py-4 font-medium text-green-600">240.00</td>
+                                    <td class="px-6 py-4"><span class="text-xs bg-green-50 text-green-600 border border-green-100 px-2.5 py-1 rounded">正常</span></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 text-gray-700">john.doe@test.com</td>
+                                    <td class="px-6 py-4 font-mono text-gray-600">8009876</td>
+                                    <td class="px-6 py-4 text-gray-700">5,000.00</td>
+                                    <td class="px-6 py-4 text-gray-700">50</td>
+                                    <td class="px-6 py-4 text-orange-500 font-bold">5 / 5</td>
+                                    <td class="px-6 py-4 font-medium text-green-600">5,000.00</td>
+                                    <td class="px-6 py-4"><span class="text-xs bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded" title="今日已达防刷上限">触及上限</span></td>
+                                </tr>
+                                <tr class="hover:bg-red-50/30 bg-red-50/10 transition-colors">
+                                    <td class="px-6 py-4 text-gray-700">spammer@fake.com</td>
+                                    <td class="px-6 py-4 font-mono text-gray-600">8005555</td>
+                                    <td class="px-6 py-4 text-gray-700">2,000.00</td>
+                                    <td class="px-6 py-4 text-red-500 font-bold">8</td>
+                                    <td class="px-6 py-4 text-gray-500">0 / 5</td>
+                                    <td class="px-6 py-4 font-medium text-gray-400">0.00</td>
+                                    <td class="px-6 py-4"><span class="text-xs bg-red-50 text-red-600 border border-red-100 px-2.5 py-1 rounded font-bold">违规拦截</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>

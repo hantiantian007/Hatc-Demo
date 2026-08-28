@@ -6,22 +6,7 @@
     <title>HATC CRM - 客户详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- PRD 预览弹窗 -->
-    <div id="prdModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 flex flex-col h-[85vh]">
-            <!-- 弹窗头部 -->
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-800">需求文档 (PRD) 预览</h3>
-                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <i class="fa-solid fa-times text-xl"></i>
-                </button>
-            </div>
-            <!-- 弹窗内容区 (iframe 嵌套) -->
-            <div class="flex-1 p-0 bg-gray-50 overflow-hidden rounded-b-lg">
-                <iframe src="prd-client-detail.html" class="w-full h-full border-0"></iframe>
-            </div>
-        </div>
-    </div>
+    <script src="cent-prd-drawer.js"></script>
 
     <!-- 代理选择弹窗 -->
     <div id="ibModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
@@ -154,12 +139,12 @@
                     <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="client-deposit-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="client-withdraw-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="admin-withdraw-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
                     <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
@@ -194,9 +179,9 @@
                     <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                    <a href="admin-activity-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">成长计划</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
+                    <a href="client-activity-ib-plan.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动审核</a>
                 </div>
             </div>
@@ -228,7 +213,7 @@
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
                     <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-account-management-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
                     <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
@@ -319,6 +304,8 @@
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">登录 IP 一致性比对</a>
+                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">登录环境异常预警</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
@@ -354,9 +341,13 @@
                 </a>
                 
                 <!-- PRD 文档按钮 -->
-                <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition-colors mt-2 border border-gray-200">
+                <a href="prd-cent-account-page-client-detail.html" data-prd-drawer data-prd-title="客户详情页面PRD" class="hidden sm:flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded transition-colors mt-2 border border-gray-200">
                     <i class="fa-solid fa-project-diagram"></i> PRD 文档
-                </button>
+                </a>
+
+                <a href="admin-risk-login-alert.html" class="hidden sm:flex items-center gap-2 text-sm text-[#C19B5E] hover:text-[#a88651] bg-[#f9f4ea] hover:bg-[#f4ead7] px-3 py-1.5 rounded-full transition-colors mt-2 border border-[#eadcc4]">
+                    <i class="fa-solid fa-shield-halved"></i> 登录环境预警
+                </a>
 
                 <!-- 溯源返回留资 -->
                 <a href="admin-leads-detail.html" class="hidden sm:flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-full transition-colors mt-2">
@@ -371,6 +362,10 @@
 
         <!-- 主要业务渲染区 -->
         <div class="flex-1 p-4 sm:p-6 overflow-y-auto bg-mainBg flex flex-col gap-6 w-full">
+
+            <div class="flex justify-end">
+                <a href="prd-cent-account-page-client-detail.html" data-prd-drawer data-prd-title="客户详情页面PRD" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">查看页面PRD</a>
+            </div>
             
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 w-full">
                 <!-- 左侧两列：核心信息 -->
@@ -391,6 +386,9 @@
                                 </div>
                                 <!-- 客户标签展示区 -->
                                 <div class="flex flex-wrap items-center gap-2 mt-3" id="clientTagsContainer">
+                                    <span class="inline-flex items-center bg-amber-50 text-amber-600 border border-amber-200 text-xs px-2 py-0.5 rounded" title="该客户名下有MT账号正在参与联名活动">
+                                        <i class="fa-solid fa-gift mr-1"></i> 先锋联名活动
+                                    </span>
                                     <span class="inline-flex items-center bg-red-50 text-red-600 border border-red-200 text-xs px-2 py-0.5 rounded">
                                         高净值客户
                                         <button class="ml-1 text-red-400 hover:text-red-600" onclick="this.parentElement.remove()"><i class="fa-solid fa-times text-[10px]"></i></button>
@@ -446,11 +444,12 @@
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">账户类型:</div>
-                                <div class="text-gray-800">标准</div>
+                                <div class="text-red-500">标准账户 + 美分账户</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">MT账号数量:</div>
-                                <div class="text-gray-800">2</div>
+                                <div class="text-red-500">3 <span class="text-xs text-red-500 ml-1">（标准 2 / 美分 1）</span></div>
+                                <div class="text-xs text-amber-600 mt-1"><i class="fa-solid fa-check-circle mr-1"></i>已绑活动账号: 8001234</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">银行卡数量:</div>
@@ -465,23 +464,30 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-4 sm:gap-y-6 text-sm">
                             <div>
                                 <div class="text-gray-500 mb-1">累计入金:</div>
-                                <div class="text-gray-800">0.00</div>
+                                <div class="text-red-500">91.00 USD</div>
+                                <div class="text-xs text-red-500 mt-1">USD：90.00</div>
+                                <div class="text-xs text-red-500 mt-1">USC：100.01</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">累计出金:</div>
-                                <div class="text-gray-800">0.00</div>
+                                <div class="text-red-500">1,230.00 USD/美元</div>
+                                <div class="text-xs text-red-500 mt-1">包含美分账户出金：45.00 USD</div>
                             </div>
                             <div>
-                                <div class="text-gray-500 mb-1">净入金:</div>
-                                <div class="text-gray-800">0.00</div>
+                                <div class="text-gray-500 mb-1">累计净入金:</div>
+                                <div class="text-red-500">8,870.00 USD/美元</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">累计交易笔数:</div>
                                 <div class="text-gray-800">1</div>
                             </div>
                             <div>
-                                <div class="text-gray-500 mb-1">累计交易手数:</div>
-                                <div class="text-gray-800">0</div>
+                                <div class="text-gray-500 mb-1">累计标准交易手数:</div>
+                                <div class="text-red-500">0.25</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500 mb-1">累计美分交易手数:</div>
+                                <div class="text-red-500">0.15</div>
                             </div>
                             <div>
                                 <div class="text-gray-500 mb-1">佣金产生总额:</div>
@@ -629,6 +635,38 @@
                         </div>
                     </div>
 
+                    <!-- 卡片7：登录环境风险 -->
+                    <div class="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-[#eadcc4]">
+                        <div class="flex items-start justify-between gap-3 mb-4">
+                            <div class="flex items-end justify-between gap-3 w-full">
+                                <h3 class="text-base font-bold text-gray-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-[#C19B5E]"></i>登录环境风险
+                                </h3>
+                                <a href="admin-risk-login-alert.html" class="text-sm text-[#C19B5E] hover:text-[#a88651] transition-colors whitespace-nowrap">查看明细 <i class="fa-solid fa-angle-right ml-1"></i></a>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 leading-5 mb-4">当前只做异常预警，供风控人工核查，不会直接影响客户操作。</p>
+                        <div class="space-y-3 text-sm">
+                            <div class="rounded-xl bg-[#fbfaf7] border border-[#efe4d4] p-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500 text-xs">最近判定时间</span>
+                                </div>
+                                <div class="text-gray-800 font-medium mt-2">2026-07-09 15:46:12</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="rounded-xl bg-gray-50 p-3">
+                                    <div class="text-xs text-gray-500 mb-2">CRM 登录</div>
+                                    <div class="text-gray-800 font-medium">171.221.10.51</div>
+                                </div>
+                                <div class="rounded-xl bg-gray-50 p-3">
+                                    <div class="text-xs text-gray-500 mb-2">MT5 登录</div>
+                                    <div class="text-gray-800 font-medium">171.221.54.12</div>
+                                    <div class="text-xs text-gray-500 mt-2">MT账号：8801732</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -654,6 +692,7 @@
                                 <th class="font-medium py-4 px-4">账号属性</th>
                                 <th class="font-medium py-4 px-4">分组名称</th>
                                 <th class="font-medium py-4 px-4">杠杆</th>
+                                <th class="font-medium py-4 px-4 text-red-500">手数</th>
                                 <th class="font-medium py-4 px-4">余额</th>
                                 <th class="font-medium py-4 px-4">赠金</th>
                                 <th class="font-medium py-4 px-4">入金金额</th>
@@ -663,26 +702,40 @@
                         </thead>
                         <tbody class="text-gray-700">
                             <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">8100457</td>
-                                <td class="py-4 px-4">模拟[交易]</td>
-                                <td class="py-4 px-4">real\HATC\Test\Stan</td>
+                                <td class="py-4 px-4 text-red-500">8100457</td>
+                                <td class="py-4 px-4 text-red-500">标准账户[交易]</td>
+                                <td class="py-4 px-4 text-red-500">real\HATC\Test\Standard</td>
                                 <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">0.00</td>
-                                <td class="py-4 px-4">0.00</td>
-                                <td class="py-4 px-4">0.00</td>
-                                <td class="py-4 px-4">0.00</td>
+                                <td class="py-4 px-4 text-red-500">标准手</td>
+                                <td class="py-4 px-4 text-red-500">1,230.00 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
+                                <td class="py-4 px-4 text-red-500">0.00 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
+                                <td class="py-4 px-4 text-red-500">2,500.00 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
+                                <td class="py-4 px-4 text-red-500">400.00 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
                                 <td class="py-4 px-4">2026-06-08 15:05:15</td>
                             </tr>
                             <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-4">8300255</td>
-                                <td class="py-4 px-4">模拟[佣金]</td>
+                                <td class="py-4 px-4 text-red-500">8300255</td>
+                                <td class="py-4 px-4 text-red-500">标准账户[佣金]</td>
                                 <td class="py-4 px-4">real\HATC\Test\Agent</td>
                                 <td class="py-4 px-4">1:100</td>
-                                <td class="py-4 px-4">3.00</td>
-                                <td class="py-4 px-4">0.00</td>
-                                <td class="py-4 px-4">0.00</td>
-                                <td class="py-4 px-4">0.00</td>
+                                <td class="py-4 px-4 text-red-500">标准手</td>
+                                <td class="py-4 px-4 text-red-500">3.0000 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
+                                <td class="py-4 px-4 text-red-500">0.0000 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
+                                <td class="py-4 px-4 text-red-500">0.0000 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
+                                <td class="py-4 px-4 text-red-500">0.0000 <span class="text-xs text-red-500 ml-1">USD/美元</span></td>
                                 <td class="py-4 px-4">2026-06-08 15:05:29</td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-4 text-red-500">9900456</td>
+                                <td class="py-4 px-4 text-red-500">美分账户[交易]</td>
+                                <td class="py-4 px-4 text-red-500">real\HATC\Cent\Real-02</td>
+                                <td class="py-4 px-4 text-red-500">1:100</td>
+                                <td class="py-4 px-4 text-red-500">美分手</td>
+                                <td class="py-4 px-4 text-red-500">756,000.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">500.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">760,000.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">83,000.00 <span class="text-xs text-red-500 ml-1">USC/美分</span></td>
+                                <td class="py-4 px-4 text-red-500">2026-06-08 15:05:29</td>
                             </tr>
                         </tbody>
                     </table>
@@ -807,23 +860,6 @@
             <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-lg flex justify-end gap-3">
                 <button onclick="document.getElementById('createTagModal').classList.add('hidden')" class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded hover:bg-gray-50 text-sm transition-colors">取消</button>
                 <button onclick="document.getElementById('createTagModal').classList.add('hidden'); alert('标签新建成功！');" class="px-4 py-2 bg-[#C19B5E] text-white rounded hover:bg-[#a88651] text-sm transition-colors">确认新建</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PRD 预览弹窗 -->
-    <div id="prdModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] hidden">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 flex flex-col h-[85vh]">
-            <!-- 弹窗头部 -->
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-800">需求文档 (PRD) 预览</h3>
-                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition-colors">
-                    <i class="fa-solid fa-times text-xl"></i>
-                </button>
-            </div>
-            <!-- 弹窗内容区 (iframe 嵌套) -->
-            <div class="flex-1 p-0 bg-gray-50 overflow-hidden rounded-b-lg">
-                <iframe src="prd-client-detail.html" class="w-full h-full border-0"></iframe>
             </div>
         </div>
     </div>
