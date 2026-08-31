@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 盈亏报表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        primaryHover: '#b08a4d',
+                        sidebar: '#2A2D3A',
+                        mainBg: '#F3F4F6',
+                        darkCard: '#2D3036',
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        primaryBtn: '#C19B5E',
+                        primaryBtnHover: '#b08a4d',
+                        tableHeader: '#C19B5E',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 500px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+        
+        /* 表格样式优化 - 还原蓝绿色表头网格风格 */
+        .custom-table th {
+            color: white;
+            font-weight: 500;
+            padding: 12px 8px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            white-space: nowrap;
+            text-align: center;
+        }
+        .custom-table th:last-child { border-right: none; }
+        .custom-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+            color: #374151;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .custom-table td:last-child { border-right: none; }
+        .custom-table tbody > tr:hover td { background-color: #f9fafb; }
+    
+        </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+
+    <!-- 左侧导航菜单 (复用 admin-layout 结构) -->
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        
+        <!-- Logo 区域 -->
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+
+        <!-- 菜单列表 (可滚动) -->
+                                        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+            
+            <!-- 出入金 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="client-deposit-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="client-withdraw-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="admin-withdraw-pending-review.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
+                </div>
+            </div>
+
+            <!-- 佣金管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+
+            <!-- 活动管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-activity-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">成长计划</a>
+                    <a href="client-activity-ib-plan.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动审核</a>
+                </div>
+            </div>
+
+            <!-- 动态公告 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-bullhorn w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">动态公告</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">集团动态</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">最新公告</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">推送消息</a>
+                </div>
+            </div>
+
+            <!-- 客户管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
+                    <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
+                </div>
+            </div>
+            
+            <!-- 报表中心 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1 submenu-expanded">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
+                    <a href="admin-report-pnl.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">盈亏报表</a>
+                    <a href="admin-report-profit.html" class="block py-2 text-sm text-menuActive hover:text-white transition-colors">盈亏报表</a>
+                    <a href="admin-report-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
+                </div>
+            </div>
+
+            <!-- 系统管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">系统设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">MT设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">群发管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">消息管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">日志管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">配置参数</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付币种</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
+            </a>
+
+            <!-- 财务管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-wallet w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表明细</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户信息表</a>
+                </div>
+            </div>
+
+            <!-- 风控管理 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-shield w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">风控管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">登录 IP 一致性比对</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
+                </div>
+            </div>
+        
+                
+        </nav>
+        
+        <!-- 底部收起按钮 (选做) -->
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- 右侧内容区 -->
+    <main class="flex-1 flex flex-col min-w-0">
+        
+        <!-- 顶部 Header -->
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <!-- 面包屑导航 -->
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-menuActive font-medium">盈亏报表</span>
+                
+                <!-- 新增 PRD 按钮 -->
+                <div class="ml-6 flex items-center gap-2">
+                    <button onclick="openPrdModal()" class="bg-primary hover:bg-primaryHover text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
+                        PRD文档
+                    </button>
+                    <a href="../index.html" class="bg-primary hover:bg-primaryHover text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
+                        返回需求看板
+                    </a>
+                </div>
+            </div>
+                        <!-- 右侧个人中心 -->
+            <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
+                    <span class="text-sm font-bold text-gray-600">SM</span>
+                </div>
+                
+                <!-- 下拉菜单 (Hover 显示) -->
+                <div class="absolute right-0 top-[100%] mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-lg">
+                        <p class="text-sm font-medium text-gray-800">史密斯</p>
+                        <p class="text-xs text-gray-500 mt-0.5 truncate">admin@dev.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-menuActive transition-colors">
+                            <i class="fas fa-user-circle w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">个人信息</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-menuActive transition-colors">
+                            <i class="fas fa-credit-card w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">我的银行卡</span>
+                        </a>
+                    </div>
+                    <div class="py-1 border-t border-gray-100">
+                        <a href="../login.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors">
+                            <i class="fas fa-sign-out-alt w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">退出</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要业务渲染区 -->
+        <div class="flex-1 p-4 bg-gray-50 flex gap-4 overflow-hidden">
+            
+            <!-- 左侧关系树 -->
+            <div class="w-64 bg-white border border-gray-200 rounded shadow-sm flex flex-col shrink-0 overflow-hidden">
+                <!-- 顶部操作区 -->
+                <div class="p-3 border-b border-gray-100 flex gap-2 items-center bg-gray-50/50">
+                    <div class="flex-1 flex bg-white border border-gray-200 rounded overflow-hidden">
+                        <input type="text" placeholder="搜索代理/客户..." class="w-full px-2 py-1.5 text-xs outline-none">
+                        <button class="px-2 text-gray-400 hover:text-primary border-l border-gray-200"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <!-- 树列表 -->
+                <div class="flex-1 overflow-y-auto p-2 text-[13px] text-gray-600">
+                    <!-- 节点: 华安 -->
+                    <div id="tree-285" onclick="selectTree('285')" class="flex items-center justify-between py-1.5 px-2 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-caret-down text-gray-400 w-3 text-center cursor-pointer"></i>
+                            <span class="text-gray-700">285-华安</span>
+                        </div>
+                        <span class="text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <!-- 节点: Luke -->
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-6 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-caret-right text-gray-300 w-3 text-center cursor-pointer"></i>
+                            <span class="text-gray-700">29-Luke</span>
+                        </div>
+                        <span class="text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <!-- 节点: jack (Selected) -->
+                    <div id="tree-42" onclick="selectTree('42')" class="flex items-center justify-between py-1.5 px-2 pl-6 bg-primary/10 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-caret-down text-primary w-3 text-center cursor-pointer"></i>
+                            <span class="text-primary font-medium">42-jack</span>
+                        </div>
+                        <span class="text-[10px] text-primary bg-primary/20 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <!-- 子节点 -->
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-10 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">70-张生龙</span>
+                        </div>
+                        <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">直客</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-10 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">319-黎富英</span>
+                        </div>
+                        <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">直客</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-10 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">329-魏正博</span>
+                        </div>
+                        <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">直客</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-10 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">468-孙敏宏</span>
+                        </div>
+                        <span class="text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-10 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">528-谢兰香</span>
+                        </div>
+                        <span class="text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <!-- 其他节点 -->
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-6 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-caret-right text-gray-300 w-3 text-center cursor-pointer"></i>
+                            <span class="text-gray-700">43-汪晋霖</span>
+                        </div>
+                        <span class="text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-2 pl-6 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-caret-right text-gray-300 w-3 text-center cursor-pointer"></i>
+                            <span class="text-gray-700">161-Mikey</span>
+                        </div>
+                        <span class="text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">代理</span>
+                    </div>
+                    <!-- 直客示例 -->
+                    <div class="flex items-center justify-between py-1.5 px-2 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">30-张三</span>
+                        </div>
+                        <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">直客</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1.5 px-2 hover:bg-gray-50 rounded cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-gray-200 text-[6px] w-3 text-center"></i>
+                            <span class="text-gray-700">55-ww3</span>
+                        </div>
+                        <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">直客</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧详情与数据 -->
+            <div class="flex-1 flex flex-col gap-4 overflow-hidden">
+                
+                <!-- 顶部控制栏 -->
+                <div class="bg-white border border-gray-200 rounded p-4 shadow-sm shrink-0 flex items-center justify-between">
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium text-gray-700">时间:</span>
+                            <div class="flex items-center gap-2">
+                                <input type="date" value="2026-08-01" class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-[150px] h-9 bg-white focus:border-primary focus:ring-1 focus:ring-primary/30 transition-colors">
+                                <span class="text-gray-400 text-sm">至</span>
+                                <input type="date" value="2026-08-19" class="px-3 py-1.5 text-sm outline-none border border-gray-200 rounded w-[150px] h-9 bg-white focus:border-primary focus:ring-1 focus:ring-primary/30 transition-colors">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button class="bg-white border border-gray-200 text-gray-600 hover:text-primary hover:border-primary px-4 py-2 rounded text-sm font-medium transition-colors flex items-center gap-2 shadow-sm" onclick="location.reload()">
+                            <i class="fa-solid fa-rotate-right"></i> 刷新数据
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 汇总数据卡片 -->
+                <div class="bg-white border border-gray-200 rounded p-5 shadow-sm shrink-0">
+                    <h3 class="font-bold text-gray-800 mb-4 text-base flex items-center gap-2">
+                        <div class="w-1 h-4 bg-primary rounded"></div>伞下盈亏概况 (当前选中: <span id="summary-select-label">42-jack</span>)
+                    </h3>
+                    <div class="grid grid-cols-8 gap-x-0 gap-y-4 text-sm border border-gray-200 rounded overflow-hidden">
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">净值</span> <span id="sum-equity" class="font-bold text-gray-800 text-lg">51,550.00</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">結餘</span> <span id="sum-balance" class="font-bold text-gray-800 text-lg">50,000.00</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">浮动盈亏</span> <span id="sum-profit" class="font-bold text-red-500 text-lg">-4,500.00</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">信用</span> <span id="sum-credit" class="font-bold text-gray-800 text-lg">2,000.00</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">手續費</span> <span id="sum-commission" class="font-bold text-gray-800 text-lg">85.00</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">佣金</span> <span id="sum-rebate" class="font-bold text-green-600 text-lg">-120.00</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 border-r border-gray-200 bg-gray-50/50"><span class="text-gray-500">过夜利息</span> <span id="sum-swap" class="font-bold text-red-500 text-lg">-48.50</span></div>
+                        <div class="flex flex-col gap-2 px-3 py-3 bg-gray-50/50"><span class="text-gray-500">平倉盈虧</span> <span id="sum-closed" class="font-bold text-green-600 text-lg">3,280.00</span></div>
+                    </div>
+                </div>
+
+                <!-- 下半部分：下钻表格 -->
+                <div class="bg-white border border-gray-200 rounded p-5 shadow-sm flex-1 flex flex-col overflow-hidden">
+                    <div class="flex items-center justify-between mb-4 shrink-0">
+                        <h3 class="font-bold text-gray-800 text-base flex items-center gap-2">
+                            <div class="w-1 h-4 bg-primary rounded"></div>代理/客户盈亏明细
+                        </h3>
+                        <button class="bg-primary hover:bg-primaryHover text-white px-4 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-download"></i> 导出列表
+                        </button>
+                    </div>
+                    
+                    <div class="flex-1 overflow-auto border border-gray-200 rounded relative">
+                        <table class="w-full text-sm text-left custom-table">
+                            <thead class="bg-tableHeader text-white sticky top-0 z-10">
+                                <tr>
+                                    <th class="py-3 px-4 font-medium border border-primary/20 text-center min-w-[200px]">账号/名称</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">净值</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">結餘</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[130px]">浮动盈亏</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">信用</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">手续费</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[120px]">返佣</th>
+                                    <th class="py-3 px-3 font-medium border border-primary/20 text-center min-w-[130px]">过夜利息</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="bg-white text-gray-700">
+                                <tr class="hover:bg-gray-50 transition-colors bg-gray-50/50 font-medium">
+                                    <td class="border border-gray-200 py-2.5 px-4 text-center">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span class="inline-block w-1 h-4 bg-primary rounded"></span>
+                                            <span>42-jack</span>
+                                        </div>
+                                    </td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">4,600.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">5,000.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center text-red-500">-5,000.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">100.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">5.50</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-30.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center text-red-500">-5.50</td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="border border-gray-200 py-2.5 px-4 text-center pl-8">70-张生龙</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">1,840.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">1,020.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center text-green-600">+200.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">800.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">2.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-12.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-0.80</td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="border border-gray-200 py-2.5 px-4 text-center pl-8">319-黎富英</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">2,700.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">1,450.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center text-green-600">+500.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">1,200.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">6.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-18.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-5.20</td>
+                                </tr>
+                                
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="border border-gray-200 py-2.5 px-4 text-center pl-8">329-魏正博</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">200.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">1,000.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-800.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">0.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">0.50</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-5.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-0.50</td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="border border-gray-200 py-2.5 px-4 text-center pl-8">468-孙敏宏</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">8,580.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">8,500.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center text-green-600">+800.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">0.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">18.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-25.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-4.00</td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="border border-gray-200 py-2.5 px-4 text-center pl-8">528-谢兰香</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">33,630.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">33,030.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-200.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-100.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">53.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center">-30.00</td>
+                                    <td class="border border-gray-200 py-2.5 px-3 text-center text-red-500">-32.50</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const TREE_DATA = {
+            '285': {
+                label: '285-华安',
+                summary: { equity: '98,650.00', balance: '95,200.00', profit: '2,540.00', profitGreen: true, credit: '3,500.00', commission: '286.00', rebate: '-420.00', swap: '-124.00', swapRed: true, closed: '8,920.00', closedGreen: true },
+                rows: [
+                    { name: '285-华安', self: true, indent: '', equity: '16,500.00', balance: '15,000.00', profit: '240.00', profitGreen: true, credit: '1,500.00', commission: '38.00', rebate: '-60.00', swap: '-12.00', swapRed: true },
+                    { name: '29-Luke', indent: 'pl-8', equity: '8,200.00', balance: '8,000.00', profit: '120.00', profitGreen: true, credit: '200.00', commission: '22.00', rebate: '-28.00', swap: '-6.00', swapRed: true },
+                    { name: '42-jack', indent: 'pl-8', equity: '51,550.00', balance: '50,000.00', profit: '-4,500.00', profitRed: true, credit: '2,000.00', commission: '85.00', rebate: '-120.00', swap: '-48.50', swapRed: true },
+                    { name: '43-汪晋霖', indent: 'pl-8', equity: '11,200.00', balance: '11,000.00', profit: '280.00', profitGreen: true, credit: '300.00', commission: '31.00', rebate: '-45.00', swap: '-8.00', swapRed: true },
+                    { name: '161-Mikey', indent: 'pl-8', equity: '2,450.00', balance: '2,400.00', profit: '860.00', profitGreen: true, credit: '60.00', commission: '54.00', rebate: '-35.00', swap: '-22.00', swapRed: true },
+                    { name: '30-张三', indent: 'pl-8', equity: '6,800.00', balance: '7,000.00', profit: '-1,850.00', profitRed: true, credit: '0.00', commission: '29.00', rebate: '-52.00', swap: '-15.00', swapRed: true },
+                    { name: '55-ww3', indent: 'pl-8', equity: '1,950.00', balance: '1,800.00', profit: '750.00', profitGreen: true, credit: '40.00', commission: '27.00', rebate: '-80.00', swap: '-12.50', swapRed: true },
+                ]
+            },
+            '42': {
+                label: '42-jack',
+                summary: { equity: '51,550.00', balance: '50,000.00', profit: '-4,500.00', profitRed: true, credit: '2,000.00', commission: '85.00', rebate: '-120.00', swap: '-48.50', swapRed: true, closed: '3,280.00', closedGreen: true },
+                rows: [
+                    { name: '42-jack', self: true, indent: '', equity: '4,600.00', balance: '5,000.00', profit: '-5,000.00', profitRed: true, credit: '100.00', commission: '5.50', rebate: '-30.00', swap: '-5.50', swapRed: true },
+                    { name: '70-张生龙', indent: 'pl-8', equity: '1,840.00', balance: '1,020.00', profit: '+200.00', profitGreen: true, credit: '800.00', commission: '2.00', rebate: '-12.00', swap: '-0.80', swapRed: false },
+                    { name: '319-黎富英', indent: 'pl-8', equity: '2,700.00', balance: '1,450.00', profit: '+500.00', profitGreen: true, credit: '1,200.00', commission: '6.00', rebate: '-18.00', swap: '-5.20', swapRed: false },
+                    { name: '329-魏正博', indent: 'pl-8', equity: '200.00', balance: '1,000.00', profit: '-800.00', profitRed: true, credit: '0.00', commission: '0.50', rebate: '-5.00', swap: '-0.50', swapRed: false },
+                    { name: '468-孙敏宏', indent: 'pl-8', equity: '8,580.00', balance: '8,500.00', profit: '+800.00', profitGreen: true, credit: '0.00', commission: '18.00', rebate: '-25.00', swap: '-4.00', swapRed: false },
+                    { name: '528-谢兰香', indent: 'pl-8', equity: '33,630.00', balance: '33,030.00', profit: '-200.00', profitRed: true, credit: '-100.00', commission: '53.00', rebate: '-30.00', swap: '-32.50', swapRed: true },
+                ]
+            }
+        };
+
+        function renderRow(r) {
+            const marker = r.self ? '<div class="flex items-center justify-center gap-2"><span class="inline-block w-1 h-4 bg-primary rounded"></span><span>' + r.name + '</span></div>' : r.name;
+            const rowClass = r.self ? 'hover:bg-gray-50 transition-colors bg-gray-50/50 font-medium' : 'hover:bg-gray-50 transition-colors';
+            const swapClass = r.swapRed ? 'text-red-500' : '';
+            let profitClass = ''; let profitVal = r.profit;
+            if (r.profitGreen) profitClass = 'text-green-600';
+            else if (r.profitRed) profitClass = 'text-red-500';
+            const indentClass = r.indent ? ' ' + r.indent : '';
+            return `<tr class="${rowClass}">
+                <td class="border border-gray-200 py-2.5 px-4 text-center${indentClass}">${marker}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center">${r.equity}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center">${r.balance}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center ${profitClass}">${profitVal}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center">${r.credit}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center">${r.commission}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center">${r.rebate}</td>
+                <td class="border border-gray-200 py-2.5 px-3 text-center ${swapClass}">${r.swap}</td>
+            </tr>`;
+        }
+
+        function selectTree(id) {
+            const d = TREE_DATA[id]; if (!d) return;
+            ['tree-285','tree-42'].forEach(tid => {
+                const el = document.getElementById(tid); if (!el) return;
+                if (tid === 'tree-' + id) {
+                    el.classList.add('bg-primary/10');
+                    const sp = el.querySelector('span.text-gray-700'); if (sp) { sp.classList.remove('text-gray-700'); sp.classList.add('text-primary','font-medium'); }
+                    const ic = el.querySelector('.fa-caret-down, .fa-caret-right'); if (ic) { ic.classList.remove('text-gray-400','text-gray-300'); ic.classList.add('text-primary'); }
+                    const bd = el.querySelector('span.bg-blue-50'); if (bd) { bd.className = 'text-[10px] text-primary bg-primary/20 px-1.5 py-0.5 rounded'; }
+                } else {
+                    el.classList.remove('bg-primary/10');
+                    const sp = el.querySelector('span.text-primary'); if (sp) { sp.classList.remove('text-primary','font-medium'); sp.classList.add('text-gray-700'); }
+                    const ic = el.querySelector('.fa-caret-down, .fa-caret-right'); if (ic) { ic.classList.remove('text-primary'); ic.classList.add('text-gray-400'); }
+                    const bd = el.querySelector('span.bg-primary\\/20'); if (bd) { bd.className = 'text-[10px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded'; }
+                }
+            });
+
+            document.getElementById('summary-select-label').innerText = d.label;
+            document.getElementById('sum-equity').innerText = d.summary.equity;
+            document.getElementById('sum-balance').innerText = d.summary.balance;
+            document.getElementById('sum-credit').innerText = d.summary.credit;
+            document.getElementById('sum-commission').innerText = d.summary.commission;
+            document.getElementById('sum-rebate').innerText = d.summary.rebate;
+
+            const sumSwap = document.getElementById('sum-swap'); sumSwap.innerText = d.summary.swap;
+            sumSwap.className = 'font-bold ' + (d.summary.swapRed ? 'text-red-500' : 'text-gray-800') + ' text-lg';
+
+            const sumProfit = document.getElementById('sum-profit'); sumProfit.innerText = d.summary.profit;
+            let sc = 'font-bold text-lg';
+            if (d.summary.profitGreen) sc += ' text-green-600'; else if (d.summary.profitRed) sc += ' text-red-500'; else sc += ' text-gray-800';
+            sumProfit.className = sc;
+
+            const sumClosed = document.getElementById('sum-closed'); sumClosed.innerText = d.summary.closed;
+            let scc = 'font-bold text-lg';
+            if (d.summary.closedGreen) scc += ' text-green-600'; else if (d.summary.closedRed) scc += ' text-red-500'; else scc += ' text-gray-800';
+            sumClosed.className = scc;
+
+            document.getElementById('table-body').innerHTML = d.rows.map(renderRow).join('');
+        }
+
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.fa-chevron-right');
+            const isExpanded = submenu.classList.contains('submenu-expanded');
+            
+            if (isExpanded) {
+                submenu.classList.remove('submenu-expanded');
+                arrow.classList.remove('arrow-rotated');
+                button.classList.remove('text-menuActive', 'bg-menuHover');
+                button.classList.add('text-menuText');
+                button.querySelector('i:first-child').classList.remove('text-menuActive');
+            } else {
+                submenu.classList.add('submenu-expanded');
+                arrow.classList.add('arrow-rotated');
+                button.classList.remove('text-menuText');
+                button.classList.add('text-menuActive', 'bg-menuHover');
+                button.querySelector('i:first-child').classList.add('text-menuActive');
+            }
+        }
+
+        // PRD 弹窗逻辑
+        function openPrdModal() {
+            document.getElementById('prdModal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('prdModalContent').classList.remove('translate-x-full');
+            }, 10);
+        }
+
+        function closePrdModal() {
+            document.getElementById('prdModalContent').classList.add('translate-x-full');
+            setTimeout(() => {
+                document.getElementById('prdModal').classList.add('hidden');
+            }, 300);
+        }
+    </script>
+
+    <!-- PRD 弹窗 -->
+    <div id="prdModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closePrdModal()"></div>
+        <div class="absolute inset-y-0 right-0 w-full md:w-[800px] z-10 flex flex-col pointer-events-none transition-transform duration-300 translate-x-full" id="prdModalContent">
+            <div class="bg-white w-full h-full shadow-2xl flex flex-col pointer-events-auto">
+                <div class="h-14 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+                    <div class="flex items-center text-gray-700 text-base font-bold">
+                        <i class="fa-solid fa-file-lines mr-2 text-primary"></i> 产品需求文档 (PRD) - 盈亏报表
+                    </div>
+                    <button onclick="closePrdModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div class="flex-1 w-full bg-gray-100 overflow-hidden">
+                    <iframe src="prd-report-equity.html" class="w-full h-full border-0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

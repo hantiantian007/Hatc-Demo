@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 产品持仓明细</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        topBarBg: '#FFFFFF',
+                        mainBg: '#F3F4F6',
+                        primaryBtn: '#41B8AF',
+                        primaryBtnHover: '#359f97',
+                        tableHeader: '#41B8AF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 500px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+
+        .custom-table th {
+            color: white;
+            font-weight: 500;
+            padding: 12px 12px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            white-space: nowrap;
+            text-align: center;
+            font-size: 13px;
+        }
+        .custom-table th:last-child { border-right: none; }
+        .custom-table td {
+            padding: 12px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            border-right: 1px solid #e5e7eb;
+            color: #374151;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+        .custom-table td:last-child { border-right: none; }
+        .custom-table tbody > tr:hover td { background-color: #f9fafb; }
+        .custom-table tbody > tr.summary-row td {
+            background-color: #F0FDFA;
+            font-weight: 600;
+            color: #0F766E;
+            border-top: 2px solid #5EEAD4;
+        }
+        .profit-positive { color: #16A34A; font-weight: 600; }
+        .profit-negative { color: #DC2626; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">出入金</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核入金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-alt w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">活动管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-activity-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">成长计划</a>
+                    <a href="client-activity-ib-plan.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">IB 计划</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">活动审核</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-bullhorn w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">动态公告</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">集团动态</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">最新公告</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">推送消息</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">客户管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户变动详情</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分组管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">分享链接</a>
+                    <a href="admin-sales-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售列表</a>
+                    <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">报表中心</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
+                    <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">盈亏报表</a>
+                    <a href="admin-report-real-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">现实持仓报表</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-gear w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">系统管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">系统设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">MT设置 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">群发管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">消息管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors flex justify-between items-center">日志管理 <i class="fa-solid fa-chevron-right text-[8px] mr-2"></i></a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">配置参数</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付币种</a>
+                    <a href="admin-payment-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">支付管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣设置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">验证码记录</a>
+                    <a href="admin-tag-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">标签管理</a>
+                </div>
+            </div>
+            <a href="#" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
+            </a>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-wallet w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表明细</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户信息表</a>
+                </div>
+            </div>
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-shield w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">风控管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
+                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">登录 IP 一致性比对</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-gray-700/50">
+            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
+                <i class="fa-solid fa-angles-left text-sm"></i>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0">
+        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                <a href="admin-report-real-position.html" class="hover:text-gray-800 cursor-pointer">现实持仓报表</a>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-menuActive font-medium mr-4" id="breadcrumbSym">产品持仓明细</span>
+                <div class="ml-6 flex items-center gap-2">
+                    <button onclick="history.back()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-1.5 rounded text-xs font-medium transition-colors border border-gray-200 inline-flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left"></i> 返回上一级
+                    </button>
+                    <a href="../index.html" class="bg-[#55B9B9] hover:bg-[#45a0a0] text-white px-4 py-1.5 rounded text-xs font-medium transition-colors shadow-sm inline-flex items-center">
+                        返回需求看板
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
+                    <span class="text-sm font-bold text-gray-600">SM</span>
+                </div>
+                <div class="absolute right-0 top-[100%] mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
+                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-lg">
+                        <p class="text-sm font-medium text-gray-800">史密斯</p>
+                        <p class="text-xs text-gray-500 mt-0.5 truncate">admin@dev.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-menuActive transition-colors">
+                            <i class="fas fa-user-circle w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">个人信息</span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-menuActive transition-colors">
+                            <i class="fas fa-credit-card w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">我的银行卡</span>
+                        </a>
+                    </div>
+                    <div class="py-1 border-t border-gray-100">
+                        <a href="../login.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors">
+                            <i class="fas fa-sign-out-alt w-4 text-center text-gray-400"></i>
+                            <span class="ml-3">退出</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 p-6 overflow-y-auto bg-white m-4 rounded-lg shadow-sm border border-gray-100 flex flex-col">
+
+            <div class="mb-5 flex items-center gap-3">
+                <h1 class="text-xl font-bold text-gray-800">交易品种持仓明细</h1>
+                <span id="symBadge" class="inline-block px-3 py-1 bg-[#CCFBF1] text-[#0F766E] rounded font-bold">XAUUSD</span>
+            </div>
+
+            <div class="mb-6 bg-gray-50 p-5 rounded-lg border border-gray-200">
+                <div class="flex flex-wrap items-center gap-x-5 gap-y-4">
+                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
+                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">MT 账号</span>
+                        <input type="text" placeholder="请输入MT账号" class="px-3 py-1.5 text-sm outline-none w-[140px] h-full">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
+                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">账户名称</span>
+                        <input type="text" placeholder="请输入账户名称" class="px-3 py-1.5 text-sm outline-none w-[140px] h-full">
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
+                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">账号类型</span>
+                        <select class="px-3 py-1.5 text-sm outline-none text-gray-600 bg-white w-[140px] h-full cursor-pointer">
+                            <option value="">全部</option>
+                            <option>标准账号</option>
+                            <option>美分账号</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
+                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">多空方向</span>
+                        <select class="px-3 py-1.5 text-sm outline-none text-gray-600 bg-white w-[140px] h-full cursor-pointer">
+                            <option value="">全部</option>
+                            <option>BUY 多单</option>
+                            <option>SELL 空单</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center bg-white border border-gray-200 rounded-md h-9 overflow-hidden flex-shrink-0">
+                        <span class="bg-gray-100 text-gray-600 text-sm px-3 h-full flex items-center border-r border-gray-200 w-[92px] flex-shrink-0">关系树</span>
+                        <select class="px-3 py-1.5 text-sm outline-none text-gray-500 bg-white w-[140px] h-full cursor-pointer">
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                    <div class="ml-auto flex items-center gap-3 h-9">
+                        <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-7 h-full rounded-md text-sm transition-colors shadow-sm font-medium">查询</button>
+                        <button class="bg-[#41B8AF] hover:bg-[#359f97] text-white px-7 h-full rounded-md text-sm transition-colors shadow-sm font-medium">导出</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-auto border border-gray-200 rounded">
+                <table class="min-w-[1500px] custom-table text-sm">
+                    <thead class="bg-tableHeader sticky top-0 z-10">
+                        <tr>
+                            <th class="min-w-[80px]">编号</th>
+                            <th class="min-w-[140px]">MT 账号</th>
+                            <th class="min-w-[160px]">账户名称</th>
+                            <th class="min-w-[120px]">MT账号类型</th>
+                            <th class="min-w-[140px]">MT账号净值(USD)</th>
+                            <th class="min-w-[110px]">多空方向</th>
+                            <th class="min-w-[110px]">手数</th>
+                            <th class="min-w-[150px]">开仓均价</th>
+                            <th class="min-w-[160px]">浮动盈亏(USD)</th>
+                            <th class="min-w-[140px]">开仓时间</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailTbody"></tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center justify-between mt-4 text-sm text-gray-500">
+                <div class="ml-2 bg-[#F0FDFA] border border-[#5EEAD4] rounded px-4 py-2 text-[#0F766E] text-xs flex items-center gap-6">
+                    <div><span class="opacity-80">持仓账号数：</span><span class="font-bold">27</span></div>
+                    <div><span class="opacity-80">BUY 手数汇总：</span><span class="font-bold">70.00</span></div>
+                    <div><span class="opacity-80">SELL 手数汇总：</span><span class="font-bold">71.50</span></div>
+                    <div><span class="opacity-80">净头寸汇总(手)：</span><span class="font-bold">-1.50</span></div>
+                    <div><span class="opacity-80">浮动盈亏汇总(USD)：</span><span class="font-bold text-[#DC2626]">-13,979.28</span></div>
+                </div>
+                <div class="flex items-center">
+                    <span class="mr-4">共 28 条</span>
+                    <div class="flex items-center gap-1">
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 text-gray-400"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded bg-red-100 text-red-500 font-medium">1</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">2</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">3</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">4</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 text-gray-400"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.fa-chevron-right');
+            const isExpanded = submenu.classList.contains('submenu-expanded');
+            if (isExpanded) {
+                submenu.classList.remove('submenu-expanded');
+                arrow.classList.remove('arrow-rotated');
+                button.classList.remove('text-menuActive', 'bg-menuHover');
+                button.classList.add('text-menuText');
+                button.querySelector('i:first-child').classList.remove('text-menuActive');
+            } else {
+                submenu.classList.add('submenu-expanded');
+                arrow.classList.add('arrow-rotated');
+                button.classList.remove('text-menuText');
+                button.classList.add('text-menuActive', 'bg-menuHover');
+                button.querySelector('i:first-child').classList.add('text-menuActive');
+            }
+        }
+
+        function getSym() {
+            const qs = new URLSearchParams(location.search);
+            return qs.get('sym') || 'XAUUSD';
+        }
+
+        function fmtProfit(v) {
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            const formatted = num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            if (num > 0) return `<span class="profit-positive">${formatted}</span>`;
+            if (num < 0) return `<span class="profit-negative">${formatted}</span>`;
+            return formatted;
+        }
+
+        function formatMoney(v) {
+            if (v === '-' || v === '') return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+        
+        function formatVolume(v) {
+            if (v === '-' || v === '') return v;
+            const num = Number(v.replace(/[^\d.\-]/g, ''));
+            return num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 5});
+        }
+
+        function renderList() {
+            const sym = getSym();
+            document.getElementById('breadcrumbSym').textContent = sym + ' · 持仓明细';
+            document.getElementById('symBadge').textContent = sym;
+            document.title = 'HATC CRM - ' + sym + ' 持仓明细';
+
+            const rows = [
+                { no:1,  mt:'1000128', name:'陈伟霆',    acctType:'标准', equity:'82,450.00',  dir:'BUY',  vol:'3.50', price:'4540.20',  pf:'2 180.50',   time:'2026-08-19 10:32:11' },
+                { no:2,  mt:'1000265', name:'王晓明',    acctType:'标准', equity:'45,230.00',  dir:'BUY',  vol:'1.20', price:'4538.50',  pf:'876.20',    time:'2026-08-19 11:05:47' },
+                { no:3,  mt:'1000311', name:'李慧婷',    acctType:'标准', equity:'63,800.00',  dir:'SELL', vol:'2.00', price:'4550.80',  pf:'1 240.30',  time:'2026-08-19 13:48:22' },
+                { no:4,  mt:'1000402', name:'张铭轩',    acctType:'标准', equity:'12,080.00',  dir:'BUY',  vol:'0.80', price:'4542.00',  pf:'-120.65',   time:'2026-08-19 14:12:09' },
+                { no:5,  mt:'1000520', name:'林家豪',    acctType:'标准', equity:'78,650.00',  dir:'SELL', vol:'5.00', price:'4545.00',  pf:'-4 520.00', time:'2026-08-19 15:30:55' },
+                { no:6,  mt:'1000617', name:'刘思雨',    acctType:'标准', equity:'35,420.00',  dir:'BUY',  vol:'2.50', price:'4541.50',  pf:'180.80',    time:'2026-08-19 16:02:33' },
+                { no:7,  mt:'1000733', name:'黄子恒',    acctType:'标准', equity:'28,900.00',  dir:'SELL', vol:'1.80', price:'4548.00',  pf:'520.40',    time:'2026-08-19 16:41:18' },
+                { no:8,  mt:'1000809', name:'吴思琪',    acctType:'美分', equity:'845.00',     dir:'BUY',  vol:'0.50', price:'4544.20',  pf:'-8.00',     time:'2026-08-19 17:08:02' },
+                { no:9,  mt:'1000916', name:'赵俊杰',    acctType:'标准', equity:'52,360.00',  dir:'SELL', vol:'4.20', price:'4542.50',  pf:'-2 060.10', time:'2026-08-19 18:22:40' },
+                { no:10, mt:'1001004', name:'周慧敏',    acctType:'美分', equity:'1,860.00',   dir:'BUY',  vol:'1.00', price:'4540.00',  pf:'68.00',     time:'2026-08-19 19:05:12' },
+                { no:11, mt:'1001118', name:'郑嘉颖',    acctType:'标准', equity:'41,200.00',  dir:'BUY',  vol:'2.20', price:'4543.80',  pf:'-92.40',    time:'2026-08-19 19:30:46' },
+                { no:12, mt:'1001207', name:'孙悦熙',    acctType:'标准', equity:'95,700.00',  dir:'SELL', vol:'3.30', price:'4546.20',  pf:'-3 220.80', time:'2026-08-19 20:14:37' },
+                { no:13, mt:'1001315', name:'何俊彦',    acctType:'美分', equity:'589.00',     dir:'BUY',  vol:'0.30', price:'4542.50',  pf:'-4.53',     time:'2026-08-19 20:46:01' },
+                { no:14, mt:'1001424', name:'梁俊杰',    acctType:'标准', equity:'70,120.00',  dir:'SELL', vol:'2.80', price:'4541.00',  pf:'1 640.60',  time:'2026-08-19 21:22:28' },
+                { no:15, mt:'1001536', name:'谢文轩',    acctType:'标准', equity:'22,580.00',  dir:'BUY',  vol:'1.60', price:'4545.60',  pf:'-520.00',   time:'2026-08-19 21:58:44' },
+                { no:16, mt:'1001608', name:'韩雪怡',    acctType:'标准', equity:'33,450.00',  dir:'SELL', vol:'1.40', price:'4547.20',  pf:'380.90',    time:'2026-08-19 22:18:52' },
+                { no:17, mt:'1001721', name:'唐嘉豪',    acctType:'标准', equity:'11,200.00',  dir:'BUY',  vol:'0.90', price:'4541.90',  pf:'230.50',    time:'2026-08-19 22:50:16' },
+                { no:18, mt:'1001805', name:'冯诗琪',    acctType:'标准', equity:'88,900.00',  dir:'SELL', vol:'3.00', price:'4548.80',  pf:'-4 120.00', time:'2026-08-20 00:03:28' },
+                { no:19, mt:'1001912', name:'董力伟',    acctType:'美分', equity:'4,765.00',   dir:'BUY',  vol:'2.00', price:'4546.00',  pf:'-130.00',   time:'2026-08-20 00:41:59' },
+                { no:20, mt:'1002003', name:'程思瑶',    acctType:'标准', equity:'60,230.00',  dir:'SELL', vol:'1.10', price:'4550.00',  pf:'2 420.00',  time:'2026-08-20 01:05:07' },
+                { no:21, mt:'1002110', name:'袁子涵',    acctType:'标准', equity:'16,800.00',  dir:'BUY',  vol:'1.80', price:'4543.20',  pf:'-85.60',    time:'2026-08-20 01:32:55' },
+                { no:22, mt:'1002208', name:'曹俊杰',    acctType:'美分', equity:'2,970.00',   dir:'SELL', vol:'2.50', price:'4546.50',  pf:'-98.02',    time:'2026-08-20 02:08:11' },
+                { no:23, mt:'1002316', name:'沈梓晴',    acctType:'标准', equity:'73,100.00',  dir:'BUY',  vol:'1.20', price:'4539.00',  pf:'1 560.40',  time:'2026-08-20 02:39:34' },
+                { no:24, mt:'1002427', name:'彭伟健',    acctType:'标准', equity:'25,450.00',  dir:'SELL', vol:'1.50', price:'4544.60',  pf:'-640.80',   time:'2026-08-20 03:12:26' },
+                { no:25, mt:'1002511', name:'吕晓彤',    acctType:'美分', equity:'920.00',     dir:'BUY',  vol:'0.70', price:'4542.20',  pf:'-11.20',    time:'2026-08-20 03:45:48' },
+                { no:26, mt:'1002604', name:'许嘉诚',    acctType:'标准', equity:'84,500.00',  dir:'SELL', vol:'3.20', price:'4547.80',  pf:'-2 880.13', time:'2026-08-20 04:16:19' },
+                { no:27, mt:'1002718', name:'李俊杰',    acctType:'美分', equity:'6,820.00',   dir:'BUY',  vol:'2.00', price:'4540.50',  pf:'108.00',    time:'2026-08-20 05:12:30' },
+                { no:28, mt:'1002718', name:'李俊杰',    acctType:'美分', equity:'6,820.00',   dir:'SELL', vol:'1.50', price:'4546.30',  pf:'-42.00',    time:'2026-08-20 05:14:08' }
+            ];
+
+            function typeBadge(t) {
+                if (t === '美分') return `<td><span class="inline-block px-2 py-0.5 rounded bg-[#FEF3C7] text-[#B45309] text-xs font-semibold">美分</span></td>`;
+                return `<td><span class="inline-block px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] text-xs font-semibold">标准</span></td>`;
+            }
+
+            const html = rows.map(r => {
+                const dirCell = r.dir === 'BUY'
+                    ? `<td><span class="inline-block px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] font-semibold">BUY 多</span></td>`
+                    : `<td><span class="inline-block px-2 py-0.5 rounded bg-red-50 text-[#DC2626] font-semibold">SELL 空</span></td>`;
+                return `<tr>
+                    <td class="text-gray-400">${r.no}</td>
+                    <td><a href="#" class="text-[#14B8A6] hover:underline font-medium">${r.mt}</a></td>
+                    <td class="font-medium">${r.name}</td>
+                    ${typeBadge(r.acctType)}
+                    <td class="font-semibold text-gray-800 text-right">${formatMoney(r.equity)}</td>
+                    ${dirCell}
+                    <td>${formatVolume(r.vol)}</td>
+                    <td>${formatVolume(r.price)}</td>
+                    <td>${fmtProfit(r.pf)}</td>
+                    <td class="text-gray-500">${r.time}</td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('detailTbody').innerHTML = html;
+        }
+
+        renderList();
+    </script>
+</body>
+</html>

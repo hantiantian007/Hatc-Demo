@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - 后台商品管理列表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        dark: '#1E2126',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .module-title { font-size: 1.125rem; font-weight: bold; color: #111827; margin-top: 2rem; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 4px solid #C19B5E; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; text-sm; }
+        th, td { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; text-align: left; }
+        th { background-color: #f9fafb; font-weight: 500; color: #4b5563; }
+        td { color: #374151; vertical-align: top; }
+        .highlight { color: #b45309; background-color: #fef3c7; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed pb-20">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
+            <h2 class="text-xl text-primary font-medium">后台商品管理列表 (admin-product-management.html)</h2>
+            <div class="mt-4 flex gap-4 text-sm text-gray-500">
+                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-07-01</span>
+                <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
+                <span class="px-2 py-0.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded text-xs">V2.2.0</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            
+            <!-- 模块一：顶部全局操作与筛选 -->
+            <div class="module-title">1. 顶部全局操作与筛选</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">UI 元素</th>
+                            <th width="25%">数据来源与状态</th>
+                            <th width="60%">交互方式与信息处理逻辑</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">新增商品按钮</td>
+                            <td>页面右上角全局入口。</td>
+                            <td>
+                                交互：点击跳转至 <code>admin-product-edit.html</code>。<br>
+                                参数传递：<span class="highlight">不携带任何参数</span>，代表进入全新的空表单初始化模式。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品状态筛选</td>
+                            <td>来源：固定枚举。<br>状态：下拉单选框。</td>
+                            <td>
+                                包含值：全部状态（默认）、已上架、已下架、定时上架。<br>
+                                交互：选中某一项后，立即触发 Ajax 接口请求，携带 <code>status</code> 参数重新加载下方表格数据。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品类型筛选</td>
+                            <td>来源：固定枚举。<br>状态：下拉单选框。</td>
+                            <td>
+                                包含值：全部类型（默认）、虚拟商品、实体商品。<br>
+                                交互：选中某一项后，携带 <code>type</code> 参数重新加载下方表格数据。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块二：表格数据列展示规范 -->
+            <div class="module-title">2. 表格数据列展示规范</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">列名称</th>
+                            <th width="25%">数据来源与计算方式</th>
+                            <th width="60%">排列展示与处理逻辑</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品信息</td>
+                            <td>来源：商品基础表 (Product Base)。</td>
+                            <td>
+                                排列：左侧展示商品图标 Icon (60x60缩略图)；右侧分两行，上行为粗体商品名称，下行为浅色唯一商品 ID (如 PRD-001)。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">商品类型</td>
+                            <td>来源：新增商品时的选择。</td>
+                            <td>
+                                排列：上方以 Badge 形式展示“虚拟商品”或“实体商品”；下方固定展示绿色字体的“<i class="fas fa-wallet mr-1"></i> 余额购买”支付方式标签。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">售价</td>
+                            <td>
+                                来源：商品关联的套餐配置表。<br>
+                                计算方式：遍历该商品下所有套餐，取出金额最小值。
+                            </td>
+                            <td>
+                                处理逻辑：<br>
+                                1. 若只有 1 个套餐，直接展示金额（如 $500.00）。<br>
+                                2. 若存在多个套餐，展示格式为“<strong>最低价 起</strong>” (如 $100.00 起)。<br>
+                                交互：对于多套餐，鼠标悬浮在金额上时，唤起 <strong>Tooltip 悬浮卡片</strong>，卡片内垂直排列展示所有套餐的详细明细（套餐名称、原价、现价、独立库存）。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">库存 / 销量</td>
+                            <td>
+                                来源：订单及库存系统。<br>
+                                计算方式：该商品所有套餐的库存之和 / 该商品所有套餐的历史累计销量之和。
+                            </td>
+                            <td>
+                                排列：为节省横向空间，采用上下两行布局。上行显示“库存: 100”，下行显示“销量: 50”。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">浏览数据</td>
+                            <td>来源：客户端埋点统计系统。</td>
+                            <td>
+                                排列：上下两行布局。<br>
+                                上行展示 PV (浏览量)：累计被打开的次数。<br>
+                                下行展示 UV (访客数)：累计查看过该商品的独立用户数。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">状态</td>
+                            <td>来源：商品基础表的上架状态。</td>
+                            <td>
+                                处理逻辑：<br>
+                                1. <strong>已上架</strong>：绿色 Badge。<br>
+                                2. <strong>已下架</strong>：灰色 Badge。<br>
+                                3. <strong>定时上架</strong>：橙色 Badge。下方需额外增加一行小字，显示配置的具体生效时间（如 2026-07-02 10:00）。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块三：行级操作与流转机制 -->
+            <div class="module-title">3. 行级操作与流转机制</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">操作按钮</th>
+                            <th width="25%">动作类型</th>
+                            <th width="60%">交互流转与跳转参数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">编辑</td>
+                            <td>页面跳转。</td>
+                            <td>
+                                交互：点击跳转至 <code>admin-product-edit.html</code>。<br>
+                                参数传递：URL 必须携带当前点击商品的 ID（例如：<code>admin-product-edit.html?id=PRD-001</code>）。编辑页面将根据该参数请求详情接口，实现数据的完整回显。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">下架 / 上架</td>
+                            <td>状态反转调用。</td>
+                            <td>
+                                交互：<br>
+                                1. 若当前为上架，按钮显示为“下架”；反之显示为“上架”。<br>
+                                2. 点击后无需二次确认弹窗，直接调用后端状态更新接口。按钮呈现 Loading，成功后局部刷新该行状态，并弹出“操作成功” Toast。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap">删除</td>
+                            <td>高危数据清除。</td>
+                            <td>
+                                交互：<br>
+                                1. 点击后屏幕居中弹出二次确认弹窗（“确定要删除该商品吗？此操作不可恢复”）。<br>
+                                2. 确认后调用删除接口，成功后从表格中移除该行，并弹出“删除成功” Toast。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块四：逆向与异常流转处理 -->
+            <div class="module-title">4. 逆向与异常流转处理</div>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%">异常场景分类</th>
+                            <th width="25%">触发条件与场景描述</th>
+                            <th width="60%">前端处理方案与交互阻断</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">删除业务约束</td>
+                            <td>用户尝试点击删除一个处于“已上架”或“定时上架”状态的商品。</td>
+                            <td>
+                                <strong>强阻断</strong>：上架状态下的商品严禁直接删除。前端需将该行的“删除”按钮置灰（Disabled）并显示为 <code>not-allowed</code>，或者在点击时拦截并 Toast 提示：“请先下架该商品后再进行删除操作”。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">状态切换异常</td>
+                            <td>用户点击“上架/下架”，但由于网络波动或后端并发校验失败（如库存不足导致无法上架），接口报错。</td>
+                            <td>
+                                <strong>状态回滚</strong>：前端不应做盲目的乐观更新。按钮展示 Loading 时锁定点击，若接口明确返回失败或超时，按钮恢复原状态，原列表状态字段不变，并弹出红色 Toast 提示失败原因（如“库存不足，无法上架”）。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">无数据与搜索落空</td>
+                            <td>当前系统内无商品，或通过“商品状态”、“商品类型”组合筛选后，未匹配到任何商品。</td>
+                            <td>
+                                <strong>空状态占位</strong>：隐藏表格的空白数据行，在表格区域居中展示“暂无数据”的视觉插画及提示文案。若为筛选落空导致，需额外提供一个“清空筛选条件”的文字按钮，点击后一键重置筛选并重新请求列表。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium whitespace-nowrap text-red-600">列表加载崩溃</td>
+                            <td>进入列表页时，获取列表数据的 API 请求超时或返回 500。</td>
+                            <td>
+                                <strong>异常降级</strong>：结束骨架屏或 Loading 动画，显示“数据加载失败，请检查网络”的提示，并提供“点击重试”按钮，防止页面出现无休止的白屏死锁。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

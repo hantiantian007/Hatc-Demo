@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM-HK 港版注册 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 24px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; }
+        td { color: #4b5563; }
+        .highlight { color: #b7791f; font-weight: 600; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】CRM-HK 港版注册</h1>
+            <div class="flex gap-4">
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-[#C19B5E] inline-block">1. 需求背景</h2>
+        <div class="bg-amber-50 border-l-4 border-[#C19B5E] p-4 mb-5">
+            <p class="text-sm text-amber-900 font-medium">本需求属于<span class="highlight">已完成的 HK 开户/注册流程上的新增逻辑</span>，不重做整套港版注册流程，只新增“根据不同邀请链接，动态判断投资者类型是否展示、是否可改、是否进入专业投资者问卷”的规则，并将最终投资者类型自动归入对应客户分组。</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">项</th>
+                    <th width="40%">说明</th>
+                    <th width="40%">口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">需求名称</td>
+                    <td>港版注册</td>
+                    <td>CRM-HK 独立开户/注册向导的增量逻辑调整。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">影响范围</td>
+                    <td>CRM-HK 注册入口、投资者类型页、专业投资者问卷、注册入库、后台审核回显、客户分组归属。</td>
+                    <td>仅 HK 版本生效，Group 端不受影响。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">目标</td>
+                    <td>根据邀请链接控制注册路径。</td>
+                    <td>减少错误开户路径，确保不同开户链接导入的客户走正确的投资者类型流程。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">2. 核心原则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">原则</th>
+                    <th width="40%">定义</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">链接驱动</td>
+                    <td>注册页加载后先识别邀请链接类型，再决定后续页面路径。</td>
+                    <td>不允许前端脱离链接自行猜测流程。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">类型受控</td>
+                    <td>当邀请链接已明确投资者类型时，用户不能修改类型。</td>
+                    <td>避免代理渠道导流后用户自行切换到不匹配的开户类型。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">最少展示</td>
+                    <td>只有在业务上确实需要用户选择或确认时，才展示投资者类型页面。</td>
+                    <td>能隐藏就隐藏，减少用户理解负担。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">自动归组</td>
+                    <td>注册提交成功后，系统按最终投资者类型自动写入对应分组。</td>
+                    <td>不依赖人工在后台二次维护。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">3. 邀请链接规则总表</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">链接来源/类型</th>
+                    <th width="20%">是否展示投资者类型</th>
+                    <th width="20%">是否允许修改类型</th>
+                    <th width="20%">是否进入问卷</th>
+                    <th width="20%">最终投资者类型</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">公司账户分享链接</td>
+                    <td>展示</td>
+                    <td>允许用户自行选择</td>
+                    <td>按所选类型决定</td>
+                    <td>以用户所选结果为准</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理分享一般投资者邀请链接</td>
+                    <td>不展示</td>
+                    <td>不允许修改</td>
+                    <td>不进入专业投资者问卷</td>
+                    <td>固定为一般投资者</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理分享专业投资者邀请链接</td>
+                    <td>展示页面</td>
+                    <td>不允许修改</td>
+                    <td>必须进入专业投资者问卷</td>
+                    <td>固定为专业投资者</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理分享标准邀请链接</td>
+                    <td>不展示</td>
+                    <td>不允许修改</td>
+                    <td>不进入专业投资者问卷</td>
+                    <td>为空</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">4. 页面展示与交互规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="40%">展示与交互规则</th>
+                    <th width="40%">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">投资者类型选择页</td>
+                    <td>仅在“公司账户分享链接”场景下展示为可选页面。</td>
+                    <td>用户必须选择后才能进入下一步。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">专业投资者确认页</td>
+                    <td>在“代理专业投资者邀请链接”场景展示，但页面中的投资者类型不可修改。</td>
+                    <td>页面重点是说明当前开户链接只支持专业投资者，并引导进入问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">专业投资者问卷</td>
+                    <td>仅专业投资者路径进入。</td>
+                    <td>一般投资者与默认标准链接不展示该问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">开户资料页</td>
+                    <td>沿用现有 HK 开户资料表单。</td>
+                    <td>本需求不改资料字段，仅新增邀请链接驱动的展示与归组逻辑。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">5. 数据字段建议</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">字段</th>
+                    <th width="40%">说明</th>
+                    <th width="40%">建议值 / 口径</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">invite_link_type</td>
+                    <td>邀请链接类型。</td>
+                    <td><code>company</code> / <code>agent_retail</code> / <code>agent_professional</code> / <code>agent_standard</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">investor_type</td>
+                    <td>最终投资者类型。</td>
+                    <td><code>retail</code> / <code>professional</code> / 空</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">investor_type_source</td>
+                    <td>投资者类型来源。</td>
+                    <td><code>user_selected</code> / <code>link_fixed</code> / 空</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">need_investor_type_page</td>
+                    <td>是否展示投资者类型页面。</td>
+                    <td><code>true</code> / <code>false</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">need_professional_questionnaire</td>
+                    <td>是否进入专业投资者问卷。</td>
+                    <td><code>true</code> / <code>false</code></td>
+                </tr>
+                <tr>
+                    <td class="font-medium">customer_group</td>
+                    <td>客户分组。</td>
+                    <td>一般投资者自动归属一般投资者分组；专业投资者自动归属专业投资者分组；标准邀请链接自动归属代理的分组。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">6. 自动归组规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">最终投资者类型</th>
+                    <th width="40%">自动归组</th>
+                    <th width="40%">触发时机</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">一般投资者</td>
+                    <td>自动归属一般投资者分组</td>
+                    <td>注册提交成功并入库时自动写入</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">专业投资者</td>
+                    <td>自动归属专业投资者分组</td>
+                    <td>注册提交成功并入库时自动写入</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">投资者类型为空（标准邀请链接）</td>
+                    <td>自动归属代理的分组</td>
+                    <td>注册提交成功并入库时自动写入</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">7. 后台审核与回显联动</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="40%">联动要求</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">审核详情页</td>
+                    <td>回显投资者类型、投资者类型来源、是否完成专业投资者问卷。</td>
+                    <td>若为标准邀请链接，则投资者类型允许为空，并需回显归属代理分组。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">登录控制</td>
+                    <td>延续现有 HK 审核强控逻辑。</td>
+                    <td>本需求不改变“审核通过后才能登录”的既有规则。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">新老流程切换</td>
+                    <td>继续支持后台开关切换。</td>
+                    <td>本需求属于新流程上的增强逻辑，旧流程是否启用由后台配置决定。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">8. 边界规则</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">场景</th>
+                    <th width="40%">规则</th>
+                    <th width="40%">说明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">邀请链接缺失或非法</td>
+                    <td>按公司账户分享链接处理。</td>
+                    <td>展示投资者类型页面，由用户自行选择，避免因链接异常导致无法注册。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">标准邀请链接未配置默认类型</td>
+                    <td>投资者类型保持为空，直接归属代理的分组。</td>
+                    <td>标准邀请链接不再强制映射到一般或专业投资者类型。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">专业投资者链接下尝试改类型</td>
+                    <td>前端不可编辑，后端再次校验为专业投资者。</td>
+                    <td>避免前端篡改。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">公司账户分享链接下选择专业投资者</td>
+                    <td>必须完成专业投资者问卷后才允许提交。</td>
+                    <td>问卷未完成时不可进入最终提交状态。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="text-lg font-bold text-gray-800 mb-4 mt-8 pb-2 border-b-2 border-[#C19B5E] inline-block">9. 验收标准</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">用例</th>
+                    <th width="40%">操作</th>
+                    <th width="40%">预期结果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">公司账户链接</td>
+                    <td>用户通过公司账户分享链接进入注册页。</td>
+                    <td>展示投资者类型页面，用户可自行选择；若选择专业投资者，则进入专业投资者问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理一般投资者链接</td>
+                    <td>用户通过代理分享的一般投资者邀请链接进入。</td>
+                    <td>不展示投资者类型页面；系统固定为一般投资者；直接进入一般投资者开户路径。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理专业投资者链接</td>
+                    <td>用户通过代理分享的专业投资者邀请链接进入。</td>
+                    <td>展示专业投资者确认页，但不能改类型；必须完成专业投资者问卷。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">代理标准邀请链接</td>
+                    <td>用户通过代理标准邀请链接进入。</td>
+                    <td>不展示投资者类型页面；最终投资者类型为空；注册成功后自动归属代理的分组。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">自动归组</td>
+                    <td>用户提交注册成功。</td>
+                    <td>系统根据最终投资者类型或标准邀请链接规则自动归入对应分组，后台审核页可正确回显。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

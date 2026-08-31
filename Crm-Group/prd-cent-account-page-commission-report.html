@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佣金报表页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】佣金报表</h1>
+            <div class="flex gap-3">
+                <a href="admin-report-commission-cent-account.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">佣金报表页面</span>因接入美分账户而新增或调整的需求，不重复描述原有标准账户佣金报表能力。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">新增账户类型筛选</td><td>搜索区新增 <span class="highlight">账户类型</span>，支持全部、标准账户、美分账户筛选。</td></tr>
+                <tr><td class="font-medium">新增账户类型列</td><td>列表中新增 <span class="highlight">账户类型</span> 列，明确当前返佣记录属于标准账户还是美分账户。</td></tr>
+                <tr><td class="font-medium">返佣金额统一按 USD</td><td>汇总区和列表主展示中的 <span class="highlight">返佣金额</span> 统一按 <span class="highlight">USD</span> 口径展示，金额允许混合统计。</td></tr>
+                <tr><td class="font-medium">手数按账户类型分开统计</td><td><span class="highlight">标准账户手数</span> 与 <span class="highlight">美分账户手数</span> 不允许融合统计，不折算、不合并为单一总手数。汇总区需拆分展示 <span class="highlight">标准账户返佣手数</span> 与 <span class="highlight">美分账户返佣手数</span>。</td></tr>
+                <tr><td class="font-medium">新增手数字段</td><td>列表中新增 <span class="highlight">手数</span>，明确当前记录属于 <span class="highlight">标准手</span> 还是 <span class="highlight">美分手</span>；返佣手数仅在各自账户类型内独立统计。</td></tr>
+                <tr><td class="font-medium">展开明细补返佣口径</td><td>展开行补充 <span class="highlight">手数、返佣手数、返佣标准、返佣口径</span>，明确标准账户与美分账户分别按各自手数体系计算返佣。</td></tr>
+                <tr><td class="font-medium">小额返佣累计结转</td><td>当单笔返佣小于佣金账户常规展示精度时，不允许直接抹为 0.00；需按高精度记录。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td width="22%" class="font-medium">列表维度</td><td>本页按单笔返佣记录展示，允许标准账户与美分账户混排。</td></tr>
+                <tr><td class="font-medium">列表口径</td><td>列表中主展示字段为 <span class="highlight">账户类型、手数、平台手数、返佣金额(USD)</span>；<span class="highlight">返佣手数</span> 不在主列表中展示，仅在展开详情中查看；美分账户不单独展示 USC 返佣金额，但需明确其手数属于 <span class="highlight">美分手</span> 体系。</td></tr>
+                <tr><td class="font-medium">返佣公式</td><td><span class="highlight">返佣金额(USD) = 对应账户类型下的返佣手数 × 返佣标准</span>。当前规则下：<span class="highlight">标准账户 1 标准手返佣 14 USD</span>，<span class="highlight">美分账户 1 美分手返佣 0.14 USD</span>；两套手数体系分开计算。</td></tr>
+                <tr><td class="font-medium">精度要求</td><td>因美分账户存在 <span class="highlight">0.01 手 = 0.0014 USD</span> 的返佣场景，佣金报表中的返佣金额字段需支持至少 <span class="highlight">4 位小数</span> 展示，避免直接显示为 0.00。</td></tr>
+                <tr><td class="font-medium">入账口径</td><td>代理佣金账户虽按 USD 展示，但 <span class="highlight">不能按单笔 2 位小数直接截断入账</span>。单笔返佣需先按高精度记录。</td></tr>
+                <tr><td class="font-medium">分层展示</td><td><span class="highlight">返佣报表明细</span> 展示高精度返佣金额（至少 4 位小数）。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 账户类型筛选是否可正确筛出目标返佣记录。</td></tr>
+                <tr><td>2. 列表中是否已新增账户类型与手数字段，且手数字段名称统一为手数。</td></tr>
+                <tr><td>3. 汇总区和列表中的返佣金额是否统一按 USD 展示。</td></tr>
+                <tr><td>4. 标准账户和美分账户记录是否都能正确展示各自手数，且两类手数未被合并统计。</td></tr>
+                <tr><td>5. 展开明细中是否包含手数、返佣手数、返佣标准、返佣口径等字段。</td></tr>
+                <tr><td>6. 美分账户 0.01 手时，返佣金额是否能正确显示为 0.0014，而不是被截断成 0.00。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

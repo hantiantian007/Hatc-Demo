@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATC CRM - 内部转账</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="cent-prd-drawer.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        menuBg: '#2A2F3E',
+                        menuHover: '#373D4E',
+                        menuActive: '#d1a84f',
+                        menuText: '#A1A5B7',
+                        mainBg: '#F3F4F6',
+                        primaryBtn: '#d1a84f',
+                        primaryBtnHover: '#b89241',
+                        tableHeader: '#f8fafc'
+                    }
+                }
+            }
+        };
+
+        function toggleSubmenu(button) {
+            const submenu = button.nextElementSibling;
+            const arrow = button.querySelector('.arrow-transition');
+            submenu.classList.toggle('submenu-expanded');
+            arrow.classList.toggle('arrow-rotated');
+        }
+
+        function openTransferModal() {
+            const modal = document.getElementById('transferModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            updateTransferTargets();
+            updateTransferRule();
+        }
+
+        function closeTransferModal() {
+            const modal = document.getElementById('transferModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function updateTransferTargets() {
+            const fromAccount = document.getElementById('transferFromAccount');
+            const toAccount = document.getElementById('transferToAccount');
+            const currentValue = toAccount.value;
+
+            const targetOptions = {
+                standard_trade: [
+                    { value: 'standard_trade_other', label: '标准账户 - 交易账户 8150111' },
+                    { value: 'cent_trade', label: '美分账户 - 交易账户 1810103' }
+                ],
+                cent_trade: [
+                    { value: 'cent_trade_other', label: '美分账户 - 交易账户 1810108' },
+                    { value: 'standard_trade', label: '标准账户 - 交易账户 8150105' }
+                ],
+                commission: [
+                    { value: 'standard_trade', label: '标准账户 - 交易账户 8150105' },
+                    { value: 'cent_trade', label: '美分账户 - 交易账户 1810103' }
+                ]
+            };
+
+            const options = targetOptions[fromAccount.value] || [];
+            toAccount.innerHTML = '<option value="">请选择</option>' + options.map((option) =>
+                `<option value="${option.value}">${option.label}</option>`
+            ).join('');
+
+            if (options.some((option) => option.value === currentValue)) {
+                toAccount.value = currentValue;
+            }
+        }
+
+        function updateTransferRule() {
+            const fromAccount = document.getElementById('transferFromAccount');
+            const toAccount = document.getElementById('transferToAccount');
+            const amountInput = document.getElementById('transferAmount');
+            const ruleHint = document.getElementById('transferRuleHint');
+
+            const pair = `${fromAccount.value}->${toAccount.value}`;
+            let placeholder = '请输入转账金额';
+            let step = '0.01';
+            let hint = '仅支持本人其他账户内转，请先选择转出账户与转入账户';
+
+            if (pair === 'cent_trade->standard_trade') {
+                placeholder = '请输入整数值';
+                step = '1';
+                hint = '美分转标准时，与出金逻辑一致，转账金额仅支持输入整数值。';
+            } else if (pair === 'cent_trade->cent_trade_other') {
+                placeholder = '请输入转账金额';
+                step = '0.01';
+                hint = '美分可转本人其他美分账户，当前原型按常规金额输入规则处理。';
+            } else if (pair === 'standard_trade->cent_trade') {
+                placeholder = '请输入最多 2 位小数';
+                step = '0.01';
+                hint = '标准转美分时，转账金额支持输入小数点后 2 位。';
+            } else if (pair === 'standard_trade->standard_trade_other') {
+                placeholder = '请输入转账金额';
+                step = '0.01';
+                hint = '标准可转本人其他标准账户，当前原型按常规金额输入规则处理。';
+            } else if (pair === 'commission->cent_trade') {
+                placeholder = '请输入最多 4 位小数';
+                step = '0.0001';
+                hint = '佣金转美分时，转账金额支持输入小数点后 4 位。';
+            } else if (pair === 'commission->standard_trade') {
+                placeholder = '请输入最多 2 位小数';
+                step = '0.01';
+                hint = '佣金转标准时，当前原型按标准账户金额口径展示，转账金额支持输入小数点后 2 位。';
+            }
+
+            amountInput.placeholder = placeholder;
+            amountInput.step = step;
+            ruleHint.textContent = hint;
+        }
+
+        const transferDetailMap = {
+            detail_1: {
+                statusText: '转账成功',
+                statusClass: 'status-success',
+                outOrderNo: 'OUT_925279955741314450',
+                outAccountHtml: '<span class="account-chip chip-live">美分</span><span class="account-chip chip-commission">佣金</span>8300184 (景志敏)',
+                inOrderNo: 'IN_925279955720342550',
+                inAccountHtml: '<span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>8100324 (景志敏)',
+                amount: '1,125.00USD',
+                applyTime: '2026-08-04 15:00:20',
+                reason: '-'
+            },
+            detail_2: {
+                statusText: '转账成功',
+                statusClass: 'status-success',
+                outOrderNo: 'OUT_893436878825113770',
+                outAccountHtml: '<span class="account-chip chip-demo">标准</span><span class="account-chip chip-commission">佣金</span>8350104 (test-测试小何)',
+                inOrderNo: 'IN_893436878276726268',
+                inAccountHtml: '<span class="account-chip chip-demo">标准</span><span class="account-chip chip-trade">交易</span>8150105 (test-测试小何)',
+                amount: '10.00USD',
+                applyTime: '2026-05-08 18:06:57',
+                reason: '-'
+            },
+            detail_3: {
+                statusText: '转账成功',
+                statusClass: 'status-success',
+                outOrderNo: 'OUT_875273148629519344',
+                outAccountHtml: '<span class="account-chip chip-demo">标准</span><span class="account-chip chip-trade">交易</span>8150114 (测试小何)',
+                inOrderNo: 'IN_875273148600156214',
+                inAccountHtml: '<span class="account-chip chip-demo">标准</span><span class="account-chip chip-trade">交易</span>8150111 (测试小何)',
+                amount: '400.00USD',
+                applyTime: '2026-03-19 15:11:08',
+                reason: '-'
+            },
+            detail_4: {
+                statusText: '转账成功',
+                statusClass: 'status-success',
+                outOrderNo: 'OUT_837250233216796339',
+                outAccountHtml: '<span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>1810105 (Test Amy)',
+                inOrderNo: 'IN_837250233216794800',
+                inAccountHtml: '<span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>1810103 (Test Amy)',
+                amount: '6.00USD',
+                applyTime: '2025-12-04 17:01:38',
+                reason: '-'
+            },
+            detail_5: {
+                statusText: '转账失败',
+                statusClass: 'status-failed',
+                outOrderNo: 'OUT_837248714950052973',
+                outAccountHtml: '<span class="account-chip chip-live">美分</span><span class="account-chip chip-commission">佣金</span>8310102 (Test Amy)',
+                inOrderNo: 'IN_837248714950050224',
+                inAccountHtml: '<span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>1810103 (Test Amy)',
+                amount: '7.00USD',
+                applyTime: '2025-12-04 16:55:36',
+                reason: '目标账户异常，转账失败'
+            }
+        };
+
+        function openTransferDetailModal(detailId) {
+            const data = transferDetailMap[detailId];
+            if (!data) return;
+
+            const modal = document.getElementById('transferDetailModal');
+            document.getElementById('detailStatusValue').innerHTML = `<span class="${data.statusClass}">${data.statusText}</span>`;
+            document.getElementById('detailOutOrderNo').textContent = data.outOrderNo;
+            document.getElementById('detailOutAccount').innerHTML = data.outAccountHtml;
+            document.getElementById('detailInOrderNo').textContent = data.inOrderNo;
+            document.getElementById('detailInAccount').innerHTML = data.inAccountHtml;
+            document.getElementById('detailAmount').textContent = data.amount;
+            document.getElementById('detailApplyTime').textContent = data.applyTime;
+            document.getElementById('detailReason').textContent = data.reason;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeTransferDetailModal() {
+            const modal = document.getElementById('transferDetailModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .submenu-expanded { max-height: 520px; opacity: 1; }
+        .arrow-transition { transition: transform 0.3s ease; }
+        .arrow-rotated { transform: rotate(90deg); }
+        .menu-badge, .submenu-badge {
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 11px;
+            line-height: 18px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .filter-input, .filter-select {
+            width: 100%;
+            height: 36px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: #fff;
+            padding: 0 12px;
+            font-size: 13px;
+            color: #374151;
+            outline: none;
+        }
+        .filter-input:focus, .filter-select:focus { border-color: #d1a84f; }
+        .table-wrap::-webkit-scrollbar { height: 8px; }
+        .table-wrap::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 999px; }
+        .record-table th {
+            padding: 14px 10px;
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 600;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+            text-align: left;
+        }
+        .record-table td {
+            padding: 14px 10px;
+            font-size: 12px;
+            color: #4b5563;
+            border-bottom: 1px solid #f1f5f9;
+            white-space: nowrap;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .record-table tbody tr:hover { background: #fafafa; }
+        .change-highlight { color: #dc2626 !important; }
+        .detail-cell { background: #fff7ed; }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px 20px;
+            padding: 16px 8px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+        .detail-label { font-size: 12px; color: #9ca3af; }
+        .detail-value { font-size: 13px; color: #374151; word-break: break-word; }
+        .status-success { color: #059669; }
+        .status-failed { color: #d97706; }
+        .account-chip {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .chip-demo { background: #eef2ff; color: #4f46e5; }
+        .chip-live { background: #ecfeff; color: #0f766e; }
+        .chip-trade { background: #eff6ff; color: #2563eb; }
+        .chip-commission { background: #fff7ed; color: #c2410c; }
+        .modal-mask {
+            background: rgba(17, 24, 39, 0.45);
+            backdrop-filter: blur(1px);
+        }
+        .modal-input, .modal-select {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: #fff;
+            padding: 0 12px;
+            font-size: 14px;
+            color: #374151;
+            outline: none;
+        }
+        .modal-input:focus, .modal-select:focus { border-color: #d1a84f; }
+        .required-label {
+            width: 88px;
+            flex-shrink: 0;
+            text-align: right;
+            color: #4b5563;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .required-label::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 4px;
+        }
+        .detail-dialog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 48px;
+        }
+        .detail-dialog-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            min-width: 0;
+        }
+        .detail-dialog-label {
+            width: 72px;
+            flex-shrink: 0;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 24px;
+        }
+        .detail-dialog-value {
+            flex: 1;
+            min-width: 0;
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 24px;
+            word-break: break-word;
+        }
+        .detail-dialog-full {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+    <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
+            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+            <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                <span class="ml-3 font-medium text-[15px]">首页</span>
+            </a>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-braille w-6 text-center text-lg text-menuActive transition-colors"></i>
+                        <div class="ml-3 flex items-center gap-2">
+                            <span class="font-medium text-[15px]">出入金</span>
+                            <span class="menu-badge">18</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated"></i>
+                </button>
+                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                    <a href="client-deposit-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">入金</a>
+                    <a href="client-withdraw-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出金</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">返佣提现</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">我的赠金</a>
+                    <a href="admin-deposit-pending-review.html" class="flex items-center justify-between py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                        <span>待审核入金</span>
+                        <span class="submenu-badge">10</span>
+                    </a>
+                    <a href="admin-withdraw-pending-review.html" class="flex items-center justify-between py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                        <span>待审核出金</span>
+                        <span class="submenu-badge">15</span>
+                    </a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">赠金审核</a>
+                    <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
+                    <a href="admin-internal-transfer-record.html" class="block py-2 text-sm text-white transition-colors font-medium">内部转账</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-border-all w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">佣金管理</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣模版</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">基础分佣配置</a>
+                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">加点分佣配置</a>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-user-group w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <div class="ml-3 flex items-center gap-2">
+                            <span class="font-medium text-[15px]">客户管理</span>
+                            <span class="menu-badge">7</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-client-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户列表</a>
+                    <a href="admin-account-management-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户管理</a>
+                    <a href="admin-audit-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">账户审核</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0">
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
+            <div class="flex items-center text-sm text-gray-500">
+                <span class="hover:text-gray-800 cursor-pointer">出入金</span>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
+                <span class="text-menuActive font-medium mr-4">内部转账</span>
+                <a href="prd-internal-transfer-record.html" data-prd-drawer data-prd-title="内部转账 - 页面PRD" class="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded transition-colors border border-indigo-200 text-xs font-medium mr-3">
+                    <i class="fas fa-file-alt"></i> 查看页面PRD
+                </a>
+                <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
+                    <i class="fas fa-arrow-left"></i> 返回需求看板
+                </a>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm">
+                <span class="text-sm font-bold text-gray-600">AD</span>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+            <section class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center justify-between mb-5">
+                    <h3 class="font-bold text-gray-800 text-[15px]">搜索</h3>
+                </div>
+                <div class="grid grid-cols-5 gap-4">
+                    <div class="flex items-center gap-3 col-span-1">
+                        <label class="text-[13px] text-gray-600 shrink-0">转入/转出账户:</label>
+                        <input type="text" class="filter-input" placeholder="请输入MT账户">
+                    </div>
+                    <div class="flex items-center gap-3 col-span-1">
+                        <label class="text-[13px] text-gray-600 shrink-0">转入/转出单号:</label>
+                        <input type="text" class="filter-input" placeholder="请输入流水单号">
+                    </div>
+                    <div class="flex items-center gap-3 col-span-1">
+                        <label class="text-[13px] text-gray-600 shrink-0">转入/转出用户:</label>
+                        <input type="text" class="filter-input" placeholder="请输入用户姓名">
+                    </div>
+                    <div class="flex items-center gap-3 col-span-2">
+                        <label class="text-[13px] text-gray-600 shrink-0">转账金额:</label>
+                        <div class="flex items-center w-full gap-2">
+                            <input type="text" class="filter-input" placeholder="最低金额">
+                            <span class="text-gray-400 text-xs">至</span>
+                            <input type="text" class="filter-input" placeholder="最高金额">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 col-span-1">
+                        <label class="text-[13px] text-gray-600 shrink-0">转账状态:</label>
+                        <select class="filter-select">
+                            <option>全部</option>
+                            <option>转账成功</option>
+                            <option>转账失败</option>
+                            <option>处理中</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-3 col-span-2">
+                        <label class="text-[13px] text-gray-600 shrink-0">申请日期:</label>
+                        <div class="flex items-center w-full gap-2">
+                            <input type="text" class="filter-input" placeholder="开始日期">
+                            <span class="text-gray-400 text-xs">到</span>
+                            <input type="text" class="filter-input" placeholder="结束日期">
+                        </div>
+                    </div>
+                    <div class="col-span-2 flex items-center justify-start gap-3">
+                        <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-6 py-2 rounded text-[13px] transition-colors shadow-sm">搜索</button>
+                        <button class="bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-6 py-2 rounded text-[13px] transition-colors shadow-sm">重置</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 pt-5 pb-4 border-b border-gray-100">
+                    <div class="flex items-center justify-between gap-4 flex-wrap">
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <button onclick="openTransferModal()" class="inline-flex items-center px-3 py-1 rounded-md bg-[#d1a84f] text-white text-xs font-semibold change-highlight hover:bg-primaryBtnHover transition-colors">内转转账</button>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-5 py-2 rounded text-[13px] transition-colors shadow-sm">报表导出</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrap overflow-x-auto">
+                    <table class="w-full record-table min-w-[1400px]">
+                        <thead>
+                            <tr>
+                                <th>转出账户</th>
+                                <th>转出用户</th>
+                                <th>转入账户</th>
+                                <th>转入用户</th>
+                                <th class="change-highlight">转账金额</th>
+                                <th>转出单号</th>
+                                <th>转入单号</th>
+                                <th>转账状态</th>
+                                <th>申请时间(S)</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="account-chip chip-live">美分</span><span class="account-chip chip-commission">佣金</span>8300184</td>
+                                <td>景志敏</td>
+                                <td><span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>8100324</td>
+                                <td>景志敏</td>
+                                <td class="change-highlight">1,125.00USD</td>
+                                <td>OUT_925279955741314450</td>
+                                <td>IN_925279955720342550</td>
+                                <td class="status-success">转账成功</td>
+                                <td>2026-08-04 15:00:20</td>
+                                <td><button onclick="openTransferDetailModal('detail_1')" class="px-3 py-1 rounded bg-[#d1a84f] text-white hover:bg-primaryBtnHover transition-colors">查看详情</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="account-chip chip-demo">标准</span><span class="account-chip chip-commission">佣金</span>8350104</td>
+                                <td>test-测试小何</td>
+                                <td><span class="account-chip chip-demo">标准</span><span class="account-chip chip-trade">交易</span>8150105</td>
+                                <td>test-测试小何</td>
+                                <td class="change-highlight">10.00USD</td>
+                                <td>OUT_893436878825113770</td>
+                                <td>IN_893436878276726268</td>
+                                <td class="status-success">转账成功</td>
+                                <td>2026-05-08 18:06:57</td>
+                                <td><button onclick="openTransferDetailModal('detail_2')" class="px-3 py-1 rounded bg-[#d1a84f] text-white hover:bg-primaryBtnHover transition-colors">查看详情</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="account-chip chip-demo">标准</span><span class="account-chip chip-trade">交易</span>8150114</td>
+                                <td>测试小何</td>
+                                <td><span class="account-chip chip-demo">标准</span><span class="account-chip chip-trade">交易</span>8150111</td>
+                                <td>测试小何</td>
+                                <td class="change-highlight">400.00USD</td>
+                                <td>OUT_875273148629519344</td>
+                                <td>IN_875273148600156214</td>
+                                <td class="status-success">转账成功</td>
+                                <td>2026-03-19 15:11:08</td>
+                                <td><button onclick="openTransferDetailModal('detail_3')" class="px-3 py-1 rounded bg-[#d1a84f] text-white hover:bg-primaryBtnHover transition-colors">查看详情</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>1810105</td>
+                                <td>Test Amy</td>
+                                <td><span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>1810103</td>
+                                <td>Test Amy</td>
+                                <td class="change-highlight">6.00USD</td>
+                                <td>OUT_837250233216796339</td>
+                                <td>IN_837250233216794800</td>
+                                <td class="status-success">转账成功</td>
+                                <td>2025-12-04 17:01:38</td>
+                                <td><button onclick="openTransferDetailModal('detail_4')" class="px-3 py-1 rounded bg-[#d1a84f] text-white hover:bg-primaryBtnHover transition-colors">查看详情</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><span class="account-chip chip-live">美分</span><span class="account-chip chip-commission">佣金</span>8310102</td>
+                                <td>Test Amy</td>
+                                <td><span class="account-chip chip-live">美分</span><span class="account-chip chip-trade">交易</span>1810103</td>
+                                <td>Test Amy</td>
+                                <td class="change-highlight">7.00USD</td>
+                                <td>OUT_837248714950052973</td>
+                                <td>IN_837248714950050224</td>
+                                <td class="status-failed">转账失败</td>
+                                <td>2025-12-04 16:55:36</td>
+                                <td><button onclick="openTransferDetailModal('detail_5')" class="px-3 py-1 rounded bg-[#d1a84f] text-white hover:bg-primaryBtnHover transition-colors">查看详情</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="transferModal" class="hidden fixed inset-0 z-50 modal-mask items-center justify-center">
+        <div class="absolute inset-0" onclick="closeTransferModal()"></div>
+        <div class="relative w-[680px] max-w-[92vw] bg-white rounded-lg shadow-2xl border border-gray-200">
+            <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-[16px] font-bold text-gray-800">内部转账</h3>
+                <button onclick="closeTransferModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="px-5 py-5 space-y-5">
+                <div class="flex items-center gap-4">
+                    <label class="required-label">转出账户</label>
+                    <select id="transferFromAccount" onchange="updateTransferTargets(); updateTransferRule();" class="modal-select">
+                        <option value="">请选择</option>
+                        <option value="standard_trade">标准账户 - 交易账户 8150114</option>
+                        <option value="cent_trade">美分账户 - 交易账户 1810105</option>
+                        <option value="commission">佣金账户 - 8310102</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-4">
+                    <label class="required-label">转入用户</label>
+                    <input type="text" class="modal-input bg-gray-50 text-gray-400" value="本人其他账户" readonly>
+                </div>
+                <div class="flex items-center gap-4">
+                    <label class="required-label">转入MT账户</label>
+                    <select id="transferToAccount" onchange="updateTransferRule()" class="modal-select">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-4">
+                    <label class="required-label">转账金额</label>
+                    <div class="flex items-center w-full">
+                        <input id="transferAmount" type="number" class="modal-input rounded-r-none border-r-0" placeholder="请输入转账金额">
+                        <span class="h-10 px-4 flex items-center border border-l-0 border-gray-300 rounded-r-md text-gray-600 bg-gray-50 text-sm">USD</span>
+                    </div>
+                </div>
+                <div class="pl-[104px]">
+                    <div id="transferRuleHint" class="text-xs text-red-500">请选择转出账户与转入账户后查看金额输入规则</div>
+                    <div class="mt-2 text-xs text-gray-400">当前仅支持本人其他账户内转，可选组合为：佣金转标准、佣金转美分、标准转标准、标准转美分、美分转标准、美分转美分。</div>
+                </div>
+            </div>
+            <div class="px-5 py-4 border-t border-gray-200 flex items-center justify-center gap-3">
+                <button onclick="closeTransferModal()" class="px-7 py-2 rounded border border-gray-300 bg-white text-gray-600 text-sm hover:bg-gray-50 transition-colors">取消</button>
+                <button class="px-7 py-2 rounded bg-primaryBtn text-white text-sm hover:bg-primaryBtnHover transition-colors">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="transferDetailModal" class="hidden fixed inset-0 z-50 modal-mask items-center justify-center">
+        <div class="absolute inset-0" onclick="closeTransferDetailModal()"></div>
+        <div class="relative w-[760px] max-w-[92vw] bg-white rounded-lg shadow-2xl border border-gray-200">
+            <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-[16px] font-bold text-gray-800">详情</h3>
+                <button onclick="closeTransferDetailModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="px-5 py-5">
+                <div class="text-[15px] font-bold text-gray-800 mb-5">转账信息</div>
+                <div class="detail-dialog-grid">
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">转账状态</div>
+                        <div id="detailStatusValue" class="detail-dialog-value"></div>
+                    </div>
+                    <div></div>
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">转出单号</div>
+                        <div id="detailOutOrderNo" class="detail-dialog-value"></div>
+                    </div>
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">转出账户</div>
+                        <div id="detailOutAccount" class="detail-dialog-value"></div>
+                    </div>
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">转入单号</div>
+                        <div id="detailInOrderNo" class="detail-dialog-value"></div>
+                    </div>
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">转入账户</div>
+                        <div id="detailInAccount" class="detail-dialog-value"></div>
+                    </div>
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">转账金额</div>
+                        <div id="detailAmount" class="detail-dialog-value"></div>
+                    </div>
+                    <div class="detail-dialog-item">
+                        <div class="detail-dialog-label">申请时间</div>
+                        <div id="detailApplyTime" class="detail-dialog-value"></div>
+                    </div>
+                    <div class="detail-dialog-item detail-dialog-full">
+                        <div class="detail-dialog-label">原因</div>
+                        <div id="detailReason" class="detail-dialog-value"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

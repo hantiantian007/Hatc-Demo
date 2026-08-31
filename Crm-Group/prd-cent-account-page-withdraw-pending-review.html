@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待审核出金页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】待审核出金</h1>
+            <div class="flex gap-3">
+                <a href="admin-withdraw-pending-review.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">待审核出金页面</span>因接入美分账户而新增或调整的需求。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">筛选条件</td><td>添加<span class="highlight">MT类型</span>筛选。</td></tr>
+                <tr><td class="font-medium">列表字段</td><td>增加<span class="highlight">MT类型</span>字段。</td></tr>
+                <tr><td class="font-medium">汇总信息</td><td>顶部汇总栏展示总笔数与<span class="highlight">出金金额：合计$：200.00（USD：100.00、USC：10000.00）</span>；其中括号内用于分别说明 <span class="highlight">USD</span> 账户出金金额与 <span class="highlight">USC</span> 账户出金金额。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. MT类型筛选是否支持标准账户 / 美分账户区分。</td></tr>
+                <tr><td>2. MT账号列是否仅保留账号与 MT分组，未重复展示账户类型。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开户申请 - CRM-HK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #eef2f6 0%, #ffffff 100%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            transform: perspective(500px) rotateX(60deg) scale(2);
+            transform-origin: center top;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-hidden">
+    <div class="bg-pattern"></div>
+
+    <header class="w-full px-8 py-4 flex justify-between items-center z-10 relative">
+        <a href="login.html" class="flex items-center gap-2">
+            <div class="text-2xl font-black text-[#1e3a8a] tracking-wider">HATC</div>
+        </a>
+        <div class="flex items-center gap-3">
+            <button type="button" class="text-sm text-gray-700 cursor-pointer bg-white px-3 py-1.5 rounded border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors" onclick="openPrd()">
+                <i class="fa-solid fa-file-lines mr-1 text-[#d4af37]"></i> PRD
+            </button>
+            <div class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer bg-white px-3 py-1.5 rounded border border-gray-200 shadow-sm">
+                <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="w-5 h-auto rounded-sm">
+                <span>简体中文</span>
+                <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center w-full max-w-6xl mx-auto px-4 z-10 relative">
+        <div class="w-full flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-24">
+            <div class="hidden md:flex flex-1 justify-center relative">
+                <div class="relative w-full max-w-md h-[400px] flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#1e3a8a]/10 to-transparent rounded-full blur-3xl"></div>
+                    <div class="relative z-10 w-64 h-80 bg-gradient-to-br from-[#d4af37] to-[#fcd574] rounded-lg shadow-2xl transform -rotate-6 flex items-center justify-center border-4 border-white/50">
+                        <div class="w-48 h-64 bg-white/90 backdrop-blur rounded shadow-inner p-4 flex flex-col gap-3 transform rotate-6 translate-x-8 -translate-y-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 mb-2"><i class="fa-solid fa-user text-xl"></i></div>
+                            <div class="h-3 w-full bg-gray-200 rounded"></div>
+                            <div class="h-3 w-3/4 bg-gray-200 rounded"></div>
+                            <div class="h-3 w-5/6 bg-gray-200 rounded"></div>
+                            <div class="mt-auto h-8 w-full bg-[#fcd574]/30 rounded border border-[#fcd574]/50"></div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-10 left-10 w-20 h-20 bg-white rounded-xl shadow-xl flex items-center justify-center z-20">
+                        <i class="fa-solid fa-shield-halved text-3xl text-[#d4af37]"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full max-w-[460px]">
+                <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 sm:p-10 border border-gray-100">
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">开户申请</h2>
+                        <a href="login.html" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">返回登录</a>
+                    </div>
+
+                    <form class="space-y-5" onsubmit="return false;">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">邮箱</label>
+                            <input type="email" placeholder="请输入邮箱" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">设置密码</label>
+                            <input type="password" placeholder="请输入密码" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">确认密码</label>
+                            <input type="password" placeholder="请再次输入密码" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">邀请码（可选）</label>
+                            <input type="text" placeholder="请输入邀请码" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#fcd574] focus:ring-2 focus:ring-[#fcd574]/20 transition-colors text-sm">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="button" onclick="handleSubmit()" class="w-full py-3.5 bg-[#fcd574] hover:bg-[#fbc543] text-gray-900 font-bold rounded-lg transition-colors shadow-sm text-sm">
+                                提交申请
+                            </button>
+                        </div>
+                        <div class="text-xs text-gray-500 leading-relaxed">
+                            提交后将进入后台审核，审核通过后方可登录。
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-8 right-8 z-50">
+        <div class="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-700 cursor-pointer hover:scale-110 transition-transform border border-gray-100">
+            <i class="fa-solid fa-headset text-xl"></i>
+        </div>
+    </div>
+
+    <div id="prdOverlay" class="fixed inset-0 bg-black/40 hidden z-[60]" onclick="closePrd()"></div>
+    <aside id="prdDrawer" class="fixed top-0 right-0 h-full w-[860px] max-w-[92vw] bg-white shadow-2xl translate-x-full transition-transform duration-200 z-[70] flex flex-col">
+        <div class="h-14 px-5 border-b border-gray-200 flex items-center justify-between">
+            <div class="font-bold text-gray-900">PRD</div>
+            <button type="button" class="w-9 h-9 rounded hover:bg-gray-100 text-gray-600" onclick="closePrd()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <iframe id="prdFrame" class="flex-1 w-full" src="prd-account-registration.html"></iframe>
+    </aside>
+
+    <script>
+        function handleSubmit() {
+            window.location.href = 'login.html';
+        }
+
+        function openPrd() {
+            const overlay = document.getElementById('prdOverlay');
+            const drawer = document.getElementById('prdDrawer');
+            const frame = document.getElementById('prdFrame');
+            frame.src = 'prd-account-registration.html?ts=' + Date.now();
+            overlay.classList.remove('hidden');
+            drawer.classList.remove('translate-x-full');
+        }
+
+        function closePrd() {
+            const overlay = document.getElementById('prdOverlay');
+            const drawer = document.getElementById('prdDrawer');
+            overlay.classList.add('hidden');
+            drawer.classList.add('translate-x-full');
+        }
+    </script>
+</body>
+</html>
+

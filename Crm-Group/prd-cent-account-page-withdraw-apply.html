@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出金申请页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】出金申请</h1>
+            <div class="flex gap-3">
+                <a href="client-withdraw-apply-cent-account.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">出金申请页面</span>因接入美分账户而新增或调整的需求。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">出金账号展示账户类型</td><td>页面需明确显示当前出金账号属于<span class="highlight">标准账户 / 佣金账户 / 美分账户</span>中的哪一种。</td></tr>
+                <tr><td class="font-medium">单位自动切换</td><td>标准账户与<span class="highlight">佣金账户</span>余额展示 <span class="highlight">USD/美元</span>；美分账户余额展示 <span class="highlight">USC/美分</span>。</td></tr>
+                <tr><td class="font-medium">余额区域联动</td><td>余额、可用余额、出金中、未绑定奖励等展示单位需跟随账号类型变化；<span class="highlight">佣金账户示例数据需与出金管理页的佣金口径一致</span>，<span class="highlight">美分账户示例数据需与出金管理页保持一致</span>。</td></tr>
+                <tr><td class="font-medium">金额输入规则</td><td>三类账户的<span class="highlight">出金金额统一按 USD/美元 输入</span>，并统一支持输入到<span class="highlight">小数点后 2 位</span>。</td></tr>
+                <tr><td class="font-medium">美分账户校验</td><td>当账号类型为美分账户时，前端仍按 USD/美元 接收出金金额，支持输入到<span class="highlight">小数点后 2 位</span>，系统按 <span class="highlight">1 USD = 100 USC</span> 的口径换算并校验可出金额。</td></tr>
+                <tr><td class="font-medium">支付方式联动</td><td>支付方式、汇率、到账金额的计算统一基于用户输入的 USD/美元 金额进行联动。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium">单位规则</td><td><span class="highlight">标准账户</span> 与 <span class="highlight">佣金账户</span> 的余额相关字段按 <span class="highlight">USD/美元</span> 展示；美分账户的余额相关字段按 <span class="highlight">USC/美分</span> 展示；出金金额输入框统一按 USD/美元 展示；<span class="highlight">美分账户右侧辅助提示中的可出金金额</span> 按 <span class="highlight">USC</span> 展示，并补充等值 <span class="highlight">USD</span> 说明。</td></tr>
+                <tr><td class="font-medium">输入精度规则</td><td><span class="highlight">标准账户</span>、<span class="highlight">佣金账户</span>、<span class="highlight">美分账户</span> 的出金金额均支持输入到<span class="highlight">小数点后 2 位美元</span>。</td></tr>
+                <tr><td class="font-medium">精度与示例数据</td><td><span class="highlight">佣金账户</span> 的余额、可用余额、出金中、未绑定奖励等字段按 <span class="highlight">4 位小数</span> 展示；<span class="highlight">美分账户</span> 在余额区的 <span class="highlight">余额 / 可用余额 / 出金中 / 未绑定奖励</span> 统一按 <span class="highlight">2 位小数</span> 展示；当前原型示例需与出金管理页保持同口径，其中佣金账户按 <span class="highlight">125.4012 USD/美元</span> 展示，美分账户按 <span class="highlight">12,540.12 USC/美分</span> 展示，<span class="highlight">不再补充等值美元数据</span>。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 从出金管理页带参进入后，标准账户、佣金账户、美分账户的账号类型、单位和余额口径是否正确。</td></tr>
+                <tr><td>2. 标准账户、佣金账户、美分账户的出金金额输入框是否都支持输入到小数点后 2 位美元。</td></tr>
+                <tr><td>3. 辅助提示是否会随账户类型正确切换，且美分账户的可出金金额已展示为 USC，并补充等值 USD 说明。</td></tr>
+                <tr><td>4. 美分账户场景下，输入美元金额后到账金额计算是否正常。</td></tr>
+                <tr><td>5. 切换支付方式时，页面联动是否保持正常。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风控与运营报表 PRD - 盈亏报表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#C19B5E', secondary: '#A07D45' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .table-cell-nowrap { white-space: nowrap; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- 头部信息 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border-t-4 border-primary">
+            <h1 class="text-2xl font-bold text-gray-900">风控与运营报表 PRD (盈亏报表)</h1>
+        </div>
+
+        <!-- 全局交互规范 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 border-b pb-3 mb-6"><i class="fas fa-layer-group text-primary mr-2"></i>全局交互与数据规范</h2>
+            
+            <div class="space-y-6">
+                <!-- 1. 架构与权限 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-sitemap text-gray-400 mr-2"></i>1. 左右联动架构与数据权限控制</h3>
+                    <p class="text-sm text-gray-600 mb-3">放弃传统的复杂下拉表单筛选，采用左右分栏联动设计：</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong class="text-gray-900">左侧关系树权限控制</strong>：展示内容严格受登录角色权限控制。
+                            <ul class="list-circle pl-5 mt-1 text-gray-600">
+                                <li><strong>管理员账号</strong>：可查看全平台完整的代理及直客树状层级。</li>
+                                <li><strong>代理账号</strong>：左侧关系树顶部根节点为其本人，仅能查看自己及其旗下发展的各级下级代理与直客数据，无法越权查看其他团队信息。</li>
+                            </ul>
+                        </li>
+                        <li><strong class="text-gray-900">右侧数据联动显示</strong>：点击左侧关系树的任意节点（代理或直客）后，右侧数据面板必须实时联动更新。上方汇总卡片动态变更为“当前选中节点及其所有下级（伞下）”的资金汇总数据。</li>
+                        <li><strong class="text-gray-900">右侧数据列表呈现</strong>：右侧表格取消嵌套展开，改为扁平化列表。表格第一行固定展示当前选中节点自身的数据，下方列表平铺展示该节点的直属下级。</li>
+                    </ul>
+                </div>
+
+                <!-- 2. 数据模式 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-clock text-gray-400 mr-2"></i>2. 数据模式切换 (Mode Switcher)</h3>
+                    <p class="text-sm text-gray-600 mb-3">报表统一支持在【实时数据】与【历史快照】间切换：</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong class="text-gray-900">实时数据模式下</strong>：时间选择器置灰不可用。展示文案变更为 <code>实时统计 (本月1日至当前)</code>。系统强制按本月维度聚合流水数据。</li>
+                        <li><strong class="text-gray-900">历史快照模式下</strong>：必须选择时间范围（支持到天）。<span class="text-primary font-medium">默认时间筛选条件为：昨日（Yesterday）</span>。</li>
+                    </ul>
+                </div>
+
+                <!-- 3. 底层数据逻辑 -->
+                <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-3 flex items-center"><i class="fas fa-database text-gray-400 mr-2"></i>3. 底层数据架构与获取逻辑</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong class="text-gray-900">触发机制 (被动刷新)</strong>：废弃自动推流，采用被动查询。仅在首次加载、切换节点、切换时间/模式、或手动点击「刷新数据」按钮时拉取数据，加载时需展示 Loading 遮罩。</li>
+                        <li><strong class="text-gray-900">实时流水拼接 (Lambda架构)</strong>：实时模式下的流水型数据 = <code>CRM 历史快照底座 (本月1日至昨日)</code> + <code>MT5 API 实时拉取的今日增量明细</code>，并在后端内存相加。</li>
+                        <li><strong class="text-gray-900">伞下宏观汇总</strong>：右侧顶部卡片的伞下汇总数据，必须利用每日凌晨定时任务算好的“昨日伞下快照总和” + “MT5 组级 API 获取的今日宏观增量”进行拼接，<span class="text-red-600 font-medium">严禁实时遍历递归几千名伞下用户的明细</span>。</li>
+                    </ul>
+                </div>
+
+                <!-- 4. 数据防线 -->
+                <div class="bg-red-50 rounded-md p-4 border border-red-100">
+                    <h3 class="font-bold text-red-800 mb-3 flex items-center"><i class="fas fa-shield-alt text-red-500 mr-2"></i>4. 数据准确性兜底防线 (核心红线)</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong class="text-gray-900">强对账机制</strong>：每日生成快照时，必须通过绝对资金公式 <code>(今日0点净值-昨日0点净值) - (昨日净入金) + 昨日信用变动</code> 校验流水累加总额，若有尾差必须触发报警。</li>
+                        <li><strong class="text-gray-900">MT5 绝对时区</strong>：所有的定时任务触发、流水切片、前端时间筛选，必须 100% 强制采用 <code>MT5 Server Time</code>，忽略本地服务器或浏览器时区。</li>
+                        <li><strong class="text-gray-900">强制重算入口</strong>：需在后端或隐藏页面提供“强制重新同步指定月份数据”的 API/按钮，用于应对 MT5 管理员手动修改历史订单导致的数据不一致问题。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 净值报表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-shield-alt text-primary mr-2"></i>盈亏报表 (P/L Report)</h2>
+                <a href="admin-report-pnl-1.html" target="_blank" class="text-primary hover:text-secondary text-sm font-medium">查看原型 <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+            
+            <p class="text-sm text-gray-600 mb-4"><strong>业务目标：</strong>核心业绩监控页面，用于多维度（历史平仓+实时浮动）查看伞下代理及客户的整体盈亏状况及交易成本。</p>
+
+            
+            <h3 class="font-medium text-gray-800 mb-2 text-sm">核心字段与计算公式</h3>
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm text-left border border-gray-200">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="border-b py-2 px-3">页面显示字段</th>
+                            <th class="border-b py-2 px-3">数据来源</th>
+                            <th class="border-b py-2 px-3">定义与计算方式 (遵循 MT5 标准)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-2 px-3 font-medium">账号/名称</td>
+                            <td class="py-2 px-3">CRM 账户系统</td>
+                            <td class="py-2 px-3">MT5 交易账号及其在 CRM 中绑定的客户/代理真实姓名。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">净值 (Equity)</td>
+                            <td class="py-2 px-3">MT5 API</td>
+                            <td class="py-2 px-3">账户当前的绝对清算价值。<br>计算公式：<code>结余 + 信用 + 浮动盈亏 + 过夜利息 + 手续费 + 佣金</code>。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">结余 (Balance)</td>
+                            <td class="py-2 px-3">MT5 API</td>
+                            <td class="py-2 px-3">账户的实际可用现金余额（已结平仓盈亏，但不含未平仓浮动数据与信用赠金）。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium text-primary">浮动盈亏 (Profit)</td>
+                            <td class="py-2 px-3">MT5 API</td>
+                            <td class="py-2 px-3">当前所有未平仓订单基于实时市场行情的纯价格波动盈亏总和。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">信用 (Credit)</td>
+                            <td class="py-2 px-3">MT5 API</td>
+                            <td class="py-2 px-3">账户当前拥有的信用额度（通常为入金赠金、信用补点等）。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">平仓手数 (Closed Lots)</td>
+                            <td class="py-2 px-3">MT5 历史订单</td>
+                            <td class="py-2 px-3">选定时间范围内，所有已平仓订单的交易总手数。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">平仓笔数 (Closed Deals)</td>
+                            <td class="py-2 px-3">MT5 历史订单</td>
+                            <td class="py-2 px-3">选定时间范围内，所有已平仓订单的总笔数。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">手续费 (Fee)</td>
+                            <td class="py-2 px-3">MT5 历史订单</td>
+                            <td class="py-2 px-3">选定时间范围内，所有已平仓订单产生的手续费总计。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">佣金 (Commission)</td>
+                            <td class="py-2 px-3">MT5 历史订单</td>
+                            <td class="py-2 px-3">选定时间范围内，所有已平仓订单产生的代理佣金总计。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium">过夜利息 (Swap)</td>
+                            <td class="py-2 px-3">MT5 历史/实时订单</td>
+                            <td class="py-2 px-3">选定时间范围内，订单因跨日持仓而产生的隔夜利息总和。</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 px-3 font-medium text-primary">平仓盈亏 (Closed Profit)</td>
+                            <td class="py-2 px-3">MT5 历史订单</td>
+                            <td class="py-2 px-3">选定时间范围内，所有已平仓订单的纯价格波动盈亏总和。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- 3. QA 测试用例 (Test Cases) -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-bold text-gray-900 border-b pb-3 mb-6"><i class="fas fa-vial text-primary mr-2"></i>核心测试用例 (QA Test Cases)</h2>
+            
+            <p class="text-sm text-gray-600 mb-4">以下用例覆盖了 P0/P1 级别的绝对红线场景，测试团队必须确保所有场景通过。</p>
+
+            <div class="space-y-6">
+                <!-- 模块一：权限 -->
+                <div class="border border-gray-200 rounded-md overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 font-bold text-gray-800 text-sm flex items-center">
+                        <i class="fas fa-lock text-red-500 mr-2"></i> 模块一：关系树与数据权限控制 (P0 - 绝对红线)
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-white text-gray-500 text-xs border-b border-gray-100">
+                                <tr>
+                                    <th class="py-2 px-3 min-w-[120px]">用例 ID</th>
+                                    <th class="py-2 px-3 min-w-[150px]">测试场景</th>
+                                    <th class="py-2 px-3 min-w-[200px]">前置条件 & 操作步骤</th>
+                                    <th class="py-2 px-3 min-w-[250px]">预期结果</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">AUTH-01</td>
+                                    <td class="py-2 px-3 font-medium">代理权限越权隔离</td>
+                                    <td class="py-2 px-3">登录普通代理(节点A) -> 尝试通过 URL 或接口强行请求平行代理(节点B)数据。</td>
+                                    <td class="py-2 px-3 text-red-600 font-medium">任何试图获取非伞下节点数据的 API 请求必须返回 403，绝不能发生越权泄漏。</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">AUTH-02</td>
+                                    <td class="py-2 px-3 font-medium">左右联动与下钻</td>
+                                    <td class="py-2 px-3">点击左侧关系树的某个“下级代理X”。</td>
+                                    <td class="py-2 px-3">汇总卡片变为X的伞下汇总；列表第一行是X本人；下方列表仅展示X的直属子级。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 模块二：时间 -->
+                <div class="border border-gray-200 rounded-md overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 font-bold text-gray-800 text-sm flex items-center">
+                        <i class="fas fa-calendar-alt text-blue-500 mr-2"></i> 模块二：数据模式与时区校验 (P1)
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-white text-gray-500 text-xs border-b border-gray-100">
+                                <tr>
+                                    <th class="py-2 px-3 min-w-[120px]">用例 ID</th>
+                                    <th class="py-2 px-3 min-w-[150px]">测试场景</th>
+                                    <th class="py-2 px-3 min-w-[200px]">前置条件 & 操作步骤</th>
+                                    <th class="py-2 px-3 min-w-[250px]">预期结果</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">TIME-01</td>
+                                    <td class="py-2 px-3 font-medium">历史快照默认时间</td>
+                                    <td class="py-2 px-3">进入盈亏报表 -> 切换至【历史快照】模式。</td>
+                                    <td class="py-2 px-3">时间选择器默认值必须精确回显为 <strong>昨日 (Yesterday)</strong> 的日期。</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">TIME-02</td>
+                                    <td class="py-2 px-3 font-medium">MT5 绝对时区边界</td>
+                                    <td class="py-2 px-3">本地电脑为北京时间 -> 在 MT5 Server Time 的 23:59:59 执行流水。</td>
+                                    <td class="py-2 px-3">该流水必须严格按 MT5 的时间戳进行归属，不允许因本地电脑时区导致跨日错乱。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 模块三：计算 -->
+                <div class="border border-gray-200 rounded-md overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 font-bold text-gray-800 text-sm flex items-center">
+                        <i class="fas fa-calculator text-green-500 mr-2"></i> 模块三：核心计算公式与防线校验 (P0 - 资金安全)
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-white text-gray-500 text-xs border-b border-gray-100">
+                                <tr>
+                                    <th class="py-2 px-3 min-w-[120px]">用例 ID</th>
+                                    <th class="py-2 px-3 min-w-[150px]">测试场景</th>
+                                    <th class="py-2 px-3 min-w-[200px]">前置条件 & 操作步骤</th>
+                                    <th class="py-2 px-3 min-w-[250px]">预期结果</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">CALC-01</td>
+                                    <td class="py-2 px-3 font-medium">净值公式绝对校验</td>
+                                    <td class="py-2 px-3">选取包含所有资金字段的账户，比对 API 返回与页面展示。</td>
+                                    <td class="py-2 px-3">页面净值必须绝对等于：<code>结余 + 信用 + 浮动盈亏 + 过夜利息 + 手续费 + 佣金</code>。</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">CALC-02</td>
+                                    <td class="py-2 px-3 font-medium">宏观汇总防超载</td>
+                                    <td class="py-2 px-3">点击一个伞下拥有 >5000 人的大代理节点。</td>
+                                    <td class="py-2 px-3 text-red-600 font-medium">必须在 2 秒内响应。严禁触发遍历 5000 人的明细循环查询。</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-2 px-3 font-mono text-xs">CALC-03</td>
+                                    <td class="py-2 px-3 font-medium">强对账报警防线</td>
+                                    <td class="py-2 px-3">后端人为制造昨日入金的脏数据 -> 触发凌晨快照生成任务。</td>
+                                    <td class="py-2 px-3">绝对资金公式校验失败，系统必须阻断或触发飞书/邮件报警。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

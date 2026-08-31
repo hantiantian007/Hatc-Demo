@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美分活动规则与技术说明 - PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .golden-accent { color: #C19B5E; }
+        .bg-golden { background-color: #C19B5E; }
+        .border-golden { border-color: #C19B5E; }
+        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <i class="fa-solid fa-gift golden-accent"></i> 
+                    先锋一号+美分账户联名奖励计划 (活动逻辑说明)
+                </h1>
+                <p class="text-gray-500 mt-2">基于最新规则推演的核心业务逻辑，作为研发与测试的基础依据。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                <i class="fa-solid fa-database text-gray-500"></i> 底层参数配置 (无前端 UI)
+            </div>
+        </div>
+
+        <!-- 研发红线警告 -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-red-500 mt-0.5"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-bold text-red-800">核心研发红线 (必读)</h3>
+                    <div class="mt-1 text-sm text-red-700 space-y-1">
+                        <p>1. <strong>账号唯一性绑定锁定</strong>：客户名下可能存在多个 MT 账号（含标准账户与美分账户），系统必须以<strong>“该客户名下第一个满足条件发生交易（开仓）的 MT 账号”</strong>作为唯一绑定账号。一旦绑定，该客户名下其他账号产生的交易不再计入此活动奖励。</p>
+                        <p>2. <strong>高频并发控制</strong>：“开仓即返”涉及 MT5 流水的高频读取与 CRM 余额的写入。必须建立防重机制，确保同一笔订单（Ticket ID）不会被重复派发奖励，且每日派发次数严格限制为 5 次（最高上限）。</p>
+                        <p>3. <strong>先锋一号系统识别规则</strong>：CRM 系统必须通过 MT5 交易记录的<strong>注释 (Comment) 字段</strong>来识别订单来源。仅当订单注释内容以 <code>SA_TA</code> 或 <code>STAR#%</code> 开头时，方可判定为“先锋一号”产生的有效活动订单，其余订单一律抛弃。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 业务流程 (正向与异常) -->
+        <div class="card mb-6">
+            <h2 class="text-lg font-bold border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-route golden-accent"></i> 业务闭环与异常流程推演
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 正向流程 -->
+                <div class="bg-green-50/50 p-4 rounded-lg border border-green-100">
+                    <h3 class="font-bold text-sm text-green-800 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i> 正向主流程 (Happy Path)
+                    </h3>
+                    <ol class="relative border-l border-green-200 ml-3 space-y-4">
+                        <li class="pl-4">
+                            <div class="absolute w-2 h-2 bg-green-500 rounded-full mt-1.5 -left-1 border border-white"></div>
+                            <h4 class="text-sm font-bold text-gray-800">1. 入金与资格判定</h4>
+                            <p class="text-xs text-gray-600 mt-1">客户进行单笔入金，系统依据入金金额将其划分至对应的活动档位（如单笔 1000 美元对应 10W 美分，单量门槛 0.1 手）。</p>
+                        </li>
+                        <li class="pl-4">
+                            <div class="absolute w-2 h-2 bg-green-500 rounded-full mt-1.5 -left-1 border border-white"></div>
+                            <h4 class="text-sm font-bold text-gray-800">2. 账号自动绑定</h4>
+                            <p class="text-xs text-gray-600 mt-1">客户使用名下任意 MT 账号（含标准/美分）进行首笔满足达标条件的开仓交易。系统捕获到该动作，将该 MT 账号作为参与活动的唯一标识并锁定。</p>
+                        </li>
+                        <li class="pl-4">
+                            <div class="absolute w-2 h-2 bg-green-500 rounded-full mt-1.5 -left-1 border border-white"></div>
+                            <h4 class="text-sm font-bold text-gray-800">3. 订单监控与达标判定 (开仓即返)</h4>
+                            <p class="text-xs text-gray-600 mt-1">客户使用先锋一号开仓，系统监听该 MT 账号的开仓记录。当某笔订单单量 ≥ 当前档位门槛时，开仓即触发派发环节。系统自动将 USDC 奖励金发放至客户 CRM 佣金账户，并将当日派发次数 +1。</p>
+                        </li>
+                        <li class="pl-4">
+                            <div class="absolute w-2 h-2 bg-green-500 rounded-full mt-1.5 -left-1 border border-white"></div>
+                            <h4 class="text-sm font-bold text-gray-800">4. 满足持仓条件与系统平仓</h4>
+                            <p class="text-xs text-gray-600 mt-1">订单开仓后，先锋一号系统将持续监控。当该笔订单持仓时间满 <strong>5 分钟</strong>后，先锋一号系统将自动执行平仓操作，完成整个业务闭环。</p>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- 异常流程 -->
+                <div class="bg-red-50/50 p-4 rounded-lg border border-red-100">
+                    <h3 class="font-bold text-sm text-red-800 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 异常与边界流程 (Edge Cases)
+                    </h3>
+                    <div class="space-y-4">
+                                <div class="bg-red-50 p-3 rounded shadow-sm border border-red-200 relative overflow-hidden">
+                                    <div class="absolute top-0 right-0 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-bl">待业务确认</div>
+                                    <h4 class="text-xs font-bold text-red-800 mb-1"><i class="fa-solid fa-shield-halved mr-1"></i>异常 1：出金降级 / 恶意套利防范</h4>
+                            <p class="text-xs text-red-600"><span class="font-semibold">场景：</span>客户单笔入金 20,000 美元触发最高档，随后立即出金 19,000 美元，试图用 1,000 美元本金骗取每笔 200 USDC 的最高奖励。</p>
+                            <p class="text-xs text-gray-700 mt-1.5"><span class="font-semibold text-gray-800">处理：</span>活动账号在触发任何出金动作（包含内转转出）后，系统必须重新校验其<span class="font-bold text-red-600">当前净入金（历史总入金 - 历史总出金）</span>。若净入金低于原定档位门槛，系统自动<span class="font-bold">向下浮动（降级）</span>至符合当前净入金的奖励档位；若低于最低门槛（1000美元），则中止派发。</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-red-100">
+                            <h4 class="text-xs font-bold text-gray-800 mb-1">异常 2：更换账号交易</h4>
+                            <p class="text-xs text-gray-500"><span class="text-red-600 font-semibold">场景：</span>客户账号A完成首笔交易后，又用账号B（标准或美分）进行交易。</p>
+                            <p class="text-xs text-gray-600 mt-1"><span class="font-semibold text-gray-700">处理：</span>系统校验该 CRM 账户已锁定账号 A。账号 B 的所有交易单量均不计入奖励条件，直接抛弃。</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-red-100">
+                            <h4 class="text-xs font-bold text-gray-800 mb-1">异常 3：超出每日上限</h4>
+                            <p class="text-xs text-gray-500"><span class="text-red-600 font-semibold">场景：</span>客户单日内第 6 笔满足单量门槛的订单开仓。</p>
+                            <p class="text-xs text-gray-600 mt-1"><span class="font-semibold text-gray-700">处理：</span>触发每日 5 次防刷上限拦截，该笔及后续订单不再派发奖励，直至次日重置计数器。</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-red-100">
+                            <h4 class="text-xs font-bold text-gray-800 mb-1">异常 4：累计入金达标但单笔不达标</h4>
+                            <p class="text-xs text-gray-500"><span class="text-red-600 font-semibold">场景：</span>客户分两次入金，各 500 美元（累计 1000）。</p>
+                            <p class="text-xs text-gray-600 mt-1"><span class="font-semibold text-gray-700">处理：</span>规则严格判定“单笔入金”。由于单笔未达到 1000 美元门槛，该客户未进入奖励档位，交易不返现。</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-red-100">
+                            <h4 class="text-xs font-bold text-gray-800 mb-1">异常 5：恶意刷单及追溯</h4>
+                            <p class="text-xs text-gray-500"><span class="text-red-600 font-semibold">场景：</span>后台风控报表发现客户秒进秒出频繁刷单。</p>
+                            <p class="text-xs text-gray-600 mt-1"><span class="font-semibold text-gray-700">处理：</span>管理员可在后台手动取消该 CRM 账户的活动资格，并在 CRM 佣金账户中直接执行“扣款操作”以收回奖励金。</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-red-100">
+                            <h4 class="text-xs font-bold text-gray-800 mb-1">异常 6：未满 5 分钟提前平仓</h4>
+                            <p class="text-xs text-gray-500"><span class="text-red-600 font-semibold">场景：</span>客户在先锋一号开仓后（奖励已发），在持仓未满 5 分钟时，通过其他终端（如手机端 MT5）手动干预提前平仓。</p>
+                            <p class="text-xs text-gray-600 mt-1"><span class="font-semibold text-gray-700">处理：</span>系统判定为违规交易行为。系统自动撤回该笔订单对应的奖励金（从佣金账户扣除）；若多次发生，触发风控告警，由管理员介入处理。</p>
+                        </div>
+                        <div class="bg-white p-3 rounded shadow-sm border border-red-100">
+                            <h4 class="text-xs font-bold text-gray-800 mb-1">异常 7：非先锋一号终端开仓</h4>
+                            <p class="text-xs text-gray-500"><span class="text-red-600 font-semibold">场景：</span>客户单量满足要求，但使用了普通 MT5 手机端或其他 EA 进行开仓。</p>
+                            <p class="text-xs text-gray-600 mt-1"><span class="font-semibold text-gray-700">处理：</span>系统读取订单注释字段，发现不是以 <code>SA_TA</code> 或 <code>STAR#%</code> 开头，校验失败。该笔订单直接抛弃，不计入活动奖励范畴。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 规则解析卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card">
+                <h2 class="text-lg font-bold border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-user-lock golden-accent"></i> 账号与资格认定
+                </h2>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                        <div>
+                            <span class="font-bold text-gray-700">唯一参与资格：</span>
+                            <p class="text-gray-500">每个 CRM 账户仅限一个 MT 账号参与活动。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                        <div>
+                            <span class="font-bold text-gray-700">自动绑定逻辑：</span>
+                            <p class="text-gray-500">客户无需手动指定。当客户 CRM 账户下有多个 MT 账号（含标准账户与美分账户）时，系统以<strong>优先满足条件发生交易（开仓）</strong>的那个 MT 账号作为本次活动的唯一参与账号并自动锁定。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                        <div>
+                            <span class="font-bold text-gray-700">购买权益：</span>
+                            <p class="text-gray-500">参加活动账号，可享受首月 50$ 购买先锋一号一个月使用权。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2 class="text-lg font-bold border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sack-dollar golden-accent"></i> 入金与单量判定
+                </h2>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                        <div>
+                            <span class="font-bold text-gray-700">入金门槛判定：</span>
+                            <p class="text-gray-500">以<strong>单笔入金</strong>为准，判定客户属于哪个奖励档位（如单笔 1,000 美元对应 10W 美分档位，单量要求 0.1 手）。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                        <div>
+                            <span class="font-bold text-gray-700">开仓即返逻辑：</span>
+                            <p class="text-gray-500">不局限于“首单”。只要参与活动的 MT 账号发生交易，且<strong>该笔订单的手数（单量）</strong>达到其入金档位对应的要求，开仓即触发奖励。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                        <div>
+                            <span class="font-bold text-gray-700">先锋一号交易与识别：</span>
+                            <p class="text-gray-500">客户必须使用<strong>先锋一号</strong>系统开仓；系统通过 MT5 订单注释(Comment)字段识别来源，需以 <code>SA_TA</code> 或 <code>STAR#%</code> 开头。开仓后需持仓满 <strong>5 分钟</strong>，随后由先锋一号自动平仓。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-lg font-bold border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-money-bill-transfer golden-accent"></i> 奖励派发与风控限制
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold text-sm text-gray-700 mb-2">派发路径与频次</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-arrow-right-to-bracket text-blue-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold">派发目标账户：</span>
+                                <p class="text-gray-500">奖励金（USDC）直接发放到该客户的 <strong>CRM 佣金账户</strong>内（佣金账户本质上也是 MT 账号，通过特定分组区分）。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-ban text-orange-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold">频次与金额上限：</span>
+                                <p class="text-gray-500">每天最多派发 <strong>5 次</strong>（即最多有 5 笔满足条件的订单可获奖）。单笔最大奖励 200 USDC，每日最大奖励 1,000 USDC。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-sm text-gray-700 mb-2">风控措施</h3>
+                    <p class="text-sm text-gray-600 mb-2">系统需具备事后追溯与处罚能力：</p>
+                    <ul class="text-sm text-gray-500 space-y-1 list-disc pl-4">
+                        <li>发现恶意刷单行为，取消活动资格。</li>
+                        <li>系统管理员有权从其 CRM 账户或 MT 账号中收回已派发的奖励金。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 阶梯奖励配置表 -->
+        <div class="card overflow-x-auto no-scrollbar">
+            <h2 class="text-lg font-bold border-b border-gray-100 pb-3 mb-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-table golden-accent"></i> 奖励阶梯配置表 (数据库字典依据)
+                </div>
+                <span class="text-xs font-normal bg-gray-100 text-gray-500 px-2 py-1 rounded border border-gray-200">无需开发前端配置界面</span>
+            </h2>
+            <table class="min-w-full text-sm text-center">
+                <thead>
+                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                        <th class="px-4 py-3 font-medium whitespace-nowrap">入金门槛 (美元)</th>
+                        <th class="px-4 py-3 font-medium whitespace-nowrap">对应美分账户额度 (美分) / 标准账户同等购买力</th>
+                        <th class="px-4 py-3 font-medium whitespace-nowrap">触发奖励单量要求 (手)</th>
+                        <th class="px-4 py-3 font-medium whitespace-nowrap">单笔奖励金额 (USDC)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">1,000</td><td class="px-4 py-3">10W</td><td class="px-4 py-3">0.1</td><td class="px-4 py-3 font-medium text-green-600">20</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">2,000</td><td class="px-4 py-3">20W</td><td class="px-4 py-3">0.2</td><td class="px-4 py-3 font-medium text-green-600">40</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">3,000</td><td class="px-4 py-3">30W</td><td class="px-4 py-3">0.3</td><td class="px-4 py-3 font-medium text-green-600">60</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">4,000</td><td class="px-4 py-3">40W</td><td class="px-4 py-3">0.4</td><td class="px-4 py-3 font-medium text-green-600">80</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">5,000</td><td class="px-4 py-3">50W</td><td class="px-4 py-3">0.5</td><td class="px-4 py-3 font-medium text-green-600">100</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">6,000</td><td class="px-4 py-3">60W</td><td class="px-4 py-3">0.6</td><td class="px-4 py-3 font-medium text-green-600">120</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">7,000</td><td class="px-4 py-3">70W</td><td class="px-4 py-3">0.7</td><td class="px-4 py-3 font-medium text-green-600">140</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">8,000</td><td class="px-4 py-3">80W</td><td class="px-4 py-3">0.8</td><td class="px-4 py-3 font-medium text-green-600">160</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">9,000</td><td class="px-4 py-3">90W</td><td class="px-4 py-3">0.9</td><td class="px-4 py-3 font-medium text-green-600">180</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">10,000</td><td class="px-4 py-3">100W</td><td class="px-4 py-3">1.0</td><td class="px-4 py-3 font-medium text-green-600">200</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 bg-yellow-50/30">
+                        <td class="px-4 py-3">20,000</td><td class="px-4 py-3">200W</td><td class="px-4 py-3">1.0</td><td class="px-4 py-3 font-medium text-green-600">200</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-2 text-xs text-gray-400 italic text-right">* 表格数值请严格遵循千位符格式化规范</div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的智能交易系统订单 - CRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#C19B5E',
+                        primaryHover: '#b08a4d',
+                        sidebar: '#2A2D3A',
+                        mainBg: '#F3F4F6',
+                        darkCard: '#2D3036',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-mainBg font-sans text-gray-800 flex h-screen overflow-hidden">
+
+    <!-- 左侧侧边栏 -->
+                    <aside class="w-[240px] bg-[#282B34] text-gray-300 flex flex-col shrink-0 hidden md:flex font-sans">
+        <div class="h-[72px] flex items-center justify-center">
+            <span class="text-white font-bold text-[28px] tracking-wider">HATC</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-2 px-3 space-y-1 custom-scrollbar">
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-home w-5 text-center text-lg"></i> <span class="text-[15px]">首页</span></div>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-th w-5 text-center text-lg"></i> <span class="text-[15px]">出入金</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-columns w-5 text-center text-lg"></i> <span class="text-[15px]">佣金管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-file-alt w-5 text-center text-lg"></i> <span class="text-[15px]">活动管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-bullhorn w-5 text-center text-lg"></i> <span class="text-[15px]">动态公告</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-user-friends w-5 text-center text-lg"></i> <span class="text-[15px]">客户管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+
+            <!-- 智能交易系统 (Active Parent) -->
+            <div class="flex flex-col">
+                <a href="#" class="flex items-center justify-between px-3 py-3 text-primary bg-[#363945] rounded-lg transition-colors">
+                    <div class="flex items-center gap-3"><i class="fas fa-store w-5 text-center text-lg"></i> <span class="text-[15px] font-medium">智能交易系统</span></div>
+                    <i class="fas fa-angle-down text-xs"></i>
+                </a>
+                <div class="flex flex-col mt-1 space-y-1">
+                    <a href="client-product-list.html" class="flex items-center pl-[44px] pr-4 py-2.5 text-white bg-[#363945] rounded-lg transition-colors relative group">
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-primary rounded-r"></div>
+                        <span class="text-[14px]">智能交易系统</span>
+                    </a>
+                    <a href="admin-product-orders.html" class="flex items-center pl-[44px] pr-4 py-2.5 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors relative group">
+                        
+                        <span class="text-[14px]">订单管理</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors mt-1.5">
+                <div class="flex items-center gap-3"><i class="fas fa-chart-pie w-5 text-center text-lg"></i> <span class="text-[15px]">报表中心</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-3 text-[#8a8e99] hover:text-white hover:bg-[#363945] rounded-lg transition-colors">
+                <div class="flex items-center gap-3"><i class="fas fa-cog w-5 text-center text-lg"></i> <span class="text-[15px]">系统管理</span></div>
+                <i class="fas fa-angle-right text-xs"></i>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- 右侧主体内容 -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- 顶部导航 -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+            <div class="flex items-center gap-4 text-sm font-medium text-primary">
+                智能交易系统系统
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 border-r pr-4 border-gray-200">
+                    <a href="../index.html" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-arrow-left mr-1.5"></i> 返回看板</a>
+                    <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-3 py-1.5 bg-yellow-50 text-primary border border-yellow-100 hover:bg-yellow-100 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-project-diagram mr-1.5"></i> 查看 PRD</button>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                    <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="w-4 h-3">
+                    <span>简体中文</span> <i class="fas fa-angle-down text-xs"></i>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- 页面主内容滚动区 -->
+        <main class="flex-1 overflow-y-auto p-6 bg-mainBg">
+            <div class="w-full mx-auto bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-full">
+
+        <!-- 页面标题与操作区 -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div class="flex items-center gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">我的智能交易系统订单</h1>
+                    <p class="text-sm text-gray-500 mt-1">查看您购买的智能交易系统、托管商品及运行状态</p>
+                </div>
+                
+            </div>
+            <a href="client-product-list.html" class="px-5 py-2.5 bg-primary hover:bg-primaryHover text-white rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
+                <i class="fas fa-store"></i> 继续选购
+            </a>
+        </div>
+
+        <!-- 状态标签页 -->
+        <div class="border-b border-gray-200 mb-6">
+            <nav class="-mb-px flex space-x-8">
+                <a href="#" class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    全部订单
+                </a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    待确认 <span class="ml-1 bg-yellow-100 text-yellow-600 py-0.5 px-2 rounded-full text-xs">1</span>
+                </a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    生效中
+                </a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    已失效 / 退款
+                </a>
+            </nav>
+        </div>
+
+        <!-- 订单列表 -->
+        <div class="space-y-4">
+            
+            <!-- 订单项: 待确认 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
+                    <div class="text-sm text-gray-500">
+                        <span class="font-medium text-gray-700 mr-4">2026-06-25 14:30:22</span>
+                        订单号: ORD-20260625-8891
+                    </div>
+                    <span class="text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded text-xs font-medium border border-yellow-100 flex items-center gap-1">
+                        <i class="fas fa-clock"></i> 待确认
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-24 h-24 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg flex items-center justify-center shrink-0 relative overflow-hidden">
+                        <i class="fas fa-rocket text-3xl text-[#55B9B9] relative z-10"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-900 mb-1">先锋一号</h3>
+                        <p class="text-sm text-gray-500 mb-3">进阶版</p>
+                        <div class="text-sm text-gray-600">
+                            支付方式: <span class="font-medium">CRM 钱包余额扣除</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-gray-900 mb-1">$50,000.00</div>
+                        <p class="text-xs text-gray-400">已提交，等待后台确认并扣款</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单项: 已生效 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
+                    <div class="text-sm text-gray-500">
+                        <span class="font-medium text-gray-700 mr-4">2026-05-10 09:15:00</span>
+                        订单号: ORD-20260510-1024
+                    </div>
+                    <span class="text-green-600 bg-green-50 px-2.5 py-1 rounded text-xs font-medium border border-green-100 flex items-center gap-1">
+                        <i class="fas fa-check-circle"></i> 生效中
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-24 h-24 bg-gradient-to-r from-blue-900 to-indigo-900 rounded-lg flex items-center justify-center shrink-0 relative overflow-hidden">
+                        <i class="fas fa-chart-line text-3xl text-blue-300 relative z-10"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-900 mb-1">先锋四号</h3>
+                        <p class="text-sm text-gray-500 mb-3">按月订阅</p>
+                        <div class="text-sm text-gray-600 mb-1">
+                            支付方式: <span class="font-medium">CRM 钱包余额扣除</span>
+                        </div>
+                        <div class="text-sm text-gray-600 flex gap-4 mt-2">
+                            <span>生效日期: <span class="font-medium">2026-05-10</span></span>
+                            <span>到期日期: <span class="font-medium">2026-06-10</span></span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-gray-900 mb-2">$199.00</div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单项: 已拒绝/取消 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden opacity-75">
+                <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
+                    <div class="text-sm text-gray-500">
+                        <span class="font-medium text-gray-700 mr-4">2026-04-01 11:20:00</span>
+                        订单号: ORD-20260401-0089
+                    </div>
+                    <span class="text-red-500 bg-red-50 px-2.5 py-1 rounded text-xs font-medium border border-red-100 flex items-center gap-1">
+                        <i class="fas fa-times-circle"></i> 已拒绝/取消
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center shrink-0">
+                        <i class="fas fa-box text-3xl text-gray-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-500 mb-1">先锋一号</h3>
+                        <p class="text-sm text-gray-400 mb-3">进阶版</p>
+                        <div class="text-sm text-gray-400">
+                            支付方式: <span class="font-medium">CRM 钱包余额扣除</span>
+                        </div>
+                    </div>
+                    <div class="text-right text-gray-400">
+                        <div class="text-xl font-bold line-through mb-1">$5,000.00</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    
+            </div></main></div>
+<!-- PRD 弹窗 -->
+    <div id="prdModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="document.getElementById('prdModal').classList.add('hidden')"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-[800px] bg-gray-50 shadow-2xl transform transition-transform flex flex-col">
+            <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
+                        <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
+                    </div>
+                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 客户端我的订单</h3>
+                </div>
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-hidden bg-white">
+                <iframe src="prd-client-my-orders.html" class="w-full h-full border-0" title="PRD Document"></iframe>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
+                <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="px-6 py-2 bg-gray-900 hover:bg-black text-white rounded text-sm font-medium transition-colors shadow-sm">
+                    关闭阅读
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // 左侧菜单手风琴交互逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuParents = document.querySelectorAll('.flex.flex-col > a.flex.items-center.justify-between');
+            menuParents.forEach(parent => {
+                parent.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const submenu = this.nextElementSibling;
+                    const arrow = this.querySelector('.fa-angle-down, .fa-angle-right');
+                    
+                    if (submenu && submenu.classList.contains('flex-col')) {
+                        if (submenu.classList.contains('hidden')) {
+                            submenu.classList.remove('hidden');
+                            submenu.classList.add('flex');
+                            if(arrow) {
+                                arrow.classList.remove('fa-angle-right');
+                                arrow.classList.add('fa-angle-down');
+                            }
+                        } else {
+                            submenu.classList.add('hidden');
+                            submenu.classList.remove('flex');
+                            if(arrow) {
+                                arrow.classList.remove('fa-angle-down');
+                                arrow.classList.add('fa-angle-right');
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

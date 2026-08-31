@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出金列表页面 PRD - 美分账户</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        td { color: #4b5563; line-height: 1.75; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin: 28px 0 16px; font-size: 18px; font-weight: 700; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">【页面 PRD】出金列表</h1>
+            <div class="flex gap-3">
+                <a href="client-withdraw-record-cent-account.html" class="px-4 py-2 rounded bg-[#C19B5E] text-white text-sm">查看原型</a>
+                <a href="../index.html" class="px-4 py-2 rounded bg-gray-500 text-white text-sm">返回看板</a>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-sm text-blue-800">
+            本文档仅描述<span class="highlight">出金列表页面</span>因接入美分账户而新增或调整的需求。
+        </div>
+
+        <div class="module-title">1. 新增/调整需求</div>
+        <table>
+            <thead>
+                <tr><th width="24%">需求项</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="font-medium">增加MT账户类型</td><td>列表中增加 <span class="highlight">MT账户类型</span> 字段。</td></tr>
+                <tr><td class="font-medium">记录中体现单位</td><td>账户类型列中需明确展示账户类型：标准账户展示 <span class="highlight">标准账户</span>；美分账户展示 <span class="highlight">美分账户</span>。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 数据口径</div>
+        <table>
+            <tbody>
+                <tr><td class="font-medium">币种规则</td><td>出金列表中的 <span class="highlight">出金金额</span> 与 <span class="highlight">到账金额</span> 统一按 <span class="highlight">USD/美元</span> 展示；美分账户仅作为 <span class="highlight">MT账户类型</span> 进行识别，不再在列表金额中展示 <span class="highlight">USC/美分</span>。</td></tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 测试重点</div>
+        <table>
+            <tbody>
+                <tr><td>1. 标准账户和美分账户记录混排时，MT账号与账户类型是否已拆分清楚。</td></tr>
+                <tr><td>2. 美分账户记录是否按 USD/美元 展示出金金额与到账金额，且不再展示 USC/美分 主金额。</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

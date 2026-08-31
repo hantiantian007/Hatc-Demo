@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客户留资三期 PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-size: 14px; vertical-align: top; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; white-space: nowrap; }
+        td { color: #4b5563; }
+        .highlight { color: #C19B5E; font-weight: 600; }
+        .module-title { border-left: 4px solid #C19B5E; padding-left: 12px; margin-bottom: 16px; margin-top: 32px; font-size: 18px; font-weight: bold; color: #1f2937; }
+    </style>
+</head>
+<body class="bg-gray-50 p-8 font-sans">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-sm">
+
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h1 class="text-2xl font-bold text-gray-800">【需求文档】客户留资三期</h1>
+            <div class="flex gap-4">
+                <a href="admin-leads-list.html" class="px-4 py-2 bg-[#C19B5E] hover:opacity-90 text-white rounded text-sm transition-colors"><i class="fas fa-laptop-code mr-1"></i> 列表原型</a>
+                <a href="admin-leads-detail.html" class="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded text-sm transition-colors"><i class="fas fa-file-lines mr-1"></i> 详情原型</a>
+                <a href="../index.html" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded text-sm transition-colors"><i class="fas fa-list mr-1"></i> 返回需求看板</a>
+            </div>
+        </div>
+
+        <div class="rounded-lg border border-[#ebd9c1] bg-[#fdf8f2] p-6 mb-6">
+            <div class="flex items-start justify-between gap-6">
+                <div class="min-w-0">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#ebd9c1] text-xs font-semibold text-[#8c6b45]">
+                        <i class="fa-solid fa-bolt text-[#C19B5E]"></i>
+                        最新需求（置顶）
+                    </div>
+                    <div class="mt-3 text-lg font-bold text-gray-800">客户留资三期 - 最新变更点汇总</div>
+                    <div class="mt-1 text-sm text-gray-600 leading-7">本模块用于快速对齐本次三期迭代的关键新增与调整点；详细规则以各章节为准。</div>
+                </div>
+                <div class="hidden md:flex items-center gap-2 text-xs text-gray-500">
+                    <span class="px-2 py-1 rounded bg-white border border-gray-200">列表 PRD</span>
+                    <i class="fa-solid fa-arrow-right-long text-gray-300"></i>
+                    <span class="px-2 py-1 rounded bg-white border border-gray-200">详情 PRD</span>
+                </div>
+            </div>
+            <div class="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="rounded-lg bg-white border border-gray-200 p-5">
+                    <div class="flex items-center gap-2 font-bold text-gray-800">
+                        <span class="w-8 h-8 rounded bg-[#C19B5E]/15 border border-[#C19B5E]/30 flex items-center justify-center text-[#C19B5E]">
+                            <i class="fa-solid fa-list"></i>
+                        </span>
+                        留资列表（新增/调整）
+                    </div>
+                    <ul class="mt-3 space-y-2 text-sm text-gray-700 leading-7 list-disc pl-5">
+                        <li>新增字段：留资次数（原提交次数口径统一为留资次数）。</li>
+                        <li>客户来源：统一字段名与枚举值（销售录入 / 官网录入 / 注册页录入）。</li>
+                        <li>表头提示：客户来源旁增加提示 icon，说明“客户来源代表客户从哪里输入的留资信息”。</li>
+                        <li>线索热度：非必填，允许“暂不评估”。</li>
+                    </ul>
+                </div>
+                <div class="rounded-lg bg-white border border-gray-200 p-5">
+                    <div class="flex items-center gap-2 font-bold text-gray-800">
+                        <span class="w-8 h-8 rounded bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-600">
+                            <i class="fa-solid fa-file-pen"></i>
+                        </span>
+                        留资详情（增强可维护能力）
+                    </div>
+                    <ul class="mt-3 space-y-2 text-sm text-gray-700 leading-7 list-disc pl-5">
+                        <li>基础信息：移除国家/地区；新增并支持编辑咨询内容、信息来源。</li>
+                        <li>查询渠道：新增可编辑下拉字段（WhatsApp / Email / Zendesk / Telegram）。</li>
+                        <li>留资记录：Tab 名称带数量展示（例：留资记录（3））。</li>
+                        <li>关联账户：支持修改关联（非仅新增），并记录变更轨迹。</li>
+                        <li>状态调整：已转化/无效线索仍允许再次修改，保留完整历史轨迹。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+            <p class="text-sm text-blue-800 font-medium">本期在“客户留资二期”基础上继续做减法与细化，重点统一列表字段命名、补充销售录入字段、增强线索详情的可维护能力，并将部分历史只读字段改为可修正。</p>
+        </div>
+
+        <div class="module-title">1. 本期范围</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="40%">调整方向</th>
+                    <th width="40%">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">留资列表</td>
+                    <td>新增留资次数、优化客户来源字段展示、补充提示说明。</td>
+                    <td>主要涉及列表表头、表格字段命名及查看效率。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">销售录入弹窗</td>
+                    <td>增加其他联系方式，调整字段取舍，保留轻量录入逻辑。</td>
+                    <td>聚焦轻量录入和必要信息补充。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">线索详情</td>
+                    <td>增强基础信息维护能力、展示留资记录数量、支持状态和关联账户再次修改。</td>
+                    <td>让销售在详情页内完成更多纠偏动作。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">2. 留资列表调整</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">字段 / 交互</th>
+                    <th width="35%">调整后口径</th>
+                    <th width="45%">业务规则</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">留资次数</td>
+                    <td>列表内增加 <span class="highlight">留资次数</span>。</td>
+                    <td>表示同一客户在留资系统中的累计留资次数，按客户唯一标识聚合统计，用于识别重复留资客户。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">客户来源</td>
+                    <td>列表字段页面来源字段名称统一为 <span class="highlight">客户来源</span>。</td>
+                    <td>枚举值统一为：销售录入、官网录入、注册页录入。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">客户来源提示</td>
+                    <td>在列表表头“客户来源”旁增加提示 icon。</td>
+                    <td>鼠标移入 icon 时展示提示语：<span class="highlight">客户来源代表客户从哪里输入的留资信息</span>。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">线索热度</td>
+                    <td>改为 <span class="highlight">非必填</span>。</td>
+                    <td>未评估时显示为 <code>--</code>；录入或跟进时允许选择“暂不评估”。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">3. 销售录入弹窗调整</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">字段 / 区域</th>
+                    <th width="35%">调整后口径</th>
+                    <th width="45%">业务规则</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">弹窗名称</td>
+                    <td>按钮与弹窗标题统一调整为 <span class="highlight">销售录入</span>。</td>
+                    <td>不再使用“新增线下线索”命名。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">其他联系方式</td>
+                    <td>在基础信息区新增文本输入框。</td>
+                    <td>选填，用于补充手机号、邮箱、微信 / WhatsApp 之外的其他联系信息，最长 100 字符。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">线索热度</td>
+                    <td>保留高 / 中 / 低，同时增加“暂不评估”。</td>
+                    <td>默认不强制要求销售在录入时完成热度判断。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">4. 线索详情调整</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">模块</th>
+                    <th width="35%">调整后口径</th>
+                    <th width="45%">业务规则</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-medium">基础信息</td>
+                    <td>取消“国家 / 地区”字段，增加可编辑的 <span class="highlight">咨询内容</span>、<span class="highlight">信息来源</span>。</td>
+                    <td>销售可在详情页内修正客户录入时填写的信息，保存后按最新值生效。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">查询渠道</td>
+                    <td>新增可编辑下拉字段。</td>
+                    <td>枚举值固定为：WhatsApp、Email、Zendesk、Telegram。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">留资记录 Tab</td>
+                    <td>Tab 名称需带数量，例如 <code>留资记录（3）</code>。</td>
+                    <td>用于让销售快速感知该客户的历史留资频次。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">关联账户</td>
+                    <td>由“仅支持新增关联”调整为 <span class="highlight">支持修改关联</span>。</td>
+                    <td>若已有绑定关系，也需提供修改关联入口，并记录变更日志。</td>
+                </tr>
+                <tr>
+                    <td class="font-medium">跟进状态</td>
+                    <td>即便当前已是“已转化”或“无效线索”，仍允许再次修改。</td>
+                    <td>系统需保留完整状态变更轨迹，不得覆盖历史。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="module-title">5. 验收标准</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="55%">验收项</th>
+                    <th width="45%">通过标准</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>列表表头由“提交次数”改为“留资次数”。</td>
+                    <td>页面与 PRD 文案一致，不再出现“提交次数”。</td>
+                </tr>
+                <tr>
+                    <td>客户来源表头存在提示 icon。</td>
+                    <td>鼠标移入时可见提示语“客户来源代表客户从哪里输入的留资信息”。</td>
+                </tr>
+                <tr>
+                    <td>销售录入弹窗包含“其他联系方式”。</td>
+                    <td>该字段在弹窗中可录入。</td>
+                </tr>
+                <tr>
+                    <td>线索详情基础信息存在咨询内容、信息来源、查询渠道。</td>
+                    <td>三个字段均可在详情页内维护并保存。</td>
+                </tr>
+                <tr>
+                    <td>留资记录 Tab 带数量展示。</td>
+                    <td>例如显示为“留资记录（3）”。</td>
+                </tr>
+                <tr>
+                    <td>已转化 / 无效线索支持再次修改状态，关联账户支持修改。</td>
+                    <td>页面上存在对应入口与文案说明。</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
