@@ -77,101 +77,6 @@
             <!-- 需求列表容器 -->
             <div class="p-6 flex flex-col gap-4 bg-gray-50/50">
 
-                <!-- 数据统计 (父级需求) -->
-                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">报表中心</span>
-                                <h3 class="text-lg font-bold text-gray-800">数据统计</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">数据统计类报表合集：覆盖客户/账户维度的净值、持仓、平仓、盈亏等多视角统计。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 5 个需求</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-orange-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">净值报表</td>
-                                        <td class="px-6 py-4 text-gray-500">客户/账户维度的净值统计报表；原型复用现有净值报表页面结构。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-equity.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型（复用净值报表）
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors" href="Crm-Group/prd-report-equity.html" target="_blank">
-                                                    PRD
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">现实持仓报表</td>
-                                        <td class="px-6 py-4 text-gray-500">按交易品种维度汇总多空双向持仓量、均价、净敞口、盈亏与未覆盖敞口，底部汇总行突出展示。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-real-position.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors" href="Crm-Group/prd-report-real-position.html" target="_blank">
-                                                    PRD
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">平仓统计报表</td>
-                                        <td class="px-6 py-4 text-gray-500">历史平仓订单的汇总与明细统计；原型复用平仓交易记录页面结构。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-close-position.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型（复用平仓交易记录）
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">盈亏报表</td>
-                                        <td class="px-6 py-4 text-gray-500">客户/代理维度的盈亏汇总统计；原型基于净值报表结构调整。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-profit.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Pcard活动（新增父级菜单） -->
                 <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
                     <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
@@ -246,77 +151,6 @@
                                                 </a>
                                             </div>
                                         </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">其他需求</span>
-                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 5 个任务</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-orange-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">客户留资</td>
-                                        <td class="px-6 py-4 text-gray-500">客户留资页面增加一个新增入口，供客服人员手动录入留资信息。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1 border border-blue-200" href="Crm-Group/prd-leads-list.html" target="_blank">
-                                                    PRD
-                                                </a>
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">批量修改MT密码</td>
-                                        <td class="px-6 py-4 text-gray-500">支持对选中的多个 MT 账号进行批量重置密码操作，提高运维效率。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-batch-mt-password-reset.html" target="_blank">
-                                                    <i class="fas fa-desktop"></i> 原型
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">优势页面</td>
-                                        <td class="px-6 py-4 text-gray-500">港版增加【我们的优势】页面。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">HK 官网</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-400">无 PRD / 无原型</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -819,6 +653,45 @@
                     </div>
                 </div>
 
+                <!-- 零散需求 (空状态父级) -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">其他需求</span>
+                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 0 个任务</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-orange-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td colspan="4" class="px-6 py-8 text-center text-gray-400">
+                                            <i class="fas fa-inbox text-2xl mb-2 block text-gray-300"></i>
+                                            暂无进行中的零散需求
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -850,6 +723,141 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 divide-y divide-gray-100" id="completed-tbody">
+                        
+                        <!-- 已完成: 数据统计-净值报表 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">净值报表</td>
+                            <td class="px-5 py-4 text-gray-500">客户/账户维度的净值统计报表；原型复用现有净值报表页面结构。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-equity.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-equity.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 数据统计-现实持仓报表 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">现实持仓报表</td>
+                            <td class="px-5 py-4 text-gray-500">按交易品种维度汇总多空双向持仓量、均价、净敞口、盈亏与未覆盖敞口，底部汇总行突出展示。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-report-real-position.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-real-position.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 数据统计-平仓统计报表 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">平仓统计报表</td>
+                            <td class="px-5 py-4 text-gray-500">历史平仓订单的汇总与明细统计；原型复用平仓交易记录页面结构。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-close-position.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 数据统计-盈亏报表 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">盈亏报表</td>
+                            <td class="px-5 py-4 text-gray-500">客户/代理维度的盈亏汇总统计；原型基于净值报表结构调整。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-report-profit.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 其他需求-客户留资 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">其他需求</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">客户留资</td>
+                            <td class="px-5 py-4 text-gray-500">客户留资页面增加一个新增入口，供客服人员手动录入留资信息。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-list.html" target="_blank">PRD</a>
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 其他需求-批量修改MT密码 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">其他需求</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">批量修改MT密码</td>
+                            <td class="px-5 py-4 text-gray-500">支持对选中的多个 MT 账号进行批量重置密码操作，提高运维效率。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-batch-mt-password-reset.html" target="_blank">原型</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 其他需求-优势页面 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">其他需求</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">优势页面</td>
+                            <td class="px-5 py-4 text-gray-500">港版增加【我们的优势】页面。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">HK 官网</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-08-31</td>
+                            <td class="px-5 py-4">
+                                <span class="text-gray-400 text-xs italic">
+                                    <i class="fas fa-info-circle mr-1"></i>无 PRD / 无原型
+                                </span>
+                            </td>
+                        </tr>
 
                         <!-- 已完成: 盈亏报表-1 -->
                         <tr class="table-row-hover bg-white">
