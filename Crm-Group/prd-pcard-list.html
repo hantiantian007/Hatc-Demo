@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pcard 活动列表 - PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .golden-accent { color: #C19B5E; }
+        .bg-golden { background-color: #C19B5E; }
+        .border-golden { border-color: #C19B5E; }
+        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <i class="fa-solid fa-star golden-accent"></i> 
+                    Pcard 活动列表 - PRD
+                </h1>
+                <p class="text-gray-500 mt-2">活动中心列表页入口展示规范。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                <i class="fa-solid fa-file-lines text-gray-500"></i> 活动列表
+            </div>
+        </div>
+
+        <!-- 业务规则 -->
+        <div class="card border-t-4 border-golden">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-list-check golden-accent"></i> 业务规则与UI逻辑
+            </h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-2">1. 入口与视觉规范</h3>
+                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                        <li><strong>样式规范</strong>：统一为纯文字按钮及卡片，严格执行“做减法”的原则，禁止出现任何银行卡（Bankcard）及不必要的装饰性图标。</li>
+                        <li><strong>强调色</strong>：维持与项目全局一致的金棕色（#C19B5E）。</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-2">2. 数据展示规则</h3>
+                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                        <li><strong>状态展示</strong>：列表卡片需展示该活动的当前运营状态（例如：进行中）。</li>
+                        <li><strong>参与人数</strong>：实时统计当前系统内已参与该活动（含“参与中”与“已达标”）的客户总人数。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

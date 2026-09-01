@@ -73,6 +73,7 @@
             background: #F3F4F6;
         }
     </style>
+    <script src="cent-prd-drawer.js"></script>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
     <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
@@ -278,6 +279,9 @@
                 <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
                     <i class="fas fa-arrow-left"></i> 返回需求看板
                 </a>
+                <a href="prd-pcard-detail.html" data-prd-drawer="true" data-prd-title="Pcard 详情与数据 - PRD" class="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 px-3 py-1.5 rounded transition-colors border border-amber-200 text-xs font-medium ml-2">
+                    <i class="fa-solid fa-file-lines"></i> 详情页 PRD
+                </a>
             </div>
 
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
@@ -305,9 +309,6 @@
                 <div class="bg-gradient-to-r from-amber-50 via-white to-teal-50 rounded-xl border border-amber-100 card-shadow overflow-hidden">
                     <div class="px-6 py-5 border-b border-amber-100/60 flex flex-wrap items-center gap-4 justify-between">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md">
-                                <i class="fa-solid fa-credit-card text-white text-xl"></i>
-                            </div>
                             <div>
                                 <h2 class="text-base font-bold text-gray-800 flex items-center gap-2">
                                     Pcard活动
@@ -316,14 +317,7 @@
                                 <p class="text-xs text-gray-500 mt-0.5">活动有效期：2026-01-01 00:00:00 至 2026-12-31 23:59:59</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button class="h-8 px-4 rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors text-xs font-medium">
-                                <i class="fa-solid fa-pen mr-1.5"></i> 编辑活动
-                            </button>
-                            <button class="h-8 px-4 rounded-md bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-colors text-xs font-medium">
-                                <i class="fa-solid fa-stop mr-1.5"></i> 结束活动
-                            </button>
-                        </div>
+                        
                     </div>
 
                     <div class="px-6 py-4 grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -347,71 +341,37 @@
                 </div>
 
                 <!-- 汇总统计卡片 -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <div class="bg-white rounded-xl card-shadow border border-gray-100 p-5">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs text-gray-500">参与总人数</span>
-                            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500">
-                                <i class="fa-solid fa-users text-sm"></i>
-                            </div>
                         </div>
                         <p class="text-2xl font-bold text-gray-800">1,286</p>
-                        <p class="text-xs text-gray-400 mt-1">占平台用户 68.3%</p>
                     </div>
 
                     <div class="bg-white rounded-xl card-shadow border border-gray-100 p-5">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs text-gray-500">已达标</span>
-                            <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-500">
-                                <i class="fa-solid fa-circle-check text-sm"></i>
-                            </div>
                         </div>
-                        <p class="text-2xl font-bold text-emerald-600">158</p>
-                        <p class="text-xs text-gray-400 mt-1">达标率 12.3%</p>
+                        <div class="flex items-baseline gap-2">
+                            <p class="text-2xl font-bold text-emerald-600">158</p>
+                            <p class="text-xs text-gray-400">达标率 12.3%</p>
+                        </div>
                     </div>
 
-                    <div class="bg-white rounded-xl card-shadow border border-gray-100 p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs text-gray-500">即将达标 ≥80%</span>
-                            <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500">
-                                <i class="fa-solid fa-bullseye text-sm"></i>
-                            </div>
-                        </div>
-                        <p class="text-2xl font-bold text-amber-600">246</p>
-                        <p class="text-xs text-gray-400 mt-1">建议主动营销 🔥</p>
-                    </div>
+                    
 
                     <div class="bg-white rounded-xl card-shadow border border-gray-100 p-5">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs text-gray-500">参与中（未达标）</span>
-                            <div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-500">
-                                <i class="fa-solid fa-chart-line text-sm"></i>
-                            </div>
                         </div>
                         <p class="text-2xl font-bold text-indigo-600">882</p>
-                        <p class="text-xs text-gray-400 mt-1">持续跟进中</p>
                     </div>
                 </div>
 
                 <!-- 用户列表 -->
                 <div class="bg-white rounded-xl border border-gray-100 card-shadow overflow-hidden">
-                    <!-- Tab 切换 -->
-                    <div class="px-5 pt-3 border-b border-gray-100 bg-gray-50/60">
-                        <div class="flex items-center gap-2 text-xs overflow-x-auto no-scrollbar pb-2">
-                            <button data-tab="all" onclick="switchUserTab('all')" class="user-tab-btn px-4 h-7 rounded-sm border tab-active whitespace-nowrap">
-                                全部用户 <span class="ml-1.5 text-gray-400">1,286</span>
-                            </button>
-                            <button data-tab="qualified" onclick="switchUserTab('qualified')" class="user-tab-btn px-4 h-7 rounded-sm border border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap">
-                                已达标 <span class="ml-1.5 text-emerald-500">158</span>
-                            </button>
-                            <button data-tab="near" onclick="switchUserTab('near')" class="user-tab-btn px-4 h-7 rounded-sm border border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap">
-                                即将达标 <span class="ml-1.5 text-amber-500">246</span>
-                            </button>
-                            <button data-tab="progress" onclick="switchUserTab('progress')" class="user-tab-btn px-4 h-7 rounded-sm border border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap">
-                                参与中 <span class="ml-1.5 text-blue-500">882</span>
-                            </button>
-                        </div>
-                    </div>
+                    
 
                     <!-- 搜索筛选 -->
                     <div class="px-5 py-3 border-b border-gray-100">
@@ -429,22 +389,11 @@
                                 </select>
                             </div>
                             <div class="lg:col-span-2 flex items-center gap-2">
-                                <span class="text-gray-500 shrink-0">净入金:</span>
+                                <span class="text-gray-500 shrink-0">状态:</span>
                                 <select class="filter-select flex-1">
                                     <option>全部</option>
-                                    <option>≥$1,000（达标）</option>
-                                    <option>$500~$999（接近）</option>
-                                    <option>&lt;$500</option>
-                                </select>
-                            </div>
-                            <div class="lg:col-span-2 flex items-center gap-2">
-                                <span class="text-gray-500 shrink-0">交易手数:</span>
-                                <select class="filter-select flex-1">
-                                    <option>全部</option>
-                                    <option>≥5 Lot（达标）</option>
-                                    <option>3~4.99 Lot（接近）</option>
-                                    <option>1~2.99 Lot</option>
-                                    <option>&lt;1 Lot</option>
+                                    <option>参与中</option>
+                                    <option>已达标</option>
                                 </select>
                             </div>
                             <div class="lg:col-span-3 flex items-center gap-2">
@@ -454,9 +403,7 @@
                                 <button class="h-8 px-4 rounded-md border border-gray-200 bg-white text-gray-600 text-xs hover:bg-gray-50 transition-colors">
                                     重置
                                 </button>
-                                <button onclick="openMarketingModal()" class="h-8 px-4 rounded-md bg-amber-50 text-amber-600 border border-amber-200 hover:bg-amber-100 transition-colors text-xs font-medium">
-                                    <i class="fa-solid fa-bullhorn mr-1.5"></i> 批量营销
-                                </button>
+                                
                             </div>
                         </div>
                     </div>
@@ -466,91 +413,34 @@
                         <table class="w-full text-sm">
                             <thead>
                                 <tr class="text-gray-500 border-b border-gray-100 text-center">
-                                    <th class="font-medium py-3 px-3 w-12">
-                                        <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs">
-                                    </th>
+                                    
                                     <th class="font-medium py-3 px-3 text-left">客户信息</th>
+                                    <th class="font-medium py-3 px-3 text-left">MT账号</th>
                                     <th class="font-medium py-3 px-3">账号类型</th>
                                     <th class="font-medium py-3 px-3">净入金 (USD)</th>
                                     <th class="font-medium py-3 px-3">交易手数 (Lot)</th>
                                     <th class="font-medium py-3 px-3">活动状态</th>
                                     <th class="font-medium py-3 px-3">距达标还差</th>
                                     <th class="font-medium py-3 px-3">注册时间</th>
-                                    <th class="font-medium py-3 px-5">操作</th>
+                                    <th class="font-medium py-3 px-3">操作</th>
                                 </tr>
                             </thead>
                             <tbody class="text-gray-700 text-center">
-                                <tr class="table-row border-b border-gray-100">
-                                    <td class="py-3 px-3"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs"></td>
-                                    <td class="py-3 px-3 text-left">
-                                        <div class="flex flex-col">
-                                            <span class="font-medium text-gray-800">test-周斌斌</span>
-                                            <span class="text-[11px] text-gray-400">1741784918@qq.com</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
-                                    </td>
-                                    <td class="py-3 px-3 font-medium">$3,200.00</td>
-                                    <td class="py-3 px-3 font-medium">8.3520</td>
-                                    <td class="py-3 px-3">
-                                        <span class="text-emerald-600 font-medium">已达标</span>
-                                    </td>
-                                    <td class="py-3 px-3 text-emerald-600 font-medium text-xs">— 完成 —</td>
-                                    <td class="py-3 px-3 text-gray-500 text-xs">2026-01-15</td>
-                                    <td class="py-3 px-5">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-                                                详情
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                
 
                                 <tr class="table-row border-b border-gray-100">
-                                    <td class="py-3 px-3"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs"></td>
-                                    <td class="py-3 px-3 text-left">
-                                        <div class="flex flex-col">
-                                            <span class="font-medium text-gray-800">test-魏佳用</span>
-                                            <span class="text-[11px] text-gray-400">15279708217@165.com</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border" style="color:#B45309;background:#FEF3C7;border-color:#FCD34D">美分账号</span>
-                                    </td>
-                                    <td class="py-3 px-3 font-medium">$1,013.00</td>
-                                    <td class="py-3 px-3 font-medium">4.5020</td>
-                                    <td class="py-3 px-3">
-                                        <span class="text-amber-600 font-medium">即将达标</span>
-                                    </td>
-                                    <td class="py-3 px-3 text-amber-600 font-medium text-xs">
-                                        还差 <b>0.50</b> Lot
-                                    </td>
-                                    <td class="py-3 px-3 text-gray-500 text-xs">2026-02-08</td>
-                                    <td class="py-3 px-5">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] bg-amber-50 text-amber-600 border border-amber-200 hover:bg-amber-100 transition-colors">
-                                                <i class="fa-solid fa-bullhorn mr-1"></i> 提醒
-                                            </button>
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-                                                详情
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr class="table-row border-b border-gray-100">
-                                    <td class="py-3 px-3"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs"></td>
+                                    
                                     <td class="py-3 px-3 text-left">
                                         <div class="flex flex-col">
                                             <span class="font-medium text-gray-800">test-杨敏子</span>
                                             <span class="text-[11px] text-gray-400">13994874677@qq.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3 text-left font-medium text-gray-800">600001</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium text-gray-400">$860.00</td>
+                                    <td class="py-3 px-3 font-medium text-gray-400">$860.0000</td>
                                     <td class="py-3 px-3 font-medium">3.1200</td>
                                     <td class="py-3 px-3">
                                         <span class="text-blue-600 font-medium">参与中</span>
@@ -559,30 +449,24 @@
                                         差 <b>$140</b> + <b>1.88</b> Lot
                                     </td>
                                     <td class="py-3 px-3 text-gray-500 text-xs">2026-03-22</td>
-                                    <td class="py-3 px-5">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] bg-amber-50 text-amber-600 border border-amber-200 hover:bg-amber-100 transition-colors">
-                                                <i class="fa-solid fa-bullhorn mr-1"></i> 提醒
-                                            </button>
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-                                                详情
-                                            </button>
-                                        </div>
+                                    <td class="py-3 px-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-xs font-medium" onclick="openMTAccountsModal()">详情</button>
                                     </td>
                                 </tr>
 
                                 <tr class="table-row border-b border-gray-100">
-                                    <td class="py-3 px-3"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs"></td>
+                                    
                                     <td class="py-3 px-3 text-left">
                                         <div class="flex flex-col">
-                                            <span class="font-medium text-gray-800">史密斯（当前账号）</span>
+                                            <span class="font-medium text-gray-800">史密斯</span>
                                             <span class="text-[11px] text-gray-400">admin@dev.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3 text-left font-medium text-gray-800">600002</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium">$1,013.00</td>
+                                    <td class="py-3 px-3 font-medium">$1,013.0000</td>
                                     <td class="py-3 px-3 font-medium text-gray-400">0.0000</td>
                                     <td class="py-3 px-3">
                                         <span class="text-blue-600 font-medium">参与中</span>
@@ -591,27 +475,24 @@
                                         还差 <b>5.00</b> Lot
                                     </td>
                                     <td class="py-3 px-3 text-gray-500 text-xs">2026-01-02</td>
-                                    <td class="py-3 px-5">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-                                                详情
-                                            </button>
-                                        </div>
+                                    <td class="py-3 px-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-xs font-medium" onclick="openMTAccountsModal()">详情</button>
                                     </td>
                                 </tr>
 
                                 <tr class="table-row border-b border-gray-100">
-                                    <td class="py-3 px-3"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs"></td>
+                                    
                                     <td class="py-3 px-3 text-left">
                                         <div class="flex flex-col">
                                             <span class="font-medium text-gray-800">test-秦洋辰</span>
                                             <span class="text-[11px] text-gray-400">15097830595@165.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3 text-left font-medium text-gray-800">600003</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border" style="color:#B45309;background:#FEF3C7;border-color:#FCD34D">美分账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium text-gray-400">$320.00</td>
+                                    <td class="py-3 px-3 font-medium text-gray-400">$320.0000</td>
                                     <td class="py-3 px-3 font-medium">1.0500</td>
                                     <td class="py-3 px-3">
                                         <span class="text-blue-600 font-medium">参与中</span>
@@ -620,42 +501,32 @@
                                         差 <b>$680</b> + <b>3.95</b> Lot
                                     </td>
                                     <td class="py-3 px-3 text-gray-500 text-xs">2026-04-10</td>
-                                    <td class="py-3 px-5">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] bg-amber-50 text-amber-600 border border-amber-200 hover:bg-amber-100 transition-colors">
-                                                <i class="fa-solid fa-bullhorn mr-1"></i> 提醒
-                                            </button>
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-                                                详情
-                                            </button>
-                                        </div>
+                                    <td class="py-3 px-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-xs font-medium" onclick="openMTAccountsModal()">详情</button>
                                     </td>
                                 </tr>
 
                                 <tr class="table-row">
-                                    <td class="py-3 px-3"><input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary text-xs"></td>
+                                    
                                     <td class="py-3 px-3 text-left">
                                         <div class="flex flex-col">
                                             <span class="font-medium text-gray-800">test-杨均</span>
                                             <span class="text-[11px] text-gray-400">b13@qq.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3 text-left font-medium text-gray-800">600004</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium">$2,500.00</td>
+                                    <td class="py-3 px-3 font-medium">$2,500.0000</td>
                                     <td class="py-3 px-3 font-medium">7.8200</td>
                                     <td class="py-3 px-3">
                                         <span class="text-emerald-600 font-medium">已达标</span>
                                     </td>
                                     <td class="py-3 px-3 text-emerald-600 font-medium text-xs">— 完成 —</td>
                                     <td class="py-3 px-3 text-gray-500 text-xs">2026-01-20</td>
-                                    <td class="py-3 px-5">
-                                        <div class="flex items-center justify-center gap-1.5">
-                                            <button class="px-2.5 h-6 rounded-md text-[11px] border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
-                                                详情
-                                            </button>
-                                        </div>
+                                    <td class="py-3 px-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-xs font-medium" onclick="openMTAccountsModal()">详情</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -760,6 +631,59 @@
         </div>
     </div>
 
+    <!-- MT 账号详情弹窗 -->
+    <div id="mtAccountsModal" class="fixed inset-0 z-[100] hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeMTAccountsModal()"></div>
+        <div class="relative bg-white rounded-xl shadow-2xl w-[600px] max-h-[85vh] overflow-hidden flex flex-col transform transition-all">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-list text-primary"></i> 关联 MT 账号详情
+                </h3>
+                <button onclick="closeMTAccountsModal()" class="text-gray-400 hover:text-gray-600 w-7 h-7 flex items-center justify-center rounded hover:bg-gray-100">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="px-5 py-3 border-b border-gray-50 bg-gray-50/50">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-bold text-gray-800">test-杨敏子</span>
+                    <span class="text-xs text-gray-500">13994874677@qq.com</span>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-5">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-gray-500 border-b border-gray-100 text-center">
+                            <th class="font-medium py-3 px-3 text-left">MT账号</th>
+                            <th class="font-medium py-3 px-3">净入金 (USD)</th>
+                            <th class="font-medium py-3 px-3">交易手数 (Lot)</th>
+                            <th class="font-medium py-3 px-3">距达标还差</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 text-center">
+                        <tr class="border-b border-gray-100 bg-teal-50/30">
+                            <td class="py-3 px-3 text-left font-medium text-gray-800">600001 <span class="ml-1 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded">手数最多</span></td>
+                            <td class="py-3 px-3 font-medium text-gray-400">$860.0000</td>
+                            <td class="py-3 px-3 font-medium text-primary">3.1200</td>
+                            <td class="py-3 px-3 text-red-600 font-medium text-xs">差 <b>$140</b> + <b>1.88</b> Lot</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-3 text-left font-medium text-gray-800">600012</td>
+                            <td class="py-3 px-3 font-medium text-gray-400">$500.0000</td>
+                            <td class="py-3 px-3 font-medium">1.5000</td>
+                            <td class="py-3 px-3 text-red-600 font-medium text-xs">差 <b>$500</b> + <b>3.50</b> Lot</td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-3 text-left font-medium text-gray-800">600015</td>
+                            <td class="py-3 px-3 font-medium text-gray-400">$1,200.0000</td>
+                            <td class="py-3 px-3 font-medium">0.0000</td>
+                            <td class="py-3 px-3 text-red-600 font-medium text-xs">还差 <b>5.00</b> Lot</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <script>
         function toggleSubmenu(button) {
             const submenu = button.nextElementSibling;
@@ -787,6 +711,16 @@
         }
         function closeMarketingModal() {
             const m = document.getElementById('marketingModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+        function openMTAccountsModal() {
+            const m = document.getElementById('mtAccountsModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+        function closeMTAccountsModal() {
+            const m = document.getElementById('mtAccountsModal');
             m.classList.add('hidden');
             m.classList.remove('flex');
         }

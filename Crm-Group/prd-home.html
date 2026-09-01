@@ -3,124 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRD - 首页统计数据逻辑修复</title>
+    <title>Pcard 首页进度 - PRD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#41B8AF',
-                        dark: '#1E2126',
-                    }
-                }
-            }
-        }
-    </script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .golden-accent { color: #C19B5E; }
+        .bg-golden { background-color: #C19B5E; }
+        .border-golden { border-color: #C19B5E; }
+        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 line-height-relaxed">
-    <div class="max-w-5xl mx-auto px-4 py-8">
-        
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
         <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">需求规格说明书 (PRD)</h1>
-            <h2 class="text-xl text-primary font-medium">首页统计数据逻辑修复 (支持自己及伞下数据)</h2>
-            <div class="mt-4 flex gap-4 text-sm text-gray-500">
-                <span><i class="fa-regular fa-calendar mr-1"></i> 2026-06-25</span>
-                <span><i class="fa-solid fa-user mr-1"></i> 产品部</span>
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">V1.2.1</span>
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <i class="fa-solid fa-star golden-accent"></i> 
+                    Pcard 首页进度 - PRD
+                </h1>
+                <p class="text-gray-500 mt-2">首页 Pcard 专属进度卡片展示说明。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                <i class="fa-solid fa-file-lines text-gray-500"></i> Home
             </div>
         </div>
 
-        <!-- Content -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            
-            <div class="p-8 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">1. 业务背景与核心原则</h3>
-                <p class="mb-3 text-gray-700">目前 CRM 首页的统计数据可能存在统计维度不一致、数据缺失或仅统计本人的情况，导致代理/IB 无法全面了解其整个团队的业绩和资金状况。为了提供更准确、更具商业价值的概览数据，本次需求将对首页所有核心指标的计算逻辑进行重构。</p>
-                <div class="font-bold text-red-600 bg-red-50 p-4 rounded mt-4">
-                    <p class="flex items-center gap-2 mb-1"><i class="fa-solid fa-triangle-exclamation"></i> 【最高原则】</p>
-                    <p class="text-sm font-normal text-red-800">
-                        首页所有的统计卡片、数据面板以及可视化图表，其数据统计口径必须统一变更为：<br>
-                        <strong>当前登录账户本人的数据 + 其整个团队（即伞下所有层级客户）的数据总和</strong>。<br>
-                        绝不允许遗漏间接下级客户的数据，必须实现全层级穿透计算。
-                    </p>
+        <!-- 研发红线警告 -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-red-500 mt-0.5"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-bold text-red-800">核心研发红线 (必读)</h3>
+                    <div class="mt-1 text-sm text-red-700 space-y-1">
+                        <p>1. <strong>专属展示</strong>：首页仅展示 Pcard 活动相关内容，不得展示其他无关统计图表。</p>
+                        <p>2. <strong>金额格式化</strong>：所有金额展示必须统一使用千位符格式化（例如 $1,000.00）。</p>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="p-8 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">2. 判定依据与数据范围 (唯一事实来源)</h3>
-                <p class="mb-3 text-gray-700">统计逻辑必须基于系统中客户层级树（关系树）的最新结构进行汇总。</p>
-                <ul class="list-disc pl-6 space-y-2 text-gray-700">
-                    <li><strong class="text-gray-900">伞下客户定义：</strong>指由当前登录账号直接推荐，以及由其下级不断向下裂变产生的所有客户（无层级深度限制）。</li>
-                    <li><strong class="text-gray-900">数据唯一事实来源：</strong>交易数据与余额等资金数据强依赖于 MT5 Server 的实时/定时快照数据；出入金与返佣数据依赖 CRM 财务流水记录。</li>
-                </ul>
-            </div>
-
-            <div class="p-8 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-primary pl-3">3. 首页各项指标计算规则</h3>
+        <!-- 业务规则 -->
+        <div class="card border-t-4 border-golden">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-list-check golden-accent"></i> 业务规则与UI逻辑
+            </h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-2">1. 模块位置与视觉展示</h3>
+                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                        <li><strong>页面位置</strong>：需居中放置在首页主内容区，隐藏其他所有无关模块。</li>
+                        <li><strong>视觉规范</strong>：整体采用金棕色（#C19B5E）作为强调色。必须移除页面内原有的冗余图表及不相关的侧边栏模块，且不使用任何装饰性的银行卡图标。</li>
+                    </ul>
+                </div>
                 
-                <p class="mb-4 text-sm text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i> 下表详细列出了首页各个模块在修复前后的逻辑对比，研发请严格按照“修复后逻辑”实现。</p>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left border-collapse">
-                        <thead class="bg-gray-50 text-gray-700">
-                            <tr>
-                                <th class="border px-4 py-3 w-1/5">功能模块 / 字段</th>
-                                <th class="border px-4 py-3 w-2/5">原逻辑 (修复前)</th>
-                                <th class="border px-4 py-3 w-2/5 text-primary">修复后逻辑 (自己及伞下客户)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-600">
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">MT余额 / MT账号数</td>
-                                <td class="border px-4 py-3 text-gray-500 line-through">仅统计当前登录账户自己的 MT5 账户余额之和与账号数量。</td>
-                                <td class="border px-4 py-3 font-medium">统计本人名下 MT5 余额 + 伞下所有客户的 MT5 余额总和。<br>账号数 = 本人 MT 账号数 + 伞下所有客户 MT 账号数。</td>
-                            </tr>
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">入 / 出金量 & 净入金</td>
-                                <td class="border px-4 py-3 text-gray-500 line-through">仅统计自己的充值、提现流水。</td>
-                                <td class="border px-4 py-3 font-medium">统计本人及伞下所有客户的成功入金、出金总和。<br>净入金 = (本人+伞下总入金) - (本人+伞下总出金)。</td>
-                            </tr>
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">返佣金额 / 交易奖励</td>
-                                <td class="border px-4 py-3 text-gray-500">统计维度可能不全。</td>
-                                <td class="border px-4 py-3 font-medium">
-                                    <strong>返佣金额：</strong>该账户因团队交易产生的返佣总和。<br>
-                                    <strong>交易奖励：</strong>该账户及其团队触发的额外交易奖励总和。<br>
-                                    <strong>未提现金额：</strong>该账户钱包中可提现但未提取的金额。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">交易量 (Lot) / 盈亏</td>
-                                <td class="border px-4 py-3 text-gray-500 line-through">仅计算本人名下账号的平仓单手数及盈亏。</td>
-                                <td class="border px-4 py-3 font-medium">统计本人及伞下所有客户的历史平仓总手数 (Lot) 和总已结盈亏。</td>
-                            </tr>
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">持仓量 (Lot) / 浮动盈亏</td>
-                                <td class="border px-4 py-3 text-gray-500 line-through">仅计算本人的未平仓单。</td>
-                                <td class="border px-4 py-3 font-medium">统计本人及伞下所有客户当前的未平仓总手数 (Lot) 及实时浮动盈亏汇总。</td>
-                            </tr>
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">胜率分析 (环形图)</td>
-                                <td class="border px-4 py-3 text-gray-500 line-through">仅按本人历史平仓订单计算胜率。</td>
-                                <td class="border px-4 py-3 font-medium">
-                                    将本人及伞下所有客户的历史平仓订单汇聚：<br>
-                                    获利笔数 = 所有盈亏 > 0 的订单数。<br>
-                                    亏损笔数 = 所有盈亏 <= 0 的订单数。
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border px-4 py-3 font-medium bg-gray-50/50">交易盈亏分析 (柱状/折线图)</td>
-                                <td class="border px-4 py-3 text-gray-500 line-through">仅展示本人每日/每月的盈亏走势。</td>
-                                <td class="border px-4 py-3 font-medium">图表时间轴上的每个数据点，代表当天/当月【本人+伞下所有客户】的平仓总盈亏。</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-2">2. 数据统计与双进度条规则</h3>
+                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                        <li><strong>净入金进度</strong>：实时计算客户当前累计净入金（公式：总入金 - 总出金）。达标红线为 $1,000。</li>
+                        <li><strong>交易手数进度</strong>：实时计算客户当前累计完成的交易手数。达标红线为 5 Lot (手)。</li>
+                        <li><strong>进度展示</strong>：进度条的最大值为 100%，如超出达标要求，则进度条直接显示满格，并高亮标识“已达标”。</li>
+                    </ul>
                 </div>
             </div>
-            
         </div>
     </div>
 </body>

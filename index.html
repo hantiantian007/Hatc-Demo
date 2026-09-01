@@ -115,7 +115,10 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-home.html" target="_blank">
-                                                    原型
+                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                </a>
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-home.html" target="_blank">
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
@@ -131,15 +134,18 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-list.html" target="_blank">
-                                                    原型
+                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                </a>
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-pcard-list.html" target="_blank">
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">Pcard活动 - 详情与营销</td>
+                                        <td class="px-6 py-4 font-bold text-gray-800">Pcard活动 - 详情与数据</td>
                                         <td class="px-6 py-4 text-gray-500">
-                                            Tab分层展示客户达标状态，支持单用户“一键提醒”及顶部“批量营销”催单。
+                                            精简状态流转与过滤条件，仅保留参与中与已达标只读数据展示。
                                         </td>
                                         <td class="px-6 py-4">
                                             <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
@@ -147,7 +153,10 @@
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
                                                 <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-pcard-detail.html" target="_blank">
-                                                    原型
+                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                </a>
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-pcard-detail.html" target="_blank">
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
@@ -211,6 +220,67 @@
                                                     <i class="fas fa-desktop text-gray-400"></i> 对账记录原型
                                                 </a>
                                             </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 零散需求 (空状态父级) -->
+                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">其他需求</span>
+                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个任务</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-orange-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">公司新闻</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            公司新闻增加简体中文录入。
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">HK CRM</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="text-gray-400 text-xs italic">
+                                                <i class="fas fa-info-circle mr-1"></i>待补充
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">支付对接</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            对接新的支付通道。
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="text-gray-400 text-xs italic">
+                                                <i class="fas fa-info-circle mr-1"></i>待补充
+                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -653,44 +723,7 @@
                     </div>
                 </div>
 
-                <!-- 零散需求 (空状态父级) -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden accordion-item">
-                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">其他需求</span>
-                                <h3 class="text-lg font-bold text-gray-800">零散需求</h3>
-                            </div>
-                            <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 0 个任务</span>
-                            <i class="fas fa-chevron-down accordion-icon"></i>
-                        </div>
-                    </div>
-                    <div class="accordion-content border-t border-orange-100">
-                        <div class="overflow-x-auto no-scrollbar">
-                            <table class="min-w-full text-sm text-left">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
-                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
-                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="table-row-hover">
-                                        <td colspan="4" class="px-6 py-8 text-center text-gray-400">
-                                            <i class="fas fa-inbox text-2xl mb-2 block text-gray-300"></i>
-                                            暂无进行中的零散需求
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+
 
             </div>
         </div>
@@ -818,6 +851,7 @@
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-xs transition-colors border border-gray-200" href="Crm-Group/prd-leads-list.html" target="_blank">PRD</a>
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-leads-list.html" target="_blank">原型</a>
+                                        <a class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1.5 rounded text-xs transition-colors" href="User-Manuals/manual-customer-leads.html" target="_blank"><i class="fa-solid fa-book"></i> 操作手册</a>
                                     </div>
                                 </div>
                             </td>
@@ -837,6 +871,7 @@
                                 <div class="flex flex-col gap-2">
                                     <div class="flex flex-wrap gap-2 items-center">
                                         <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-batch-mt-password-reset.html" target="_blank">原型</a>
+                                        <a class="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-3 py-1.5 rounded text-xs transition-colors" href="User-Manuals/manual-batch-password-reset.html" target="_blank"><i class="fa-solid fa-book"></i> 操作手册</a>
                                     </div>
                                 </div>
                             </td>
@@ -1172,9 +1207,9 @@
                             </td>
                         </tr>
                         <tr class="table-row-hover bg-white">
-                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">系统维护</td>
-                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">首页 (数据概览)</td>
-                            <td class="px-5 py-4 text-gray-500">所有核心数据概览的统计方式变更为：包含自己及伞下所有层级客户数据汇总。</td>
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">营销活动</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">Pcard 首页进度</td>
+                            <td class="px-5 py-4 text-gray-500">首页仅展示 Pcard 活动相关内容，包含净入金及交易手数进度，隐藏其他无关模块。</td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col gap-1">
                                     <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>

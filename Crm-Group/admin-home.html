@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js for placeholders -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="cent-prd-drawer.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -254,7 +255,7 @@
                 <div><span class="hover:text-gray-800 cursor-pointer">首页</span></div>
                 <div class="flex items-center gap-2 border-l pl-4 border-gray-200">
                     <a href="../index.html" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-arrow-left mr-1.5"></i> 返回需求看板</a>
-                    <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-3 py-1.5 bg-teal-50 text-primary border border-teal-100 hover:bg-teal-100 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-project-diagram mr-1.5"></i> 查看 PRD</button>
+                    <a href="prd-home.html" data-prd-drawer="true" data-prd-title="Pcard 首页进度 - PRD" class="px-3 py-1.5 bg-teal-50 text-primary border border-teal-100 hover:bg-teal-100 rounded text-xs font-medium transition-colors flex items-center"><i class="fa-solid fa-file-lines mr-1.5"></i> Pcard PRD</a>
                 </div>
             </div>
                         <!-- 右侧个人中心 -->
@@ -275,7 +276,7 @@
                             <span class="ml-3">个人信息</span>
                         </a>
                         <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-menuActive transition-colors">
-                            <i class="fas fa-credit-card w-4 text-center text-gray-400"></i>
+                            
                             <span class="ml-3">我的银行卡</span>
                         </a>
                     </div>
@@ -295,162 +296,90 @@
             <!-- 左侧主内容区 (占据较大比例) -->
             <div class="flex-1 flex flex-col gap-6" style="display:flex; flex-direction:column; gap:24px; flex:1; min-width:0;">
 
-                <!-- ⚡ 活动卡片 (多活动切换) -->
-                <div style="flex-shrink:0; display:flex; flex-direction:column; background:#fff; border:1px solid #f3f4f6; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.03);">
-                    <!-- Tab 栏 -->
-                    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid #f3f4f6; background:#fafafa;">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <button onclick="switchActivity(0)" data-act="0" id="tab0" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; background:#fff; border:1px solid #e5e7eb; color:#ea580c; box-shadow:0 1px 2px rgba(0,0,0,0.04);">
-                                <i class="fa-solid fa-credit-card" style="font-size:11px;"></i> Pcard 银行卡
+                <!-- 活动 Banner -->
+                <div class="bg-white rounded-xl card-shadow border border-gray-100">
+                    <!-- Tabs -->
+                    <div class="flex justify-between items-center px-6 border-b border-gray-100">
+                        <div class="flex gap-6">
+                            <button class="text-sm font-bold text-orange-500 border-b-2 border-orange-500 py-4 flex items-center gap-2">
+                                <i class="fa-solid fa-credit-card"></i> Pcard 银行卡
                             </button>
-                            <button onclick="switchActivity(1)" data-act="1" id="tab1" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:500; background:transparent; border:1px solid transparent; color:#6b7280;">
-                                <i class="fa-solid fa-gift" style="font-size:11px;"></i> 入金赠金
-                                <span style="display:inline-block; width:8px; height:8px; border-radius:9999px; background:#ef4444; margin-left:2px; animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;"></span>
+                            <button class="text-sm font-medium text-gray-500 hover:text-gray-700 py-4 flex items-center gap-2 relative">
+                                <i class="fa-solid fa-gift"></i> 入金赠金
+                                <span class="absolute top-4 right-[-8px] w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                             </button>
-                            <button onclick="switchActivity(2)" data-act="2" id="tab2" style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:500; background:transparent; border:1px solid transparent; color:#6b7280;">
-                                <i class="fa-solid fa-chart-pie" style="font-size:11px;"></i> 返佣加码
+                            <button class="text-sm font-medium text-gray-500 hover:text-gray-700 py-4 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie"></i> 返佣加码
                             </button>
                         </div>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <button onclick="switchActivity(0)" data-dot="0" id="dot0" style="width:16px; height:6px; border-radius:9999px; background:#f97316; border:none; cursor:pointer; transition:all 0.3s;"></button>
-                            <button onclick="switchActivity(1)" data-dot="1" id="dot1" style="width:6px; height:6px; border-radius:9999px; background:#d1d5db; border:none; cursor:pointer; transition:all 0.3s;"></button>
-                            <button onclick="switchActivity(2)" data-dot="2" id="dot2" style="width:6px; height:6px; border-radius:9999px; background:#d1d5db; border:none; cursor:pointer; transition:all 0.3s;"></button>
+                        <!-- Pagination dots -->
+                        <div class="flex gap-1">
+                            <div class="w-4 h-1.5 bg-orange-500 rounded-full"></div>
+                            <div class="w-1.5 h-1.5 bg-gray-200 rounded-full"></div>
+                            <div class="w-1.5 h-1.5 bg-gray-200 rounded-full"></div>
                         </div>
                     </div>
 
-                    <!-- 活动 0 (默认显示，强制 min-height 防止塌缩) -->
-                    <div id="panel0" style="min-height:120px; padding:16px 24px; display:flex; flex-wrap:wrap; align-items:center; gap:20px;">
-                        <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
-                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#fbbf24,#f97316); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-                                <i class="fa-solid fa-credit-card" style="font-size:18px;"></i>
-                            </div>
-                            <div>
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <h3 style="font-size:14px; font-weight:700; color:#1f2937; margin:0;">Pcard活动</h3>
-                                    <span style="display:inline-flex; padding:2px 8px; border-radius:9999px; background:#fff7ed; color:#ea580c; border:1px solid #fed7aa; font-size:10px; font-weight:700;">🔥 限时</span>
+                    <!-- Content -->
+                    <div class="p-6">
+                        <div class="flex flex-col md:flex-row gap-8 items-center mb-6">
+                            <!-- Left: Icon & Title -->
+                            <div class="flex items-center gap-4 min-w-[300px]">
+                                <div class="w-14 h-14 bg-orange-500 rounded-xl flex items-center justify-center text-white text-2xl shadow-sm">
+                                    <i class="fa-regular fa-credit-card"></i>
                                 </div>
-                                <p style="font-size:11px; color:#6b7280; margin:2px 0 0 0;">净入金 $1,000 · 交易 5 手 · 双条件达标即可免费办理</p>
-                            </div>
-                        </div>
-                        <div style="display:none; width:1px; height:48px; background:#e5e7eb;"></div>
-                        <div style="flex:1; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:10px;">
-                            <!-- 净入金 -->
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
-                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
-                                        <i class="fa-solid fa-dollar-sign" style="font-size:10px; color:#10b981;"></i> 净入金
-                                    </span>
-                                    <span style="font-weight:700; color:#374151;">
-                                        $1,013.00 <span style="color:#9ca3af; font-weight:400;">/ $1,000</span>
-                                        <span style="color:#059669; margin-left:6px; font-weight:500;">✅ 已达标</span>
-                                    </span>
-                                </div>
-                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
-                                    <div style="height:100%; width:100%; background:linear-gradient(90deg,#34d399,#2dd4bf); border-radius:9999px;"></div>
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h3 class="font-bold text-gray-900 text-lg">Pcard活动</h3>
+                                        <span class="bg-orange-50 text-orange-500 text-[10px] px-1.5 py-0.5 rounded border border-orange-100 flex items-center gap-1">
+                                            <i class="fa-solid fa-fire"></i> 限时
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">净入金 $1,000 · 交易 5 手 · 双条件达标即可免费办理</p>
                                 </div>
                             </div>
-                            <!-- 交易手数 -->
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
-                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
-                                        <i class="fa-solid fa-chart-line" style="font-size:10px; color:#3b82f6;"></i> 交易手数
-                                    </span>
-                                    <span style="font-weight:700; color:#374151;">
-                                        5.0 <span style="color:#9ca3af; font-weight:400;">/ 5 Lot</span>
-                                        <span style="color:#059669; margin-left:6px; font-weight:500;">✅ 已达标</span>
-                                    </span>
-                                </div>
-                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
-                                    <div style="height:100%; width:100%; background:linear-gradient(90deg,#60a5fa,#818cf8); border-radius:9999px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 达标后的底部提示 -->
-                        <div style="width:100%; padding:10px 14px; margin-top:4px; border-radius:6px; background:#f0fdf4; border:1px solid #bbf7d0; color:#059669; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-circle-check"></i> 恭喜！您已达成全部条件，请联系客服免费办理 Pcard 银行卡。
-                        </div>
-                    </div>
 
-                    <!-- 活动 1 (默认隐藏) -->
-                    <div id="panel1" style="min-height:120px; padding:16px 24px; display:none; flex-wrap:wrap; align-items:center; gap:20px;">
-                        <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
-                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#fb7185,#ec4899); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-                                <i class="fa-solid fa-gift" style="font-size:18px;"></i>
-                            </div>
-                            <div>
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <h3 style="font-size:14px; font-weight:700; color:#1f2937; margin:0;">首充 200% 赠金活动</h3>
-                                    <span style="display:inline-flex; padding:2px 8px; border-radius:9999px; background:#fff1f2; color:#e11d48; border:1px solid #fecdd3; font-size:10px; font-weight:700; animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;">🆕 新活动</span>
+                            <!-- Right: Progress Bars -->
+                            <div class="flex-1 w-full space-y-4">
+                                <!-- 净入金 -->
+                                <div>
+                                    <div class="flex justify-between items-center text-xs mb-1.5">
+                                        <div class="flex items-center gap-1.5 text-emerald-500 font-medium">
+                                            <i class="fa-solid fa-dollar-sign"></i> 净入金
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <span class="font-bold text-gray-800">$1,013.00 <span class="text-gray-400 font-normal">/ $1,000</span></span>
+                                            <span class="text-emerald-500 font-medium flex items-center gap-1"><i class="fa-solid fa-check-circle"></i> 已达标</span>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-400 rounded-full" style="width: 100%"></div>
+                                    </div>
                                 </div>
-                                <p style="font-size:11px; color:#6b7280; margin:2px 0 0 0;">入金 $500 起可享赠金，最高赠 $3,000 · 可提现</p>
+                                
+                                <!-- 交易手数 -->
+                                <div>
+                                    <div class="flex justify-between items-center text-xs mb-1.5">
+                                        <div class="flex items-center gap-1.5 text-blue-500 font-medium">
+                                            <i class="fa-solid fa-chart-line"></i> 交易手数
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <span class="font-bold text-gray-800">5.0 <span class="text-gray-400 font-normal">/ 5 Lot</span></span>
+                                            <span class="text-emerald-500 font-medium flex items-center gap-1"><i class="fa-solid fa-check-circle"></i> 已达标</span>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-500 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div style="flex:1; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:10px;">
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
-                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
-                                        <i class="fa-solid fa-dollar-sign" style="font-size:10px; color:#f43f5e;"></i> 累计入金
-                                    </span>
-                                    <span style="font-weight:700; color:#374151;">$2,500 <span style="color:#9ca3af; font-weight:400;">/ $3,000 (上限)</span></span>
-                                </div>
-                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
-                                    <div style="height:100%; width:83%; background:linear-gradient(90deg,#fb7185,#ec4899); border-radius:9999px;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
-                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
-                                        <i class="fa-solid fa-percent" style="font-size:10px; color:#a855f7;"></i> 赠金比例
-                                    </span>
-                                    <span style="font-weight:700; color:#374151;">当前 <span style="color:#9333ea;">200%</span> · 已获得 <span style="color:#e11d48;">$5,000</span> 赠金</span>
-                                </div>
-                                <p style="font-size:11px; margin:4px 0 0 0; color:#e11d48; font-weight:500;">⚠️ 再入金 <b>$500</b> 可解锁赠金上限 $3,000 → $6,000</p>
-                            </div>
-                        </div>
-                        <button style="flex-shrink:0; height:40px; padding:0 20px; border-radius:8px; background:linear-gradient(90deg,#f43f5e,#ec4899); color:#fff; font-weight:700; font-size:12px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 1px 2px rgba(0,0,0,0.08);">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i> 立即入金
-                        </button>
-                    </div>
 
-                    <!-- 活动 2 (默认隐藏) -->
-                    <div id="panel2" style="min-height:120px; padding:16px 24px; display:none; flex-wrap:wrap; align-items:center; gap:20px;">
-                        <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
-                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#2dd4bf,#10b981); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-                                <i class="fa-solid fa-chart-pie" style="font-size:18px;"></i>
-                            </div>
-                            <div>
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <h3 style="font-size:14px; font-weight:700; color:#1f2937; margin:0;">月度返佣加码活动</h3>
-                                    <span style="display:inline-flex; padding:2px 8px; border-radius:9999px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; font-size:10px; font-weight:700;">🔥 进行中</span>
-                                </div>
-                                <p style="font-size:11px; color:#6b7280; margin:2px 0 0 0;">当月交易 ≥ 500 Lot 返佣比例 +2% · 最高 12%</p>
-                            </div>
+                        <!-- Bottom Alert -->
+                        <div class="bg-emerald-50 border border-emerald-200 text-emerald-600 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle"></i>
+                            恭喜！您已满足活动奖励条件，联系客服可免费办理 Pcard 信用卡。
                         </div>
-                        <div style="flex:1; max-width:520px; min-width:0; display:flex; flex-direction:column; gap:10px;">
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
-                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
-                                        <i class="fa-solid fa-chart-line" style="font-size:10px; color:#14b8a6;"></i> 本月交易手数
-                                    </span>
-                                    <span style="font-weight:700; color:#374151;">326.8 <span style="color:#9ca3af; font-weight:400;">/ 500 Lot</span></span>
-                                </div>
-                                <div style="height:8px; background:#f3f4f6; border-radius:9999px; overflow:hidden;">
-                                    <div style="height:100%; width:65%; background:linear-gradient(90deg,#2dd4bf,#10b981); border-radius:9999px;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:4px;">
-                                    <span style="color:#6b7280; font-weight:500; display:inline-flex; align-items:center; gap:4px;">
-                                        <i class="fa-solid fa-percent" style="font-size:10px; color:#f59e0b;"></i> 返佣比例
-                                    </span>
-                                    <span style="font-weight:700; color:#374151;">当前 <span style="color:#059669;">10%</span> · 目标 <span style="color:#d97706;">12%</span></span>
-                                </div>
-                                <p style="font-size:11px; margin:4px 0 0 0; color:#d97706; font-weight:500;">⚠️ 再交易 <b>173.2 Lot</b> 返佣直接提升 2%，预计多赚 $2,360</p>
-                            </div>
-                        </div>
-                        <button style="flex-shrink:0; height:40px; padding:0 20px; border-radius:8px; background:linear-gradient(90deg,#14b8a6,#10b981); color:#fff; font-weight:700; font-size:12px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 1px 2px rgba(0,0,0,0.08);">
-                            <i class="fa-solid fa-eye"></i> 查看详情
-                        </button>
                     </div>
                 </div>
 
@@ -547,7 +476,6 @@
 
             <!-- 右侧边栏 -->
             <div class="w-[320px] xl:w-[360px] flex flex-col gap-6 flex-shrink-0">
-
                 <!-- 通知公告 -->
                 <div class="bg-white rounded-xl card-shadow border border-gray-100 p-6 flex-1 min-h-[200px]">
                     <div class="flex justify-between items-center mb-4">
@@ -705,6 +633,26 @@
             }
         }
         // (已关闭自动轮播，用户手动点击 Tab/小圆点切换即可)
+
+        // Pcard Tab 切换逻辑
+        function switchPcardTab(tabName) {
+            const tabLatest = document.getElementById('pcard-tab-latest');
+            const tabHistory = document.getElementById('pcard-tab-history');
+            const contentLatest = document.getElementById('pcard-content-latest');
+            const contentHistory = document.getElementById('pcard-content-history');
+
+            if (tabName === 'latest') {
+                tabLatest.className = 'text-sm font-bold text-[#C19B5E] border-b-2 border-[#C19B5E] pb-2 px-1';
+                tabHistory.className = 'text-sm font-bold text-gray-400 hover:text-gray-600 border-b-2 border-transparent pb-2 px-1 transition-colors';
+                contentLatest.classList.remove('hidden');
+                contentHistory.classList.add('hidden');
+            } else {
+                tabHistory.className = 'text-sm font-bold text-[#C19B5E] border-b-2 border-[#C19B5E] pb-2 px-1';
+                tabLatest.className = 'text-sm font-bold text-gray-400 hover:text-gray-600 border-b-2 border-transparent pb-2 px-1 transition-colors';
+                contentHistory.classList.remove('hidden');
+                contentLatest.classList.add('hidden');
+            }
+        }
     </script>
 
     <!-- PRD 弹窗 -->
@@ -717,7 +665,7 @@
                     <div class="w-8 h-8 rounded bg-[#55B9B9]/20 flex items-center justify-center mr-3 border border-[#55B9B9]/30">
                         <i class="fa-solid fa-file-lines text-[#55B9B9]"></i>
                     </div>
-                    <h3 class="text-white font-medium">产品需求文档 (PRD) - 首页统计数据逻辑修复</h3>
+                    <h3 class="text-white font-medium">Pcard 首页进度 - PRD</h3>
                 </div>
                 <button onclick="document.getElementById('prdModal').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded hover:bg-gray-800">
                     <i class="fas fa-times"></i>

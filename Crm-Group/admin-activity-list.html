@@ -6,6 +6,7 @@
     <title>HATC CRM - 活动列表</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="cent-prd-drawer.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -242,6 +243,12 @@
                 <span class="hover:text-gray-800 cursor-pointer">活动管理</span>
                 <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
                 <span class="text-menuActive font-medium">活动列表</span>
+                <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium ml-4">
+                    <i class="fas fa-arrow-left"></i> 返回需求看板
+                </a>
+                <a href="prd-pcard-list.html" data-prd-drawer="true" data-prd-title="Pcard 活动列表 - PRD" class="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 px-3 py-1.5 rounded transition-colors border border-amber-200 text-xs font-medium ml-2">
+                    <i class="fa-solid fa-file-lines"></i> 列表页 PRD
+                </a>
             </div>
 
             <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
