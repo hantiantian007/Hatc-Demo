@@ -375,10 +375,16 @@
                             </div>
                         </div>
 
-                        <!-- Bottom Alert -->
-                        <div class="bg-emerald-50 border border-emerald-200 text-emerald-600 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <!-- Bottom Alert (已达标) -->
+                        <div id="alert-qualified" class="bg-emerald-50 border border-emerald-200 text-emerald-600 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2">
                             <i class="fa-solid fa-check-circle"></i>
                             恭喜！您已满足活动奖励条件，联系客服可免费办理 Pcard 信用卡。
+                        </div>
+                        
+                        <!-- Bottom Alert (未达标 - 默认隐藏) -->
+                        <div id="alert-unqualified" class="hidden bg-gray-50 border border-gray-200 text-gray-500 px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info"></i>
+                            净入金和手数或未达标
                         </div>
                     </div>
                 </div>
