@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赠金活动详情 - PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .golden-accent { color: #C19B5E; }
+        .bg-golden { background-color: #C19B5E; }
+        .border-golden { border-color: #C19B5E; }
+        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <i class="fa-solid fa-circle-info golden-accent"></i> 
+                    赠金活动详情 - PRD
+                </h1>
+                <p class="text-gray-500 mt-2">赠金活动详情页的数据展示与奖励名单规范。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                <i class="fa-solid fa-file-lines text-gray-500"></i> Detail
+            </div>
+        </div>
+
+        <!-- 顶部配置与统计区 -->
+        <div class="card border-l-4 border-golden">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-line golden-accent"></i> 1. 顶部配置与统计区</h2>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>活动配置概览：</strong>需明确展示该活动所使用的“活动模型”、参与对象、触发条件、奖励规则（如：固定金额 $50.00）、创建人及有效期。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>核心数据统计：</strong>使用独立统计卡片展示“参与总人数”、“累计奖励笔数”、“累计奖励金额 (USD)”，金额数据需保留 4 位小数并进行千位符格式化。</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 奖励用户列表规范 -->
+        <div class="card border-l-4 border-golden">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-users golden-accent"></i> 2. 奖励用户列表规范</h2>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>展示定位：</strong>纯粹的只读数据展示，用于记录已获得该活动奖励的用户明细。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>核心字段：</strong>客户姓名、邮箱、客户分组、达标MT账号、注册时间、达标时间、发放金额 (USD) 及状态。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>状态显示：</strong>列表中的数据均为已满足条件并成功派发赠金的记录，状态统一显示为“已发放”。</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

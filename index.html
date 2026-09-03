@@ -114,10 +114,10 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-home.html" target="_blank">
-                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                <a class="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors" href="Crm-Group/admin-home.html" target="_blank">
+                                                    原型
                                                 </a>
-                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-home.html" target="_blank">
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-pcard-home.html" target="_blank">
                                                     PRD
                                                 </a>
                                             </div>
@@ -133,8 +133,8 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-list.html" target="_blank">
-                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                <a class="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors" href="Crm-Group/admin-activity-list.html" target="_blank">
+                                                    原型
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-pcard-list.html" target="_blank">
                                                     PRD
@@ -152,8 +152,8 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-pcard-detail.html" target="_blank">
-                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                <a class="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors" href="Crm-Group/admin-activity-pcard-detail.html" target="_blank">
+                                                    原型
                                                 </a>
                                                 <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-pcard-detail.html" target="_blank">
                                                     PRD
@@ -167,18 +167,18 @@
                     </div>
                 </div>
 
-                <!-- 返佣校验（新增父级菜单） -->
-                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
+                <!-- 活动管理（新增父级菜单） 暂时隐藏 -->
+                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item" style="display: none;">
                     <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
                         <div class="flex flex-col gap-1">
                             <div class="flex items-center gap-3">
-                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">风控核对</span>
-                                <h3 class="text-lg font-bold text-gray-800">返佣校验</h3>
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">营销活动</span>
+                                <h3 class="text-lg font-bold text-gray-800">活动管理</h3>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">纯提醒型对账工具：基于平仓订单独立重算一版理论值，与系统实际佣金记录的订单数、覆盖人数、金额、手数（区分USD/USC折算）逐项对比，问题自动高亮，**仅提醒运营/财务线下处理，系统无任何冲正/调账/锁入账/自动改金额的功能**。避免重复返、漏返、美分手折算错、平行链路互分等问题通过人工线下闭环。</p>
+                            <p class="text-sm text-gray-500 mt-1">系统各类营销活动与赠金配置相关需求。</p>
                         </div>
                         <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 3 个任务</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个任务</span>
                             <i class="fas fa-chevron-down accordion-icon"></i>
                         </div>
                     </div>
@@ -195,29 +195,35 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">佣金每日对账</td>
-                                        <td class="px-6 py-4 text-gray-500">纯提醒型对账工具：基于「平仓订单」独立重算理论返佣（不改动任何系统金额），与系统实际返佣记录进行“订单数”和“总金额”的双向对比。列表按订单平铺展示应/实发金额差额，点击可下钻查看逐代理对比明细。该页面纯只读，无任何系统平账操作。</td>
+                                        <td class="px-6 py-4 font-bold text-gray-800">注册赠金活动</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            用户注册后，赠送赠金。
+                                        </td>
                                         <td class="px-6 py-4">
                                             <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-commission-daily-audit.html" target="_blank">
-                                                    <i class="fas fa-desktop text-gray-400"></i> 对账页原型
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-bonus-list.html" target="_blank">
+                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                </a>
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-bonus-activity.html" target="_blank">
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr class="table-row-hover bg-blue-50/30">
-                                        <td class="px-6 py-4 font-bold text-gray-800">对账记录</td>
-                                        <td class="px-6 py-4 text-gray-500">纯留痕型对账批次记录库：按对账日期归档生成的批次列表。宏观展示各批次的对账状态、订单数/金额快照及差额统计。点击可下钻查看对账处理的时间线日志。页面完全移除所有自动调账功能，仅作对账状态的查询与人工处理留痕。</td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
-                                        </td>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">赠金详情</td>
+                                        <td class="px-6 py-4 text-gray-500">展示赠金活动的配置信息以及获得奖励的用户列表。</td>
+                                        <td class="px-6 py-4"><span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span></td>
                                         <td class="px-6 py-4">
                                             <div class="flex flex-wrap gap-2 items-center">
-                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-commission-audit-log.html" target="_blank">
-                                                    <i class="fas fa-desktop text-gray-400"></i> 对账记录原型
+                                                <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-activity-bonus-detail.html" target="_blank">
+                                                    <i class="fas fa-desktop text-gray-400"></i> 原型
+                                                </a>
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-bonus-detail.html" target="_blank">
+                                                    PRD
                                                 </a>
                                             </div>
                                         </td>
@@ -239,7 +245,7 @@
                             <p class="text-sm text-gray-500 mt-1">用于承接研发中的零散任务与临时需求，当前作为独立同级菜单保留。</p>
                         </div>
                         <div class="flex items-center gap-4 text-gray-400">
-                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个任务</span>
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 1 个任务</span>
                             <i class="fas fa-chevron-down accordion-icon"></i>
                         </div>
                     </div>
@@ -255,20 +261,6 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    <tr class="table-row-hover">
-                                        <td class="px-6 py-4 font-bold text-gray-800">公司新闻</td>
-                                        <td class="px-6 py-4 text-gray-500">
-                                            公司新闻增加简体中文录入。
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">HK CRM</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="text-gray-400 text-xs italic">
-                                                <i class="fas fa-info-circle mr-1"></i>待补充
-                                            </span>
-                                        </td>
-                                    </tr>
                                     <tr class="table-row-hover">
                                         <td class="px-6 py-4 font-bold text-gray-800">支付对接</td>
                                         <td class="px-6 py-4 text-gray-500">
@@ -757,6 +749,70 @@
                     </thead>
                     <tbody class="text-gray-600 divide-y divide-gray-100" id="completed-tbody">
                         
+                        <!-- 已完成: 返佣校验-佣金每日对账 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">返佣校验</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">佣金每日对账</td>
+                            <td class="px-5 py-4 text-gray-500">纯提醒型对账工具：基于「平仓订单」独立重算理论返佣（不改动任何系统金额），与系统实际返佣记录进行“订单数”和“总金额”的双向对比。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-09-01</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-commission-daily-audit.html" target="_blank">
+                                            <i class="fas fa-desktop text-gray-400"></i> 对账页原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 返佣校验-对账记录 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">返佣校验</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">对账记录</td>
+                            <td class="px-5 py-4 text-gray-500">纯留痕型对账批次记录库：按对账日期归档生成的批次列表。宏观展示各批次的对账状态、订单数/金额快照及差额统计。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-09-01</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-Group/admin-commission-audit-log.html" target="_blank">
+                                            <i class="fas fa-desktop text-gray-400"></i> 对账记录原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- 已完成: 其他需求-公司新闻 -->
+                        <tr class="table-row-hover bg-white">
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">其他需求</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">公司新闻</td>
+                            <td class="px-5 py-4 text-gray-500">公司新闻增加简体中文录入。</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-hk w-max">HK CRM</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-center font-medium text-gray-800 relative group whitespace-nowrap">2026-09-01</td>
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <a class="inline-flex items-center gap-1 bg-teal-50 hover:bg-teal-100 theme-text px-3 py-1.5 rounded text-xs transition-colors theme-border border" href="Crm-HK/admin-news-add.html" target="_blank">
+                                            <i class="fas fa-desktop text-gray-400"></i> 原型
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        
                         <!-- 已完成: 数据统计-净值报表 -->
                         <tr class="table-row-hover bg-white">
                             <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">报表中心</td>
@@ -1207,9 +1263,9 @@
                             </td>
                         </tr>
                         <tr class="table-row-hover bg-white">
-                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">营销活动</td>
-                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">Pcard 首页进度</td>
-                            <td class="px-5 py-4 text-gray-500">首页仅展示 Pcard 活动相关内容，包含净入金及交易手数进度，隐藏其他无关模块。</td>
+                            <td class="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">系统维护</td>
+                            <td class="px-5 py-4 font-bold text-gray-800 whitespace-nowrap">首页 (数据概览)</td>
+                            <td class="px-5 py-4 text-gray-500">所有核心数据概览的统计方式变更为：包含自己及伞下所有层级客户数据汇总。</td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col gap-1">
                                     <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>

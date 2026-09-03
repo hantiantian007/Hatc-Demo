@@ -412,19 +412,21 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm">
                             <thead>
-                                <tr class="text-gray-500 border-b border-gray-100 text-center">
-                                    
-                                    <th class="font-medium py-3 px-3 text-left">客户信息</th>
-                                    <th class="font-medium py-3 px-3 text-left">MT账号</th>
-                                    <th class="font-medium py-3 px-3">账号类型</th>
-                                    <th class="font-medium py-3 px-3">净入金 (USD)</th>
-                                    <th class="font-medium py-3 px-3">交易手数 (Lot)</th>
-                                    <th class="font-medium py-3 px-3">活动状态</th>
-                                    <th class="font-medium py-3 px-3">距达标还差</th>
-                                    <th class="font-medium py-3 px-3">注册时间</th>
-                                    <th class="font-medium py-3 px-3">操作</th>
-                                </tr>
-                            </thead>
+                                    <tr class="bg-gray-50 text-gray-500 text-[13px] border-b border-gray-200">
+                                        
+                                        <th class="font-medium py-3 px-3 text-left">客户信息</th>
+                                        <th class="font-medium py-3 px-3">用户类型</th>
+                                        <th class="font-medium py-3 px-3 text-left">MT账号</th>
+                                        <th class="font-medium py-3 px-3">账号类型</th>
+                                        <th class="font-medium py-3 px-3 text-right">净入金 (USD)</th>
+                                        <th class="font-medium py-3 px-3 text-right">交易手数 (Lot)</th>
+                                        <th class="font-medium py-3 px-3 text-right">当前剩余信用金</th>
+                                        <th class="font-medium py-3 px-3">活动状态</th>
+                                        <th class="font-medium py-3 px-3">距达标还差</th>
+                                        <th class="font-medium py-3 px-3">注册时间</th>
+                                        <th class="font-medium py-3 px-3">操作</th>
+                                    </tr>
+                                </thead>
                             <tbody class="text-gray-700 text-center">
                                 
 
@@ -436,12 +438,19 @@
                                             <span class="text-[11px] text-gray-400">13994874677@qq.com</span>
                                         </div>
                                     </td>
-                                    <td class="py-3 px-3 text-left font-medium text-gray-800">600001</td>
+                                    <td class="py-3 px-3">
+                                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-600 border border-blue-100">新用户</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-left font-medium text-gray-800">
+                                        600001
+                                        <span class="inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] bg-orange-50 text-orange-600 border border-orange-200">手数最多</span>
+                                    </td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium text-gray-400">$860.0000</td>
-                                    <td class="py-3 px-3 font-medium">3.1200</td>
+                                    <td class="py-3 px-3 text-right font-medium text-gray-400">$860.0000</td>
+                                    <td class="py-3 px-3 text-right font-medium">3.1200</td>
+                                    <td class="py-3 px-3 text-right font-medium text-emerald-600">100.00</td>
                                     <td class="py-3 px-3">
                                         <span class="text-blue-600 font-medium">参与中</span>
                                     </td>
@@ -462,12 +471,16 @@
                                             <span class="text-[11px] text-gray-400">admin@dev.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3">
+                                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-600 border border-gray-200">老用户</span>
+                                    </td>
                                     <td class="py-3 px-3 text-left font-medium text-gray-800">600002</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium">$1,013.0000</td>
-                                    <td class="py-3 px-3 font-medium text-gray-400">0.0000</td>
+                                    <td class="py-3 px-3 text-right font-medium">$1,013.0000</td>
+                                    <td class="py-3 px-3 text-right font-medium text-gray-400">0.0000</td>
+                                    <td class="py-3 px-3 text-right font-medium text-gray-400">-</td>
                                     <td class="py-3 px-3">
                                         <span class="text-blue-600 font-medium">参与中</span>
                                     </td>
@@ -488,12 +501,16 @@
                                             <span class="text-[11px] text-gray-400">15097830595@165.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3">
+                                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-600 border border-blue-100">新用户</span>
+                                    </td>
                                     <td class="py-3 px-3 text-left font-medium text-gray-800">600003</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border" style="color:#B45309;background:#FEF3C7;border-color:#FCD34D">美分账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium text-gray-400">$320.0000</td>
-                                    <td class="py-3 px-3 font-medium">1.0500</td>
+                                    <td class="py-3 px-3 text-right font-medium text-gray-400">$320.0000</td>
+                                    <td class="py-3 px-3 text-right font-medium">1.0500</td>
+                                    <td class="py-3 px-3 text-right font-medium text-emerald-600">50.00</td>
                                     <td class="py-3 px-3">
                                         <span class="text-blue-600 font-medium">参与中</span>
                                     </td>
@@ -514,12 +531,16 @@
                                             <span class="text-[11px] text-gray-400">b13@qq.com</span>
                                         </div>
                                     </td>
+                                    <td class="py-3 px-3">
+                                        <span class="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-600 border border-gray-200">老用户</span>
+                                    </td>
                                     <td class="py-3 px-3 text-left font-medium text-gray-800">600004</td>
                                     <td class="py-3 px-3">
                                         <span class="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium border type-pill-standard">标准账号</span>
                                     </td>
-                                    <td class="py-3 px-3 font-medium">$2,500.0000</td>
-                                    <td class="py-3 px-3 font-medium">7.8200</td>
+                                    <td class="py-3 px-3 text-right font-medium">$2,500.0000</td>
+                                    <td class="py-3 px-3 text-right font-medium">7.8200</td>
+                                    <td class="py-3 px-3 text-right font-medium text-gray-400">-</td>
                                     <td class="py-3 px-3">
                                         <span class="text-emerald-600 font-medium">已达标</span>
                                     </td>

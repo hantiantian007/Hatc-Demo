@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赠金活动列表与创建 - PRD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .golden-accent { color: #C19B5E; }
+        .bg-golden { background-color: #C19B5E; }
+        .border-golden { border-color: #C19B5E; }
+        .card { background-color: #ffffff; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <i class="fa-solid fa-gift golden-accent"></i> 
+                    赠金活动列表与创建 - PRD
+                </h1>
+                <p class="text-gray-500 mt-2">后台营销活动模块下赠金活动的列表展示与创建配置规则。</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+                <i class="fa-solid fa-file-lines text-gray-500"></i> List & Create
+            </div>
+        </div>
+
+        <!-- 列表展示规范 -->
+        <div class="card border-l-4 border-golden">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check golden-accent"></i> 1. 列表展示规范</h2>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>字段要求：</strong>包含活动名称、开始时间、结束时间、活动状态、参与人数、累计奖励笔数、累计奖励金额、创建人、创建时间及操作列。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>数据格式：</strong>金额统一使用千位符格式化并保留 4 位小数（如 6,000.0000）。状态纯文本显示（绿色/红色）。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>操作项：</strong>提供“查看详情”与“结束活动”/“开始活动”操作。其中“查看详情”跳转至专属详情页。取消了列表单条数据的“编辑规则”按钮。</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 活动创建与配置 -->
+        <div class="card border-l-4 border-golden">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-plus-circle golden-accent"></i> 2. 活动创建与配置</h2>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>活动模型：</strong>创建时需首选“活动模型”。系统根据所选模型动态加载对应的配置表单（如：注册赠金模型）。支持灵活扩展后续其他类型活动。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>对象圈选：</strong>支持选择“全部新用户”或“指定分组”。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-gray-400"></i>
+                    <span><strong>触发条件：</strong>单选机制。当前支持“实名通过”、“首次入金”、“首次开仓”。</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 核心研发红线 -->
+        <div class="card border-l-4 border-red-500">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-red-600"><i class="fa-solid fa-triangle-exclamation"></i> 3. 核心研发红线 (防呆与发放)</h2>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-red-400"></i>
+                    <span><strong>赠金属性限制：</strong>赠金必须以“信用额度 (Credit)”形式发放至 MT 账号，<strong>不可提现、不可转账</strong>。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-red-400"></i>
+                    <span><strong>唯一性发放：</strong>对于关联多个 MT 账号的 CRM 用户，系统仅自动将赠金发放到其<strong>首个绑定</strong>的 MT 账号中。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-red-400"></i>
+                    <span><strong>防呆逻辑 (比例赠送)：</strong>如果触发条件选择为“实名通过”或“首次开仓”，奖励规则<strong>强制锁定</strong>为“固定金额”。只有触发条件为“首次入金”时，才允许解锁并选择“入金比例”赠送。</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 赠金与 Pcard 活动联动逻辑 -->
+        <div class="card border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-blue-600"><i class="fa-solid fa-link"></i> 4. 赠金与 Pcard 活动联动逻辑</h2>
+            <ul class="space-y-3 text-gray-600">
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-blue-400"></i>
+                    <span><strong>活动合并与转化机制：</strong>当用户同时参与赠金活动（如实名送 100 赠金）与 Pcard 活动时，初始赠金以 Credit 发放。当用户<strong>首次满足</strong> Pcard 达标条件（如净入金 ≥ $1,000 且 交易 ≥ 5 手）时，系统自动执行一扣一加（Credit Out 剩余赠金金额，Balance In 同等金额），将剩余信用金转化为可提现的真实余额 (Balance)。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-blue-400"></i>
+                    <span><strong>亏损不补发原则：</strong>在转化为真金之前，如果客户因交易亏损导致该笔赠金（Credit）被扣除或亏空，系统在达标时<strong>仅转化当前账户内剩余的该笔 Credit 金额</strong>。对于已亏损完的赠金，<strong>不再进行任何形式的补发</strong>。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-dot text-[10px] mt-1.5 text-blue-400"></i>
+                    <span><strong>状态降级与防刷单：</strong>Pcard 活动采用严格的“净入金”校验（入金-出金）。如果客户在达标（且赠金已转真金）后发起出金，导致其历史累计净入金跌破 $1,000 的门槛，其 Pcard 活动状态将自动从“已达标”<strong>降级变更为“参与中”</strong>，但已转化为 Balance 的原赠金不再追回。</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

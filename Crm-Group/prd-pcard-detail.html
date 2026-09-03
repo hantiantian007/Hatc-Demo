@@ -73,8 +73,13 @@
 
                 <div>
                     <h3 class="font-bold text-gray-800 mb-2">3. 数据统计与列表展示规则</h3>
-                    <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                    <ul class="list-disc pl-5 text-gray-600 space-y-2">
                         <li><strong>状态筛选</strong>：列表仅提供“全部”、“参与中”、“已达标”三种状态筛选。取消了基于净入金和交易手数的区间筛选。</li>
+                        <li><strong>客户信息</strong>：展示姓名与邮箱。</li>
+                        <li><strong>用户类型（新增）</strong>：标识“新用户”或“老用户”，不同类型享有不同达标权益。</li>
+                        <li><strong>MT账号</strong>：展示唯一绑定的 MT 账号；若该用户有多个账号且未达标，优先显示交易手数最多的账号，并增加“手数最多”标签。</li>
+                        <li><strong>当前剩余信用金（新增）</strong>：仅新用户有值，显示达标前剩余可转化的赠金金额。若已发生亏损，按剩余实际金额显示。老用户显示“-”。</li>
+                        <li><strong>净入金 (USD)</strong>：金额格式化，强制保留 4 位小数（如 $980.0000）。</li>
                     </ul>
                 </div>
 
@@ -84,6 +89,30 @@
                         <li><strong>列表去重</strong>：一个 CRM 用户在列表里面只会显示一条记录。</li>
                         <li><strong>优先展示规则</strong>：如果 CRM 用户关联了多个 MT 账号，在未达标的情况下，优先显示交易手数最多的一个 MT 账号。</li>
                         <li><strong>详情弹窗</strong>：列表操作列提供“详情”按钮，点击后弹出“关联 MT 账号详情”弹窗，显示该用户名下所有 MT 账号的净入金、交易手数及距达标还差的明细数据。</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-2">5. 注册赠金与 Pcard 联动规则（新增）</h3>
+                    <ul class="list-disc pl-5 text-gray-600 space-y-2">
+                        <li><strong>新老用户权益区分</strong>：
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li>新用户：达标后，赠金解锁为真金，并免费办理 Pcard。</li>
+                                <li>老用户：无赠金奖励。达标后，仅享受免费办理 Pcard 权益。</li>
+                            </ul>
+                        </li>
+                        <li><strong>赠金发放与出金限制</strong>：
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li>资金属性：新用户领取的 100 赠金仅作为信用金（Credit）抵御风险，不可提现、不可转账。</li>
+                                <li>出金限制：用户随时可以正常出金（提取自己的本金及交易盈利），但系统不允许出金这 100 赠金。</li>
+                                <li>亏损不补发：若客户在达标前发生交易亏损，系统在达标时仅转化账户内剩余的赠金金额，亏损部分不予补发。</li>
+                            </ul>
+                        </li>
+                        <li><strong>达标解锁机制</strong>：
+                            <ul class="list-circle pl-5 mt-1 space-y-1">
+                                <li>转化真金：达标后，系统自动将账户内剩余的赠金属性转为真实余额（Balance），此时该资金可自由提现、可转账。</li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
