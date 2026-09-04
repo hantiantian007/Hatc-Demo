@@ -6,7 +6,63 @@
     <title>HATC CRM - 新增银行卡</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 帮助弹窗 -->
+    <div id="helpModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" style="display: none;">
+        <div class="bg-white rounded-xl shadow-xl w-[800px] max-h-[90vh] flex flex-col">
+            <!-- 头部 -->
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-800">如何获取 Planet card 客户编号？</h3>
+                <button onclick="closeHelpModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- 内容区 (可滚动) -->
+            <div class="p-6 overflow-y-auto">
+                <div class="space-y-8">
+                    <!-- 步骤1 -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold">1</span>
+                            <h4 class="font-medium text-gray-800">登录 Planet card 官网或 App</h4>
+                        </div>
+                        <p class="text-sm text-gray-500 ml-8 mb-4">请使用您的区号和手机号码，输入登录信息进行登录。</p>
+                        <div class="ml-8 border border-gray-200 rounded-lg overflow-hidden bg-gray-50 shadow-sm">
+                            <img src="../assets/images/planet-login.png" alt="登录步骤截图" class="w-full object-contain" onerror="this.src='https://placehold.co/800x400/f8fafc/a1a5b7?text=Please+save+image+as+planet-login.png'">
+                        </div>
+                    </div>
+
+                    <!-- 步骤2 -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold">2</span>
+                            <h4 class="font-medium text-gray-800">获取唯一客户编号</h4>
+                        </div>
+                        <p class="text-sm text-gray-500 ml-8 mb-4">登录成功后，在页面右上角点击头像区域，展开的下拉菜单中即可找到并复制您的唯一客户编号（ID）。</p>
+                        <div class="ml-8 border border-gray-200 rounded-lg overflow-hidden bg-gray-50 shadow-sm">
+                            <img src="../assets/images/planet-id.png" alt="获取ID截图" class="w-full object-contain" onerror="this.src='https://placehold.co/800x400/f8fafc/a1a5b7?text=Please+save+image+as+planet-id.png'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部按钮 -->
+            <div class="px-6 py-4 border-t border-gray-100 flex justify-end">
+                <button onclick="closeHelpModal()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+                    我已了解
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function openHelpModal() {
+            document.getElementById('helpModal').style.display = 'flex';
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
         tailwind.config = {
             theme: {
                 extend: {
@@ -360,6 +416,25 @@
                         </div>
                     </div>
 
+                    <!-- 客户编号 (仅 Planet card / Pcard 等特定类型显示) -->
+                    <div class="flex mb-6 items-start" id="clientIdField" style="display: flex;">
+                        <label class="w-32 text-sm font-medium text-gray-700 text-right pr-4 pt-2">
+                            <span class="text-red-500 mr-1">*</span>客户编号：
+                        </label>
+                        <div class="flex-1">
+                            <input type="text" class="w-full h-10 px-3 border border-gray-300 rounded focus:outline-none focus:border-menuActive focus:ring-1 focus:ring-menuActive/30 text-sm" placeholder="请输入您的客户编号">
+                            <div class="mt-2 flex items-center justify-between">
+                                <p class="text-xs text-gray-500">
+                                    <i class="fa-solid fa-circle-info text-gray-400 mr-1"></i>
+                                    请登录 <a href="#" class="text-blue-600 hover:underline">Planet card官网</a>，查看并填写您的唯一客户编号
+                                </p>
+                                <button type="button" onclick="openHelpModal()" class="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1 cursor-pointer font-medium bg-blue-50 px-2 py-1 rounded">
+                                    <i class="fa-regular fa-circle-question"></i> 不知道如何获取编号？点击查看教程
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 二维码 -->
                     <div class="flex mb-8 items-start">
                         <div class="w-32 text-right pr-4 pt-1.5">
@@ -441,11 +516,28 @@
                 document.getElementById('form-bank').classList.add('hidden');
                 document.getElementById('form-bank').classList.remove('block');
                 
-                // 显示选中的表单区域
-                document.getElementById('form-' + e.target.value).classList.remove('hidden');
-                document.getElementById('form-' + e.target.value).classList.add('block');
+                // 确保默认表单存在
+                const targetForm = document.getElementById('form-' + e.target.value);
+                if (targetForm) {
+                    targetForm.classList.remove('hidden');
+                    targetForm.classList.add('block');
+                }
+
+                // 动态显示客户编号字段
+                const clientIdField = document.getElementById('clientIdField');
+                if (e.target.value === 'planet_card' || e.target.value === 'pcard') {
+                    clientIdField.style.display = 'flex';
+                } else {
+                    clientIdField.style.display = 'none';
+                }
             });
         });
+        
+        // 初始化执行一次
+        const checkedRadio = document.querySelector('input[name="card_type"]:checked');
+        if(checkedRadio) {
+            checkedRadio.dispatchEvent(new Event('change'));
+        }
 
         // PRD 弹窗控制逻辑
         const prdModal = document.getElementById('prdModal');
