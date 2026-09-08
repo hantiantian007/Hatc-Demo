@@ -77,6 +77,389 @@
             <!-- 需求列表容器 -->
             <div class="p-6 flex flex-col gap-4 bg-gray-50/50">
 
+                <!-- 需求集（一） -->
+                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">需求合集</span>
+                                <h3 class="text-lg font-bold text-gray-800">需求集（一）</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">需求集（一）相关页面与任务。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 4 个页面</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-orange-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">关系树优化</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            关系树增加MT账号查询条件
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="text-gray-400 text-xs italic">待补充原型</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">客户变动详情</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            客户变动详情增加筛选条件，时间筛选、操作筛选，关系树查询
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="text-gray-400 text-xs italic">待补充原型</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">出金申请</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            出金申请时，未显示赠金金额
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="text-gray-400 text-xs italic">待补充原型</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">Pcard 活动详情</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加达标列表，记录客户达标时间和赠金转真实资金的时间
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-activity-pcard-detail.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报表统计（新增父级菜单） -->
+                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">数据报表</span>
+                                <h3 class="text-lg font-bold text-gray-800">报表统计</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">系统各类报表与数据统计相关需求。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 8 个页面</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-orange-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">佣金统计</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-commission-stats.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">交易报表</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-trading.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">持仓报表</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-position.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                                <a href="Crm-Group/prd-report-position.html" target="_blank" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition-colors text-sm border border-indigo-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-file-alt"></i> PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">平仓交易记录</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-close-position.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                                <a href="Crm-Group/prd-report-close-position.html" target="_blank" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition-colors text-sm border border-indigo-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-file-alt"></i> PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">财务报表</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-finance-cent-account.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                                <a href="Crm-Group/prd-cent-account-page-finance-report.html" target="_blank" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition-colors text-sm border border-indigo-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-file-alt"></i> PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">佣金报表</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-commission-cent-account.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                                <a href="Crm-Group/prd-cent-account-page-commission-report.html" target="_blank" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition-colors text-sm border border-indigo-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-file-alt"></i> PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">持仓统计</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-position-stats.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-medium text-gray-800">交易记录</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            增加关系树查询方式
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs border border-gray-200">CRM 业务端</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2">
+                                                <a href="Crm-Group/admin-report-trade-record-cent-account.html" target="_blank" class="text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded transition-colors text-sm border border-orange-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-desktop"></i> 查看原型
+                                                </a>
+                                                <a href="Crm-Group/prd-cent-account-page-trade-record.html" target="_blank" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition-colors text-sm border border-indigo-100 flex items-center gap-1.5">
+                                                    <i class="fas fa-file-alt"></i> PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 对账（新增父级菜单） -->
+                <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
+                    <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">财务对账</span>
+                                <h3 class="text-lg font-bold text-gray-800">对账</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">系统资金对账：CRM业务账本与MT底层资金比对，抓取异常。</p>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-400">
+                            <span class="text-xs bg-gray-100 px-2 py-1 rounded">包含 2 个页面</span>
+                            <i class="fas fa-chevron-down accordion-icon"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-content border-t border-orange-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="min-w-full text-sm text-left">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 border-b border-gray-200">
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[220px]">页面/任务名称</th>
+                                        <th class="px-6 py-3 font-medium min-w-[260px]">概述</th>
+                                        <th class="px-6 py-3 font-medium whitespace-nowrap w-[150px]">所属客户端</th>
+                                        <th class="px-6 py-3 font-medium min-w-[280px]">交付物导航 (直达链接)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">对账管理 - 每日对账日志</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            记录每天 (T-1) 系统全局资金对账的结果（总入金、总出金、总差异笔数及状态）。对于异常批次可添加异常说明。
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors" href="Crm-Group/admin-reconciliation-daily-record.html" target="_blank">
+                                                    原型
+                                                </a>
+                                                <a class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded text-xs transition-colors font-medium" href="Crm-Group/prd-reconciliation-daily-record.html" target="_blank">
+                                                    PRD
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row-hover">
+                                        <td class="px-6 py-4 font-bold text-gray-800">对账管理 - 异常看板</td>
+                                        <td class="px-6 py-4 text-gray-500">
+                                            按 T+1 维度比对 CRM 成功记录与 MT 底层流水，仅罗列差异账号，供财务排查使用（无修改操作）。
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-block px-2 py-0.5 text-[11px] rounded tag-group w-max">Group(含HK)</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-wrap gap-2 items-center">
+                                                <a class="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium transition-colors" href="Crm-Group/admin-reconciliation-internal.html" target="_blank">
+                                                    原型
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Pcard活动（新增父级菜单） -->
                 <div class="bg-white rounded-xl shadow-sm border border-orange-200 overflow-hidden accordion-item">
                     <div class="px-6 py-4 cursor-pointer hover:bg-orange-50/50 transition-colors flex justify-between items-center" onclick="toggleAccordion(this)">

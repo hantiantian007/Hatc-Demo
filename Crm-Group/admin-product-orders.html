@@ -103,6 +103,7 @@
 
         <!-- 菜单列表 (可滚动) -->
                                         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
             </a>
@@ -127,6 +128,21 @@
                     <a href="admin-bankcard-add.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">待审核银行卡</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">内部转账</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">转账审核</a>
+                </div>
+            </div>
+
+            <!-- 财务对账 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-invoice-dollar w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务对账</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-reconciliation-daily-record.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">每日对账日志</a>
+                    <a href="admin-reconciliation-internal.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">对账异常看板</a>
                 </div>
             </div>
 
@@ -211,19 +227,33 @@
                     <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
-                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-commission-stats.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易报表</a>
+                    <a href="admin-report-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
                     <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-finance-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-commission-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
+                    <a href="admin-report-position-stats.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
+                    <a href="admin-report-trade-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
                     <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
                     <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">盈亏报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                </div>
+            </div>
+
+            <!-- 委托交易 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-handshake-angle w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">委托交易</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-trust-phase1.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">委托交易一期</a>
+                    <a href="admin-trust-account-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">委托交易账户管理</a>
+                    <a href="admin-trust-rule-config.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">查看规则配置</a>
                 </div>
             </div>
 
@@ -287,257 +317,8 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
             </div>
-        
-                
-        </nav>
-        
-        <!-- 底部收起按钮 (选做) -->
-        <div class="p-4 border-t border-gray-700/50">
-            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
-                <i class="fa-solid fa-angles-left text-sm"></i>
-            </button>
-        </div>
-    </aside>
 
-    <!-- 右侧主体内容 -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- 顶部 Header -->
-        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
-            <!-- 面包屑导航及快捷操作 -->
-            <div class="flex items-center text-sm text-gray-500 gap-4">
-                <div class="flex items-center">
-                    <span class="hover:text-gray-800 cursor-pointer">财务管理</span>
-                    <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                    <span class="text-primary font-medium">商品订单</span>
-                </div>
-                <div class="flex items-center gap-2 border-l pl-4 border-gray-200">
-                    <a href="../index.html" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-arrow-left mr-1.5"></i> 返回需求看板</a>
-                    <button onclick="document.getElementById('prdModal').classList.remove('hidden')" class="px-3 py-1.5 bg-yellow-50 text-primary border border-yellow-100 hover:bg-yellow-100 rounded text-xs font-medium transition-colors flex items-center"><i class="fas fa-project-diagram mr-1.5"></i> 查看 PRD</button>
-                </div>
-            </div>
-            
-            <!-- 右侧个人中心 -->
-            <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
-                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
-                    <span class="text-sm font-bold text-gray-600">SM</span>
-                </div>
-                
-                <!-- 下拉菜单 (Hover 显示) -->
-                <div class="absolute right-0 top-[100%] mt-0 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-lg">
-                        <p class="text-sm font-medium text-gray-800">史密斯</p>
-                        <p class="text-xs text-gray-500 mt-0.5 truncate">admin@dev.com</p>
-                    </div>
-                    <div class="py-1">
-                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors">
-                            <i class="fas fa-user-circle w-4 text-center text-gray-400"></i>
-                            <span class="ml-3">个人信息</span>
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors">
-                            <i class="fas fa-credit-card w-4 text-center text-gray-400"></i>
-                            <span class="ml-3">我的银行卡</span>
-                        </a>
-                    </div>
-                    <div class="py-1 border-t border-gray-100">
-                        <a href="../login.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-red-500 transition-colors">
-                            <i class="fas fa-sign-out-alt w-4 text-center text-gray-400"></i>
-                            <span class="ml-3">退出</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- 页面主内容滚动区 -->
-        <main class="flex-1 overflow-y-auto p-6 bg-mainBg">
-            <div class="w-full mx-auto min-h-full flex flex-col">
-            
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex-1">
-            <!-- 头部标题和操作区 -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <div class="flex items-center gap-4">
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-900">商品订单管理</h1>
-                        <p class="text-sm text-gray-500 mt-1">管理客户购买的增值商品订单，处理资金结算与状态流转</p>
-                    </div>
-                    
-                </div>
-                <button class="px-5 py-2.5 bg-primary hover:bg-primaryHover text-white rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-file-export"></i> 导出报表
-                </button>
-            </div>
-
-            <!-- 筛选区 -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">订单编号/客户信息</label>
-                    <input type="text" placeholder="订单号/邮箱/姓名" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">商品名称</label>
-                    <select class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
-                        <option value="">全部商品</option>
-                        <option value="1">先锋一号智能交易系统</option>
-                        <option value="2">先锋五号</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1">订单状态</label>
-                    <select class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-primary">
-                        <option value="">全部状态</option>
-                        <option value="processing">处理中 (待交付)</option>
-                        <option value="delivered">已交付</option>
-                    </select>
-                </div>
-                <div class="flex items-end gap-2">
-                    <button class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors">重置</button>
-                    <button class="px-8 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors text-white" style="background-color: #55B9B9;" onmouseover="this.style.backgroundColor='#45a8a8'" onmouseout="this.style.backgroundColor='#55B9B9'">查询</button>
-                </div>
-            </div>
-
-            <!-- 核心数据：资金流向说明 -->
-            <div class="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-3">
-                <i class="fa-solid fa-circle-info text-blue-500 mt-0.5"></i>
-                <div class="text-sm text-blue-800">
-                    <span class="font-bold">资金与发货流向说明：</span> 客户提交订单后将暂不扣除其钱包余额，订单状态为“待确认”。需运营人员在此处点击「通过」后，系统才会正式从客户钱包余额中扣除对应款项，订单正式生效。若点击「拒绝」，则直接释放额度，无需退款。
-                </div>
-            </div>
-
-            <!-- 数据表格 -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">订单编号</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">购买时间</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">客户姓名</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">电子邮箱</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">商品名称</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">套餐规格</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">Star账号</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">实付金额</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">付款 MT 账号</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">有效期限</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-left">状态</th>
-                            <th class="px-4 py-3 font-medium whitespace-nowrap text-right">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm divide-y divide-gray-100">
-                        <!-- 订单 1: 待交付 -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260623-8891</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-23<br>14:30:22</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-gray-900">张三</div>
-                                <div class="text-xs text-[#C19B5E] mt-1"><i class="fas fa-wallet mr-1"></i>MT5: 8881234 (USD)</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500">zhangsan@email.com</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋一号智能交易系统</td>
-                            <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-gray-100 rounded text-xs">基础版</span></td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">Star-12345</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-bold text-red-500">$300.00</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">667788</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic text-xs">待运营线下人工开通</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
-                                    <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-1.5"></span>
-                                    待确认
-                                </span>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-right">
-                                <button class="px-3 py-1.5 bg-primary hover:bg-primaryHover text-white rounded text-xs font-medium transition-colors mr-2 shadow-sm" title="确认发货/开通" onclick="openDeliveryModal('ORD-20260623-8891', '张三', '先锋一号智能交易系统', false)">通过</button>
-                                <button class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors shadow-sm" title="拒绝并关闭订单" onclick="openRejectModal('ORD-20260623-8891', '张三', '$300.00', '原路退回至客户 MT-9999999')">拒绝</button>
-                            </td>
-                        </tr>
-                        
-                        <!-- 订单 2: 待交付 (无时间限制) -->
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260622-5531</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-22<br>10:11:45</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <div class="text-gray-900">赵六</div>
-                                <div class="text-xs text-[#C19B5E] mt-1"><i class="fas fa-wallet mr-1"></i>MT5: 8885678 (USD)</div>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500">zhaoliu@email.com</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋二号</td>
-                            <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-purple-50 text-purple-600 rounded text-xs">尊享版</span></td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic">/</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-bold text-red-500">$999.00</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">余额支付</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic text-xs">永久有效</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
-                                    <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-1.5"></span>
-                                    待确认
-                                </span>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-right">
-                                <button class="px-3 py-1.5 bg-primary hover:bg-primaryHover text-white rounded text-xs font-medium transition-colors mr-2 shadow-sm" title="确认发货/开通" onclick="openDeliveryModal('ORD-20260622-5531', '赵六', '先锋二号', true)">通过</button>
-                                <button class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors shadow-sm" title="拒绝并关闭订单" onclick="openRejectModal('ORD-20260622-5531', '赵六', '$999.00', '退回至客户钱包余额')">拒绝</button>
-                            </td>
-                        </tr>
-                        
-                        <!-- 订单 3: 已交付 -->
-                        <tr class="hover:bg-gray-50 transition-colors bg-gray-50/30">
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260621-1024</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-21<br>09:15:00</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">李四</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500">lisi_fx@email.com</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋一号智能交易系统</td>
-                            <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-gray-100 rounded text-xs">3个月</span></td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">Star-8888</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-bold text-red-500">$150.00</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">556677</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-21 至<br>2026-09-21</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                                    已交付
-                                </span>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-right">
-                            </td>
-                        </tr>
-                        
-                        <!-- 订单 3: 已拒绝/取消 -->
-                        <tr class="hover:bg-gray-50 transition-colors bg-gray-50/30 opacity-75">
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">ORD-20260620-0034</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500 text-xs">2026-06-20<br>10:05:12</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">王五</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-500">wangwu@email.com</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-medium text-blue-600">先锋一号</td>
-                            <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-gray-100 rounded text-xs">7天</span></td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic">/</td>
-                            <td class="px-4 py-3 whitespace-nowrap font-bold text-gray-400 line-through">$5,000.00</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-900">8099124</td>
-                            <td class="px-4 py-3 whitespace-nowrap text-gray-400 italic text-xs">-</td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-600 border border-red-200">
-                                    <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
-                                    已拒绝/取消
-                                </span>
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-right">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 分页 -->
-            <div class="mt-6 flex justify-between items-center border-t border-gray-100 pt-4">
-                <div class="text-sm text-gray-500">共 4 条记录</div>
-                <nav class="flex items-center gap-1">
-                    <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-400 cursor-not-allowed">
-                        <i class="fa-solid fa-chevron-left text-xs"></i>
-                    </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white text-sm font-medium">1</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded border border-gray-200 text-gray-400 cursor-not-allowed">
-                        <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-                
-                
-        </nav>
+        
             </div>
         </div>
 

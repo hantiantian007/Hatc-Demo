@@ -1,48 +1,8 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>出金记录 - 美分账户原型</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="cent-prd-drawer.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        menuBg: '#2A2F3E',
-                        menuHover: '#373D4E',
-                        menuText: '#A1A5B7',
-                        topBarBg: '#FFFFFF',
-                        mainBg: '#F3F4F6',
-                        primary: '#C19B5E',
-                        primaryHover: '#b08a4d'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .submenu-transition { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
-        .submenu-expanded { max-height: 500px; opacity: 1; }
-        .arrow-transition { transition: transform 0.3s ease; }
-        .arrow-rotated { transform: rotate(90deg); }
-        .change-highlight { color: #DC2626 !important; }
-    </style>
-</head>
-<body class="bg-mainBg font-sans text-gray-800 antialiased flex h-screen overflow-hidden">
+import re
+import glob
+import os
 
-    <aside class="w-[240px] bg-menuBg h-full flex-col shadow-xl z-20 flex-shrink-0 hidden md:flex">
-        <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
-            <span class="text-4xl font-black tracking-wider text-white">HATC</span>
-        </div>
-
-        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
-
+new_nav_content = """
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
             </a>
@@ -256,131 +216,27 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
             </div>
+"""
 
-        
+pattern = r'(<nav class="[^"]*flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">).*?(</nav>)'
 
-        <div class="p-4 border-t border-gray-700/50">
-            <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
-                <i class="fa-solid fa-angles-left text-sm"></i>
-            </button>
-        </div>
-    </aside>
+html_files = glob.glob('Crm-Group/admin-*.html') + glob.glob('Crm-Group/client-*.html')
 
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
-            <div class="text-sm text-gray-500">
-                出入金 <span class="mx-1 text-gray-300">&gt;</span> 出金记录
-            </div>
-            <div class="flex items-center gap-4">
-                <a href="prd-cent-account-page-withdraw-record.html" data-prd-drawer data-prd-title="出金列表页面PRD" class="text-xs text-blue-500 hover:text-blue-600 transition-colors">
-                    查看页面PRD
-                </a>
-                <a href="../index.html" class="text-xs text-gray-400 hover:text-gray-600 transition-colors">
-                    返回看板
-                </a>
-            </div>
-        </header>
+count = 0
+for file in html_files:
+    if 'prd' in file:
+        continue
+        
+    try:
+        with open(file, 'r', encoding='utf-8') as f:
+            content = f.read()
+            
+        new_content, n = re.subn(pattern, r'\1' + '\n' + new_nav_content + '\n        \2', content, flags=re.DOTALL)
+        if n > 0:
+            with open(file, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            count += 1
+    except Exception as e:
+        print(f"Error processing {file}: {e}")
 
-        <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-mainBg">
-            <div class="bg-[#F7F7F8] rounded-xl border border-gray-200 p-4 md:p-6 min-h-full">
-                <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                    <div class="px-5 py-4 border-b border-gray-100">
-                        <a href="client-withdraw-cent-account.html" class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-primary hover:bg-primaryHover text-white text-sm font-medium transition-colors">
-                            <i class="fas fa-plus text-xs"></i>
-                            出金申请
-                        </a>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="bg-white text-gray-500">
-                                <tr class="border-b border-gray-100">
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">MT账号</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap change-highlight">账户类型</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">订单号</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap change-highlight">出金金额</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap change-highlight">到账金额</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap change-highlight">汇率</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">支付方式</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">申请时间</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">状态</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">付款状态</th>
-                                    <th class="text-left font-medium px-5 py-4 whitespace-nowrap">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr class="align-top hover:bg-gray-50/70">
-                                    <td class="px-5 py-5 whitespace-nowrap font-medium text-gray-800">8100453</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-500 change-highlight">标准账户</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">OUT_923832107870979672</td>
-                                    <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="font-medium text-gray-800 change-highlight">$1,233.00</div>
-                                    </td>
-                                    <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="font-medium text-gray-800 change-highlight">$1,233.00</div>
-                                    </td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">1.00000</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">maxpay-usdt</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-500">2026-07-31 15:07:06</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">会签审核</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">待支付</td>
-                                    <td class="px-5 py-5 whitespace-nowrap">
-                                        <button class="px-2 py-1 rounded text-[12px] font-medium text-[#FF4D4F] border border-[#FFB3B6] bg-[#FFF1F0] hover:bg-[#FFE5E5] transition-colors">
-                                            取消
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="align-top hover:bg-gray-50/70">
-                                    <td class="px-5 py-5 whitespace-nowrap font-medium text-gray-800">9900456</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-primary change-highlight">美分账户</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">OUT_923832107870979699</td>
-                                    <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="font-medium text-gray-800 change-highlight">$125.00</div>
-                                    </td>
-                                    <td class="px-5 py-5 whitespace-nowrap">
-                                        <div class="font-medium text-gray-800 change-highlight">$125.00</div>
-                                    </td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600 change-highlight">1.00000</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">maxpay-usdt</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-500 change-highlight">2026-07-31 16:22:18</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">会签审核</td>
-                                    <td class="px-5 py-5 whitespace-nowrap text-gray-600">待支付</td>
-                                    <td class="px-5 py-5 whitespace-nowrap">
-                                        <button class="px-2 py-1 rounded text-[12px] font-medium text-[#FF4D4F] border border-[#FFB3B6] bg-[#FFF1F0] hover:bg-[#FFE5E5] transition-colors">
-                                            取消
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                        <div>15条 / 页&nbsp;&nbsp; 1记录，第 1/1页</div>
-                        <div class="flex items-center gap-2">
-                            <button class="w-8 h-8 rounded border border-gray-200 bg-white text-gray-300 cursor-not-allowed">
-                                <i class="fas fa-angle-left"></i>
-                            </button>
-                            <button class="w-8 h-8 rounded border border-primary bg-primary text-white">1</button>
-                            <button class="w-8 h-8 rounded border border-gray-200 bg-white text-gray-300 cursor-not-allowed">
-                                <i class="fas fa-angle-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        function toggleSubmenu(button) {
-            const submenu = button.nextElementSibling;
-            const arrow = button.querySelector('.arrow-transition');
-            submenu.classList.toggle('submenu-expanded');
-            if (arrow) {
-                arrow.classList.toggle('arrow-rotated');
-            }
-        }
-    </script>
-</body>
-</html>
+print(f"Updated {count} files.")

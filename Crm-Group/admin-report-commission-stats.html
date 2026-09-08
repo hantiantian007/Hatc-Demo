@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HATC CRM - 交易记录</title>
+    <title>HATC CRM - 佣金统计</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="cent-prd-drawer.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -33,6 +32,7 @@
         .submenu-expanded { max-height: 500px; opacity: 1; }
         .arrow-transition { transition: transform 0.3s ease; }
         .arrow-rotated { transform: rotate(90deg); }
+        
         .custom-input {
             border: 1px solid #e5e7eb;
             border-radius: 4px;
@@ -41,9 +41,8 @@
             outline: none;
             width: 100%;
             transition: border-color 0.2s;
-            background: #fff;
         }
-        .custom-input:focus, .custom-select:focus { border-color: #d1a84f; }
+        .custom-input:focus { border-color: #d1a84f; }
         .custom-select {
             border: 1px solid #e5e7eb;
             border-radius: 4px;
@@ -53,85 +52,47 @@
             width: 100%;
             background-color: white;
         }
+        
         .custom-table th {
             color: #6b7280;
             font-weight: 600;
-            padding: 14px 10px;
-            font-size: 12px;
+            padding: 16px 12px;
+            font-size: 13px;
             text-align: center;
-            border-bottom: 1px solid #e5e7eb;
+            border: 1px solid #e5e7eb;
             white-space: nowrap;
         }
         .custom-table td {
-            padding: 14px 10px;
-            font-size: 12px;
+            padding: 14px 12px;
+            font-size: 13px;
             color: #4b5563;
             text-align: center;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
+            border: 1px solid #e5e7eb;
             white-space: nowrap;
         }
-        .custom-table tbody tr:hover { background-color: #fafafa; }
-        .change-highlight { color: #DC2626 !important; }
-        .change-bg { background-color: #FEF2F2; }
-        .summary-stat {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .multiline-cell {
-            white-space: normal !important;
-            line-height: 1.35;
-        }
-        .multiline-cell .main-value {
-            display: block;
-            font-weight: 600;
-            color: #111827;
-        }
-        .multiline-cell .sub-value {
-            display: block;
-            margin-top: 4px;
-            font-size: 11px;
-            line-height: 1.4;
-        }
-        .detail-list {
-            display: flex;
-            flex-direction: column;
-        }
-        .detail-row-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            min-height: 40px;
-            padding: 0 12px;
-            border-bottom: 1px solid #f3d6d6;
-            white-space: normal;
-        }
-        .detail-row-item:last-child {
-            border-bottom: none;
-        }
-        .detail-label {
-            width: 96px;
-            flex-shrink: 0;
-            color: #6b7280;
-            font-weight: 600;
+        .custom-table tbody tr:hover { background-color: #f9fafb; }
+        
+        /* 展开行的特殊样式 */
+        .expanded-row td {
+            background-color: #f9fafb;
             text-align: left;
-        }
-        .detail-value {
-            color: #374151;
-            text-align: left;
-            word-break: break-word;
+            padding: 16px 24px;
         }
     </style>
 </head>
 <body class="bg-mainBg font-sans text-gray-800 antialiased h-screen overflow-hidden flex">
+
+    <!-- 左侧导航菜单 (简化占位) -->
     <aside class="w-[240px] bg-menuBg h-full flex flex-col shadow-xl z-20 flex-shrink-0">
+        
+        <!-- Logo 区域 -->
         <div class="h-20 flex items-center justify-center border-b border-gray-700/50">
             <span class="text-4xl font-black tracking-wider text-white">HATC</span>
         </div>
-        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
 
+        <!-- 菜单列表 (可滚动) -->
+
+                                        <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
             </a>
@@ -345,8 +306,10 @@
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
             </div>
+        
+        </nav>
 
-        
+        <!-- 底部收起按钮 (选做) -->
         <div class="p-4 border-t border-gray-700/50">
             <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
                 <i class="fa-solid fa-angles-left text-sm"></i>
@@ -354,26 +317,33 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col min-w-0">
-        <header class="h-16 bg-topBarBg shadow-sm flex items-center justify-between px-8 z-10 flex-shrink-0">
-            <div class="flex items-center text-sm text-gray-500">
+    <!-- 右侧内容区 -->
+    <main class="flex-1 flex flex-col min-w-0 bg-[#F5F6F8]">
+        
+        <!-- 顶部 Header -->
+        <header class="h-16 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.02)] flex items-center justify-between px-6 z-10 flex-shrink-0">
+            <!-- 面包屑导航 -->
+            <div class="flex items-center text-[13px] text-gray-500">
                 <span class="hover:text-gray-800 cursor-pointer">报表中心</span>
-                <i class="fa-solid fa-chevron-right text-[10px] mx-3 text-gray-300"></i>
-                <span class="text-menuActive font-medium mr-4">交易记录</span>
-                <a href="prd-cent-account-page-trade-record.html" data-prd-drawer data-prd-title="交易记录页面PRD" class="flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded transition-colors border border-blue-200 text-xs font-medium mr-3">
-                    <i class="fas fa-book-open"></i> 页面PRD
-                </a>
+                <i class="fa-solid fa-chevron-right text-[10px] mx-2 text-gray-300"></i>
+                <span class="text-menuActive font-medium mr-4">佣金统计</span>
+                
                 <a href="../index.html" class="flex items-center gap-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 px-3 py-1.5 rounded transition-colors border border-gray-200 text-xs font-medium">
                     <i class="fas fa-arrow-left"></i> 返回需求看板
                 </a>
             </div>
-            <div class="flex items-center gap-4 relative group cursor-pointer pb-2 z-[100]">
-                <div class="w-8 h-8 rounded-full bg-gray-200 text-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm mt-2">
-                    <span class="text-sm font-bold text-gray-600">SM</span>
+            
+            <!-- 右侧用户信息 (简化版) -->
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                    <img src="https://flagcdn.com/w20/cn.png" alt="CN" class="h-3.5">
+                    <span>简体中文</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
                 </div>
             </div>
         </header>
 
+        <!-- 主要业务渲染区 -->
         <div class="flex-1 p-4 bg-gray-50 flex gap-4 overflow-hidden">
 <!-- 左侧关系树 -->
             <div class="w-64 bg-white border border-gray-200 rounded shadow-sm flex flex-col shrink-0 overflow-hidden">
@@ -482,232 +452,225 @@
             <!-- 右侧详情与数据 -->
             <!-- 右侧详情与数据 -->
             <div class="flex-1 flex flex-col gap-4 overflow-y-auto no-scrollbar">
+            
+            <!-- 搜索过滤卡片 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h3 class="font-bold text-gray-800 mb-5 text-[15px]">搜索</h3>
-                <div class="grid grid-cols-6 gap-4 mb-4">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
                     <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">MT账号:</label>
-                        <input type="text" class="custom-input" placeholder="请输入不超过50字符">
-                    </div>
-                    <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">客户姓名:</label>
-                        <input type="text" class="custom-input" placeholder="请输入不超过50字符">
-                    </div>
-                    <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">客户邮箱:</label>
-                        <input type="text" class="custom-input" placeholder="请输入不超过50字符">
-                    </div>
-                    <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">持仓编号:</label>
-                        <input type="text" class="custom-input" placeholder="请输入不超过50字符">
-                    </div>
-                    <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">交易品种:</label>
-                        <select class="custom-select">
-                            <option>全部</option>
-                            <option>XAUUSD</option>
-                            <option>XAGUSD</option>
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">用户类型:</label>
+                        <select class="custom-select flex-1">
+                            <option>不限</option>
                         </select>
                     </div>
                     <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">买卖类型:</label>
-                        <select class="custom-select">
-                            <option>全部</option>
-                            <option>买入</option>
-                            <option>卖出</option>
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">查询范围:</label>
+                        <select class="custom-select flex-1">
+                            <option>所有</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-6 gap-4 mb-4">
                     <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">订单编号:</label>
-                        <input type="text" class="custom-input" placeholder="请输入不超过50字符">
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">交易品种:</label>
+                        <input type="text" class="custom-input flex-1" placeholder="请输入">
                     </div>
-                    <div class="flex items-center col-span-2">
-                        <label class="text-[13px] text-gray-600 w-16 shrink-0 text-right mr-3">开仓日期:</label>
-                        <div class="flex items-center w-full">
-                            <select class="custom-select rounded-r-none border-r-0 max-w-[110px]">
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">交易账号:</label>
+                        <input type="text" class="custom-input flex-1" placeholder="请输入">
+                    </div>
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">返佣状态:</label>
+                        <select class="custom-select flex-1">
+                            <option>已结算</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">返佣账号:</label>
+                        <input type="text" class="custom-input flex-1" placeholder="请输入">
+                    </div>
+                    
+                    <div class="flex items-center col-span-1 lg:col-span-2 xl:col-span-2">
+                        <div class="flex gap-2 w-full">
+                            <select class="custom-select w-[100px] shrink-0">
                                 <option>系统时间</option>
                             </select>
-                            <input type="text" class="custom-input rounded-none border-r-0 text-center" placeholder="开始日期">
-                            <span class="px-3 py-[7px] bg-gray-50 border-y border-gray-200 text-[13px] text-gray-400">到</span>
-                            <input type="text" class="custom-input rounded-l-none border-l-0 text-center" placeholder="结束日期">
+                            <select class="custom-select w-[80px] shrink-0">
+                                <option>平仓</option>
+                            </select>
+                            <div class="flex items-center flex-1">
+                                <input type="text" class="custom-input rounded-r-none border-r-0 text-center" placeholder="开始日期">
+                                <span class="px-3 py-[5px] bg-gray-50 border-y border-gray-200 text-[13px] text-gray-400">到</span>
+                                <input type="text" class="custom-input rounded-l-none border-l-0 text-center" placeholder="结束日期">
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-20 shrink-0 text-right mr-3">关系树查询:</label>
-                        <select class="custom-select text-gray-400">
-                            <option>请选择</option>
-                        </select>
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">持仓编号:</label>
+                        <input type="text" class="custom-input flex-1" placeholder="请输入">
                     </div>
                     <div class="flex items-center">
-                        <label class="text-[13px] text-gray-600 w-20 shrink-0 text-right mr-3 change-highlight">账户类型:</label>
-                        <select class="custom-select change-highlight">
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">编号:</label>
+                        <input type="text" class="custom-input flex-1" placeholder="请输入">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <label class="text-[13px] text-gray-600 w-[70px] shrink-0 text-right mr-3 font-medium">返佣类型:</label>
+                        <select class="custom-select flex-1">
                             <option>全部</option>
-                            <option>标准账户</option>
-                            <option>美分账户</option>
                         </select>
                     </div>
-                    <div class="flex items-center justify-end gap-3">
-                        <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-6 py-1.5 rounded text-[13px] transition-colors shadow-sm">搜索</button>
-                        <button class="bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-6 py-1.5 rounded text-[13px] transition-colors shadow-sm">重置</button>
+
+                    <!-- 占位使其靠右 -->
+                    <div class="hidden xl:block col-span-3"></div>
+                    
+                    <div class="flex items-center justify-end gap-3 col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-5 mt-2">
+                        <button class="bg-white border border-primaryBtn text-primaryBtn hover:bg-primaryBtn hover:text-white px-6 py-1.5 rounded text-[13px] transition-colors shadow-sm font-medium">搜索</button>
+                        <button class="bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 px-6 py-1.5 rounded text-[13px] transition-colors shadow-sm font-medium">重置</button>
                     </div>
                 </div>
             </div>
 
+            <!-- 数据表格卡片 -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col flex-1">
-                <div class="p-5 flex justify-between items-center border-b border-gray-100">
-                    <div class="flex items-center gap-6 text-[13px] flex-wrap">
+                
+                <!-- 汇总信息与操作区 -->
+                <div class="p-5 flex justify-between items-center border-b border-gray-100 flex-wrap gap-4">
+                    <div class="flex items-center gap-6 text-[13px]">
                         <div class="font-bold text-gray-800 text-[15px] mr-2">汇总统计</div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>标准账户交易手数(手):</span><span class="text-primaryBtn font-bold text-lg change-highlight">0.25</span></div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>美分账户交易手数(手):</span><span class="text-primaryBtn font-bold text-lg change-highlight">0.15</span></div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>库存费总计(USD):</span><span class="font-bold text-lg change-highlight">0.00</span></div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>手续费总计(USD):</span><span class="font-bold text-lg change-highlight">0.00</span></div>
-                        <div class="text-gray-500 change-highlight summary-stat"><span>客户盈亏总计(USD):</span><span class="font-bold text-lg change-highlight">66.50</span></div>
+                        <div class="text-gray-500">返佣金额($): <span class="text-primaryBtn font-bold text-lg font-mono">72,828.5774</span></div>
+                        <div class="text-gray-500">交易量(标准手): <span class="text-primaryBtn font-bold text-lg font-mono">11,216.87</span></div>
+                        <div class="text-gray-500">交易量(美分手): <span class="text-primaryBtn font-bold text-lg font-mono">138.78</span></div>
                     </div>
-                    <button class="bg-primaryBtn hover:bg-primaryBtnHover text-white px-5 py-2 rounded text-[13px] transition-colors shadow-sm">
+                    <button class="bg-white border border-primaryBtn text-primaryBtn hover:bg-primaryBtn hover:text-white px-5 py-2 rounded text-[13px] transition-colors shadow-sm font-medium">
                         报表导出
                     </button>
                 </div>
 
-                <div class="overflow-x-auto flex-1">
-                    <table class="w-full custom-table">
+                <!-- 表格区域 -->
+                <div class="overflow-x-auto flex-1 no-scrollbar">
+                    <table class="w-full custom-table min-w-[1400px]">
                         <thead class="bg-tableHeader">
                             <tr>
-                                <th class="w-8"></th>
-                                <th>客户姓名</th>
-                                <th>MT账号</th>
-                                <th class="change-highlight">账户类型</th>
-                                <th class="change-highlight">手数</th>
-                                <th>客户邮箱</th>
-                                <th>订单编号</th>
+                                <th class="w-10"></th>
+                                <th>编号</th>
                                 <th>持仓编号</th>
-                                <th>开仓时间(mt)</th>
+                                <th>订单编号</th>
+                                <th>交易账号</th>
+                                <th>交易用户</th>
+                                <th>返佣账号</th>
+                                <th>返佣用户</th>
+                                <th>返佣等级</th>
+                                <th>返佣金额($)</th>
+                                <th>手数类型</th>
+                                <th>交易量(手)</th>
                                 <th>交易品种</th>
-                                <th>买卖类型</th>
-                                <th>交易手数</th>
-                                <th>开仓价格</th>
-                                <th>结算价格</th>
-                                <th class="change-highlight">浮动盈亏(USD)</th>
-                                <th>状态类型</th>
-                                <th class="change-highlight">库存费(USD)</th>
+                                <th>返佣标准</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><button onclick="toggleDetailRow('tradeDetail1', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
-                                <td class="text-left">
-                                    <div class="font-medium text-gray-800">test-杨均</div>
+                            <!-- Row 1 (Expanded) -->
+                            <tr class="bg-gray-50/30">
+                                <td class="text-red-500 cursor-pointer"><i class="fa-solid fa-chevron-down text-[10px]"></i></td>
+                                <td class="font-medium text-gray-700 font-mono">143217</td>
+                                <td class="font-mono">684022</td>
+                                <td>
+                                    <div class="text-[12px] font-mono text-gray-500 text-left">开仓: 684022<br>平仓: 684024</div>
                                 </td>
-                                <td>8100458</td>
-                                <td class="change-highlight">标准账户</td>
-                                <td class="change-highlight">标准手</td>
-                                <td>b13@qq.com</td>
-                                <td>604063</td>
-                                <td>604060</td>
-                                <td>2026-07-28 09:23:23</td>
-                                <td>XAUUSD</td>
-                                <td>卖出交易</td>
-                                <td>0.10</td>
-                                <td>4,046.00</td>
-                                <td>4,045.27</td>
-                                <td>-7.30</td>
-                                <td>平仓</td>
-                                <td>0.00</td>
+                                <td class="font-medium">4100101</td>
+                                <td>
+                                    <div class="text-[12px] text-gray-500 text-left">test-测试-B<br>3218965885@qq.com</div>
+                                </td>
+                                <td class="font-medium">8300248</td>
+                                <td>
+                                    <div class="text-[12px] text-gray-500 text-left">华安<br>huaan@qqq.com</div>
+                                </td>
+                                <td>代理-PIB</td>
+                                <td class="font-mono font-medium text-green-600">0.0500</td>
+                                <td>标准手</td>
+                                <td>0.01</td>
+                                <td class="font-medium text-gray-700">XAUUSD</td>
+                                <td class="text-gray-500">5.00 $/lot</td>
                             </tr>
-                            <tr id="tradeDetail1" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="16" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">手续费(USD)</span>
-                                            <span class="detail-value">0.00</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">奖励(USD)</span>
-                                            <span class="detail-value">-</span>
-                                        </div>
-                                        <div class="detail-row-item">
-                                            <span class="detail-label">注释</span>
-                                            <span class="detail-value">-</span>
-                                        </div>
+                            <tr class="expanded-row">
+                                <td colspan="14" class="border-t-0 pt-0">
+                                    <div class="flex flex-col gap-3 pl-[42px] mt-2 mb-4">
+                                        <div class="flex"><span class="text-gray-800 font-bold w-24 shrink-0">系统时间</span> <div class="text-gray-600 font-mono text-[13px] leading-relaxed">返佣: 2026-09-07 10:47:41<br>平仓: 2026-09-07 10:47:26</div></div>
+                                        <div class="flex"><span class="text-gray-800 font-bold w-24 shrink-0">MT时间</span> <div class="text-gray-600 font-mono text-[13px] leading-relaxed">返佣: 2026-09-07 05:47:41<br>平仓: 2026-09-07 05:47:26</div></div>
+                                        <div class="flex"><span class="text-gray-800 font-bold w-24 shrink-0">返佣类型</span> <div class="text-gray-600 text-[13px] leading-relaxed">内佣<br>stan-代理返佣-PIB</div></div>
+                                        <div class="flex"><span class="text-gray-800 font-bold w-24 shrink-0">返佣状态</span> <div class="text-gray-600 text-[13px] leading-relaxed">已结算</div></div>
+                                        <div class="flex"><span class="text-gray-800 font-bold w-24 shrink-0">交易编号</span> <div class="text-gray-600 font-mono text-[13px] leading-relaxed">开仓: 1180850<br>平仓: 1180852</div></div>
                                     </div>
                                 </td>
                             </tr>
+
+                            <!-- Row 2 -->
                             <tr>
-                                <td><button onclick="toggleDetailRow('tradeDetail2', this)" class="text-[#FF6B6B]"><i class="fas fa-chevron-right text-[10px] transition-transform"></i></button></td>
-                                <td class="text-left">
-                                    <div class="font-medium text-gray-800">test-杨均</div>
+                                <td class="text-red-500 cursor-pointer hover:text-red-600"><i class="fa-solid fa-chevron-right text-[10px]"></i></td>
+                                <td class="font-medium text-gray-700 font-mono">143215</td>
+                                <td class="font-mono">684019</td>
+                                <td>
+                                    <div class="text-[12px] font-mono text-gray-500 text-left">开仓: 684019<br>平仓: 684021</div>
                                 </td>
-                                <td class="change-highlight">9900456</td>
-                                <td class="change-highlight">美分账户</td>
-                                <td class="change-highlight">美分手</td>
-                                <td>b13@qq.com</td>
-                                <td class="change-highlight">511348</td>
-                                <td>511344</td>
-                                <td>2026-06-08 10:15:29</td>
-                                <td>XAGUSD</td>
-                                <td>卖出交易</td>
-                                <td>0.15</td>
-                                <td>67.04</td>
-                                <td>67.03</td>
-                                <td class="change-highlight multiline-cell">
-                                    <span class="main-value change-highlight">75.60</span>
-                                    <span class="sub-value change-highlight">USC 7,560</span>
+                                <td class="font-medium">4100101</td>
+                                <td>
+                                    <div class="text-[12px] text-gray-500 text-left">test-测试-B<br>3218965885@qq.com</div>
                                 </td>
-                                <td>平仓</td>
-                                <td class="change-highlight multiline-cell">
-                                    <span class="main-value change-highlight">0.00</span>
-                                    <span class="sub-value change-highlight">USC 0</span>
+                                <td class="font-medium">8300248</td>
+                                <td>
+                                    <div class="text-[12px] text-gray-500 text-left">华安<br>huaan@qqq.com</div>
                                 </td>
+                                <td>代理-PIB</td>
+                                <td class="font-mono font-medium text-green-600">0.0500</td>
+                                <td>标准手</td>
+                                <td>0.01</td>
+                                <td class="font-medium text-gray-700">XAUUSD</td>
+                                <td class="text-gray-500">5.00 $/lot</td>
                             </tr>
-                            <tr id="tradeDetail2" class="hidden change-bg">
-                                <td></td>
-                                <td colspan="16" class="text-left">
-                                    <div class="detail-list">
-                                        <div class="detail-row-item">
-                                            <span class="detail-label change-highlight">手续费(USD)</span>
-                                            <span class="detail-value change-highlight">0.00</span>
-                                        </div>
-                                    </div>
+
+                            <!-- Row 3 -->
+                            <tr>
+                                <td class="text-red-500 cursor-pointer hover:text-red-600"><i class="fa-solid fa-chevron-right text-[10px]"></i></td>
+                                <td class="font-medium text-gray-700 font-mono">143213</td>
+                                <td class="font-mono">558782</td>
+                                <td>
+                                    <div class="text-[12px] font-mono text-gray-500 text-left">开仓: 558782<br>平仓: 684020</div>
                                 </td>
+                                <td class="font-medium">4100101</td>
+                                <td>
+                                    <div class="text-[12px] text-gray-500 text-left">test-测试-B<br>3218965885@qq.com</div>
+                                </td>
+                                <td class="font-medium">8300248</td>
+                                <td>
+                                    <div class="text-[12px] text-gray-500 text-left">华安<br>huaan@qqq.com</div>
+                                </td>
+                                <td>代理-PIB</td>
+                                <td class="font-mono font-medium text-green-600">0.1000</td>
+                                <td>标准手</td>
+                                <td>0.02</td>
+                                <td class="font-medium text-gray-700">XAUUSD</td>
+                                <td class="text-gray-500">5.00 $/lot</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="px-5 py-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                    <div>15条 / 页&nbsp;&nbsp; 2条记录，第 1/1页</div>
+                
+                <!-- 分页 -->
+                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-white">
+                    <div class="text-sm text-gray-500">
+                        共 <span class="font-medium text-gray-700">3</span> 条记录
+                    </div>
                     <div class="flex items-center gap-2">
-                        <button class="w-8 h-8 rounded border border-gray-200 bg-white text-gray-300 cursor-not-allowed">
-                            <i class="fas fa-angle-left"></i>
-                        </button>
-                        <button class="w-8 h-8 rounded border border-primaryBtn bg-primaryBtn text-white">1</button>
-                        <button class="w-8 h-8 rounded border border-gray-200 bg-white text-gray-300 cursor-not-allowed">
-                            <i class="fas fa-angle-right"></i>
-                        </button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded text-gray-400 cursor-not-allowed">上一页</button>
+                        <button class="px-3 py-1 text-sm bg-menuActive text-white rounded">1</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded text-gray-600 hover:bg-gray-50 transition-colors">下一页</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     </main>
-
-    <script>
-        function toggleSubmenu(button) {
-            const submenu = button.nextElementSibling;
-            const arrow = button.querySelector('.arrow-transition');
-            submenu.classList.toggle('submenu-expanded');
-            if (arrow) arrow.classList.toggle('arrow-rotated');
-        }
-
-        function toggleDetailRow(rowId, button) {
-            const row = document.getElementById(rowId);
-            const icon = button.querySelector('i');
-            row.classList.toggle('hidden');
-            icon.classList.toggle('rotate-90');
-        }
-    </script>
 </body>
 </html>

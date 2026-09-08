@@ -68,10 +68,12 @@
             <span class="text-4xl font-black tracking-wider text-white">HATC</span>
         </div>
         <nav class="flex-1 overflow-y-auto no-scrollbar py-4 px-3 space-y-2">
+
             <a href="admin-home.html" class="flex items-center px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                 <i class="fa-solid fa-house w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">首页</span>
             </a>
-
+            
+            <!-- 出入金 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -94,6 +96,22 @@
                 </div>
             </div>
 
+            <!-- 财务对账 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-file-invoice-dollar w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">财务对账</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-reconciliation-daily-record.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">每日对账日志</a>
+                    <a href="admin-reconciliation-internal.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">对账异常看板</a>
+                </div>
+            </div>
+
+            <!-- 佣金管理 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -110,6 +128,7 @@
                 </div>
             </div>
 
+            <!-- 活动管理 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -126,6 +145,7 @@
                 </div>
             </div>
 
+            <!-- 动态公告 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -141,6 +161,7 @@
                 </div>
             </div>
 
+            <!-- 客户管理 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -160,7 +181,8 @@
                     <a href="admin-leads-list.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">留资列表</a>
                 </div>
             </div>
-
+            
+            <!-- 报表中心 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -170,22 +192,37 @@
                     <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
                 <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">出入金报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
-                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">提现报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">数据看板</a>
+                    <a href="admin-report-commission-stats.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金统计</a>
+                    <a href="admin-report-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易报表</a>
+                    <a href="admin-report-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓报表</a>
                     <a href="admin-report-close-position.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓交易记录</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-finance-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">财务报表</a>
+                    <a href="admin-report-commission-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">佣金报表</a>
+                    <a href="admin-report-position-stats.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
+                    <a href="admin-report-trade-record-cent-account.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
+                    <a href="admin-report-sales-trading.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售交易奖励报表</a>
                     <a href="admin-report-sales-deposit.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">销售入金奖励统计</a>
                     <a href="admin-report-equity.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">盈亏报表</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">持仓统计</a>
-                    <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">交易记录</a>
                 </div>
             </div>
 
+            <!-- 委托交易 -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-handshake-angle w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">委托交易</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
+                </button>
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
+                    <a href="admin-trust-phase1.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">委托交易一期</a>
+                    <a href="admin-trust-account-management.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">委托交易账户管理</a>
+                    <a href="admin-trust-rule-config.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">查看规则配置</a>
+                </div>
+            </div>
+
+            <!-- 系统管理 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -214,6 +251,7 @@
                 <i class="fa-solid fa-download w-6 text-center text-lg group-hover:text-white transition-colors"></i><span class="ml-3 font-medium text-[15px]">交易工具</span>
             </a>
 
+            <!-- 财务管理 -->
             <div class="menu-group">
                 <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
@@ -228,22 +266,24 @@
                 </div>
             </div>
 
+            <!-- 风控管理 -->
             <div class="menu-group">
-                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuActive bg-menuHover rounded-lg transition-colors group">
+                <button onclick="toggleSubmenu(this)" class="w-full flex items-center justify-between px-3 py-3 text-menuText hover:text-white hover:bg-menuHover rounded-lg transition-colors group">
                     <div class="flex items-center">
-                        <i class="fa-solid fa-shield w-6 text-center text-lg text-menuActive group-hover:text-white transition-colors"></i>
-                        <span class="ml-3 font-medium text-[15px] text-menuActive">风控管理</span>
+                        <i class="fa-solid fa-shield w-6 text-center text-lg group-hover:text-white transition-colors"></i>
+                        <span class="ml-3 font-medium text-[15px]">风控管理</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition arrow-rotated text-menuActive"></i>
+                    <i class="fa-solid fa-chevron-right text-[10px] arrow-transition"></i>
                 </button>
-                <div class="submenu-transition submenu-expanded pl-11 pr-3 space-y-1 mt-1">
+                <div class="submenu-transition pl-11 pr-3 space-y-1 mt-1">
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">客户登录日志</a>
-                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-white transition-colors">登录 IP 一致性比对</a>
+                    <a href="admin-risk-login-alert.html" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">登录 IP 一致性比对</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">黑名单管理</a>
                     <a href="#" class="block py-2 text-sm text-gray-400 hover:text-white transition-colors">平仓间隔统计</a>
                 </div>
             </div>
-        </nav>
+
+        
         <div class="p-4 border-t border-gray-700/50">
             <button class="w-full flex items-center justify-center py-2 text-gray-500 hover:text-white transition-colors bg-gray-800/50 rounded">
                 <i class="fa-solid fa-angles-left text-sm"></i>
